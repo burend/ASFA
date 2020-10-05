@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mind Control Adventures - A Spell For All Places</title>
+</head>
+<body>
+<pre>
+
+----------------------------------------------
+Logical Places in the game, like a house or special location
+The index values DO NOT relate the to places below defined for dispPlace/gotoPlace/Place
+The index values DO NOT relate the to places below defined for dispPlace/gotoPlace/Place
+
+arPlaces[] defined places in the game
+----------------------------------------------
+	1		= Place: Gina's House ***
+			Flags
+				1	- known
+				3	- Shower scene done
+				4	- Cell phone message (set means read)
+				5	- has thrown you out of her house
+				6	- a stone is in the drawer
+				7	- bathroom draw jammed (false is jammed, true is openable)
+				9	- visitor
+	2		= Place: Town Hall ***
+			Flags
+				1	- known
+				2	- know John Adams office
+				3	- know of the break room
+				4	- know Emily's office
+				31	- broke in (via Pass spell)
+	3		= Place: French classroom (Ms. Jones) ***
+			Flags
+				1	- known
+				2	- Anita's Lair Known
+	4		= Place: Anatomy classroom ***
+	5		= Place: Crypt ***
+			Flags
+				1	- known (set after flag 2)
+				2	= can dig for the crypt
+				3	- tablet puzzle 1
+				4	- tablet puzzle 2
+				5	- tablet puzzle 3
+	6		= Place: Sacred Clearing ***
+			Flags
+				1	- known
+				2	- attacked tonight
+	7		= Place: House – Robbins ***
+			flags
+				5	- know Tina's room
+				6	- tried to cast pass inside
+				7	- know Davy's Room
+				8	- found Davy's Laptop
+				9	- Trapped in bedroom
+	8		= Place: Alleyway ***
+			Switches
+				1	- Know where the alley is
+				2	- Cast Clairvoyance here
+				6	- Stone found here
+				7	- Know where the Hidden Room is
+				8	- cast clairvoyance in the Hidden Room
+				9	- examined the Dragon Gem
+	9		= Place: Museum ***
+			Flags
+				1	- known
+				2	- found a stone in the History Classroom after found out about the museum
+				3	- vault locked
+				4	- vault locked after asking Officer Batton (set as well as flag 3, never cleared)
+				5	- visited egyptology area
+				8	- closed if set
+				31	- broke in (via Pass spell)
+	10		= Place: House – Granger ***
+			Flags
+				1	- known
+				2	- shown where Kate's room is
+	11		= Place: House – Kelly ***
+				1	- known
+				2	- seen removal truck
+	12		= Place: Shopping Center ***
+			Flags
+				2	- seen notice about burglaries
+				3	- Haven apartments
+				4	- found a book in Diane's apartment
+				5	- know about Avernus club
+				6	- know of Mayor Thomas's penthouse
+				7	- set first visit to the shopping center
+	13		= Place: Hotel ***
+			Flags
+				1	- known
+				2	- asked about records
+				3	- why cost so much
+				4	- got the plans
+				5	- found a stone in the history class
+				6	- opened cupboard in the cellar
+				7	- Donna's Room
+				8	- been told about the cellar
+				9	- cellar is a dungeon
+				10	- visited the cellar
+				11	- pool visits
+				12	- Dr Kay's room
+	14		= Place: Police Station ***
+			flags
+				1	= known
+				2	= interrogation room available
+				3	= Jail cells are available
+	15		= Place: Hospital (flags) ***
+			flags
+				1	= known
+				2	= seen the picture (and elevator usable)
+				3	= been to the basement
+				4	= have key to the old basement
+				5	= know where the ICU is
+				6	= know of Doctor Kay's office
+	16		= unused
+	17		= Place: Wild Ranges ***
+			Flags
+				1	- known
+				2	- hemlock at the wild ranges
+				3	- tunnel known
+				4	- found hawthorn tree
+	18		= Place: Mechanic's Shop ***
+	19		= Place: Rathdown Road ***
+				1	= known
+				2	= Adams House known
+				3	= Ms Titus house known
+				4	= looked around Ms Titus's house
+				5	= found the 'Carnal Alchemy' book
+	20		= Place: History Classroom ***
+				1	= seen the extra pages
+				2	= found the stone
+				3	= read the extra pages
+				4	= been to the oval - School in general
+				5	= seen 'The Settlement of Genvale'
+				6	= seen 'Greek Mythology'
+				7	= seen missing book
+				8	= returned the Stears letter
+				9	= seen 'Rituals under the Broken Inn'
+				10 = seen the Hydromancy book
+				11	= seen "Pharmakopeia"
+				12	= seen "witches of Pennsylvannia"
+				13	= been to the Nurses Office
+				31	= broke in (via Pass spell) - FOR THE SCHOOL
+	21		= Place - Cherise Rd ***
+			flags
+				1	- known
+				2	- Aunt's House
+				3	- found the book in Adele's room
+				4	- read the book in Adele's room
+				5	- Logan Home
+				6	- barred from the Gym
+				7	- Charlie's Office is available
+				8	- Charlie's Home is available
+				9	- tried to reenter the Gym after being barred
+	22		= Place - Amaranth Pl ***
+			flags
+				1	- known
+				2	- Gabby's House known
+	23		= Place: Dervish Rd ***
+			flags
+				1	- known
+				2	- know Kristin's home address
+				3	- know Ellie + Carols address
+	24		= Place: New Age Store ***
+			flags
+				1	- known
+				2	- know of access to Esmeralda's house
+	25		= Place: TV & Radio Station ***
+	26		= Place: Aquarium ***
+			Flags
+				1	- known
+				31	- broke in (via Pass spell)
+	27		= Place: Park ***
+			flags
+				1	- known
+				2	- know of the Duck Pond
+				3	- found a stone in the Wild Ranges
+				4	- know of construction road
+				5	- have key to fence of the construction site
+				6	- tried to climb the fence
+	28		= Place: Church (all locations) ***
+			Flags
+				1	- know of the church
+				5	- attempted to enter Mother Superior's room
+				6	- know of the secret door out of the wall
+				7	- tried to go to the courtyard/down stairs from the main church sanctum
+				8	- know of Mother superiors secret room
+				9	- visited Mother Superiors room
+				10	- visited the courtyard
+	29		= Place: Graveyard ***
+			Flags
+				1	- Known
+				5	- Know of the church tunnel
+				6	- mausoleum door open
+				7	- know of the mausoleum
+	30		= Place: Library (flags) ***
+				flags
+				1	- Tess's office is closed if set
+				2	- Library closed if set
+				31	- broke in (via Pass spell)
+	31		= Place: Celeste Rd
+				flags
+				1	- Known
+				2	- Camryn's apartment known
+				3	- found the stone
+				4	- Mia's apartment known
+				5	- Abby's apartment known
+				6	- Angela's aoartnebt
+				7	- Emily's aoartnebt
+				8	- Nina's apartment
+				9	- Louise's apartment
+				10	- Alison's apartment
+				11	- Madison's apartment
+				12	- Zoey's apartment
+				13	- Jennys apartment
+
+--------------------------------------------------------------------------------------
+Defined Location in the game for events/visiting
+Use for the Place variable and functions dispPlace/gotoPlace, and where people are etc
+These can be a physical place or a logical event that takes place at a location
+Some physical locations have multiple versions
+--------------------------------------------------------------------------------------
+1 -	Intro (event)
+2 -	Library – Outside
+3 -	Library – Reception Desk
+4 -	Park - Kate's dialogue (event)
+5 -	Place: Dervish Rd
+6
+7 -	Library - Study area
+8 -	Library - Reference area
+9 -	Glenvale Secondary School (outside)
+10 -	School - History classroom
+11 -	Mr. Beasley's Office
+12 -	Kate's Puzzle  (event in the Library Study area)
+13 -	Kate's Puzzle (answered)
+14 -	Gates' Garage Office
+15 -	Gates' Garage Outside
+16 -	Gates' Estate (Entrance Gate)
+17 -	Gates' Study
+18 -	Gates' Mansion entry and upstairs hall
+19 -	Gates' Study [Murder path]
+20 -	Gates' Mansion – Rear of Masion [Murder Path]
+21-	Gates' Mansion – Entrance [Blocked]
+22
+23
+24
+25 -	Place: Wild Ranges - Campsite
+26 -	Place: Wild Ranges
+27 -	School - History classroom Bookcase
+28 -	Library – Mrs. Adam's Office
+29 -	Library – Mrs. Adam's Office [Thrall Adams]
+30
+31
+32
+33
+34 -	Mrs Granger in the Wild Ranges
+35 -	Granger House - Kate's room, but she is not there
+36 -	Park – “Scared” Kate Dialogue
+37 -	Place - Cherise Rd
+38 -	Place - Amaranth Pl
+39 -	Puzzle (Mrs. Granger – Party Puzzle)
+40 -	Home - Shower
+41 -	Home - Storage Chest in your bedroom
+42 -	Alley
+43 -	Yoolaroo Drive
+44 -	Kollam Street
+45 -	Home – Kitchen
+46 -	Home – Your Room
+47 -	Park – Entrance
+48 
+49
+50 
+51 
+52
+53 -	Alley – Hidden Room
+54
+55 
+56
+57 
+58 
+59
+60 
+61
+62
+63 -	Park – Pathway
+64 
+65 -	Gate's Mansion – Crime Scene
+66 -	Gate's Mansion - Secret Stairway
+67 -	Gate's Mansion – Attic
+68
+69 -	School - Nurses Office
+70 -	School – Hallway
+71
+72
+73 
+74 -	School – Mr. Beasley's Office [Regain Book Path 01]
+75 -	School - Mr. Beasley's Office [Regain Book Path 02]
+76 -	School - Mr. Beasley's Office [Regain Book Path 03]
+77
+78
+79 
+80 -	Davy Robbins Laptop
+81 -	Robbin's House – Davy's Room
+82 -	Robbins' House – Mrs. Robbins Bedroom
+83  -	Robbins' House – Tina's Bedroom
+84 
+85
+86 -	Exploring the Stones
+87 -	Park – Walkway
+88 
+89 
+90
+91 
+92 
+93 
+94 -	Town Hall
+95 -	Town Hall – Receptionist
+96 -	Town Hall - John Adams Office
+97 -	Town Hall - Break Room
+98 -	Town Hall - Conference Room
+99 -	Town Hall - Emily's Office
+100 -	Town Hall - Event with Kristin
+101 -
+102
+103
+104
+105
+106
+107 
+108 -	Granger's House – Kate's Room [Davy's Thrall Kate ready to kill you]
+109
+110 -	Town Hall – Mayor Thomas' Office
+111
+112 -	Debra & Janet Kelly's House
+113 -	Kelly's House – Stairs/Janet's Bedroom
+114 - Kelly's House – Garden/TV Room
+115 
+116
+117 
+118
+119
+120
+121
+122 -	Home - Tracy's bedroom
+123 -	Place - Broken Inn Hotel
+124 -	Broken Inn Hotel – Bar
+125
+126 
+127 
+128 
+129
+130
+131 
+132
+133 -	Broken Inn Hotel – Bambi's Room
+134 -	Broken Inn Hotel – Bambi's Room [Bambi's Enthrallment 01]
+135 -	Broken Inn Hotel – Bambi's Room [Bambi's Enthrallment 02]
+136 -	Broken Inn Hotel – Bambi's Room [Bambi's Enthrallment 03]
+137 -	Broken Inn Hotel – Bambi's Room [Bambi's Enthrallment 04]
+138 -	Broken Inn Hotel – Bambi's Room [Bambi's Enthrallment 05]
+139 -	Granger's House – Kate's Room [Kate is Home; not charmed]
+140
+141 -	Gate's Mansion – Sacred Clearing
+142 -	Park – Pathway [Anita's Ambush]
+143 
+144 -	School - Sports Fields
+145 -	School – Ms. Jones' Office
+146
+147
+148
+149
+150 
+151 
+152 
+153 
+154 -	Home – Mother's Room
+155
+156 -	Home – Laundry Room
+157
+158 -
+159 -	School – Mr. Beasley's Office – Phone Message [Davy Robbin's Message]
+160
+161 -	Hotel – Cellar
+162 -	Hotel – Cellar – Altar Puzzle 
+163
+164 -	
+165 -	
+166 -	
+167 -	Glenvale Police Station
+168 -	Police Station – Reception Area
+169 -	Police Station – Officer Khan's Office
+170 -	Home – Your Bedroom [With Tessa Adams]
+171 -	Hotel – Room 1XX [With Tess Adams]
+172 - Police Station - Waiting Room
+173 -	Hotel – Room 1XX [Worm PUZZLE]
+174 -	Hotel – Room 1XX [Worm PUZZLE] [Answers]
+175 -	Police Station - Interrogation Room
+176 -	Robbins' House
+177 -	Granger's House - Living Room
+178 -	Park – Wild Ranges – Tunnel
+179
+180
+181 - Hotel - Dr Kay's room
+182 -	Hotel – Bambi's Room
+183 - Hotel – Room 49
+184 -	Hotel – Room 101
+185 -	Hotel - Donna's Room
+186
+187 
+188 
+189 
+190 
+191 -	Gates' Mansion – Family Safe
+192 -	Gates' Mansion – Sarah's Room
+193 -	Hotel – Cellar – Dungeon
+194 -	Place - Glenvale Shopping Center
+195 -	Shopping Center – General Store
+196 -	Shopping Center – Restaurant
+197-	Shopping Center – Antique Shop
+198 - Shopping Center – Antique Shop - Nella's Room
+199 -	Shopping Center – Laundromat
+200 
+201 
+202 
+203 -	Shopping Center – Restaurant - Storeroom
+204 
+205 
+206
+207
+208
+209
+210
+211 
+212
+213 -	Hospital – Ward 1 (Ground Floor)
+214 -	Hospital – Foyer (Ground Floor)
+215 -	Place - Glenvale Hospital
+216 -	Park – Bridge
+217
+218
+219
+220
+221 
+222 
+223
+224 -	Shopping Center – Friendly Loan Company – Manager's Office
+225 -	Shopping Center – Friendly Loan Company [Bank]
+226
+227
+228 -	Place - Rathdown Road - Ms. Titus's Home
+229 -	Place - Rathdown Road
+230 -	Place - Rathdown Road - Adams' House
+231 -	Place - Rathdown Road - Adams' House Bedroom
+232 
+232 
+233
+234 -	School – Anatomy Classroom
+235 
+236
+237 -	Hannah's apartment (back of Mechanics Shop)
+238 -	Place - Glenvale Museum
+239 -	Museum – Main Hall
+240 -	Museum – Local History [Vase]
+241 -	Museum – Local History [Vase] – Guard
+242 -	School – Teacher's Lounge [Mrs. Tanika]
+243 
+244
+245
+246 -	Park - Wild Ranges [PUZZLE: Tablet]
+247 -	Park – Wild Ranges – Crypt
+248 -	Park – Wild Ranges – Crypt [Coffin]
+249 -	Museum - Assorted Exhibits
+250
+251 -
+252 -	School – Ms. Jones Office – Anita's Lair
+253
+254 
+255 
+256
+257
+258 -	Hotel Pool - Meeting Lauren
+259
+260 -	Police Station – Jail Cell
+261 -	Police Station – Jail Cell [Officer Smith present]
+262
+263
+264
+265
+266
+267 -	Hotel – Room 101 [Davy Defeated!]
+268
+269 -	Hotel – Pool Area
+270
+271
+272 
+273
+274
+275 -	Hospital – Intensive Care Unit
+276 -	Museum – Vault Door
+277 -	Museum – Guard
+278 -	Hospital – Ward 1 West
+279 -	Shopping Center – Mechanic's Shop
+280 - Shopping Center – Strip Club - Jade's room
+281 - Shopping Center – Strip Club Outside
+282 - Shopping Center – Strip Club
+283 -	Hannah's Apartment - Monique's Room
+284 -	Hannah's Apartment - Hannah's Room
+285 -	Trial
+286
+287 -	Home – Kitchen – Phone Call [PUZZLE: Radio Contest]
+288
+289
+290 -	Gates' Mansion – Guest Room
+291 
+292 
+293 
+294 
+295
+296 -	Gates' Mansion – Upstairs Bathroom - Sarah/Lauren bathtime
+297
+298
+299
+300 
+301
+302 -	Gina's House – Living Room
+303 -	Gina's House – Bathroom
+304 -	Museum – Security Room
+305
+306
+307 
+308
+309
+310
+311 
+312 
+313
+314 
+315
+316
+317 -	Lady of our Heavenly Father
+318 -	Lady of our Heavenly Father – Cathedral
+319 -	Lady of our Heavenly Father – Courtyard
+320 -	Lady of our Heavenly Father – Outer Wall
+321 -	Lady of our Heavenly Father – Basement
+322 -	Lady of our Heavenly Father – Catacombs
+323 -	Lady of our Heavenly Father – Catacomb Tunnel
+324 -	Graveyard – Mausoleum
+325 -	Graveyard
+326 -	Lady of our Heavenly Father – Caretaker's Home
+327 
+328 
+329 
+330 
+331
+332 -	Lady of our Heavenly Father – Courtyard [Sister Desiree]
+333 
+334
+335 
+336 
+337 
+338
+339 -	Hotel – Cellar – Witch's Prison [Seance]
+340 -	Hotel – Cellar – Witch's Prison [Jesse/Legion]
+341 -	Hotel – Cellar – Witch's Prison [Legion – Temptation]
+342 -	Hotel – Cellar – Witch's Prison [Kurndorf's Ghost]
+343 -	Hotel – Cellar – Witch's Prison [Ritual]
+344 -	Shopping Center – New Age Store [Outside]
+345 -	Shopping Center – New Age Store
+346 - Shopping Center - Esmeralda's Home - behind New Age Store - separate to the store itself
+347 - Shopping Center - Esmeralda's Home - Esmeralda's bedroom
+348 - Shopping Center - Esmeralda's Home - Jessica's bedroom
+349 
+350 
+351
+352 
+353 
+354
+355 -	Home – Bedroom [Madison's Enthrallment 01]
+356 -	Home – Bedroom [Madison's Enthrallment 02]
+357 -	Home – Bedroom [Madison's Enthrallment 03]
+358 -	Home – Bedroom [Madison's Enthrallment 04]
+359 -	Glenvale Radio & Television Station
+360 -	Glenvale Aquarium
+361 -	Aquarium – Front Hall
+362
+363 
+364 
+365 
+366 
+367 
+368
+369 -	Aquarium – Kelp Forest
+370 -	Aquarium – Oceans of the World
+371 -	T.V. Station – Office
+372 - T.V. Station - Hallway
+373
+374 -	Home – Living Room
+375 -	Hotel – Room 113
+376 
+377 
+378 
+379 
+380 
+381
+382 -	Lady of our Heavenly Father – Mother Superior's Room (Before last possession)
+383 -	Lady of our Heavenly Father – Mother Superior's Secret Room
+384 -	Lady of our Heavenly Father – Mother Superior's Room (Post Possessions)
+385
+386
+387
+388
+389
+390
+391
+392
+393
+394 -	Aquarium - Information Desk
+395 
+396 
+397 
+398 
+399 
+400
+401
+402
+403 
+404
+405
+406 -	Lady of our Heavenly Father – Church Cloisters
+407
+408 -	Home - Attic Bedroom
+409
+410 -	Home – Bedroom [Madison's Enthrallment 05]
+411 -	Home – Bedroom [Madison's Enthrallment Strap-on Delivery]
+412 -	T.V. Station - Visit Madison at Work
+413 -	T.V. Station – Visit Madison to complain about broken stereo
+414 -	T.V. Station – Zoey's Enthralment/Repeat Sex
+415 -	T.V. Station – Mom's office
+416 - T.V. Station - Storage Room
+417 - T.V. Station - Gabby's Office
+418
+419
+420 -	Bartel House
+421 -	Place: Park - Duck Pond
+422 -	Bartel House: Living Room (with Ellie)
+423 -	Bartel House: Pool
+424 -	Battel House: Carol's Bedroom
+425
+426
+427
+428
+429
+430 -	Dervish Rd - Kristin's House
+431
+432
+433 -	Cherise Rd - Aunt's House (and Kylie)
+434 - Cherise Rd - Gym - Charlie's Office
+435 -	Cherise Rd - Gym
+436 -	Cherise Rd - Ross Home
+437 -	Ross House - Amy's bedroom
+438 -	Ross House - Catherine's bedroom
+439 -	Ross House - Adele's bedroom
+440 -	Cherise Rd - Logan Home
+441 -	Hospital - Morgue (Basement Floor)
+442 -	Hospital - Basement
+443 -	Hospital - Old Basement + ghost
+444 -	Hospital - First Floor
+445 - Hospital - Doctor Kay's office
+446
+447
+448
+449
+450 -	Leanne's House
+451
+452 - Gabby's Hone - Living Room
+453 - Gabby's Hone - Study
+454
+455 -	Celeste Rd / Outside Apartment building
+456 -	Apartment building foyer
+457 -	Camryn's Apartment
+458 -	Mia's Apartment
+459 - Abby's Apartment
+460 - Angela's Apartment
+461 - Emily's Apartment
+462 - Nina's Apartment
+463 - Louise's Apartment
+464 - Alison's Apartment
+465 - Madison's Apartment
+466 - Zoey's Apartment
+467 - Jenny's Apartment
+468
+469
+470 - Haven apartments
+471 - Haven apartments foyer
+472 - Diane White's apartment
+473 - Mayor Thomas's penthouse
+474
+475 - Tanika household
+476
+477
+478
+479
+480 - Construction Road
+481 - Construction Site
+482
+483
+484
+485
+486
+487
+488
+489
+500 - Elians lair (not really in this world)
+
+// 800-899 - logical places, no actual js files
+801 -	Hideout
+
+
+// Meta places, end game type 'places'
+972 -	Bad Ending - School - Mr. Beasley's Office [Player Charmed path 02] [END GAME]
+973 -	Bad Ending - School - Mr. Beasley's Office [Player Charmed path 02] [END GAME]
+990 -	Bad Ending - Interrupt Davy and not wearing a necklace
+991 - Bad Ending - Town Hall – Mayor's Office [Shot!] [END GAME]
+992 - Bad Ending - Davy arrives and you are in Tina's bedroom
+993 - Bad Ending - Ritual Error - stopped Jessica
+994
+995 -	Bad Ending - Kissed Jesse
+996 -	Bad Ending - Ritual Error - used Hair
+997 -	Bad Ending - Possessed during Seance
+998 -	Bad Ending - Jailed
+999 -	Bad Ending - General
+
+</pre>
+</body>
+</html>

@@ -1,0 +1,3438 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>Mind Control Adventures - A Spell For All People</title>
+</head>
+<body>
+<pre>
+
+-------------------------------------------------------------------------------
+The People
+-------------------------------------------------------------------------------
+
+Some small notes on things I am writing for the game, shaped by some events when various people move in to your home. Some of this has been mentioned before so some of this is me thinking things through.
+
+[b]Mother[/b]
+a) your mother's given name is Alexandra, Alex for short (similar to her actual name Elexis)
+b) she is bisexual, leaning more towards the lesbian end of the scale (her model seems to mainly do lesbian sets, but does do boy/girl sets just a lot less)
+c) she likes Tess and welcomes her warmly to your home
+e) she [b]really[/b] dislikes Anita, I will probably make it so Anita can only spend the night at your home, she will return to her lair in daytime (or the hotel)
+
+In general she is jealous of any of the women in your life except Tracy and Tess, but hides it mostly
+
+[b]Tess[/b]
+tries to get along with everyone, but likes Anita the least. Gets on really well with Tracy
+
+[b]Mrs Tanika[/b]
+slave version: relates really well with Anita as a fellow slave sister
+lover version: fine/indifferent to Anita
+both: likes Tess and can be awkward around your mother but likes her. Indifferent to Tracy
+
+[b]Anita[/b]
+indifferent to most everyone, but respects your mother as a sort of proxy commander
+hates Davy passionately as she considers he betrayed her
+likes Bambi if you send her to guard Davy
+
+[b]Tracy[/b]
+easy going and willing to get along with anyone, but at least a little jealous of the others (all this references her after her being freed of Davy)
+Friends with Leanne and Tina
+
+
+
+*******************************************************************************
+***** Family: Yours
+*******************************************************************************
+----------------------------------------------
+You!
+person "You", global variable perYou
+----------------------------------------------
+person.name = your name
+
+person.other
+	Experience, (was Path – Game = Sets which books appear in the History classroom bookcase).
+	Accessors getExperience, setExperience in perYou
+	Changes as
+	- Initially set to 1 when you give the article to Monique
+	- Increases with every spell learned (by 3)
+	- charm spell cast (by 1).
+
+person.Flags
+	1		- won the stereo
+	2		- damaged stereo in your bedroom
+	3		- shot and items have been returned to your room
+	4		- found rustic stone in the mansion attic
+	5		- got cash from the teachers lounge
+	6		- Wooden Box is open
+	7		- Dropped Spellbook in your room
+	8		– Know where Spellbook is (after losing it)
+	9		- unlimited account limit
+	10		- have used a stone in the Wild Ranges
+	11		- know about passages in the book
+	12		- allow hypnosis training
+	13		- BE Transformation
+	14		- spent the night away from home
+	15		- played a game
+	16		- hiding!
+	17		- Experience: cheaper spells (10%)
+	18		- Experience: use mana as a shield against spells
+	19		- Experience: charm males
+	20		- Experience: better mana from stones
+	21		- Experience: more places to teleport to
+	22		- Experience: mo' money
+	23		- Experience: etherial charms
+	24		- Experience: basic hypnosis
+	25		- Experience: augmented hypnosis
+	26		- Experience: Fine control over charm spell
+	27		- Experience: expert at learning spells
+	28		- Experience: improved invisibility
+	29		- Magical Knowledge: Hydromancy
+	30		- imprisoned
+	31		- charmed by another
+	32		- futa start
+
+	33		= wake at 7am
+	34		= wake at 8am
+	35		= (Murder Path) got shirt from the laundry
+	36		= Have ever been arrested
+	37		= tried to kill time in your room
+	38		= end game 1 - offered
+	39		= read 'The King in Yellow'
+	40		= pink noise (ie dream suppress)
+	41		= Dream 2: Shub-Niggurath (random)
+	42		= Dream 5: monster/tentacle (random)
+	43		= Dream 6: Kate as cheerleader
+	44		= Dream 7: reading Carnal Alchemy
+	45		= Dream 8: Demon
+	46		= Dream "King in Yellow"
+	47		= Dream: Vampyre dreaming
+	48		= Dream 9: Egypt
+	50		= Bimbo Curse (started)
+	51		= Bimbo Curse 1
+	52		= Bimbo Curse 2
+	53		= Bimbo Curse 3
+	54		= Bimbo Curse 4
+	55		= Bimbo Curse 5
+	56		= New Bimbo stage
+	57		= Cock growth
+	58		- asked about ending game
+
+person.extra[1]	= State – Invisibility	= value is the location it was cast
+person.extra[2] 	= State – PC Injuries
+	flags
+		1	- shot
+		2	- woke in hospital after being shot
+		3	- spoke to DA White and told Beasley has the book after being shot
+		4	- mum gave you some money after being shot
+		5	- caught in collapsing rubble
+		6	- woke in hospital after the collapse
+		7	- told by nurse Mr Beasley has the book after the collapse
+		8	- Bambi denied having the book
+person.extra[3]	= Know spells, set of switches for each spell
+person.extra[4]	= State – Arrest Warrant
+	Values
+		0	- not wanted
+		1	- Attempted theft of Book
+		2	- Arrested for MURDER
+		3	- Attempted theft of Vase
+person.extra[5]	= State of quests, flag set = started
+	flags
+		1	- Find a magic stone
+		2	- find an old key
+		3	- dragon gem
+		4	- Find the Book
+		5	- save Leanne
+		6	- (Conspiracy) visit your ally
+		7	- Charm Sofia
+		8	- Ross family
+
+person.extra[6]	= State of quests, flag set = completed, flags as above
+person.extra[7]	= phone wallpaper - 1
+person.extra[8]	= State – Holy water Charges (remaining uses)
+person.extra[9]	= Path – Aftane
+person.extra[10]	= Quest – Rusty Key
+	values
+		1		= Found the string
+		3		= trying the radio puzzle
+		5		= correct radio puzzle
+		6		= picked up the magnet
+		7		= set in a range of places to trigger Madison delivering the prize (needs a value of 5 or 6 to happen)
+		8		= Madison drops the magnet
+		9		= Tied String to Magnet
+		10		= ignored delivery
+		900	= failed radio puzzle
+		999	= Used Key to open cellar wine rack
+		1000	= Given it to Sir Ronald
+person.extra[11]	= spent experience so far
+person.extra[12]	= State – Bank Account Balance + 1 (0 if you have no account yet, otherwise balance + 1)
+person.extra[13]	= time of last shower
+person.extra[14]	= last person to shower with
+
+nMana			= Your current Mana
+nMoney		= how much money you have
+
+nFromPlace	= "Place" holder for Taxi/Teleport
+Place			= The location in which the player is right now
+
+sGender		= player is "male" or "female"
+sAvatarFolder 	= folder for avatar images the player
+
+
+----------------------------------------------
+Your Mother, Alexandra, Alex for short
+person "Mom"
+
+Introduction
+Mum is always glad to see you even now after a long day of work at the local television studio.
+The way she tells her friends about how well your sister Tracy and you have turned out is quite embarrassing.
+Even so she is a pretty good mum to hang around with.
+
+Personality Notes
+- no modesty around her family
+- friendly, but she is always in charge
+- bi-sexual
+
+----------------------------------------------
+person.other Conversation options
+person.extra[0] Arousal options
+	-1		= no more!
+	 0 	= not
+	 otherwise an increasing value
+
+person.flags
+	1		= set when arousal increases, to trigger an event
+	2		= ready for post Jesse scene
+	3		= post Jesse scene done
+	4		= post lover charm for Tracy
+	5		= post lover charm for Tracy done
+	6		= mom agreed to be guarantor for credit card
+	7		= tried to charm her and decided not to
+	8		= can ask about Sarah
+	9		= package delivery
+	10		= Introduction
+	11		= sent SMS after spending the night elsewhere
+	12		= post shot event
+	13		= visited at the office
+	14		= now working standard day/night
+	15		= sexy breakfast
+	16		=  ''       ''   done today
+	17		= asked about visiting Aunt Brandi
+	18		= asked about family
+	19		= call after leaving for work
+	20		= morning after leaving for work
+	21		= packed the suitcase
+	22		= SMS day 1
+	23		= SMS day 2
+	24		= SMS day 3
+	25		= clear to leave home
+	26		= left home for the office
+	27		= told all news
+	28		= she watched you and Tracy
+	29		= post told her you were lovers
+	30		= told her you and Tracy are lovers
+	31		= talk about Tracy (post charm)
+	32		= rescued mom from Gabby
+	33		= watched Mom's movie
+	34		= delivered suitcase
+	35		= asked tracy about mom gone
+	36		= help I am stuck - Mansion
+	37		= help I am stuck - Church
+	38		= danced at the club
+	39		= Futa reaction
+
+Note: "Glenvale" flag 69 = hydromancy vision for Mom
+
+person.place where she is
+	154 	= her bedroom
+	415 	= office at work
+	998 	= hiding with Gabby
+	999 	= run away with Gabby
+	1000 	= gone from the game
+
+
+person.charmed
+	1		= minimal
+	4		= slave
+
+person.charmedTime
+	- When she leaves for work this is the timer for her indoctrination, set the morning after she leaves for work
+	- during her charm process temporarily set to a counter for the process
+
+person.other
+	- conversation options
+
+
+----------------------------------------------
+Your Sister, Tracy
+person "Tracy"
+
+Introduction
+When you walk in your front door, you see your older sister Tracy is back home.
+She must of just been changing and decided to get some icecream from the kitchen, she loves icecream.
+She is wearing very little as is her habit, she is a bit of a tease at times. She brightly says,
+	"Hi there little brother/sister, want some? Icecream that is.", yes she's a bit of a tease and yes you do want some.
+Tracy is your older sister by two years, and she always wants to be 'on top' and you have often argued with her.
+Despite this you get on well with her, she is helpful, funny and energetic.
+She works a couple of part-time jobs and studies part-time towards a business degree at college.
+Recently she has not been going to her jobs or studying, you think she has started a new relationship and is spending a lot of time with them, but she is keeping it secret from Mom and you.
+
+Personality Notes
+- a tease, like her mother, no modesty around family, and uses it to tease you
+- prefers to be in charge, like her mother
+- loves icecream
+- friend of Leanne
+
+----------------------------------------------
+person.place Current location
+	0		- out
+	1		- Home
+	3		- Library			// Impossible currently!!
+	122	- her bedroom
+	176	- Robbin's House
+
+person.other
+	3 to 8 		- she is in the Laundry
+	49 or less 	- charmed by Davy
+	50				- freed from Davy (NOT USED ANYMORE)
+
+person.charmed Charmed
+	1		- charmed (sisterly or by Davy)
+	2		- lover
+
+person.flags
+	1		= set for breakfast today (arbitrarily here, applies to entire family)
+	2		= initial text after she is freed from Davy
+	3		= ready to send SMS1
+	4		= ready to send SMS2
+	5		= ready to send SMS3
+	6		= tracy bad end event happened
+	7		= first aid event happened
+	8		= post shot event
+	9		= followup event of bad-end event
+	10		= told of the arrival of Miku
+	11		= Gabby Question post Mom and Gabby Servant first visit
+	12		= danced at the club
+	13		= watched dance at club at home
+	14		= Futa reaction
+	20-24	= sleep 1-4
+
+
+----------------------------------------------
+Kylie, Cousin
+person "Kylie"
+
+Introduction
+Over on the volleyball court you a game has just finished and one of the players is a familiar looking girl, and for a moment you stop to admire her cute figure. You cannot quite place her, what class you have met her in, maybe she is a new student here? Then you remember, whoops, she is Kylie a younger cousin of yours! Her family recently moved to Glenvale but they has been estranged from your family for many years, some argument with your Mom many years ago. You know Mom visited a while ago so they have probably sorted that out. At the time you were too busy researching some occult works trying to locate references to the Book to go visit with Mom and Tracy.
+If you had realised Cousin Kylie had grown up to be so cute, you would of definitely visited! You step over making a small wave of the hand and she calls out,
+"Hi there, you're my cousin Bob aren't you? Nice to see you again after so many years! Do you play?", she says gesturing at the net.
+Well you would certainly like to play, but maybe not the way she meant!
+
+Personality Notes
+- sporty girl
+
+----------------------------------------------
+person.charmed
+	1		- charmed
+
+person.other - unused currently
+
+person.place
+	144	- sports fields
+
+person.flags
+	1		- introduction
+	2		- got the stone after charming her
+	3		- sent SMS 1
+	4		- sent SMS 2
+	5		- trigger for SMS 2
+	6		- called today
+	7		- 'why not your place
+	8		- SMS 3
+
+
+----------------------------------------------
+Aunt Brandi
+person "Brandi"
+
+Introduction
+- Mom's sister
+
+Personality Notes
+-
+
+----------------------------------------------
+
+person.place
+	443	- home on Cherise Rd (no 12)
+
+person.flags
+	1		- sighting 1
+	2		- sighting 2
+
+
+*******************************************************************************
+***** Family: Adams
+*******************************************************************************
+----------------------------------------------
+Tess Adams
+person "Tess Adams"
+
+Introduction
+Mrs. Tess Adams turns to you. Everyone knows that Mrs. Adams got her job at the library because her husband has a high position in the local council. She is often seen flitting about the otherwise silent libary pushing a trolley of books or resorting the shelves into alphabetical order.
+Ever since the young couple settled into Glendale Mrs. Adams has been the talk of the town. Her outgoing, sweet nature is only surpassed by her awkwardness. It is impossible for anyone who goes to the library to avoid meeting (or bumping into) the charming young lady.
+
+Personality Notes
+- sweet and loving,
+- a cute klutz
+- enjoys dressing-up and has a large wardrobe
+- expert in magical cyphers and codes. No actual magic skills
+- friends with Monique and Victoria
+
+----------------------------------------------
+person.place Current location
+	0		- Library Office (28 or 62)
+	46		- Your Bedroom
+	106	- John's office
+	124	- Hotel
+	230	- Her house
+	194	- Shops
+
+person.charmed
+	1		- charmed
+
+person.other
+	events while Tess Adams is Charmed
+	Dresses
+	27		- cheerleader dress
+	28		- nun dress
+	30		- normal dress (bedroom mask style)
+
+person.flags	Tess Adams conversation options
+	1		- can I help you
+	2		- do you know about magic
+	3		- found gold stone
+	4		- first seen nightie
+	5		- ever met her in your bedroom
+	6		- sent to your bedroom again
+	7		- Mom/Tess conversation happened
+	8		- has returned to library
+	9		- seen her outside the library
+	10		- learned Pass
+	11		- asked about swimming problem
+	12		- swimming topless
+	13		- tried to have her leave and John is uncharmed
+
+	Only use flags 33+ for cases after Tess leaves the library for your home
+	33		- Gold Worm puzzle - Missing Letter/Number
+	34		- Gold Worm puzzle - number pattern
+
+person.extra	- before she leaves the library for your home ONLY, otherwise flags 33+
+	timer until her research is completed
+
+----------------------------------------------
+John Adams
+person "John Adams"
+
+Introduction
+none, descibed in relation to Tess as
+"her husband has a high position in the local council"
+and
+"my husband is a surveyor for the town council."
+
+Personality Notes
+- my husband likes to collect things that have some association with the old covens
+
+----------------------------------------------
+person.place Current location
+	230	- Home
+	194	- shopping center alley
+	344	- outside New Age Shop
+	345	- inside the New Age Shop
+	1000	- out
+
+
+person.charmed Charmed
+	1		- basic charm, no one-on-one sex
+	2		- more lover, so one-on-one sex permitted
+
+person.other Conversation
+	0-8	- talk about ring and Tess
+	9		- post blackmail question
+	20		- charmed (to disable other prompts)
+
+person.flags
+	1		- gave ring
+	2		- Introduction
+	3		- found stone in his office
+	4		- transformed - Brandy
+	5		- name Joan
+	6		- transformed - Megan
+	7		- Tess Took the ring
+	8		- blackmailed
+	9		- distracted
+	10		- SMS 320
+	11		- picked up ring
+
+Note: from Jessica
+perJessica.flag
+	Switches
+		2	- know she has charmed John Adams (well that someone has)
+
+
+*******************************************************************************
+***** Family: Bartel
+*******************************************************************************
+----------------------------------------------
+Carol (Ellie's mother)
+person "Carol"
+
+Introduction
+You approach the house and again you cannot help but admire the fairly new and large house, It is a little bit of a contrast to some of the older homes in the area. You notice an expensive yellow sports car in the driveway.</p><p>You knock on the door, a little unclear on how you are going to approach Ellie but sure you can wing something. The door opens and you see a tall gorgeous blonde woman smiling at you. She speaks to you with a slight accent that you cannot quite place,
+"Hello there I'm Carol Bartel, nice day! What is it you want? If you are for my wife Sally, she is away doing a business trip."
+She has not invited you into the house yet so you are standing on the front door-step. As you consider your reply your eyes are almost unconsciously drawn to her large and you would guess natural breasts. You quickly look back up, and you see her smile, she must be very used to people admiring her.
+
+Personality Notes
+- from slavic country originally, speaks with a slight accent
+- a lesbian, married to Sally Bartel
+- not employed (a bit of a trophy-wife)
+- flitaceous, likes 'naughty' banter
+- secretly having an affair with Kristin
+- good relationship with her daughter
+
+----------------------------------------------
+person.charmed Charmed
+
+person.flags conversation/flags
+	flags
+		1		= met for the first time
+		2		= umm..selling magazine subscriptions
+		3		= oh..from Bank
+		4		= Question 1
+		5		= Question 2
+		6		= Question 3
+		7		= Question 4
+		8		= Question 5
+		9		= Question 6
+		10		= Question 7
+		11		= Question 8
+		12		= phoned about a swim
+		13		= SMS 1
+
+----------------------------------------------
+Ellie (Bank Teller)
+person "Ellie"
+
+Introduction
+nothing, she is the bank clerk
+
+Personality Notes
+- strictly heterosexual
+- likes heavy metal/hard rock music, can quote lyrics at times
+- once was close to Kristin her neighbour and boss, now strained as she knows of Kristin's affair with her mother
+- non-violent, cannot be changed via magic, Davy had tried to tell her to kill you, she refused
+- has a mild temper, will erupt in annoyed words at times.
+
+----------------------------------------------
+person.charmed Charmed
+	flag
+		2		- lover charm
+		4		- slave charm
+
+person.flags Conversation
+	flags
+		1		= hello
+		2		= 'from bank'
+		3		= SMS 1 for Trio Meeting
+		4		= ask to see Carol
+		5		= initial introduction
+		6		= trio event done (and flag 5 for Mayor)
+		7		= SMS 2
+		8		= meeting after charming Kristin
+		9		= SMS about Emily (114)
+
+person.place
+		225	= Bank
+		421	= Park
+		422	= Home Lounge
+		423	= Home Pool
+		93		= Robbins House
+		1000	= out and about
+
+
+*******************************************************************************
+***** Family: Granger
+*******************************************************************************
+----------------------------------------------
+Kate Granger
+person "Kate"
+
+Introduction
+Everyone says that Kate is the school nerd. She joined Glenvale High two years ago and, for a while, every guy tried to hit on her.
+Some rumors got around that she was available, and that jerk Davy Robbins claimed to have to have gotten
+into her pants. That was before you knew her better and you cannot see how that could be true. Davy has always seemed to be a bit of a timid letch to you, then again he always got on well with Mr Beasley at school, as they say 'like is drawn to like'
+Despite the rumours and what others think, she is okay if you speak to her the right way, a little aggressive, more likely to slap than yell. You have become friends with her, though you would like it to be more.
+
+Personality Notes
+- Aggressive, more likely to hit you than yell. Vengance is always carried out
+- quick to judge and holds a grudge
+(Hmm, why does the player like her?)
+- Physical, likes martial arts
+- Intellectial 'the school nerd'
+- has a somewhat colourful sexual past before she moved to Glenvale, appears to have tried to put that aside once she moved here
+
+----------------------------------------------
+person.place Current location
+	1		- Home (either 139 or 108)
+	139.5	- Home packing
+
+	3		- Library
+	47		- Park entrance
+	63		- Park pathway
+	124	- Hotel bar
+	216	- Park Bridge
+	184	- Hotel, room 101
+	421	- Park Pond (same event as 2)
+	1000	- Out and about
+	9999	- left town
+
+person.charmed
+	2		- lover
+	4		- slave
+
+person.other Kate Granger conversation/event progression
+	4		- answereed study puzzle wrong
+	5		- answereed study puzzle rignt = ??after chatting in her room
+	50		- ordered to kill you
+	60		- was about to kill you, and you freed her and then left or otherwise left her
+	100	- post Davy defeated
+	900	- killed you!
+	999	- end of her path (also on hold, charmed by Davy now)
+
+person.flags - Switches
+	1		- chatted
+	2		- complimented her figure
+	3		- comforted her
+	4		- pissed her off (does not matter where...)
+	5		- ogled her breasts
+	6		- first visit to her room
+	7		- found album 1
+	8		- at end of album 1
+	9		- found album 2
+	10		- bet/kiss
+	11		- won bet
+	12		- could not trust once
+	13		- wait! protect
+	14		- wait! love you, embraced her
+	15		- she has the necklace!
+	16		- asked 'at home'
+	17		- stopped her to plan
+	18		- ungrateful!
+	19		- cleared 1
+	20		- cleared 2
+	21		- cleared!
+	22		- lover
+	23		- ally
+	24		- uncertain about you
+	25		- introduction
+	26		- SMS 240
+	27		- asked for the necklace back
+	28		- one off hypnotise for Ally path
+	29		- Kate is home (uncertain)
+	31		- ever freed her from Davy
+
+	33		- original puzzle
+	34		- triangle puzzle 1
+	35		- triangle puzzle 2
+	36		- asked about holiday photo
+	37		- SMS 255
+	38		- SMS 256
+	39		- SMS 257
+	40		- met at home (and after vase)
+	41		- met at pond/park
+	42		- pool 1/2 flag
+
+----------------------------------------------
+Mrs Marie Granger
+person "Mrs Granger"
+
+Introduction
+Smiling, Kate\'s mother greets you and asks you into the house. Looking around you can see Mrs. Granger is alone and you curse silently to yourself. Not wanting to appear rude you wait until you are in the front room.
+You once heard Kate mention that her mother works as an archeologist, and you think she said her mother has a \'top\' position but only works part-time due to budget issues at her...university? Well that certainly explains where Kate got her brains from, and looking at Mrs. Granger now, at lot of her beauty as well!
+
+Personality Notes
+- flirtaceous, a bit of an exhibitionist/a tease
+- has a jealous streak (when she is charmed and you ask after Kate she is jealous)
+- skilled archeologist, works part-time
+
+----------------------------------------------
+person.place
+	1		- Museum
+
+	34		- Wild Ranges
+	177	- Home
+	275.5	- Hospital ICU
+	261	- jail cell
+	278	- Hospital Ward 1 West
+
+person.other	Mrs Granger charmed
+	4	- can be sent to look for the Gem
+	5	- looking for Dragon Gem
+	50	- ordered to attack guard while charmed and shot
+
+person.extra[1] Conversation options for Mrs Granger (un-charmed)
+	0		- never met
+
+person.flags
+	1		- been or is at the hospital
+	2		- second question answered correct
+	3		- under arrest for theft
+	4		- distracted Gina
+	5		- Meeting with Officer Khan outside the ICU
+	6		- first visit after being charmed (minimal charm only)
+	7		- Celebrate?
+	8		- introduction
+	9		- asked 'is kate home' and she is not
+	10		- frisky 1 done (only effects male)
+	11		- asked about glasses
+	12		- asked Kate to join her
+	13		- and Kate agreed
+	14		- SMS 2
+	15		- SMS 3
+	16		- asked about Kate (undecided after Davy's defeat)
+	17		- mentioned the Wild Ranges and cults
+	19		- ask abou vampires
+	20		- met lilith
+	Party Puzzle
+	33	- original party
+	34	- 'panty' puzzle
+
+person.charmed Mrs Granger flags
+	flag
+		1		- minimal charm
+		2		- lover charm
+		3		- slut charm
+		4		- slave charm
+
+
+*******************************************************************************
+***** Family: Robbins
+*******************************************************************************
+----------------------------------------------
+Davy Robbins
+person "Davy"
+
+Introduction
+no specific one, from Kate
+Davy has always seemed to be a bit of a timid letch to you, then again he always got on well with Mr Beasley at school, as they say 'like is drawn to like'
+from Tina
+"He has been obsessing over the warlock Kurndorf as of late. He was reading up a lot on the legendary book of spells the warlock was supposed to have, but he seemed to give up on that for now. He was researching the warlock himself, his life and death. One time he mentioned something called <b>Hellgate</b> and also a witch named <b>Jessica</b>. I have seen him meeting with his teacher Mr. Beasley often at the library I think they were working on this stuff together."
+"All of this was aside from his usual obsession, our neighbour Kate Granger. Silly, he has no chance with her, she is athletic, smart and forthright, everything Davy is not!"
+
+Personality Notes
+- timid, avoids direct confrontations, will run away, and can cower in fear
+- more confident in writing or by proxy. On the murder path directly sends Anita to kill you
+- obsessed by magic and Kate
+- incest is a-ok
+
+----------------------------------------------
+person.place Current location
+	9		- In front of school
+	124	- Hotel Bar
+	184	- Hotel Room 101
+	1000	- out and about
+	9999	- Fled
+
+person.flags = State - Davy stuff flags
+	flags
+		1	= Taxi Driver Charmed
+		2	= Kate clobbered you after Davy's defeat
+		3	= Bambi domimation next visit (one off scene)
+		4	= Train Davy
+		5	= knocked out
+		6	= escaped (unknown)
+		7	= escaped (known)
+		8	= restrained
+		9	= you tried to follow him at the school
+		10	= you were hurt following him
+		11	= gender swapped
+		12	= Found the additional wallpaper images when learning Teleport
+		13	= has mana (new day)
+		14	= drain 1
+		15	= drain 2
+		16	= drain 3
+
+		33 = Laptop password 1
+		34 = Laptop password 2
+
+person.extra[1]	= Quest – Blue Bottle
+	20 = used it on Davy
+	21	= used it on Davy (after speaking to Jessica)
+person.extra[2]	= Path – Hellgate
+
+
+person.other
+	6		= ready to be move to the Hotel with Kate
+	7		= met at the Hotel (to reveal the Hotel Cellar)
+	8		= used silver ring on Davy
+	10		= at hotel
+
+person.charmedTime
+	Before he is defeated - set when you are locked into the bedroom with Tina (so we can use it as a countdown to a bad end)
+
+
+----------------------------------------------
+Geraldine Robbins (Mother)
+person "Mrs Robbins"
+
+Introduction
+On entering the front door you meet with the family's mother. Not being used to visitors, Mrs Robbins frowns at you. Her speech is polite but terse as she asks you what you want.
+
+Personality Notes
+- Dominant, and controlling (she locks away Tina on her own initiative)
+- is rude to people she does not know or like
+- Dresses-up as a dominatrix for role-playing with her husband
+- Davy is her favourite
+
+----------------------------------------------
+per.charmed
+	1	- charmed by you or Davy
+
+per.flags
+	1	- asked about davy
+	2	- first visit comments
+	3	- ask about Davy + Mr Beasley
+	4	- SMS 300
+	5	- SMS 301
+	
+
+----------------------------------------------
+Tina Robbins
+person "Tina"
+
+Introduction
+nothing specific
+Mrs. Robbins has thrown you into her bedroom and locked the door. You check the window to find it barred. There is no way out and Davy is sure to come home soon to subject you to his power.
+and
+"Oh Bob, something strange is happening to my family. As soon as I arrived home from college Mom grabbed me and locked me in here. She even took most of my clothing saying I would not be needing them."
+
+
+Personality Notes
+- Davy's older sister, a classmate of Tracy, but not really friends
+- friend of Sarah Gates, more from high school than recently
+- Studying at college, living at home
+- a witch, skilled but of limited power. Can drain mana from others
+- does not get on well with Davy, makes some spitefull comments about him when discussing Kate
+"Silly, he has no chance with her, she is athletic, smart and forthright, everything Davy is not!"
+
+----------------------------------------------
+
+per.flags
+	1	- met her
+	2	- asked about the sign
+	3	- asked about the mark on the sign at the access road
+	4	- initial sighting
+	5	- embraced, unconscious after
+	6	- first meeting after she has awoken
+	7	- been swimming as a vampyre
+	8	- seen Davy in the cellar
+	9	- seen the transformed Davy in the cellar
+	10	- visited Davy as a vampyre
+	11	- pleasured someone
+	12	- drained Davy
+	13	- asked what she is doing in the bedroom
+	14	- asked how to get out
+	15	- asked about Davy
+	
+per.other
+	indicates the state of her power, if you know she can drain mana etc
+
+
+*******************************************************************************
+***** Family: Ross
+*******************************************************************************
+NOTE: Lady Elizabeth Ross once owned the Mansion
+--------------------------------------------
+Officer Adele Ross
+Person object "AdeleRoss"
+
+Introduction
+none
+"You have only once met Adele in passing, she never seems to be home when you visit, you guess she lives somewhere else."
+
+Personality Notes
+
+
+--------------------------------------------
+person.charmed
+	1		- temporary charm
+	4		- final slave charm
+
+person.flags
+	1		- on duty at crime scene (probably set and never checked)
+	2		- off duty
+	3		- asked about Amy
+	4		- she stopped you entering the mansion
+	5		- fist meeting at home
+	6		- first charm attempt
+	7		- free again *
+	8		- first meeting after free again
+	9		- tried charming her after being freed
+	10		- Catherne has found out
+	11		- SMS from Catherine about hypno
+	12		- asked about Amy (several versions)
+	13		- met in the Wild Ranges
+
+person.place
+	0		- indeterminate (crime scene on murder path)
+	16		- guarding entrance to estate
+	436	- Ross house
+	900	- on duty
+	901	- special case for event immediately before the trance
+	999	- out for the night
+
+
+--------------------------------------------
+Amy Ross
+person "AmyRoss"
+
+Introduction (at the Gym)
+You see to one side your friend Amy from school. She works here part-time running simple classes or working at the desk. She does not get very much money but gets a free membership and unrestricted use of the gym for her family.
+While you have never dated Amy, she is strictly a friend, you can still admire the view as she works out!
+
+Personality Notes
+- a friend of yours (not as close as Leanne)
+- sexually active, hides it from you and her family
+- (maybe) gives erotic services at the gym
+
+--------------------------------------------
+person.flag
+	1		- has been freed from Mr Beasley
+	2		- met
+	3		- SMS 20
+	4		- SMS 31
+	5		- SMS 32
+	6		- SMS 33
+	7		- SMS 34
+	8		- reassured
+	9		- Girlfriend
+	10		- hair colour selected
+	11		- first meeting at home
+	12		- tried threesome (uncharmed girlfriend)
+	13		- dated today
+	
+person.charmed
+	2		- Girlfriend charm
+	4		- Slave
+
+person.extra[0]	- last time visited
+
+per.other - time since Charlie was convinded
+
+
+--------------------------------------------
+Catherine Ross
+person "Catherine"
+
+Introduction
+You see Catherine walking down the hall, and she waves at you. She is the older sister of your friend Amy and she works at the school part-time in the administration offices. She also doubles as school-nurse when needed and she is available.
+You have got to know her quite well, she is a friendly and outgoing person, and you have become friends with her since you met her visiting Amy\'s home. Catherine is, well, sexually liberated, enjoying a <i>wide</i> range of lovers and experiences, and enjoys chatting about them with Amy or yourself. You do know she keeps this side of her life separate from work, she strictly takes no students or teachers as lovers. She has not approached yourself, not wanting to damage her relationship with her sister Amy, but has commented that you are cute!
+You say 'Hi' to her, but she only has a moment to chat. She mentions something about an appointment with 'that slime Beasley', and then going to have a coffee with her other sister Adele. You have only once met Adele in passing, she never seems to be home when you visit, you guess she lives somewhere else.
+
+Personality Notes
+- very active sexually
+- every one is a pervert in her eyes, or is sexually motivated
+- does not mix sex and the workplace, or you!
+- afraid of spiders
+- dislikes Mr Beasley, but currently undergoing hypnosis by him, she thinks to treat her fear of spiders, actually to sluttify her and make her open to his lust (note she was already a slut!)
+
+--------------------------------------------
+person.place
+	0 		- not available
+	436	- Ross House
+	999	- out for the night
+	
+person.flag
+	1		- has been freed from Mr Beasley
+	2		- met
+	3
+	4		- phone call after rescue + SMS 2
+	5		- met at the construction site
+	6		- 'waiting' at the construction site
+	7		- SMS 3 sent
+	8		- SMS 4 sent
+	9		- busy event at school
+	10		- call the morning after you meeting at the construction site
+	11		- asked about Amy
+	12		- charmed her at the construction site
+	13		- book for not charming her
+	14		- SMS 1
+	15		- 'shoot' event
+
+
+*******************************************************************************
+***** Family: Kelly
+*******************************************************************************
+----------------------------------------------
+Debra Kelly
+person "DebraKelly"
+
+Introduction
+You see a cute girl walking in the park.  She looks a little uncertain as you approach but she smiles with some confidence.
+"Hi," you say. "I'm Bob.  I haven't seen you around town before and thought that you might be looking for a friend."
+"Um, hello, Bob," she says.  "I'm Debra. My sister and I moved into Kollam Street last week. Glenvale is such a nice place, especially the old buildings and this park."
+
+Personality Notes
+- likes dogs
+- investigating her family history
+- friendly
+
+----------------------------------------------
+person.place
+		87		- Park Walkway
+		1000	- Looking for a stone
+		112	- Kelly House
+
+person.charmed
+		1		- Puppy
+
+person.flags Conversation options
+		1		- introduced to her
+		2		- been walkies
+		3		- told to look for a stone
+		4		- looking for a stone
+		5		- found a stone
+		6		- suggested to go home
+		7		- chatted
+		8		- name Debbie
+		9		- been skate-boarding/walk in park
+
+
+----------------------------------------------
+Janet Kelly
+person "JanetKelly"
+
+Introduction
+Janet invites you to sit on one of the boxes as she hands you a glass of tea, evidently taking a break from the unpacking.
+
+Personality Notes
+- friendly, but does not like to talk about her family history
+- the 'reliable' sister, stayed to unpack
+- not particularly intellectual, looks are preferable to brains, but not dumb
+
+----------------------------------------------
+person.charmed
+		1		- minimal charm
+		2		- lover charm
+		3		- bimbo charm
+		4		- slave charm
+		5		- meow!
+
+person.flags
+		1		- introduced (automatic on first entry)
+		2		- asked after Debra
+		3		- have you lived here before?
+		4		- ask about ancestors
+		5		- ordered to tell about her ancestors
+		6		- tell more about the warlock
+		7		- sent a SMS
+		8		- threesome unlock event
+		9		- evemt today (shower etc)
+
+person.place Current location
+		112	- Kelly House
+		112	- Kelly House
+
+person.extra
+		0	- id of last SMS sent
+		1	- last time visited
+
+
+*******************************************************************************
+Hannah/Camryn
+******************************************************************************
+Hannah (Mechanic)
+person "Hannah"
+
+Introduction
+nothing aside from her presence
+
+Personality Notes
+- to the point, straigh-forward
+
+----------------------------------------------
+person.charmed
+	1	- charmed
+
+person.place
+	279	- default Mechanics Shop
+
+person.flags
+	1	- introduction
+	2	- SMS 1
+	3	- SMS 2
+	4	- SMS 3
+	5	- SMS from Monique
+	6	- ready to call about Camryn
+	7	- called about Camryn
+	8	- met at Camryn's apartment
+	9	- asked question 'she never mentioned her sister'
+	10	- asked question 'Ask about the boyfriend'
+	11	- asked question 'So, What exactly happened?'
+	12	- asked alternatives 'ask what you can do to help' or 'Ask what you'll get out of helping her'
+	13	- answered 'ask what you'll get
+	14	- told her of the possession spell
+	15	- cruel answer
+	16	- SMS after Camryn's return
+	17	- can give rides
+	18	- Futa reaction
+
+
+----------------------------------------------
+Camryn (Sister)
+person "Camryn"
+
+Introduction
+
+Personality Notes
+-
+
+----------------------------------------------
+person.charmed
+		2		- lover charm
+		4		- slave charm
+
+person.place
+	460	- at the hideout
+	1000	- failed to rescue her
+
+person.other
+	in hideout - counter of actions (until bad end)
+
+person.charmedTime - in the hideout, secondary counter for the garage
+
+person.flags
+	1	- start of the possession
+	2	- 'Check your surroundings'
+	3	- 'Check yourself'
+	4	- 'Focus on Camryn's thoughts'
+	5	- listen more
+	6	- wait for the door to open
+	7	- seduce 1
+	8	- found the safe room
+	9	- check the table
+	10	- tried to enter the safe room
+	11	- checked the laptop
+	12	- checked the papers
+	13	- checked the vial
+	14	- checked the beer
+	15 - thug 2 unconscious
+	16	- know the laptop password
+	17 - thug 2 called out for beer
+	18	- knock on door
+	19 - spiked the beer
+	20	- know the address
+	21	- Camryn in the safe room
+	22	- talked to Officer Batton
+	23	- rescue complete
+	24	- asked Officer Batton for details
+	25	- ask how is she
+	26	- chose 'ride him'
+	27	- asked 'how did she end up with these Guys anyway?'
+	28	- asked about Hannah
+	29	- ended the possession
+
+
+*******************************************************************************
+Bambi and Mia
+******************************************************************************
+----------------------------------------------
+Bambi (Hotel Bar)
+person "Bambi"
+
+Introduction
+nothing specific aside from a simple description
+
+Personality Notes
+- a very, very experienced prostitute, with kinky tastes
+- has a taste for bdsm (with her dominant)
+- once charmed, very respectful and loyal (uses My Lord/My Lady to refer to the player)
+- manipulative, and a bit of a con-artist
+
+----------------------------------------------
+person.charmed
+	switches
+		1		- minimal charm
+		4		- slave charm
+
+person.flags
+		1		- after charm conversation 1 allowed
+		2		- after charm conversation 1 done
+		3		- trigger to make call for Davy at hotel
+		4		- seen the photo of her + mother
+		5		- (Conspiracy Path) asked about wine
+		6		- told you about Megan
+		7		- guard duty at night
+		8		- given stone
+		9		- told you about Davy missing/moved
+		10	- has ever set flag 3 (to prevent resending)
+		11	- sent SMS about her mother
+		12	- been to the Gym today
+		13	- SMS that the time has passed
+		14	- SMS first night guarding
+		15	- (before charming Mia) ask how is Mia today
+		16	- BE Transformation
+		17		- asked about Jessica (Ally path)
+		18		- Futa reaction
+
+		33		- gave $100
+		34		- gave $50
+
+person.other - conversation
+
+person.place Where Bambi is
+	124	= Hotel Bar
+	184	= Room 101
+
+
+----------------------------------------------
+Mia - Bambi's mother
+person object "Mia"
+
+Introduction
+
+Personality Notes
+- Wild Child, free-spirited
+- never stays put, works as a dancer, model, waitress, bar. Not a prostitute like Bambi
+
+----------------------------------------------
+
+person.place
+		0		- not in town
+		458	- in town and assisting at the bar (her apartment)
+
+person.flags
+		1		- spilt drink
+		2		- asked about her
+		3		- SMS 1
+		4		- SMS 2
+		5		- (Conspiracy Path) asked about wine
+		6		- asked Bambi about her once
+		7		- workng the bar at night
+
+person.charmedTime
+	- set when first met for the 1 week countdown
+
+person.other
+		1		- after tried the spilt drink trick or once charmed
+
+----------------------------------------------
+
+*******************************************************************************
+Tanika Family
+*******************************************************************************
+----------------------------------------------
+Mrs. Susan Tanika (Teacher)
+person "MrsTanika"
+
+Introduction
+Mrs. Tanika, your math teacher, you do not really like her, she is a rather strict and standoff-ish teacher who seldom smiles. She has a body to die for but she is either uncaring or looks down on her students. Your friend Catherine once suggested she might get off on humiliating people, and be a closet dominatrix. Then again Catherine always assumes people are kinky, maybe she is right.
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	switches
+		1		- minimal charm
+		2		- lover
+		3 		- Fuck-toy
+		4		- slave charm
+
+person.flags
+		1		- introduced
+		2		- surprised you at home/meeting with mom/tracy
+		3		- know where her home is
+		4		- (lover) do not visit at night
+
+person.place
+	0		= Not in the game yet
+	242	= Teacher's Lounge
+	46		= Your Bedroom
+
+----------------------------------------------
+Anthony Tanika (Husband)
+person "MrTanika"
+
+Introduction
+Husband of your teacher Mrs Tanika....
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	switches
+		1		- minimal charm
+		2		- lover
+		4		- slave charm
+
+person.flags
+		1		- introduced
+
+person.place
+	0		= Not in the game yet
+	242	= Teacher's Lounge
+	46		= Your Bedroom
+
+----------------------------------------------
+
+*******************************************************************************
+*** Others
+*******************************************************************************
+----------------------------------------------
+Abby
+person "Abby"
+
+Introduction (basic only)
+You visit the information desk and see the cute young woman attending the desk ready to answer your questions about the aquarium.</p><p>Before you ask anything she brightly gives you advice about new exhibits and almost will not let you get a word in amongst all her recommendations.
+
+Personality Notes
+- a chatterbox, will talk and talk and talk
+- a complete exhibitionist, stays completely naked after being charmed
+- once charmed, believes the player is a reincarnation of a hero from legend who defeated a dragon (statue in Hidden Room)
+- immune to all effects of the Dragon Gem, can freely handle it
+
+----------------------------------------------
+person.charmed
+	switches (when on)
+		1		- minimal
+		4		- slave
+
+person.flags
+		1		- introduction
+		2		- SMS 260
+		3		- SMS 261
+		4		- SMS 262
+		7		- previously asked about the dragon gem
+		8		- asked about the dragon gem
+		9		- picked up the dragon gem
+
+person.place
+	394		- Aquarium Information desk
+
+person.extra[0] - Dragon Gem Quest
+
+
+----------------------------------------------
+Alison (Restaurant Waitress on Weekends)
+person "Alison"
+
+Introduction
+only basic description
+
+Personality Notes
+- little of note in game currently, charmed basically as a lover
+
+----------------------------------------------
+peron.charmed
+	switches
+		1		- charmed
+
+person.flags
+	1			- introduced (and know her name)
+	2			- had a break this morning/afternoon
+	3			- sent SMS 1
+	4			- Threesome with Catherine
+	5			- sent SMS 2
+	6			- sent SMS 3
+	7			- met Lthe vampyre Lilith
+	8			-played with Lilith tonight
+
+person.place
+	0			- not met yet, until you meet Jenny and then visit the Gym on a weekday
+	435		- temporarily in the Gym
+	196		- restaurant, but only daytime on Saturdays and Sundays after the initial meeting
+	464		- her apartment
+
+----------------------------------------------
+Angela (Mayor's Secretary)
+person "Angela"
+
+Introduction
+When you enter the building you see before you a dark haired beauty. By the way she\'s dressed you immediately recognise her as the secretary around here. The white blouse, the skirt, silk stockings and the high heels give that away.
+You see a nametag on her desk; <b>Angela</b>
+	Her stiff and serious appearance tells you that she\'s the type of girl who lives for her work. However you feel aroused just by looking at her, Angela\'s soft and slim body makes you fantasize about having her as your own secretary.
+A servant who would be always well informed about you and your needs and ready to do any kind of chores you\'d give to her and would know you personally.
+While you daydream about her, she doesn\'t seem to notice you, she\'s clearly into her work and just types something casually on the computer.
+
+Personality Notes
+- serious and hard-working
+- sexually repressed, "In fact my boyfriend says that I am a cold fish."
+- by default sees you as her lover, post charm. Can become a slave instead based on dialogue choices
+
+----------------------------------------------
+person.charmed Charmed
+	switches
+		1		- minimal charm
+		2		- lover charm
+		4		- slave charm
+
+person.flags
+		1		- first meeting
+		2		- post charm conversation 1 can happen
+		3		- post charm conversation 1 done
+		4		- post charm conversation 2 done
+		5		- post charm conversation 2 can happen
+		6		- SMS 1
+		7		- asked about John Adams Office
+		8		- can ask to look for magical places
+		9		- found magical places
+		10		- SMS 2 for Trio meeting
+		11		- BE Transform
+		12		- Emily SMS
+
+person.other
+		1		- question
+		2		- question
+		3		- question
+
+person.place
+		95		- Town Hall reception
+
+
+----------------------------------------------
+Anita
+person "Anita"
+
+Introduction
+noting specific aside from simple physical description
+
+Personality Notes
+- a member of a para-miliatary group or even a terrorist group. Was passing though town before charmed by Davy or yourself
+- once charmed a completely loyal soldier under Davy or your command
+- NO morals, will kill if asked, or do basically anything at all
+
+
+----------------------------------------------
+person.charmed
+	3	- slut
+	4	- slave
+person.sCharmedBy - "You" or "Davy"
+
+person.other Path
+	MurderPath
+	100 to 899 = alive and in lair
+
+person.place
+	Murder Path
+	0		= outside somewhere
+	252	= Lair
+	999 = on the way to the cellar
+	9999	= fled lair/shop
+
+	Charmed Path
+	46		= Your bedroom
+	195	= General store
+
+person.flags
+	Charmed Path
+	1		= first seen at the store (shop only)
+	2		= "Hello" (shop only)
+	3		= gone! (shop only)
+	4		= asked after Davy and killing Sir Ronald
+	5		= asked her name (shop only after 2)
+	6		= met her after she is sent to take care of Davy
+	7		= have once visited her in the lair for sex
+	8		= asked to take care of Davy
+	9		= meeting with Mom/Tracy
+	10		= second sighting at the shop
+	11		= return to shop
+
+
+--------------------------------------------
+Charlie
+person "Charlie"
+
+Introduction
+
+Personality Notes
+
+
+----------------------------------------------
+person.charmed
+	1		= friends
+	2		= sfriends with benefits
+
+person.place
+	0		= not available yet
+	435	=	Gym
+	434	= Office in Gym
+
+person.flags
+	1		= initially a male
+	2		= met
+	3		= asked Adele about them/Amy
+	4		= visited today
+	5		= asked about Amy 2
+	6		= asked Officer Batton (fenale)
+	7		= asked Bambi
+	8		= asked Nr Bealsey
+	9		= break - hypno 1
+	10		= break - public 1
+	11		= break - discupline 1
+	12		= break - jail, new day
+	12		= SMS 39
+	
+person.other - number of times 'convinced'
+
+--------------------------------------------
+Diane White (District Attorney)
+person "Diane White"
+
+Introduction
+Ms White as it turns out to be, is living in a bigger city not far away from here, but this town is still under her supervision that means every  homicide case in the area comes directly to her. She seems suspicious of you and you have strange feeling that won’t stand a chance againts her in court. If, she wants to take the case to court of course …but that depends on her. Maybe you can alter her attitude towards you and show her a new world…the world of servitude. She must also understand that the vase belongs to you. She will see that you did not commit any crime and you could always use a good lawyer. Who knows what mess will you get into next time?
+She is eyeballing you warily, but after the formal introduction she asks: "Can we talk, Bob? Because we’ve got a lot to discuss."
+
+Personality Notes
+- described as an 'ice queen' and smug
+- domineering
+
+--------------------------------------------
+person.charmed Charmed
+	1	-	 charmed
+
+person.other	State
+	1-9	= conversation options
+	10		= arrested you
+	15		= exhonerated of crime (from charming her or trial)
+	49		= not in cell (after being in it)
+	50		= in jail cell
+	30		= now at the police station (only once it is impossible to be arrested)
+	31		= met at police station (only once it is impossible to be arrested)
+	900	= dead
+
+person.extra
+	0	-	Flags 32-64 (standard)
+	1	-	Path – Trial - only used during the trial
+					 - Misaing Document - questions during various encounters
+	2	- Quest – Arrested
+		10		- arrested!
+		50		- trial over
+
+person.place
+	0		- not around yet
+	168	- at the police station
+	261	- visiting the cell (not charmed)
+
+person.flags
+	1		- allow post charm event 1
+	2		- post charm event 1 done
+	3-10	- SMS's sent
+	15	- Missing Document complete!
+	16	- start of missing document (SMS sent)
+	17	- initial meeting on the missing document
+	18	- met Gina for Missing Document
+	19	- finished with Gina
+	20	- talked to Madison
+	21	- asked Diane after Madison
+	22	- SMS sent to Victoria
+	23	-
+	24-29 - companion questions
+	30	- document quest done
+	31	- morning after document quest
+	32	- SMS after quest
+
+
+----------------------------------------------
+Didi - Pool girl
+person object "Didi"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.place
+	999	- home
+	269	- Hotel Pool
+
+person.flags
+	1		- met
+	2		- charmed yellow
+	3		- charmed string
+	4		- charmed turquuiose
+	5		- charmed multi
+	6		- charmed Jaguar
+	7		- charmed Blue
+	10		- final SMS
+
+
+----------------------------------------------
+Donna (Hotel Pool)
+person "Donna"
+
+Introduction
+nothing aside from a physical introduction
+
+Personality Notes
+- seems a little innocent/in-experienced. Refers to being friends etc
+
+----------------------------------------------
+person.charmed
+	1		- charmed
+
+person.flags
+	1		- Introduced
+	2		- first meeting
+	3		- Restaurant SMS 1
+	4		- Restaurant SMS 2
+	5		- Restaurant SMS 3
+	6		- Restaurant Event
+
+person.place
+	0		- not at pool (not around yet)
+	269	- at the pool
+
+Charm Events: Hotel Pool(269) - 270, 271, 272
+
+
+----------------------------------------------
+Elian (Demon)
+person "Elian"
+
+Introduction
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	not charmable
+
+person.flags
+	1		- 'come to me' dream
+	2		- came to her
+	3		- talked in the club
+	4		- SMS 1
+	5		- SMS 2
+	6		- poledance scene
+	7		- pool scene
+	8		- SMS 3
+	9		- talked to Jade
+	10		- tried to charm her or cast clairvoyance
+	11		- confronted that she is Elian
+	12		- talked this night
+	13		- tried to shoot her
+	14		- discuss challenges
+	15		- challenge 1
+	16		- challenge 2
+	17		- challenge 3
+	18		- challenge 4	
+	20		- SMS 4
+	21		- SMS 5
+	22		- SMS 6
+	23		- annoint Necklace
+	24		- annoint bracelet
+	25		- bath scene
+	26		- ask Jade about contract
+
+
+
+person.place
+	500	- her lair
+	
+person.other
+	timer for assorted events
+	
+	
+----------------------------------------------
+Emily (Town Hall HR)
+person "Emily"
+
+Introduction
+nothing aside from basic meeting
+
+Personality Notes
+- Emily is the new member of the HR team. She does seem a bit flirty, perhaps that is why your Mayor chose her for the role. The fiery red head is sitting in her office in a white shirt that barely contains her ample chest, her glasses resting seductively.
+
+----------------------------------------------
+person.charmed
+	4		- charmed
+
+person.flags
+	1		- first meeting
+	2		- SMS 1
+	3		- SMS 2
+
+person.place
+	0		- not around yet
+	99		- her office at the Town Hall
+
+person.other
+	BEFORE CHARMED - time since the 'Trio' meeting
+						OR
+						- time since you left her and DID NOT charm her
+
+						
+----------------------------------------------
+Gabby (Gabriel) Halliway
+person "Gabby"
+
+Introduction
+to be added
+
+Personality Notes
+- desires your mother
+- acts the ideal assistant, but desires to dominate your mother
+- jealous of anyone else in your mothers life, including you
+
+----------------------------------------------
+NOTE: Lord Geoff Halliway, Lord Percy Halliway were previous owners of the Mansion
+
+person.charmed (You)
+	1		- Mom's Lover/Servant
+	2		- Love/Hate
+	4		- Masochist
+
+person.charmed (Lilith)
+	8		- Ghoul
+
+person.flags
+	1		- asked about book of hypnosis
+	2		- initial meeting at the TV station
+	3		- hypno scene 1 done
+	4		- hypno scene 2 done
+	5		- asked Victoria about the necklace
+	6		- look around office
+	7		- checked dayplanner
+	8		- asked and got imformation
+	9		- asked Beasley
+	10		- ready for the conference
+	11		- deal offered
+	12		- Sarah agree to deal
+	13		- conference over
+	14		- asked where Mom is
+	15		- can ask Tina for help
+	16		- met her at home with Mom
+	17		- after charm Q1
+	18		- after charm Q2
+	19		- after charm Q3
+	20		- first visit home after charmed
+	21		- mingled at the conference with Sarah
+	22		- mingled at the conference with Mayor Thomas
+	23		- day of the conference
+	24		- watched first hypno fully
+	25		- watched second hypno fully
+	26		- accidentally called her "Mistress Halliway"
+	
+----------------------------------------------
+Ghost (Nurse Keana)
+person "Ghost"
+
+Introduction
+
+Personality Notes
+
+----------------------------------------------
+person.place
+	343		= old basement
+	408		= attic bedroom
+	-1			= following you
+
+person.flags
+	flags
+		1		= (generic ghost) seen a ghost today, reset each dawn
+		2		= seen her via clairvoyance
+		3		= asked Nurse Sasandr about seeing her
+		3		= asked Nurse Sasandr about seeing her
+		4		= asked but not charmed
+		5		= asked and answered
+		6		= gone to basement
+		7		= done daily visit
+		8		= nurse scene
+		9		= uncomfortable scene
+		10		= asked Ms. Jones
+		11		= asked Sir Ronald/Sarah
+		12		= asked Mother Superior
+		13		= asked Sister Desiree
+		14		=		and morning passed
+		15		= freed to follow you by Sister Desiree
+		16		= default location is the attic
+		17		= crystal ring reaction
+		18		= have used the ring on her
+		19		= danced tonight
+		20		= pool vision tonight
+
+person.extra
+		0		= (generic ghost) encounter type
+
+
+Place "Hospital"
+	flags
+		2		= seen her picture
+
+
+----------------------------------------------
+Gina James
+person "Gina"
+
+Note:
+related to a famous local artist
+
+Introduction
+When visiting at home
+Gina, the Museum Guard, calls this place home.  She seems to have made a pretty good life for herself here. <br> Of course it helps that she doesn\'t have any family or children to tie her down.
+During the charm process
+"Yes," she says authoritatively. "Strong.  Independent.  Yes, I vowed as a young woman to never let myself be taken advantage of when people thought that just because I was a woman, that made me weak."
+
+Personality Notes
+- strong, determined, holds a grudge
+- sexually active, casually 'dates'
+
+----------------------------------------------
+person.place Current location
+	0		- Museum
+	302	- Home
+
+person.charmed Charmed
+
+person.other
+	1		- met her, normally when you tried to take the vase
+
+person.flags
+	1		- seen her around the museum (first daytime visit)
+	2		- know her name
+
+person.extra
+	0		- times possessed at the museum
+	1		- times possessed at home
+
+arPlaces[1] Place: Gina's House
+	Flags
+		1	- known
+		3	- Shower scene done
+		4	- Cell phone message (set means read)
+		5	- has thrown you out of her house
+		6	- a stone is in the drawer
+		7	- bathroom draw jammed (false is jammed, true is openable)
+		9	- visitor passed/complete
+
+person.Items
+	43	- Heirloom Necklace
+
+
+----------------------------------------------
+Esmeralda, the Gypsy
+person "Gypsy"
+
+Introduction
+The Fortune teller sits right in front of you as you look around her shop. Her mysterious appearance and her husky voice scares you a little. She seems to know you, you see it in her eyes that she is wondering about you. The place is all musky and you cannot really see much because of the dim light, but you recognise some of the items on the boards. Crystals, stones, magic powders, candles, crucifixes and all kind of occult things you could only think of! You even see a crytal ball, the one you saw in old horror movies where the witch used these balls to tell the future.
+You cannot really decide if this woman is a hoax or a real fortune teller. However, a strong feeling comes over you; <i>don’t mess with her!</i>
+The fortune teller starts to introduce herself to you.
+"Welcome, Bob. I've been waiting for you!", her voice makes you tremble a bit. It seems otherwordly and distant.
+"My name is Esmeralda and I'm going to help you find the answers you seek.", she continues, not lifting her heavy gaze from you.
+"Don’t worry, I won’t hurt you, at least for now…I see you already have a question. Don't hesitate!", Esmeralda smiles vigorously.
+You collect your thoughts and put away your waning fears and approach her.
+
+Personality Notes
+- mysterious (possibly an act)
+- descendent of Jessica
+- knowledgable of the occult
+
+----------------------------------------------
+person.flags
+		1-4- ask about ritual ingredients
+		7	- a rustic stome is available for sale
+		8	- asked about the catholic relic
+		9	- asked about how she knows you
+		10	- introduction
+
+person.place
+	345	- New Age Shop
+
+----------------------------------------------
+Jade (Demonologist Mistress)
+person "Jade"
+
+Introduction
+
+
+Personality Notes
+- dominant
+
+----------------------------------------------
+peron.charmed
+	switches
+		4		- slave charm
+
+person.flags
+		1		= met
+		2		= tried to cast charm on her
+		3		= cannot visit
+		4		= defired her request
+		5		= paid the fee
+		6		= ask about demons
+		7		= ask about Elian
+		8		= ask about freeing Leanne
+		9		= gave stone
+		10		= asked to send people dancing
+		11		= seen her performing
+		
+person.other
+	person scheduled to dance tonight
+	- name of dancer
+	- 'done' for a dance is over
+	
+person.extra[0]
+	accumulated earnings from dancers
+
+
+----------------------------------------------
+Jenny (Restaurant Waitress)
+person "Jenny"
+
+Introduction
+only basic description
+
+Personality Notes
+- little of note in game currently, charmed basically as a lover
+
+----------------------------------------------
+peron.charmed
+	switches
+		1		- minimal charm
+		4		- slave charm
+
+person.other
+	values
+		1		= introduced
+		2		= recommended the bratwurst
+		3		= bought bratwurst
+		4		= transformed futa
+
+person.flags
+		2		= event 1
+		3		= Alison started working on weekends
+		4		= had sex with her as a futa
+
+----------------------------------------------
+Jesse
+person "Jesse"
+
+Introduction
+One of the patrons, a girl with a bored expression and an innocent look about her, watches you enter. She looks kind of interested as you walk past.
+
+You approach the girl, as you do she gestures to you to step out of the noisy bar and you leave with her to the nearby beer-garden.
+"Hi there Bob," says the young girl. "My name is Jesse. This place is so boring. I wish that there was something exciting to do around here."
+Now if this was your friend Catherine speaking you would of taken what she said as a proposition, but Jesse seems so innocent, it was more like an invitation to play a game. You ask her why she is here if it is so boring,
+"I'm here in town with my father, while he is here on business. He thought I would enjoy it here while he is off in his meetings, there are a lot of stories about witches and ghosts around here and I love those spooky stories!"
+You look at her innocent smile, and you suspect she may get more than 'spooked' here in town.
+
+
+Personality Notes
+- adventurous, but easily bored
+- a bit shallow, wants to be entertained by others
+- a complete innocent, emotionally and physically
+
+
+----------------------------------------------
+per.place Current location
+	(As Demon)
+	0		= at the Seance
+	2		= park
+	6		= your house
+	8		= hotel room 113 (as demon)
+	10 	= out and about
+	500	= trapped in the Relic
+	900	= left town after you gave her the unannointed relic
+	0		= hotel bar
+	161	= hotel cellar
+	193	= Jessica's Prison
+
+person.flags Conversation switches
+	Note: 1-8 are reused in different ways depending on park,lounge,room113
+	1	- question at park "What did you do to her"
+		- Room113 - distracted
+	2	- question at park "How did you enthrall her"
+	3	- Room113 - ask about thrall in park
+	4	- Offer a stone
+	5	- told to enjoy herself
+	6	- TG ok
+	7  - swimming toggle
+	8
+	10	- Introduced (as girl)
+	11	- Annointed the relic
+	12	- Bound Demon in the relic
+	13	- trigger for phone call after charming Desiree
+	14	- phone call about TG done
+
+person.extra
+	0	- Demon Quest
+	1	- Demon Path – Legion
+		= 50 end of meeting at the park
+		= 500 defeated - scene after view
+		= 501 defeated
+		= 501-505 - Jesse ill in room 113
+		= 900 deamon left town after you gave her the unannointed relic
+
+----------------------------------------------
+Seriphina (Thrall 1)
+person "Seraphina" or "Thrall1"
+
+person.flag
+	Switches
+		1		- met at the Stones in the Wild Ranges
+		2		- seen at Avernus club
+		3		- chains watch
+		4		- pussy cat watch
+		5		- freed
+
+----------------------------------------------
+Lucy (Thrall 2)
+person "Lucy" or "Thrall2"
+
+person.flags
+	1	- will offer to give you a stone
+	2	- spoke to Bambi
+	3	- asked about herself
+
+
+----------------------------------------------
+Jessica the Witch
+person object "Jessica"
+
+Introduction (only basic)
+A firey red haired woman is standing there and introduces herself as Jessica.
+"Are you the one?" she asks. "Only the one with the power to transport himself through my barriers is the true master of Glenvale. How may my powers serve ' + Yourheshe() + ' who is almighty?"
+
+Personality Notes
+somewhat mixed, probably confused from her long imprisonment
+- can be ruthless, will kill to achieve her goals, but it is a last resort
+- responds quickly to affection
+- primary goal, freedom and to never be imprisoned again (thus being bound in the cellar is not popular with her)
+
+----------------------------------------------
+person.place
+	193	- Cellar prison
+	161	- Cellar
+	183	- Rppm 49 at Hotel
+	345	- New Age Store
+	1000	- Out and about
+
+person.flag
+	Switches
+		1	- asked to help
+		2	- know she has charmed John Adams (well that someone has)
+		3	- given mana
+		4	- first meeting room 49
+		5	- asked her name
+		6	- left her prison
+		7	- lonely event
+		8	- image cycle
+		9	- query after some time imprisoned
+		10	- room 49 - check circle
+		11	- room 49 - ask what she is doing
+		12	- room 49 - thaumaturgy
+		13	- room 49 - masturbate
+		14	- room 49 - what looking for
+		15	- room 49 - wait for spell
+		16	- guided her
+		17	- did not guide her
+		18	- follower - townhall event
+		19	- Follower - into women
+		20	- Follower - time period
+		21	- Follower - school
+		22	- Her Room - first visit
+		23	- Meeting Esmeralda - another town
+		24	- Meeting Esmeralda - question
+		25	- Meeting Esmeralda - question
+		26	- Meeting Esmeralda - question
+		27	- Meeting Esmeralda - done
+		28	- Vampyre meeting
+		29	- Her Room - ask how she is settling in
+		30	- Her Room - 
+		31	- Her Room - 
+		32	- Her Room -
+		33	- History 1
+		34 - History 2
+		35 - History 2
+		36	- Bimbo SMS from tracy
+		37	- opened package
+		38	- exanined the package
+		39	- futa reaction
+		
+		
+person.other - Seance path
+	1	- can visit her prison
+   ...more values
+
+person.extra
+	0	- ally path
+		values
+			//slave
+			-1	- your slave in the cellar - Prisoner
+			-2	- your slave in the cellar - Witch-Toy
+			//ally
+			1	- bound in cellar
+			2	- checked her bindings in the cellar
+			3	- freed!
+
+	1	- rival path
+		values
+			1	- escaped
+	2	- ally  - time last had sex with PC
+		- slave - time enslaved
+		- rival - time released
+
+
+----------------------------------------------
+Kristin (Bank Manager)
+person "Kristin"
+
+Introduction
+A rather beautiful woman sits before you, busily typing and clicking away at her computer, presumably checking accounts.  After a short time, she finishes whatever task held her attention and turns in your direction.
+
+Personality Notes
+- business-like
+- bi-sexual, maybe lesbian
+- having an affair with Carol
+
+----------------------------------------------
+person.charmed
+	flags
+		1 	= charmed
+		4	= slave level
+
+
+person.flags
+		1	= introduced
+		2	= asked about Bartel's
+		3	= ask to get in to Carol's home
+		4	= tried to get in
+		5	= ask about Ellie
+		6	= SMS 310
+		7	= morning ready for SMS 310
+		8	= allow close bank option
+		9 	= bank closed
+		10 = bank re-opened
+		11	= stone found at home
+		12	= asked Mom about	credit card
+		13	= loan meeting done
+		14	= phone call for Kristin/Carol visit
+		15	= can send phone call for Kristin/Carol visit
+		16 = Kristin visited Carol today
+		17 = watched invisibly today
+
+person.place
+		362	= Bank
+		430	= Home
+		420	= Bartel house
+
+person.other
+		last time she played with Carol
+		
+----------------------------------------------
+Kurndorf
+person "Kurndorf"
+
+Introduction
+none really aside from the historical stories
+
+Personality Notes
+- evil, manipulative, will do anything at all to achive his goal of living again
+
+----------------------------------------------
+person.place = only used for the Ghost Guide
+	values
+		1		= wild ranges
+		2		= park pathway
+		3		= park entrance
+		4		= School
+		5		= Kollam St
+		6		= in the alley
+		16		= infront of the mansion
+		141	= Sacred Clearing
+		1000	= out and about (ready to be summoned)
+
+person.flags
+	Quest – Kurndorf Ritual – Items	= BitField
+	= 1,2,3,8	- Skull for ritual
+	= 11-20		- other items
+	21				- sighted
+	22				- paid for invisibility
+	23				- refused tp pay
+
+person.other = 'charge' via Transform soell
+
+person.extra
+	0	= Quest – Kurndorf's Ritual
+			200	= Ritual complete and Kurndorf bound in the crystal
+	1	= Quest –  Kurndorf's Ghost Summoned
+			1		= seance is started and Kurndorf has appeared - option 'introcude yourself'
+			5		= introduced - option 'ask why he was helping'
+			10		= either proected by Aftane or GAME OVER - optiob (if still alive) - 'explain about the Aftane
+			15		= demon summoned - option - 'Uhh what'
+			20		= Jessica attached by denon - options 'watch powelessly' or 'order him to stop'
+			21		= 
+			50 	= seance is complete
+	2	= Path – Seance
+				= 16	- Jessica told you it is needed
+				= 17	- Janet told to check the library
+				= 18	- Monique gave the article
+				= 19	- got the article
+				= 20	- Jesse in the cellar
+				= 50	- started
+				= 70	- demon released
+				= 100 - complete
+	3	= Quest - Find the Crypt
+
+
+----------------------------------------------
+Lauren (Sarah's Maid)
+person "Lauren"
+
+Introduction
+Just before you leave Sir Ronald' you notice Sarah has left a few minutes before you.
+As you enter the entry way you are met by a young woman dressed as a maid, looking a little nervous and clearly waiting for you
+"My Lady has asked me to tell you that she is very tired from her journey here and is retiring upstairs to take a bath. She told me to make it clear that you are <i>not</i> to go upstairs to the third door on the right."</p><p>She shakes her head and continues softly "Please don\'t"</p><p>With that she leaves and walks up the stair case, you cannot avoid noticing how short her skirt is and her complete lack of panties.
+
+Personality Notes
+- nervous
+- obeys Sarah as her maid completely, reluctant for more sexual duties
+- blackmailed by Sarah (unspecified)
+Conspiracy Path
+- as above, but may be a bound spirit/creature?
+
+----------------------------------------------
+person.flags
+	flags
+		1		= Gave Sarah the wine and Lauren summoned (murder path)
+		2		= left when she asked
+		3		= followed her to the guest room (murder path)
+		4		= initially spoke in the guest room (murder path)
+		5,6,7 = spoke on landing
+		8		= told about house locked at night
+		9		= offered to 'assist'
+		10		= (Conspiracy Path) meeting at the hotel started
+		11		= (Conspiracy Path) accepted offer at hotel
+		12		= (Conspiracy Path) commented on Lilith
+		13		= vampyre tried to feed on her
+
+person.extra
+		0		= times attempted to charm
+
+
+--------------------------------------------
+Leanne
+person object "Leanne"
+
+Introduction
+Leanne is you good friend and you originally met her when she became good friends with your sister Tracy. While they are still friends they are no longer as close as they were.
+Leanne's parents owned and ran this shop, but unfortunately they died in an accident last year. It was over this tragedy that you became close friends with her and became aware of her religious beliefs, something she had never discussed before. Leanne has been running the store since then, and after a rough start she is doing well. At times she complains about wanting something different, but she also enjoys dealing with people and generally running the business.
+You consider her to be your best friend now, and you have never had any romantic thoughts towards her. She has been in a number of non-serious relationships, occasionally double dating with Tracy.
+
+Personality Notes
+- outgoing, bubbly
+- religious, regularly visits the church. Friends with the Mother Superior
+- still grieving for her parents
+- you are very close, never been lovers, strictly friends
+- friends with Tracy
+
+--------------------------------------------
+Person other
+	0-19	- present at shop
+	2		- took money
+	5		- minded the shop for her
+	20		- left the shop after you mind it
+	21		- ..and met louise
+	25		- left shop after demon freed
+	26		- ..and met louise
+
+Person Flags
+	1		- introduced
+	2		- met at graveyard
+	3		- met again, as thrall
+	4		- talked to her at the graveyard
+	5		- took the thrall (at graveyard)
+	6		- took the thrall (as Mother Superior)
+	7		- spoke to Sir Ronald about her thrallness
+	8		- spoke to Ms Jones about her thrallness
+	9		- spoke to Gypsy (or Jessica if free) about her thrallness
+	10	- spoke to Victoria on her thrallness
+	11	- spoke to Mr Beasley on her thrallness
+	12	- took the thrall (as yourself in Mother Superiors room)
+	13	- first visit after freeing her
+	14	- SMS 1 (Tracy part)
+	15	- ready for SMS 1 (Leanne part)
+	16	- ask her
+	17	- refused to discuss the book etc
+	18	- promised not to charm her
+	19	- asked queston for 5+ case
+	20	- 'morning' flag for her fleeing town
+	21	- you have seen she has left
+	22	- Q1 at shop
+	23	- Q2 at shop
+	24	- Q3 at shop
+	25	- Q4 at shop
+	26 - Qiestion: 'tell her about the Demon, but nothing about the book or the seance'
+	..
+	31		- tried to charm her
+
+Person.place
+	195	- General Store
+	325	- Graveyard
+	9999	- fled town
+
+
+----------------------------------------------
+Louise
+person object "Louise"
+
+Introduction (basic)
+The store is almost deserted this time of day and Leanne has stepped out.  The only employee present is Louise, who smiles companionably at you as she mops the floor.
+
+Personality Notes
+- friendly, trusting
+- in a failing relationship
+
+----------------------------------------------
+Person Flags
+	1		- introduced
+	2		- met after minding store
+	3		- met after Leanne left (and demon loose)
+	4		- transformed BE
+	5		- transformed Futa
+	6		- found a stone at the General Shop
+	7		- invited to swim
+	8		- day after 7 set
+	9		- sent SMS 1
+	10		- met Nina
+
+person.place
+	0		- not at the shop
+	195	- at the General Store
+
+
+----------------------------------------------
+Madison
+person object "Madison"
+
+Introduction (basic)
+Opening the door you are greeted by a lively young girl
+
+Personality Notes
+- playful, mischevious
+
+----------------------------------------------
+per.charmed
+	1	charmed
+
+Person Flags
+	1		stereo delivery
+	2		stereo delivery
+	3		stereo delivery
+	4		saw damaged stereo, can now complain about it at the TV station
+	5		stereo delivery
+	6		visited at work
+	7		SMS 1 can be sent
+	8		SMS 1 sent
+	9		asked about Zoey (ever)
+	10		asked about Zoey (this visit)
+	11		can send SMS 2
+	12		sent SMS 2 today
+	13		BE Transformation
+	14		SMS 1
+	15		SMS 2
+	16		Met at the apartment
+	17		Met this time period (uncharmed)
+Radio Puzzle
+	33		original animal puzzle
+	34		math symbol
+	35		fish
+	
+per.other
+	dress at home 0,1,2
+
+
+----------------------------------------------
+Mayor Beatrice Thomas
+person "Mayor Thomas"
+
+Introduction
+differs for murder/charmed path
+Murder
+You have heard a lot about Beatrice Thomas, the mayor of the town, but this is the first time you have seen her in flesh, but you know your mother has regularly worked out at the gym with her. She used to be a lawyer before she ran for the mayors office. Some people say she cheated on her campaign by using a large sum of money from an unknown helperMayor. She used the money to repair the hospital and improve the health-care, but also to reinforce herself as the perfect candidate for the job.
+She’s only been mayor for 3 months, but the townsfolk already gossip about her being rude and cold to her workers and neglecting her work.
+As you stand in her well decorated office, you feel that something is not right. She looks gorgeous, but her grim face tells you that she doesn’t like visitors. Especially the likes of you.
+Charmed
+You know that Beatrice Thomas, the current mayor was a lawyer before she made it into politics. She used to visit the local gym where your Mom worked out too so you've seen her sometimes. She always looked so organized and well dressed, but she did not speak much and had that distant attitude.
+She has been the mayor for 3 months now, but her reputation as a lady with iron will had not changed much. She gets and does what she wants, and nobody would dare talk back to her.
+As you stand in her well decorated office, her cool eyes watching you, you feel little around her. She lazily juggling a pencil between her hands and doesn’t seem to be happy that you disturbed her work.
+
+Personality Notes
+- nothing specific otherwise
+
+----------------------------------------------
+person.place Current location
+	0		- not yet in the game
+	110	- City Hall Office
+	176	- Robbin's Residence
+	1000	- Out
+
+peron.charmed
+	1		- charmed
+
+person.other Meeting
+	1		- requested an appointment
+	2		- visited home after the request
+	3		- visited the wild ranges after the above home visit and ready for appointment
+
+person.flags
+	1		- first meeting
+	2		- post charm conversation 1
+	3		- allow post charm conversation 1
+	4		- event 2 with Kristin
+	5		- trio event done
+	6		- (murder path) asked about the Book this visit (reset every time you leave)
+	7		- law event
+
+----------------------------------------------
+Megan (ICU Nurse)
+person object "NurseMegan"
+
+Introduction
+You enter the public area of the ICU and you see a nurse there, she seems to be testing a piece of medical equipment. You ask her about Mrs. Granger,
+"Mrs Granger is in a very dangerous condition. I'm sorry, but you are going to have to leave unless you are a relative of hers."
+There is no way you can claim to be a relative, after all you called her Mrs. Granger. While thinking you look at the nurse appreciately, you have to admire the choice of uniforms in this hospital. As you do the nurse looks at you knowingly,
+"There is a lot more to being a nurse than being some boy's sexual fantasy, please leave and we will do our best for your friend"
+
+
+Personality Notes
+- tired of people/patients flirting with her
+- lesbian (as her model seems to only do lesbian sets)
+
+----------------------------------------------
+person.place
+	275	- ICU
+
+person.flags
+	1		- met
+	2		- know her name
+
+
+----------------------------------------------
+Melissa (Cleaner at the Aquarium)
+person object "Melissa"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.place
+	0		- not at the aquarium
+	361,369,379	- Aquarium
+
+person.flags
+	1		- met
+	2		- know her name
+	3		- worked today
+
+peron.charmed
+	2		- lover
+	4		- slave
+
+
+----------------------------------------------
+Miku
+person object "Miku"
+
+Introduction
+
+
+Personality Notes
+-
+
+----------------------------------------------
+person.place
+	394	- Aquarium
+	408	- Your Attic
+	999	- out and about
+	1000	- left game
+
+person.flags
+	1		- met
+	2		- greeted with Abby
+	3		- resisted
+	4		- asked Abby what happened
+	5		- asked Abby about Miku's powers
+	6		- first meeting in the Attic
+	7		- asked Victoria
+	8		- ask about how she acts
+	9		- asked Esmeralda
+	10		- asked Mr Beasley
+	11		- asked Davy
+	12		- asked Monique
+	13		- asked Tina
+	14		- asked Ms. Jones
+	15		- asked Sir Ronald Gates OR Sarah
+	16		- asked about her family
+	17		- SMS 1
+	18		- SMS 2
+	19		- SMS 3
+	20		- ask what it is like being a cat
+	21		- meeting with Mom
+	22		- asked about Keana her roommate
+	23		- night encounter
+	24		- was present in the attic when Jesse visited
+	25		- event discussing Jesse's visit
+	26		- event meeting the vampyre
+	27		- miku/vamp question 1
+	28		- miku/vamp question 2
+	29		- first visit after Keana is moved in (and flag 30 set)
+	30		- set moring after Keana moves in
+	31		- second visit after Keana is moved in (and flag 30 NOT set)
+	32		- ask about the pair
+	33		- first lunch encounter
+	34		- had lunch today
+	35		- SMS today
+	36		- Futa reaction
+
+person.other
+	at home: initial questions
+	-1		- finished initial questions and researching
+	-2		- found out about Gates for information
+	-3		- done the research, ready to talk to Sir Ronald/Sarah
+	-4		- talking to Sir Ronald/Sarah
+	-10	- talked to them
+	-11	- reviewed the research with Miku
+	-20	- can be transformed
+	-100	- transformed
+
+person.charmedTime - set when she moves in/is finally charmed
+
+----------------------------------------------
+Miss Logan
+person "Miss Logan"
+
+Introduction
+As you step into the Restaurant you come across your anatomy teacher, a teacher who most of her classes drool over her anatomy. Miss. Logan dining alone, absorbed into her thoughts and doesn’t recognise you at first.
+She is casually dressed as usual, you would guess she is here get some food. One time your friend Catherine mentioned Miss Logan is fond of bratwurst, though as usual she implied that your teacher was fond of the long sausage more as a cock substitute!
+Miss Logan is a very casual teacher with an easy air of friendship who is happy to spend one-on-one time with her students. You have never heard any rumours about her, so strictly professional one-on-one time.
+It’s fortunate she has not noticed you because You are trying to avoid her, because there is a project you must complete, but you have been more interested in your pursuit of the Kurndorf  Book.
+You try to sneak past her as silently as you can without disturbing her, but all of a sudden she looks up and points a finger at you then motions you to come to her. You despondently walk towards her, knowing that there is a high chance that she will be angry with you over the undone project.
+Now, what was it? Reproductive or Neurology topics that was assigned to you?
+
+Personality Notes
+- friendly with a casual attitude to students
+
+----------------------------------------------
+person.charmed
+	1		- minimal (neurology)
+	2		- breeder
+	4		- charmed (basic)
+
+person.flags
+	1		- bred
+	2		- met her at the pool
+	3		- searched Miss Logans desktop
+	4		- SMS 1 (43)
+	5		- know password to computer
+	6		- seen the computer
+	7		- Futa reaction
+	8		- reproductive assignment
+	9		- neurology assignment
+	10		- worked on assignment today, or had a public encounter
+	11		- checked her tablet
+	12		- SMS 2 (44)
+	13		- SMS 3 (45)
+	14		- met Lilith
+	15		- studied with Lilith tonight
+	16		- public - car
+	
+person.other
+	1		- Just Met
+	5		- picked an assignment
+	6,7	- Conversation options before being charmed
+	// Neurology
+	10		- study 1
+	11		- study 2
+	12		- study 3
+	13		- study 4
+
+person.place
+	70		- first meeting in the hallway
+or	196	- first meeting in the restaurant
+	269	- pool
+	234	- back to anatomy classroom
+	440	- home
+	9999	- elsewhere/out of game
+
+
+----------------------------------------------
+Monique
+person "Monique"
+
+Introduction
+You approach the nervous looking staff member, you have seen her a number of times before but you do not think you have spoken to her before. You introduce yourself and looks calmer, her nervousness has passed. She replies,
+"Hello, my name is Monique," says the girl. "How may I help you?"
+You apologise if you startled her, and she smiles,
+"Sorry I was just reading a little on this town's history and Tess had recently told me some creepy stories about magic and I was a little...umm...on edge. She likes to tease me about things I am a little afraid of, things I am interested in but..well..anxious about."
+She seems like a nice lady, but her always anxious and nervous behaviour can be irritating after a while, but her vast knowledge and interest in the history of the town makes her a pivotal person in your journey, you know that for sure.
+
+Personality Notes
+- of a nervous disposition, probably a bit repressed sexually
+- smart
+- friends with Tess Adams
+
+----------------------------------------------
+person.charmed
+	1	- minimal charmed
+	4	- full charm
+
+person.place
+	8		- library
+	10		- History Classroom
+	123	- Hotel
+	53		- Hidden room
+	279	- Mechanic's Shop
+
+person.other Monique conversation
+	1		- introduced
+	2		- asked about the book
+	3		- given Beasley's Paper and can ask about Sir Rolands information
+	3.1	- temporary for 2 turns then automatically set to 4
+	4		- asked about Sir Rolands information, can ask to research Jurndorf
+	5		- asked about Kurndorf (not otherwise checked)
+
+person.flags
+	1		- first visit after minimal charm
+	2		- asked for a hint
+	3-15	- hints
+		3	- HINT: Puzzle – One New Door
+		4	- HINT: Puzzle – Letter E
+		5	- HINT: tablet for the crypt
+	16		- post charmed event 1
+	17		- asked about hypnosis book
+	18		- gas pleasured herself
+	19		- been to the Mechanics Shop
+	20		- aske where is Hannah
+	21		- SMS 2
+	22		- SMS 3
+
+	Hotel cellar cupboard puzzle
+	33		-
+	34		-
+	35		-
+
+
+----------------------------------------------
+Mother Superior
+person object "Daria"
+
+Introduction
+nothing aside from simple description
+
+Personality Notes
+- strong willed
+- likes Leanne, maybe a little too much
+
+----------------------------------------------
+person.charmed
+	1	= charmed
+	4	= I'm a witch
+
+person.place
+	382	- her room
+	384	- her room (post possessions)
+
+person.flags
+	1		- took thrall while possessed
+	2		- masturbated while possessing (later possession)
+	3		- exposed while possessing (later possession)
+	4		- sick
+	5		- disciplined Sister Desiree while possessing (later possession)
+	6		- first possession
+	7		- visited her after the second possession
+	8		- tried to charm her in her room
+	9		- warning on trying to enter her room after second possession
+	10		- futa transformation
+	11		- BE transformation
+	12		- spoke after the charm scene
+	13		- futa reaction
+
+person.extra[0] = time left alone (after you teleport Leanne out of there)
+
+
+----------------------------------------------
+Mr Beasley
+person "MrBeasley"
+
+Introduction
+Your least favourite teacher, Mr Beasley. It is not that he is nasty or harsh, you just cannot but help to feel he is a bit slimy, a creep.
+While there is nothing you can pin down, aside from his occasional leers at female students, and you have heard he has been reprimanded by the principal for it. It is probably more that he is so assured that he is superior to everybody, descended from the aristocracy and financially well-off.
+Yet, with all that, he is brilliant, an expert on science and oddly also matters of the occult, especially where it involves the history of Glenvale. As long as you deal with him carefully and tolerate his ways, then he could be a valuable ally.
+
+Personality Notes
+- letcherous, hides it somewhat
+- wants the Book!
+
+----------------------------------------------
+person.charmed
+	1	= charmed
+	2	= lover (ie charmed and sex allowed, mostly for male players to prevent this option)
+
+person.flags
+	1		= shown introduction
+	2		= asked about key
+	3		= Amy and Catherine event has happened
+	4		= desk draw open
+	5		= voice mail deleted (else present)
+	6		= give/no give book question (Charmed Path)
+	7		= knows you have the book
+	8		= decided not to tell him
+	9		= asked about hypnosis
+	10		= Bimbo 1 Transformed
+	11		= Bimbo 2 Transformed
+	12		= Female transforms (Slave)
+	13		= it's a spanking (during Gabby question)
+	14		= picked up his paper (item 1)
+	15		= Futa reaction
+
+person.place Current location
+	11		- His classroom
+	1000	- Out
+
+person.other conversation options
+
+person.extra
+	0		= Path – Beasley Servant		= Disabled
+
+
+-----------------------------------------------
+Ms. Jones
+person "MsJones"
+
+Introduction
+Ms. Jones has an office in one of the older parts of the school, and when you enter the room you see Ms. Jones sitting on her desk. It is strange how often you see Ms. Jones doing something...eccentric. It is not that she is a playful free-spirit, just that she is a little odd. Odd, but very sensual who borderline flirts with her students to get them to pay attention and work harder. Well something is certainly harder for her.
+The other distinct thing about her is her French accent, some would say outrageous and over the top, others cute and sensual. One time your friend Amy mentioned she had gone on a holiday to France with her family, and people there did not speak how Ms. Jones does. Then again there are many regional dialects and accents in France from what you have looked up.
+You wonder how easily you could learn French if she would be devouted to you. She could even give you private lessons and could tutor you. If her over attached and too playful character would not drive you mad of course because she can be a little bit annoying at times. It depends solely on what you want to do with her.
+
+Personality Notes
+- speaks in an affected accent
+- eccentric
+- immortal slave, very experienced
+
+----------------------------------------------
+person.charmed Charmed (by you)
+
+person.flags
+	flags
+		1	= NOT charmed by another
+		2	= introduction in office
+		3	= sent vampyre SMS
+		4	= visited her about it
+		5	= talk about Miss Logan
+		6	= follow up talk about Miss Logan
+		7	= talk about Mrs Tanika
+		8	= follow up talk about Mrs Tanika
+		9	= SMS re Miss Logan
+		10	= SMS re Miss Logan, Miss Logan reply
+		11 = Introduction in Lounge
+		12	= Intro question 1
+		13	= Intro question 2
+		14	= Intro question 3
+		15	= Intro question 4
+		16	= tried to charm her in the teachers lounge
+		17	= know she is charmed by someone else
+		18	= futa reaction
+		19	= changing outfits
+
+person.place
+	145	= Fench Classroom
+
+person.other - post charm chatting, sequential chats
+
+person.extra
+	0		= time of sms/event
+
+
+----------------------------------------------
+Ms Karen Titus
+person "Ms Titus"
+
+Introduction
+Ms. Titus runs the main desk of the library, but you know little more about her, she is very business-like and tolerates no chit-chat.
+Your eyes are always drawn to the most obvious thing about her, her large cleavage, but you know Ms. Titus does not respond well to any sort of flirtation. Still you have daydreamed about her cleavage and what you would do if you got your hands on it.
+
+Personality Notes
+- very experienced sexually, no gender preference, has sex toys hidden at the library for quiet times
+- secretly a submissive
+- business-like with library patrons
+
+----------------------------------------------
+person.place
+	3		- Library Reception
+	62		- Tess Adam's Office
+
+person.charmed - flags
+	1		- standard charm as slave
+
+person.other
+	general questions when uncharmed
+	1		- hello
+	2		- set after asking about the book
+	3		- set after searching for novels
+	4		- 'what book are you reading'
+	10		- Book 'Settlement of Glenvale' stuck pages can be found
+			- ALSO set when she is first charmed
+	11		- found the stuck pages
+
+person.flags
+	1		- ready for post charm event 1
+	2		- post charm event 1 done
+	3		- SMS 1 sent
+	4		- SMS 2 sent
+	5		- SMS 3 sent
+	6		- has told about the early settlers
+	7		- (male player) learned possession from her
+	8		- willing slave
+	9		- event on returning to the Library after following Tess to the Town Hall
+	10		- asked about where Tess is when she went home
+	11		- lingerie at home - (free slave) set red, clear pink (charmed) set red, clear green
+	12		- SMS 4 sent
+	13		- found the 'Carnal Alchemy' book (requires being a Free Slave)
+	14		- has been a willing slave
+	15		- Kristin get together event
+	16		- Titus/Kristin Q1
+	17		- Titus/Kristin Q2
+	18		- Titus/Kristin Q3
+	19		- Titus/Kristin done
+
+
+----------------------------------------------
+Nella (Bank Security Guard)
+person object "Nella"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.place
+	0		- not at the bank
+	225	- on duty at the Bank
+
+person.flags
+	1		- met
+	2		- know her name
+	3		- asked Kristin about her
+	4		- asked Ellie about her
+	5		- asked Victoria about her
+	6		- know she works in the strip club
+	7		- asked after her in the Avernus club
+	8		- danced today
+	9		- asked Victoria about her (day)
+	10		- played with Victoria today
+	11		- play setup for next visit
+	12		- bondage 2 (1 if not set)
+	13		- bondage 3
+	14		- did bondage play with Nella
+	15		- moved in with Victoria, SMS 2
+	
+person.other - the outfit number when dancing in the club
+
+peron.charmed
+	2		- lover
+	4		- slave
+
+
+----------------------------------------------
+Officer, Chief Kerry Batton
+person "Officer Batton"
+
+Introduction
+Officer Batton is the kind of woman who you don’t want to mess with. She’s the head of the police department in this town. That means she knows every legal and illegal activities that happens here. She could be a serious opposition if she learns about your powers  and you have read in a newspaper article that she was a SWAT member before accepting this job; so she would easily kick your butt in a fight.
+However; you can’t get your mind off her. Imagine if the officer in charge of this town would be yours to command. You could use all the manpower, weapons and vehicles of the police force againts your battle with Kurndorf , Davy or anyone else who stands in your way. Committing crimes without punsihments and partying all the time without having to worry about the law is just a bonus.
+As you watch her fit physique in that uniform standing in front of you and thinking about your options makes you horny. Suddenly her gaze meets with yours. She stands up from her chair and comes to you.
+"Hey there! Do you have something to tell me or report?"
+she asks warmly. You nervously hesitate to answer, but her friendly face and words relaxes you a bit.
+"If there’s nothing you want to say or report that’s fine, you can hang around if you want, but please don’t disturb my partners and don’t touch anything!"
+with a gentle smile she pats your shoulder and turns around going back to her office.
+Whoa. You never thought she’s that kind. You realize now; she could be easily persuaded to join your ranks.
+
+Personality Notes
+- friendly and open
+
+----------------------------------------------
+person.place
+	1		- Out investigating Officer Khan's Murder/Shooting
+	168	- Police Station
+
+person.flags
+	1		- met
+	2		- allow post charm event 1
+	3		- post charm event 1 done
+	4		- post charm event 2 done
+	5		- allow post charm event 2
+
+
+----------------------------------------------
+Officer Khan
+person "Officer Khan"
+
+Introduction
+Differs a bit for Murder/Charmed but basically similar
+You recognise Ms Khan is the officer standing in front of you. She used to live next door to your house. Your mother talked to her a lot back in the day and sometimes Ms Khan even visited your house for dinner.
+From these visits you learned that she did not want to be an officer first, she was more interested in becoming a soldier. However, her dominant nature and harsh attitude made her realize that by becoming a police officer she could exercise her power over the people quicker and easier. So, yeah, your first impressions of her were not so good...she’s and uptight and arrogant bitch who’s hunger for power could only be matched by her heavenly body and appearance and it looks like she hasn’t changed a bit.
+She worked her way through the ladder and is now the right hand woman to Police Chief Batton.
+She comes to you and shakes your hand, introducing herself in the process. She doesn’t seem to recognise you. What a surprise!
+
+Personality Notes
+- arrogant, uptight
+
+----------------------------------------------
+person.place Current location
+	(murder path)
+	65			- Crime Scene
+	168		- Police Station
+	213		- hospital
+	999		- Looking for Davy (unknown if alive)
+	1000		- dead
+	(charmed)
+	278		- hospital guard
+	168		- police station
+	435		- the gym
+	999		- elsewhere
+	1000		- on duty somewhere
+
+person.extra[1] Charmed Path
+
+person.other Conversation
+	(all for murder path)
+	1		- asked about the crime scene
+	2		- asked how Sir Ronald was killed
+	3		- said the mayor sent you (and had not)
+	10		- mayor has sent you
+	11		- other officers left
+	12		- charmed her
+
+person.flags
+	1		- met at the hospital/gym (charmed path)
+	2		- met at the crime scene
+
+
+----------------------------------------------
+Officer Becky Smith
+person "Officer Smith"
+
+Introduction
+Officer Becky Smith is the youngest officer in the police department. She's a cadet and just recently finished her studies at the police academy.
+You know her from school, she was a senior year student when you just started your first year. You barely spoke to each other and you don’t think she would recognize you now, but you used to hang out once or twice when there was a big event in the school.
+She was quite sure that she wanted to be an officer of the law back then already. She was really ambitious and was passionately interested in making the world a better, safer place. Maybe that comes from her father who’s a navy veteran.
+It looks like she's the jail guard here. They usually give the most boring jobs to the young cadets just so they can learn the ropes. She looks strict and serious patrolling between the jail cells every ten minutes.
+
+Personality Notes
+- ambitious
+- wants to help
+
+----------------------------------------------
+person.charmed
+	1		- charmed
+
+person.other
+	lots...
+	100	- shot and in police station
+	101	- In hospital and can as her condition
+	102	- asked of her condition
+	103	- cured by the vampyre
+	900	- dead
+
+person.place
+	213	- Hospital Ward
+	261	- Jail cells
+
+person.flags
+	1		= first meeting
+	2		- allow post charm event 1
+	3		- post charm event 1 done
+
+
+----------------------------------------------
+Nina (TV Reception)
+person "Nina"
+
+Introduction
+A lovely young lady is sitting at the reception desk, chatting on the phone.  She doesn\'t look up.
+
+Personality Notes
+- not interested in her job
+
+----------------------------------------------
+person charmed
+	2	- girlfriend
+	4	- slave
+
+person flags
+	1	- introduced
+	2	- initial visit and introduction shown
+	3	- Nina/Zoey threesome
+	4	- SMS 230
+	5	- SMS 231
+	6	- SMS 232
+
+person.place
+	371	- TV Station Reception
+
+
+----------------------------------------------
+Pamela (Church Groundskeeper)
+person "Pamela"
+
+Introduction
+You see what must be the church grounds keeper taking a break inside the shed.  She notices you as you approach and smiles warmly in your direction.
+
+Personality Notes
+- sweet, shy
+
+----------------------------------------------
+person.charmed
+	flags
+		1	- charmed
+
+person.flags
+		1	- introducted
+		2	- asked what she does around here
+		3	- asked about another way in
+		4	- barrow event
+		8	- necklace given
+		9	- asked Monique about necklace
+		10	- asked Victoria about necklace (not know name)
+		11	- asked Victoria about necklace (know name)
+		12	- asked Gypsy about necklace
+		13	- answer 'Yes I have the other part'
+		14	- answer 'No I do not'
+		15 - SMS 151
+		16	- asked about a way back
+		17	- waiting for delivery van today
+
+person.place
+	326	- her home
+
+
+----------------------------------------------
+Sandra (Ward 1 Nurse)
+person "NurseSandra"
+
+Introduction
+basic description only
+
+Personality Notes
+- forthright, a little crude, uses terms like Boss.
+- speaks her mind, does not sugar coat things
+
+----------------------------------------------
+person.other - conversation options
+
+person.place
+	213	-	Ward 1 East
+
+person.flags
+	1		- found out where she is
+	2		- know her name
+
+
+----------------------------------------------
+Sarah Gates
+person "Sarah"
+
+Introduction
+Differs for murder/charmed
+Murder
+You enter the Gates\' Massion to see a elegant young lady, sitting on the floor. You recognise her from her face from the paperSarah. It is Sarah Gates, the richest lady in Glenvale.
+She is obviously distressed by the departing of her uncle Ronald. Drying tears away she looks up to see you. "Who are you?" she asks in a sweet, if wearied voice. "Do you know what happened to Uncle Ronny?"
+
+Personality Notes
+Differs a little from murder/charmed
+Murder - unclear
+
+Charmed
+- everything happens on her terms, and she is in charge
+- likes to tease/dominate/play with Lauren
+- has unspecified blackmail on Lauren
+
+----------------------------------------------
+person.other Conversation options
+	0		= not in game
+	1		= Mom told you she is there now
+	// Murder Path specific
+	2		= told 'I killed him'
+	3		= told 'I saw who killed him'
+	5		= told 'I'm a detective'
+	10		= told either 'Why couldn't I kill him' or 'come to the station with me' (end of uncharmed conversation options)
+	// Common
+	11	= asked to wait for night
+	// Conspiracy Path
+	50		= met Lauren
+	51		= met Sarah
+	// Charmed Path
+	100	= met at the front door
+	101	= Lauren stops you about 'bath'
+	102	= bath 1
+	103	= bath 2
+	104	= bath 3
+	105	= bath 4
+	106	= bath 5
+		// note can stop part way so variable can end as 102-106
+	110	= invited to her room
+	// from here Increases 1 per visit to entry hall from outside mansion EXCEPT at 115, stays until vampire bits done
+	114	= Lauren attends Sarah 1
+	115	= trigger vampire questions
+	117	= Lauren attends Sarah 2
+	120	= Lauren attends Sarah 3
+	122	= Bored, want some wine
+	1000	= Lost interest, no more events
+
+
+person.charmed Charmed
+
+person.flags
+	1		= can teach clairvoyance
+	2		= transfer vampire event started
+	3		= sent SMS 1 (all paths) - Murder - CAN send the SMS
+	4		= sent Conspiracy SMS 2
+	5		= asked for money today
+	6		= (Conspiracy) phone call in cellar
+	7		= introduction
+	8		= transfer vampire event done
+	9		= ever tried to charm her
+	10		= met with Lilith (after you charm Lilith)
+	11		= event today
+	12		= Lilith tried to feed on her
+	13		= Lilith 'fed' today
+
+person.place - where she is
+	1		= intermediate, at the mansion and protected by Adele Ross
+	17		= Gates Mansion entry
+	192	= Her room
+
+
+----------------------------------------------
+Sir Ronald Gates
+person "SirRonald"
+
+Introduction
+Sir Ronald the richest man in Glenvale, looks up to see you enter his office. </p><p>&nbsp;There are many stories around town about this old man. Some people claim that Sir Ronald served in army intelligence while others believe that he worked for S-Biomed, the elusive FBI branch dedicated to preempting chemical warfare. Nobody knows how he earned his knighthood and, if Sir Ronald has anything to do with it, they will never find out.
+
+Personality Notes
+- descibed as cranky and hard to deal wih. Little of this shown in the game
+- formal, and respects manners
+
+----------------------------------------------
+person.other
+	Charmed Path
+	499	= refused his apprenticeship
+	500	= inside the masion - ready to "I must have the book"
+			= outside - left and locked out
+	501	= 'wrestle for gun'
+	502	=
+	600	= Soft Murder Path
+
+
+person.flags
+	1		= set and he is dead and you are on the Murder path (replicated in V[1] for ease of game loading)
+	2		= has discussed financial aid the first time
+	3		= offered guest room
+	4		= key quest started
+	5		= tried to enter the mansio at night
+	6		= asked about demons
+	7		= asked about the Charm spell
+	8		= 'Good' path
+
+----------------------------------------------
+Sister Desiree
+person "Sister Desiree"
+
+Introduction
+In this corner of the garden, near the hedge maze, a lovely nun stands in prayer.  She stops when she sees you, evidently surprised to see anyone other than her sisters and the Mother Superior.
+"Hello," she says uncertainly.  "Are you lost?  This area is typically off-limits to outsiders
+
+Personality Notes
+- virgin, and innocent
+- devout
+
+----------------------------------------------
+person.place Current location
+	332	- Church Courtyard
+	384	- Mother Superiors room
+	1000	- Out and About
+
+
+person.flags
+	1		- freed from being disciplined
+	2		- introduction
+	3		- sent ghost sms
+
+per.extra
+	0		- Quest – Church Relic
+
+
+----------------------------------------------
+Sofia
+person "Sofia"
+
+Introduction (Murder Path)
+She’s an immigrant, who came to work  in Glenvale recently. Sir Ronald took her in, gave a her a job and a place where she can stay.  Out of gratitude, she’s very loyal to the family and soon became their trusted employee. Sofia is also very proud of her latino ancestry. Ronald became so fond of her that he gave her a ring which protects her from simple magic spells. Of course, she knows only a little about her employer being a warlock and the world of magic is very far from her knowledge.
+
+Personality Notes
+
+----------------------------------------------
+person.dress = "Missy" or "Angelica"
+
+person.place Current location
+	0		- not available yet
+	14		- Garage office
+
+
+person.flags
+	(Common)
+	1		- introduced
+	2		- intro question 1
+	3		- intro question 2
+	4		- intro question 3	
+	5		- intro question 4
+	6		- Non Charm Question 1
+	26		- Sarah question 1 - 'What can you tell me about the family chauffeur?'
+
+	(Murder Path only)
+	7		- Non Charm Question 2
+	8		- Non Charm Question 3
+	9		- After Charm Question 1
+	10		- After Charm Question 2
+	11		- spoke to Mayor Thomas about her. Also set on Apprentice path when you speak to Sarah
+	12		- Angela told you she knows Sofia
+	13		- spoke to Angela about her		
+	14		- spoke to Officer Batton about her
+	15		- break in done completed good!
+	16		- seen the shiny object
+	17		- found the briefcase
+	18		- opened the briefcase
+	19		- found the emails
+	20		- checked the wardrobe
+	21		- found the hidden room
+	22		- read the diary
+	23		- Batton sent warning SMS
+	24		- Batton meeting after
+	25		- first visit to her in the interrogation room
+	27		- Sarah Question 2 (Murder Path only) - Sarah, can you help me bring Sofia under my control?
+
+	(Apprentice/Conspiracy path)
+	7		- post charm attempt query
+	8		- asked Sir Ronald about Angelica (not for Conspiracy path)
+	9		- SMS 143
+	10		- SMS 144
+	11		- see above
+	12		- spoke to Sir Ronald
+	13		- spoke to Sister Desiree
+	14		- spoke to Mother Superior
+	15		- Bible removed
+
+----------------------------------------------
+Tina (School Nurse)
+person object "DoctorKay"
+
+Introduction
+
+Personality Notes
+
+
+----------------------------------------------
+person.place
+	69	- Nurses Office
+
+person.flags
+	1		- met
+	2		- know her name
+	3		- pushed her
+	4		- asked Bambi about her
+	5		- met her at the pool
+	6		- looked up her name at the hospital
+	7		- met in her office
+
+
+----------------------------------------------
+Vampire
+person id "Vampyre"
+
+Introduction
+
+Personality Notes
+- a predator
+- lust for blood and sex are her primary motivations
+
+----------------------------------------------
+person.other	= Path – Vampire
+	1 		= asked Sarah why she looks out the window
+	50		= told of the dead rising
+	50.5	= asked if we have time, so can do it tomorrow, becomes 51 at next night fall
+	51 	= I'll protect you
+	59		= left Sarah and waited at home
+	60		= Vampire attacked but fled
+	100	= Sarah cast the spell
+
+person Flags
+	1		- asked about herself
+	2		- mirrors of the soul at hidden room
+	3		- tried to double feed
+	4		- asked about creating new vampires
+	5		- told about healing
+	6		- Sarah has bound the vampyre
+	7		- met Jessica in the hotel cellar
+	8		- has refused to enter a holy place
+	9		- has protected you at the sacred clearing
+	10		- found out garlic is effective
+	11		- annointed the garlic
+	12		- asked to shower with you
+	13		- DO NOT FOLLOW IN - wait outside
+	14		- asked about swimming in the pool
+	15		- ...and forced the issue
+	16		- swum today
+	17		- 'why did you not follw me in'
+	18		- did not enter the restaurant and should of
+	19		- why not enter the restaurant
+	20		- prevented her feeding on Jessica
+	21		- stopped from entering Esmeralda's
+	22		- first visit to your bedroom
+	23		- event when ibnisible and she is with you
+	24		- did not follow inside invisible
+	25		- asked why not follow when invisible
+	26		- did not enter Granger home when Mrs Granger was not charmed
+
+person places
+	0		- start location (technically sacred grove)
+	192	- Sarah's room
+	1000	- fled
+	-1		- following you
+
+person.health (non-standard)
+	fullness (increased when fed, decreased when healing)
+
+person.extra[1] -	respect
+
+
+----------------------------------------------
+Victoria (Antiques)
+person "Victoria"
+
+Introduction
+"Nice to meet you Bob.  My name is Victoria, my father used to own this store before I inherited it.  Now, is there something I can help you with?"
+
+Personality Notes
+- ex-slave via magic, very familiar with being a slave
+- 'father' was the person who enslaved her
+- calm and even personality
+- intelligent
+- friends with Tess
+
+----------------------------------------------
+person.charmed
+	flags
+		2		- personal assistant
+		4		- slave charm (default)
+
+person.flags
+	flags
+		1		- ask about relic
+		2		- show her the relic
+		3		- ask about protection from spirits
+		4		- ask about stones
+		5		- SMS 1 (first morning after becoming personal assistant)
+		6		- sent morning SMS
+		7		- sent evening SMS
+		8		- introduced
+		9		- asked about 'Mirror of Souls'
+		10-14 - personal assistant questions
+		15-18	- morning SMS's sent
+		25-26 - evening SMS's sent
+
+		33		- asked about silver ring
+		34		- Seance papers at the store
+		35		- asked about the Seance papers
+		36		- sold/gave the papers
+		37		- bondage play available
+
+
+----------------------------------------------
+Zoey (Delivery Girl)
+person "Zoey"
+
+Introduction
+
+Personality Notes
+
+
+----------------------------------------------
+person.place unused (0)
+
+person.charm
+	1		- slave
+	2		- slut
+
+person.flags
+	1		- transformed (BE)
+	2		- SMS 3
+
+
+========================================================================================
+Glevale
+person "Glenvale"
+
+A more generic 'person', the Town itself for some general flags etc
+
+Convenient to use a person object for event linking/saving etc
+
+----------------------------------------------
+Variables where used will have non-standard use but should keep the same type
+
+person.place - place of current encounter in progress, eg 26.01, place 26, event 1
+
+person.other - time public nudity allowed
+
+person.charmed		// if used then directly use the variable
+
+person.charmedTime		// if used then directly use the variable
+
+person.sCharmedBy		// leave as a String but can be arbitrary data
+
+person.health
+
+person.flags
+	(1-32 reset every day)
+	1		- Museum - old couple
+	2		- Church - religous experience
+	3		- student teacher
+	4		- campers today
+	5		- busty today
+
+	33	- met girl in the Church
+	34	- met Campers in the Wild Ranges
+	35	- met exhibitionist in the general store
+	36	- disable SMS notifications
+	37	- Nudism allowed 
+	38	- met busty woman at Aquarium
+	39	- 	
+	40	-
+	
+person.extra
+	0		- flags 32-64 (standard, persistent across the game
+
+// To prevent load/save errors leave these alone
+person.Items
+person.NoItems
+person.MaxItems
+
+========================================================================================
+</pre>
+</body>
+</html>

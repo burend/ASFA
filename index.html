@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Mind Control Adventures</title>
+	<link rel="stylesheet" type="text/css" href="UI/themes/theme0/game.css">
+	<script src="Javascripts/compiled.js"></script>
+	<script src="Javascripts/config.js"></script>
+	<script src="Mods/details.js"></script>
+		
+	<style>
+		@media only screen and (orientation:portrait) {
+		 .contentdivleft { float:left; }
+		 .contentdivright { float:left; }
+		 .startdivleft { float:left;vertical-align:top }
+		 .startdivright { float:left;vertical-align:top;margin-top:1em }
+		}
+		@media screen and (orientation:landscape) {
+		 .contentdivleft { float:left;max-width:25%;padding:5px; }
+		 .contentdivright { float:left;max-width:70%;padding:15px; }
+		 .startdivleft { float:left;max-width:70%;padding:5px;vertical-align:top; }
+		 .startdivright { float:left;max-width:27%;padding-right:10px;vertical-align:top; }
+		}
+		.mrMultipleText { width:90%; float:left; }
+		
+		.spoilerbutton {display:block;margin:5px 0;}
+		.spoiler {overflow:hidden;background: #f5f5f5;}
+		.spoiler {overflow:hidden;background: #f5f5f5;}
+	   .spoiler > div {-webkit-transition: all 0.2s ease;-moz-transition: margin 0.2s ease;-o-transition: all 0.2s ease;transition: margin 0.2s ease;}
+		.spoilerbutton[value="Show Old History"] + .spoiler > div {margin-top:-500%;}
+		.spoilerbutton[value="Hide Old History"] + .spoiler {padding:0px;} 
+		.spoilerbutton[value="Show"] + .spoiler > div {margin-top:-500%;}
+		.spoilerbutton[value="Hide"] + .spoiler {padding:0px;} 		
+
+	</style>
+</head>
+
+<body style="background-image:url(UI/backgrd1.jpg);background-color:#FFFFFF;background-repeat:no-repeat;background-size:auto 100vh;font-size:large">
+<div style='text-align:left;width:100%;vertical-align:top'>
+
+<script>
+	var arPeople = [];
+	function DefaultName() {
+		if (sGender == "man") document.getElementById("charName").value = "Bob";
+		else document.getElementById("charName").value = "Barbara";
+	}
+	function ShowAvatarImage() {
+		var fldr = "Player/" + perYou.folder;
+		document.getElementById("imageHolder").innerHTML = '<img src="Images/' + fldr + '/face1.jpg" style="width:75%;float:right" alt="Avatar">';
+	}
+	function SetAvatars(x) {
+		var av = document.getElementById("avatars");
+		av.options.length = 0;
+		if (x == 2) sGender = "futa";
+		else if (x == 1) sGender = "woman";
+		else sGender = "man";
+		var id = document.getElementById("idMale");
+		id.style.border = sGender == "man" ? "1px solid white" : "";
+		id = document.getElementById("idFemale");
+		id.style.border = sGender == "man" || sGender == "futa" ? "" : "1px solid white";
+		id = document.getElementById("idFuta");
+		id.style.border = sGender != "futa" ? "" : "1px solid white";
+		var lst;
+		if (x === 0) lst = perYou.sMaleFolderList.split(",");
+		else lst = perYou.sFemaleFolderList.split(",");
+		for (var i = 0; i < lst.length; i++) av.options[i] = new Option(lst[i], lst[i], i == 0, i == 0);
+		perYou.folder = lst[0];
+		ShowAvatarImage();
+	}
+	function SetScenarios() {
+		var sc = document.getElementById("scenario");
+		sc.options.length = 0;
+		var modlist = Object.getOwnPropertyNames(oModsDetails);
+		var itm;
+		sc.options[0] = new Option("Standard Game", "", true, true);
+		for (var i = 0, ie = modlist.length; i < ie; i++) {
+			itm = oModsDetails[modlist[i]];
+			sc.options[i + 1] = new Option(itm.name + ' Mod', itm.name, false, false);
+		}
+		
+		gameState.sMod = "";
+	}
+	function ChangeScenario()
+	{
+		gameState.sMod = document.getElementById("scenario").value;
+	}
+
+	function saveChar() {
+		var Data = document.getElementsByName("FormChar")[0];
+		setExplicit(false);
+		if (Data.Explicit != undefined) setExplicit(Data.Explicit.checked === true);
+		sCurrency = "";
+		if (Data.BritishSetting != undefined) sCurrency = Data.BritishSetting.checked ? "\u00A3" : "$";
+		bCheating = false;
+		if (Data.CheatMode != undefined) bCheating = Data.CheatMode.checked === true;
+		setRunes(true);
+		if (Data.RuneMatching != undefined) setRunes(Data.RuneMatching.checked === true);
+		setPuzzles(true);
+		if (Data.Puzzles != undefined) setPuzzles(!(Data.Puzzles.checked === true));
+		gameState.bAllPlaces = false;
+		if (Data.Explorer != undefined) gameState.bAllPlaces = Data.Explorer.checked === true;
+		if (Data.UnDo != undefined) gameState.bAllowUndo = Data.UnDo.checked === true;
+
+		perYou.folder = Data.avatars.value;
+		saveGlobalSettings();
+		DoRestart(Data.charName.value, Data.avatars.value);
+	}
+
+	function loadGame() {
+		gameState = new GameStatus();
+		setExplicit(false);
+		sCurrency = "$";
+		bCheating = false;
+		setRunes(true);
+		setPuzzles(true);
+		sGender = "LoadGame";
+		DoRestart();
+	}
+	function showPopupWindowStart() {
+		gameState = new GameStatus();
+		openLocalDb();
+		initialiseYou();
+		setConfig();
+		sGender = "man";
+		setExplicit(false);
+		sCurrency = "$";
+		bCheating = false;
+		setRunes(true);
+		setPuzzles(true);
+		nRightBarState = 2;
+		gameState.nLeftBarState = 2;
+		loadGlobalSettings(showPopupWindowStart2);
+	}
+	function showPopupWindowStart2()
+	{
+		document.getElementById("Explicit").checked = isExplicit();
+		document.getElementById("BritishSetting").checked = sCurrency != "$";
+		document.getElementById("Puzzles").checked = !isPuzzles();
+		document.getElementById("CheatMode").checked = bCheating;
+		document.getElementById("RuneMatching").checked = isRunes();
+		document.getElementById("Explorer").checked = gameState.bAllPlaces;
+		document.getElementById("Themes").value = nTheme;
+		SetAvatars(sGender == "futa" ? 2 : sGender == "man" ? 0 : 1);
+		SetScenarios(0);
+		DefaultName();
+		document.getElementById('lightstart').style.display='block';
+		document.getElementById('fadestart').style.display='block';
+	};
+	function closePopupWindowStart() {
+		document.getElementById('lightstart').style.display='none';
+		document.getElementById('fadestart').style.display='none';
+	}
+	function ChangeAvatar()
+	{
+		perYou.folder = document.getElementById("avatars").value;
+		ShowAvatarImage();
+	}
+	function ChangeTheme()
+	{
+		nTheme = parseInt(document.getElementById("Themes").value, 10);
+	}
+</script>
+
+<div id="starthelp" class="white_content" style="background-color:black;color:white;z-index:83;display:none">
+	<span class="zoom-icon" style="position:absolute;top:0px;right:0px"><img draggable="false" style="cursor:pointer" onclick="document.getElementById('starthelp').style.display='none';document.getElementById('lightstart').style.display='block'" src="UI/help.png" width="48" alt="Help" title="Help"></span>
+	<p style='margin-top:-6px;font-size:xx-large'><b>Help To Start A New Adventure</b></p>
+	<p style="margin-top:-20px">This screen allows you to select details for your character in the game and some details for the game in general</p>
+	<p><b>Your character</b></p>
+	<p>You can select here the name of your character, your gender as a male, female or futanari (fully functional hermaphrodite), and the avatar. The model you select for your avatar will affect some images used for your character in the game. The images are not used often except at the top left of the screen.</p>
+	<p><b>General Game Settings</b></p>
+	<p>These setting affect how the game plays out, and many can be changed during the course of the game. Open your phone and use the 'Apps' icon and here you can toggle on or off most of these settings unless otherwise noted.</p>
+	<p><b>Explicit Content:</b> Unless selected images in the game are limited to R rated images with nudity and non-explicit sex scenes. If selected the full hardcore images are also shown</p>
+	<p><b>Glenvale in the UK:</b> The game is either set in the United Kingdoms or in the United States. Some different images and some characters use completely different models between the settings. Terms like currency, legal terminology and age of consent for drinking differs in these settings. All major elements of gameplay are otherwise unaffected. <b>Cannot be changed after the start of game.</b></p>
+	<p><b>Riddles:</b> At times in the game you will be asked to solve some riddles, passwords or similar. If you choose you do not like them then you will never be asked these, your character will automatically solve them.</p>
+	<p><b>Rune Matching:</b> When you learn spells a system to compare runic symbols/text will be used. Otherwise a search and type system will be used.</p>
+	<p><b>Know Glenvale:</b> The default is the town will be explored in game play, and areas opened up as you need to visit them. If you know the town well then you will at the start know all public/non-secret locations in the town. Gameplay is otherwise unaffected. <b>Cannot be changed after the start of game.</b></p>
+	<p><b>Easier Mode:</b> If selected you will gain mana faster to power spells and you will have the ability to undo some dire actions that would end the game without loading an earlier save game. <b>Cannot be changed after the start of game.</b></p>
+	<p class="gblock optionblock" onClick="document.getElementById('starthelp').style.display='none';document.getElementById('lightstart').style.display='block'">finished with this help</p>
+</div>
+<div id="lightstart" class="white_content" style="background-color:black;color:white">
+	<span class="zoom-icon" style="position:absolute;top:0px;right:0px"><img draggable="false" style="cursor:pointer;" onclick="document.getElementById('starthelp').style.display='block';document.getElementById('lightstart').style.display='none'" src="UI/help.png" width="36" alt="Help" title="Help"></span>
+	<form method="GET" name="FormChar" action="index.html">
+		<img src="UI/logo.png" style="position:absolute;top:0px;left:5%;width:85%" alt="logo">
+		<p style='font-size:xx-large'><b>A New Adventure</b></p>
+		<p style="margin-top:-20px">What are the details for your character</p>
+
+		<div class="startdivleft" style="margin-top:-10px">
+			<b>What is your name?</b><br>
+			<input type="text" id="charName" value="Bob" style="width:90%"><br><br>
+			<select name="scenario" id="scenario" size="1" onchange="ChangeScenario()"></select>
+			<label for="scenario" style="cursor:pointer" title="A scenario for the game"><span style="width:50%;float:left;font-weight:bold">Scenario</span></label><br><br>
+			<b>General Game Options</b><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="sexstuff" id="Explicit" checked><label for="Explicit" style="cursor:pointer"><span class="mrMultipleText">Enable <b>explicit</b> (X Rated) images</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="britishsetting" id="BritishSetting"><label for="BritishSetting" style="cursor:pointer" title="If not the town is in the US"><span class="mrMultipleText">Glenvale is in the <b>United Kingdoms</b></span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="puzzles" id="Puzzles"><label for="Puzzles" style="cursor:pointer" title="No puzzles will be in the game"><span class="mrMultipleText">I do not like riddles</span></label><br>
+			<p style="margin-top:-0.75em;margin-bottom:0">&nbsp;</p>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="cheatmode" id="CheatMode"><label for="CheatMode" style="cursor:pointer"><span class="mrMultipleText">Enable <b>cheat</b> options in the game</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="runematching" id="RuneMatching" checked><label for="RuneMatching" style="cursor:pointer" title="Use a rune matching process to learn spells"><span class="mrMultipleText">Use <b>Rune Matching</b> to learn spells</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="explorer" id="Explorer"><label for="Explorer" style="cursor:pointer" title="You know all public places in Glenvale at the start of the game"><span class="mrMultipleText">You know the town of Glenvale well</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="undo" id="UnDo"><label for="UnDo" style="cursor:pointer" title="Things are a little easier, more mana and time for some things"><span class="mrMultipleText">Things are a little easier and you can undo some dire actions</span></label><br>
+			<br><select style="margin-top:0.3em" name="Themes" id="Themes" size="1" onchange="ChangeTheme()">
+				<option value="0">White</option>
+				<option value="1">Black</option>
+				<option value="2">Dark Grey</option>
+			</select>
+			<label for="Themes" style="cursor:pointer" title="Theme for the game"><span style="width:50%; float:left;margin-top:0.2em">Theme for the game</span></label>
+		</div>
+		<div class="startdivright">
+			<b style="text-align:right">Are you a man or a woman?&nbsp;&nbsp;</b><br>
+			<img id="idFuta" src="UI/futa.png" style="cursor:pointer;float:right" width="30px" alt="Female" onclick="SetAvatars(2);DefaultName()" title="Futa">
+			<img id="idFemale" src="UI/female.png" style="cursor:pointer;float:right;margin-top:6px" width="35px" alt="Female" onclick="SetAvatars(1);DefaultName()" title="Female">
+			<img id="idMale" src="UI/male.png" style="cursor:pointer;float:right;margin-top:6px" width="35px" alt="Male" onclick="SetAvatars(0);DefaultName()" title="Male">
+			<br>Avatar: <select name="avatars" id="avatars" size="1" onchange="ChangeAvatar()">
+			</select>
+			<div id="imageHolder">
+				<img src="UI/books/book1.png" style="width:60%;float:right" alt="Avatar">
+			</div>
+		</div>
+		<div style="float:left;width:100%;text-align:center">
+			<br>
+			<b>Done selecting?</b>
+			<p class="gblock optionblock" onClick="saveChar()">Start the Game</p>
+			<p class="gblock optionblock" onClick="closePopupWindowStart()"><i>forget it</i></p>
+		</div>
+	</form>
+</div>
+<div id="fadestart" class="black_overlay"></div>
+
+<div class="contentdivleft" style="border:5px solid orange">
+	<div style="width:100%">
+	<img src="UI/logoc.png" style="width:99%" alt="logo">
+	<p style="text-align:center;font-size:x-large;margin-top:-0.2em;margin-bottom:-.2em"><b>Your journey awaits</b></p>
+	<p style="text-align:center;font-size:medium"><b>
+	<img src="UI/books/book1.png" width="65%" style="max-width:300px" alt="The Book"></b></p>
+	<p style="text-align:center;font-size:medium">A mysterious book, and a journey of discovery, danger, and <i>control</i>.</p>
+	<p style="text-align:center;font-size:medium">
+		Contains<br>
+		(mc/md/ff/fd/mm/in/<br>bdsm/fff/mff/mmf)<br>
+	</p>
+	<div style="text-align: center">
+		<a draggable="false" href="javascript:showPopupWindowStart()"><img class="image-hover-highlight" draggable="false" src="UI/start.png" style="width:4em" title="Start Game" alt="Start Game"></a>
+		<a draggable="false" href="javascript:loadGame()"><img class="image-hover-highlight" draggable="false" src="UI/load.png" style="width:4em" title="Load A Saved Game" alt="Load Game"></a>
+	</div>
+	<hr style="color:orange;background-color:orange;border-color:orange">
+	<p style="text-align:center;font-size:medium">
+	<a href="Help/faq.htm">Frequently Asked Questions (FAQ)</a></p>
+		</div>
+</div>
+<div class="contentdivright">
+	<!-- <p style="text-align:center;color:#FF00FF;font-size:xx-large;margin-top:0.5em"><b>Mind Control Adventures</b></p> -->
+	<p style="text-align:center;color:#FF0000">
+		<b>Adults Only! Due to the adult nature (sex scenes, nudity, occasional coarse language and adult themes) you must be at least 18 years old in order to proceed.</b>
+		<br>
+		<b>I'm not 18 years old and made a mistake in coming here.<br><a href="http://www.disney.com">Please let me out</a></b>
+	</p>
+
+	<p style="text-align:left">Erotic Mind Control	Adventures are currently being built by cmacleod and the
+	<a href="http://www.hypnopics-collective.net/smf_forum/index.php">Hypnopics Collective</a>.<br>
+	To join in the discussion please log in/create an account and add your thoughts to the "A Spell For All Version 14" thread in the MC Game Zone subforum.<p>
+	<p>If you have ideas or would like to make suggestions/submissions please refer to the FAQ for information on how to do so.</p>
+	<p>To play this game must have cookies turned on and have Javascript enabled. This game is compatible with all major browsers.</p>
+	<p style="font-family:Arial Black;margin-bottom:-0.1em">What's New:</p>
+	<b>Release version <script>document.write(getVersion())</script></b><br>
+	<input class="spoilerbutton" type="button" value="Show" onclick="this.value=this.value=='Show'?'Hide':'Show';">
+	<div class="spoiler"><div>
+	<ul>
+		<li>Assorted bug fixes and small continuity fixes. Notably some issues for Angelica. Fixed some incorrect hyperlinks in the game.</li>
+		<li>Add Memory option to phone apps, primarily for Android users, to allow altering the number of saves or photos in your phone</li>		
+		<li>Schedule tab in phone notes for when some people are available. A work in progress</li>
+		<li>Vampire Lilith three/foursomes with Mrs Granger/Kate. Images are lower-resolution and Kate is edited in via head-swap edits. Limited images for female player case</li>
+		<li>Some events returning to Sarah with the Vampire. Feeding is always available now, sort of. Lauren will refuse to be fed on, a bit different between murder and apprentice paths. Delayed the 'trouble with Lilith' event</li>
+		<li>Threesomes with Sarah and vampire Lilith. All images edited.</li>
+		<li>Additional explicit image variants for Sarah (charmed) including strap-on images and a tit-fuck scene.</li>
+		<li>Additional image when visiting Alison with Lilith</li>
+		<li>Updated some of Liliths images so their edits are more consistent, and added aditional image variants for sex scenes. Altered images when she is Sarah's slave and the layout of images for her and Lauren</li>
+		<li>Partially updated the walkthough in the game, and removed all except the version created by Capacitor. Altered the display to be in an iFrame to try to address a display issue for an Android device. Can still be opened externally of the game</li>
+		<li>Altered some of the text around the start of the Elian events to encourage hydromancy and made learning hydromancy easier. Added an additional vision AFTER Elians related to Jesse/Legion</li>
+		<li>Replaced an image for Kate that showed inappropriate bondage for the scene</li>
+	</ul>
+	</div></div>
+	<p style="font-family:Arial Black;margin-bottom:-0.25em">Previously New:</p>
+	<input class="spoilerbutton" type="button" value="Show Old History" onclick="this.value=this.value=='Show Old History'?'Hide Old History':'Show Old History';">
+	<div class="spoiler"><div>
+	<ul>
+		<li><b>Version 14.10</b></li>
+		<li>Optional alternate model for Mrs. Tanika, chosen at first meeting or via cheat menu. Also add a titfuck scene. As part of this also altered how your bedroom is displayed with the different combinations of visitors</li>
+		<li>Optional alternate model for Gina, chosen at first encounter or via cheat menu.</li>		
+		<li>Miss Logan's Neurology assignment now is an alternate charm path. Will include some changes for Ms Jones (an alternate outfit)</li>
+		<li>Sofia on the apprentice path is replaced with a different chauffeur Angelica (model August Taylor) with different story</li>
+		<li>New bad ending for Mom/Gabby story written by imperator_mentus</li>
+		<li>Series of challenges with Elian, but no final resultion. New bath scene for her after the start of them, and also the pool and poledance scenes can be randomly seen again, with new text and alternate images.</li>
+		<li>Updated modding system to make it simpler to mod images or javascript. See Mods/readme.txt</li>
+		<li>Altered and added a fallback for Mom to ensure her masturbation scene happens, at worst after Legion is defeated/leaves</li>
+		<li>Assorted small bug fixes</li>
+		<li>Better support for mobile devices layout. Note: popup inventory was discontinued</li>
+		<li>Better handling for alternate images and error handling. Also handles differing aspect ratios better</li>
+		<li>Android apk version</li>
+		<li>Additional endgame pregnant scenes for Elian, Donna, Pamela, Madison, Zoey, Nina, Hannah and Camryn</li>
+		<li>Addiotional image variations for some minor places like tv viewing, pool, strip-club. Also more image variations for Ms. Jones, Hannah, tf scene for Hannah</li>
+		<li>Some revisions/clarifications for the notes in your phone</li>
+		<li>Stopped some cases where repeat sex made you leave the house/room</li>
+		<li>Some changes for Mrs Granger and uncharmed Kate allowing sex with Mrs Granger when Kate is not a lover or girlfriend. Also added for Mrs Granger bondage. strapon and titfuck scenes and a variant pool scene (video)</li>
+		<br/>
+		<li><b>Version 14.9.4</b></li>
+		<li>more bug fixes, notably when studying with Kate and picking the wrong option with puzzles disabled can break her story and cause her to kill you on next meeting at home</li>
+		<li>Endgame changes, pregnant scenes for Mayor Thomas, Angela, Emily and Kylie.</li>
+		<li>Endgame for family improved and recognises the Mom bad end if she runs away with Gabby</li>
+		<li>More pregnant porn in Miss Logan's PC, 5 images</li>
+		<li>Changes submitted by freyjadour to allow multiple transformations (BE + futa for some) and to reverse transformations. Also a PC to male transformation but do not expect people to react to this yet. Also includes extra image edits for be + futa cases</li>
+		<li>Alternate pregnant edits for Mom and Tracy submitted by Dirkdingo, they also did the Kylie pregnant edit.</li>
+		<li>More obvious event once you can learn trainings</li>
+		<li>Replacement charm scene for Jenny from Northwind, a bit 'dirtier'</li>
+		<li>Expanded sex scenes at the restaurant for Jenny from Northwind, also a bit 'dirtier'</li>
+		<li>Additional BE images for Zoey including home (pose, sex, bed), poledancing, pool</li>
+		<li>Additional/expanded sex scenes with male Mr Beasley, with variations for futa players. Written by Northwind</li>
+		<li>Additional BE images for Madison including pool sex, home strip-tease, bed(ish). Also some head-swap fakes for some strap-on sex scenes. Additionally a pool-side strap-on image. You can now transform her at home.</li>
+		<li>Additional BE images for Louise including pool, home, poledance. Thressome scenes with Nina, using model Sonja Adams. You can now transform her at home.</li>
+		<li>Additional BE images for Bambi (Kiki Vidis version), pool, hotel bar, guarding</li>
+		<li>People reacting to you as a futa, written by Northwind. Not all just a selection so far but notably Mom and Tracy</li>
+		<li>Expanded scenes for John and Tess at their home, also by Northwind. Primarily for male John</li>
+		<li>Expanded charm scene for John by Northwind</li>
+		<li>Revised Silver Ring encounter with Tess and John with other paths possible by Northwind. Note, you can get kicked out and option locked out for Tess. These are for a while, a SMS from Tess will arrive after a time.</li>
+		<li>Replaced a look-a-like image for Mrs Granger (male bj in the Wild Ranges)</li>
+		<li>Add 'worship each other' option for Mother Superior and Sister Desiree, lesbian and futa version. Tweaked one of Sister Desiree's images to emphasise caning marks</li>
+		<li>Kurdorf asks a price to learn Invisibility - take care, a possible bad end if you are lacking <b>two</b> defences</li>
+		<li>Performance scene with Jade (night with no scheduled dancer, and have not visited her and dancing allowed)</li>
+		<br/>
+		<li><b>Version 14.9.3.3</b></li>
+		<li>more bug fixes</li>
+		<li>Endgame changes, pregnant scenes for Anita, Melissa.</li>
+		<li>Additional SMS for Mrs Robbins, and more explicit sex images.</li>
+		<li>More Tina/Mrs Robbins threesome images some for vampire Tina. An image for vampire Tina swapped. Added a hardcore fake for Tina.</li>
+		<li><b>Version 14.9.3.1</b></li>
+		<li>more bug fixes</li>
+		<li>End game scene always shows a scene for Mom/Tracy, with possible pregnancies</li>
+		<li>Added a fallback case if you fail to cham Carol</li>
+		<li>Image improvements for Carol, more fakes and better threesome with Ellie and other images</li>
+		<li>Added tit-fuck scene with faked images, including a strap-on version</li>
+		<li>Repeat visits of Kristin to Carol with threesome or foursome</li>
+		<li>Fixed/added more poledance scenes (generic text so far) for Carol, Kristin, Abby, Angela, Donna, Diane, Emily, Louise, Sofia, Tina (normal)</li>
+		<li>Changes for invisibility to better recognise the state, particularly the indefinite version and to handle the state, to restrict options interacting with others. More changes are needed this is an initial change</li>
+		<li>A couple of initial events when invisible with the extended training. School hallway during school hours and Kristin's home when she is there and you enter her home invisible (so she does not know you are there).</li>
+		<li>Some dialogues with Lilith on her and invisibility</li>
+		<li>Endgame changes, pregnant scenes for Alison, Jenny.</li>
+		<li><b>Version 14.9.3</b></li>
+		<li>bug fixes</li>
+		<li>Doctor Kay can be met at the hospital if you do not charm her at school and charmed there</li>
+		<li>Jenny has an apartment</li>
+		<li>Alternate way to charm Charlie if you are barred from the Gym</li>
+		<li>Image swaps, improvements and additions for Janet and Debra with some hardcore fakes added</li>
+		<li>Alternate charm option for Janet, and re-charm options for Debra</li>
+		<li>Date options for Girlfriend Debra, and Bimbo and Girfriend Janet</li>
+		<li>Additional sex options for Debra and Janet (tit-fuck, threesome) and more images variations</li>
+		<li>Hotel Cellar rearranged so each slave has a 'check' option for their scenes/options</li>
+		<li>Dance scenes for Janet and Debra, some based on their charm type</li>
+		<li>Small scene with Anita while on guard duty</li>
+		<li><b>Version 14.9.2.1</b></li>
+		<li>Lots of bug fixes, notably for Sandra, Gina. Thanks to Northwind for a large list of bugs!</li>
+		<li>Custom dance scene for Ms. Titus, Adele</li>
+		<li>Zoey has an apartment</li>
+		<li>Extra images for Adele and Catherine. Some existing images swapped out for different ones</li>
+		<li>Meeting scene for Adele in the early game</li>
+		<li>Adele and Catherine have tit-fuck scenes, Catherine a strap-on scene.</li>
+		<li>New notes in your phone for Kate and some others</li>
+		<li>Officer Batton starts the game charmed</li>
+		<li>Scenes for Kate if she did not quite trust you, but did not distrust. Previously she disappeared, now she can return home and be charmable, NOT a lover</li>
+		<li>Altered some of the scenes around confromting Davy to delay the event until you have met Kate the needed times</li>
+		<li>Kate has extra chat option to discuss her holiday and the idea of the photo albums. You can also check them after charmed/girlfriend</li>
+		<li>Extra dance scene for thrall Seraphina</li>
+		<li>Scene if you try shooting Elian</li>
+		<li>Tess can be sent back to her home</li>
+		<li>new female player avatar, Dakota Skye, by request</li>
+		<li>Carol and Ellie can be invited to swim in their pool</li>
+		<li>added a hint when you first meet Alison</li>
+		<li>A scene at the start of the vampire story giving a hint, also more time given if you ask for a delay</li>
+		<li>Some changes to Mother Superior and Sister Desiree, you can move Sister Desiree to Mother Superior's chambers outside of the posession event</li>
+		<li></li>
+		<li><b>Version 14.9.1</b></li>
+		<li>Convince Charlie to let you see Amy, 3 options, 1 more for female Charlie. Some more effective than others.</li>
+		<li>Meet Amy, and either charm her or convince to be uncharmed girlfriend. Charm can be 'charmed girlfriend' or 'secretly a slave'</li>
+		<li>Bimbo Curse event (written by Northwind) - only happens if you imprison Jessica</li>
+		<li>Alternate charm process for Madison and an apartment for her. Expanded sex scenes at her office</li>
+		<li>If you miss charming Emily in her office there is a later encounter in the laundromat</li>
+		<li>Additional scenes for Elian, her story is still incomplete</li>
+		<li>Alternate model for Officer Becky Smith (Alanah Rae, from Blogna's mod), selected on first meeting or via cheat menu</li>
+		<li>Image changes for some items and creatures, notably magic stones, Aftane. Changed King in Yellow images. New dream, demon in bath</li>
+		<li>Image changes for Mr. Beasley as submitted by a fan, to consistently use Johnny Sinns for all images</li>
+		<li>Additional image variations for Kristin and two new sex scanes (1 male, 1 female) at her home</li>
+		<li>Alternate charm scene for Kristin intended for the case you miss charming her at the Bank on the murder path but can be encountered otherwise. Opened via Ms Titus</li>
+		<li>Fallback scene if you fail to free Amy and Catherine from Mr Beasley. You can order him once charmed to get them and then free them</li>
+		<li>Customised dance scene for multiple characters</li>
+		<li>Additional nudist images mostly from Bologna's mod</li>
+		<li>Additional end game pregnant scenes</li>
+		<li>Pool images for Zoey</li>
+		<li>Additional edits for Bambi's alternate model</li>
+		<li>You can delete 'standard' wallpaper images from your phone, ie the built in onces</li>
+		<li>Some additional options in the cheat menu for people to select model/gender/events for specific people</li>
+		<li>Bug fixes and probably additions...</li>
+		<li>Better handling for image substitutions for gif/jpg, for modding/personal preferences etc</li>
+		<li>Start game changes to select theme and futa gender</li>
+		<li>Two new player avatars, Faye Reagan and Stephan</li>
+		<li>Major rearrange of image folders in the game - main Explicit folder is gome</li>
+		<li>Notes in your pohne now uses tabs and other small changes</li>
+		<li><b>Jessica</b> revisions to her events and new post Seance event by Northwind. Extensive scenes if you free her, some if you do not</li>
+		<li>Elian - you can survive the encounter with her and meet her later</li>
+		<li>Shower with people at home, and others can interrupt or join you, but only so often</li>
+		<li>People can dance at the strip-club once you ask Jade about it</li>
+		<li>- you can dance at the strip-club (male or female)</li>
+		<li>Amy and Charlie</li>
+		<li>- Charlie can initially be male or female</li>
+		<li>- meet and charm Charlie at the Gym (after fully charming Adele)</li>
+		<li>- transform Charlie male to female and female to male - repeatable!</li>
+		<li>- more of the story is not implemented as of 14.9, please wait for 14.9.1</li>
+		<li>Charm Nella the Bank Security Guard, 3 versions based on where you do it</li>
+		<li>- bondage play with Victoria opens up</li>
+		<li>Emily the HR staff at the Town Hall</li>
+		<li>Town control events with Mayor Thomas sometime after Emily and Officer Batton are charmed</li>
+		<li>- Nudist encounters around town after selecting the option</li>
+		<li>Vampyre Lilith changes</li>
+		<li>- Vampyre Dreaming (by Northwind)</li>
+		<li>- new model for most images, Romi Rain</li>
+		<li>- she will go swimming with you + sex scene</li>
+		<li>- you can ask her to wait outside</li>
+		<li>- she will dance at the strip club + sex scene</li>
+		<li>- scenes with Alison at her home, including lesbian and threesome</li>
+		<li>Ghost Keana event at the strip club and showering</li>
+		<li>Altered scene for Davy and Tina</li>
+		<li>Placeholder charm scene for Davy (male and female)</li>
+		<li>End Game changes</li>
+		<li>- you can choose to see all possible scenes</li>
+		<li>- additonal pregnant scenes for Kate and Mrs Granger, Diane, Miss Beasley, Didi, Catherine, Adele, Carol and Miku (only seen if Miss. Logan is bred)</li>
+		<li>- scene for Davy</li>
+		<li>- scenes for the Cult at the Church</li>
+		<li>- more scenes for your harem and others</li>
+		<li>Nina has an apartment you can visit</li>
+		<li>Louise has an apartment you can visit</li>
+		<li>Alison has an apartment you can visit</li>
+		<li>Monique minimal charm</li>
+		<li>- re-charm Monique - only at home after the minimal charm</li>
+		<li>Miss Logan has a home you can visit, here is a reason to visit her home alone</li>
+		<li>New texts from Kylie (of Aunt Brandi), Carol, Miss Logan, Abby, Mrs Granger</li>
+	</ul>
+	</div></div>
+	<p style="font-family:Arial Black;margin-bottom:-0.5em">What <b>cannot</b> be done as of this release</p>
+	<ul>
+		<li>Charm the reporter Julie</li>
+		<li>Charm the Campers</li>
+		<li>Charm Jade</li>
+		<li>Charm Elian</li>
+		<li>Charm Sarah on the Conspiracy or Apprentice Paths</li>
+		<li>Charm Lauren on the Conspiracy Path</li>
+		<li>Further events for Seriphina/Lucy, ie the two thralls</li>
+		<li>Charm Jesse</li>
+		<li>Charm Jessica, bondage yes, free yes, charm no</li>
+		<li>Charm Esmeralda</li>
+		<li>You cannot learn how to defend yourself with magic from the Book, someone can teach you after you charm them</li>
+		<li>Charm Sir Ronald on the Conspiracy/Apprentice path</li>
+		<li>Aunt Brandi is not available yet</li>
+		<li>Mr. Tanika is not available yet</li>
+	</ul>
+	<p style="font-family:Arial Black;margin-bottom:-0.5em">Links</p>
+	<ul>
+		<li><a href="Help/links.htm">Wizard's Old Favourite Sites and Stories</a> (Old, links may be broken)</li>
+	</ul>
+</div>
+</div>
+</body>
+</html>
