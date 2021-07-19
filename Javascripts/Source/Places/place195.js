@@ -8,7 +8,7 @@ function ExitGeneralShop()
 
 function ShowPlace195()
 {
-	var md = WritePlaceHeader();
+	var md = WritePlaceHeaderNI();
 
 	var perLou = findPerson("Louise");
 	var clvLou = perLou.getCharmedLevel();
@@ -105,12 +105,12 @@ function ShowPlace195()
 		addQuestionC(md, 'buy a pair of scissors for ' + sCurrency + '5', "Leanne", -19555, 'travelblock');
 		if (whereItem(47) == 195) addQuestionC(md, 'buy a sports bag for ' + sCurrency + '10', "Leanne", -19556, 'travelblock');
 		if (checkPersonFlag("Vampyre", 10)) addQuestionC(md, 'buy some garlic for ' + sCurrency + '2', "Leanne", -19557, 'travelblock');
-		md.write('<br>');
+		//md.write('<br>');
 	}
 
 	//********* Choices **********
 	bQuestionsShown = false;
-	startQuestions();
+	startQuestions(undefined, 'br');
 	if (perLea.other === 0 && perLea.place == 195 && nMoney < 20 && perLea.checkFlag(25)) addLinkToPlaceC(md, 'agree to look after the ' + getShopStore(), Place, 'type=mindstore');
 	if (perAnita.isHere()) {
 		if (!perAnita.checkFlag(2)) addQuestionR(md, 'say hello to the customer', 'You approach the girl and say hello, she looks at you, clearly thinking you are trying to pick her up. Angrily she tells you <i>&quot;Get lost ' + (perYou.isMaleSex() ? 'man ' : '') + 'slut!&quot;</i><br><br>She turns her back to you and ignores you.', 'Girl', "bChatLeft=false;setPersonFlag(\\'Anita\\',2);");
@@ -125,5 +125,5 @@ function ShowPlace195()
 		perAnita.showPerson("anita10a.jpg", "100%", "", "", "Customer");
 	}
 
-	WritePlaceFooter(md, '', true);
+	WritePlaceFooter(md);
 }

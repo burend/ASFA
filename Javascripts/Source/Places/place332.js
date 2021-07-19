@@ -8,17 +8,16 @@ function Exit332()
 
 function ShowPlace332(stype)
 {
-	var md = WritePlaceHeader(false, stype == "discipline" ? "td-none" : "");
-	
-	var perSister = findPerson("Desiree");
+	// Is there STUFF here from Mother Superior?
+	var perSister = findPerson("Desiree");	
+	var bThereIsStuffHere = perSister.NoItems > 0;
 	var perMS = findPerson("Daria");
+		
+	var md = WritePlaceHeader(false, stype == "discipline" ? "td-none" : "", '', '', '', !bThereIsStuffHere);
 
 	if (perSister.other == 10) perSister.other = 9;  //Reset it so you can still ask for forgiveness
 
 	if (perSister.place !== 332) return dispPlace(319);	//Desiree is NOT here
-
-	// Is there STUFF here from Mother Superior?
-	var bThereIsStuffHere = perSister.NoItems > 0;
 
 	/******************************************
 	Sister Desiree
@@ -27,8 +26,8 @@ function ShowPlace332(stype)
 	PICTURE REFERENCES */
 
 	if (isPossess()) perSister.showPerson("sister2.jpg");		// While possessing Mother Superior the first time
-	else if (perSister.isCharmedBy()) perSister.showPerson("sister9.jpg");
-	else perSister.showPerson("sister1.jpg");
+	else if (perSister.isCharmedBy()) perSister.showPerson("sister1c.jpg");
+	else perSister.showPerson("sister1u.jpg");
 
 	/*  General Description */
 
@@ -112,7 +111,7 @@ function ShowPlace332(stype)
 		}
 		
 		perSister.addDancingLink(md, 'talk to Desiree about dancing in the club',
-			'You ask Sister Desiree about the Avernus club and about dancing there for you, maybe not openly asa Nun but then again people would assume it was just a costume!</p>' +
+			'You ask Sister Desiree about the Avernus club and about dancing there for you, maybe not openly as a Nun but then again people would assume it was just a costume!</p>' +
 			'<p>&quot;Of course ' + perSister.getYourNameFor() + ' I will do anything you ask!&quot; and with that you call Jade to arrange a dance for Desiree, not mentioning her "job".'
 		);
 		perSister.addSleepLink(md, "take Desiree to her cell for the night", "Cloistered with Sister Desiree",
@@ -138,5 +137,5 @@ function ShowPlace332(stype)
 
 	addLinkToPlace(md, 'leave her be', 319, '', '', '', 'Exit332()');
 
-	WritePlaceFooter(md, '', !bThereIsStuffHere);
+	WritePlaceFooter(md);
 }

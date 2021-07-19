@@ -46,7 +46,7 @@ function ShowPlace44()
 
 	if (isPlaceKnown("KellyHouse")) addLinkToPlace(md, "enter the Kelly\'s Residence", 112);	/* Does the player have the address of 22 Kollam Street? */
 
-	if (isPlaceKnown("Alley")) addLinkToPlace(md, "walk to the alley", 42);		/* Does the player know about the alley */
+	if (isPlaceKnown("Alley")) addLinkToPlace(md, "walk to the alley", 52);		/* Does the player know about the alley */
 	if (isPlaceKnown("ShoppingCenter")) addLinkToPlace(md, "walk to the " + getShopStore() + 's', 194);		/* Does the player know about the shops? */
 	addLinkToPlace(md, "walk to Cherise Rd", 37);
 	addLinkToPlace(md, "walk to the School", 9);

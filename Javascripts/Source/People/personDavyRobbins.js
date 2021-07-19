@@ -214,7 +214,7 @@ function initialiseDavyRobbins()
 			md.write(
 				'<p>Davy looks at you ' + sHe + ' has given up, and you tell ' + sHim + ' firmly that ' + sHe + ' is your slave now, to use and command as you want. You pause, and say,</p>' +
 				'<p>"Yes this is revenge for Kate, I will make you do all the perverted things you did to her over and over. You are my slave now"</p>' +
-				'<p>While you feel guilty for a moment, gloating like that felt really good! Davy is completely defeated, and yours. For now you will leave ' + sHim + ' bound here. There is still a nagging suspicion that maybe the residure of Kurndorf may affect ' + sHim + ' but given time you will gain confidence in your new slave.<p>' +
+				'<p>While you feel guilty for a moment, gloating like that felt really good! Davy is completely defeated, and yours. For now you will leave ' + sHim + ' bound here. There is still a nagging suspicion that maybe the residule of Kurndorf may affect ' + sHim + ' but given time you will gain confidence in your new slave.<p>' +
 				'<p><i>nothing more implmentented</i></p>'
 			);
 
@@ -279,12 +279,12 @@ function initialiseDavyRobbins()
 
 			md.write(
 				'<p>“I know you are still unwilling to submit to our ' + perYou.getLord() + ', my ' + this.getSex() + '.” Bambi\'s fingers tenderly touch Davy\'s naked chest, slide over ' + this.getHisHer() + ' neck and caress ' + this.getHisHer() + ' cheek. “But I am sure you will not mind if we perform a little... show for ' + perYou.getHimHer() + ', do you?”</p>' +
-				'<p>Davy\'s body trembles under her touch' + (this.isMaleSex() ? ', and you can see his cock twitching a little' : '') + ', yet ' + this.getHeShe() + ' remains hesitant. ' + capitalizeFirstLetter(this.getHisHer()) + ' eyes spitefully rest on you and ' + this.getHeShe() + ' refuses to answer.</p>' +
+				'<p>Davy\'s body trembles under her touch' + (this.isMaleSex() ? ', and you can see his cock twitching a little' : '') + ', yet ' + this.getHeShe() + ' remains hesitant. ' + capitalize(this.getHisHer()) + ' eyes spitefully rest on you and ' + this.getHeShe() + ' refuses to answer.</p>' +
 				'<p>“I see.” Bambi smiles cruelly. “Perhaps I should get miss Anita to...”</p>' +
 				'<p>“No!” Davy shouts hastily. “N... no need...”</p>' +
-				'<p>Bambi\'s frowns at ' + this.getHimHer() + (this.isMaleSex() ? ', her fingers starting to constrict around Davy\'s scrotum without a word' : ', her fingers starting to paifully pinch her nipple without a word') + '.</p>' +
-				'<p>“No need, Ma\'am!” ' + capitalizeFirstLetter(this.getHeShe()) + ' quickly adds, and Bambi\'s fingers relax. “I... play along.”</p>' +
-				'<p>“Good ' + capitalizeFirstLetter(this.getSex()) + '.”</p>'
+				'<p>Bambi\'s frowns at ' + this.getHimHer() + (this.isMaleSex() ? ', her fingers starting to constrict around Davy\'s scrotum without a word' : ', her fingers starting to painfully pinch her nipple without a word') + '.</p>' +
+				'<p>“No need, Ma\'am!” ' + capitalize(this.getHeShe()) + ' quickly adds, and Bambi\'s fingers relax. “I... play along.”</p>' +
+				'<p>“Good ' + capitalize(this.getSex()) + '.”</p>'
 			);
 			if (this.isMaleSex()) {
 				md.write(
@@ -330,12 +330,12 @@ function initialiseDavyRobbins()
 
 		if (sType == "transformgender") {
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(11)) {
 				this.setFlag(11);
 				this.dress = "Female/" + (this.isCharmedBy() ? "Charmed" : "Uncharmed");
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/tg a.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="TG">' +
+					addImageRandomString('GenericSex/tgm2f', oImages.GenericSex.tgm2f, "50%") +
 					'<p>You cast the spell and Davy cries out, muffled by his gag. As you watch his body changes, growing thinner and your see his cock shrinking. His chest expands as you see breasts grow and his face softens to a feminine appearance.</p>' +
 					'<p>After some time you can no longer call Davy a <b>he</b>, now <b>she</b> is very definitely female, nothing masculine is left, she is completely a woman! <i>She</i> looks at you shocked at the transformation.'
 				);
@@ -343,13 +343,13 @@ function initialiseDavyRobbins()
 				this.setFlag(11, false);
 				this.dress = "Male/" + (this.isCharmedBy() ? "Charmed" : "Uncharmed");
 				showPopupWindow("Transformation", 
-					'<img src="Images/GenericSex/tg b.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="TG">' + 
-					"<p>You cast the spell and Davy cries out, muffled by his gag. As you watch his body changes, growing larger and your see his cock growing. His chest diminishes as you see breasts dissapear and his face hardens to a masculine appearance.</p>" + 
-					"<p>After some time you can no longer call Davy a <b>she</b>, now <b>he</b> is very definitely male, nothing feminine is left, he is completely a ,an! <i>SHe</i> looks at you reliefed at the transformation."
+					addImageRandomString('GenericSex/tgf2m', oImages.GenericSex.tgf2m, "50%") +
+					"<p>You cast the spell and Davy cries out, muffled by his gag. As you watch his body changes, growing larger and your see his cock growing. His chest diminishes as you see breasts disappear and his face hardens to a masculine appearance.</p>" + 
+					"<p>After some time you can no longer call Davy a <b>she</b>, now <b>he</b> is very definitely male, nothing feminine is left, he is completely a ,an! <i>SHe</i> looks at you relieved at the transformation."
 				);
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 

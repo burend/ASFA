@@ -64,7 +64,7 @@ function ShowPlace174(stype)
 					}
 				} else addLinkToPlace(md, 'unfortunately you do not have the Book', 174, 'type=answer2', 'Regretfully you do not have the book...');
 
-				AddRightColumnLarge();
+				AddPeopleColumnLarge();
 				perTess.showPerson("tess11b.jpg");
 			}
 
@@ -86,7 +86,7 @@ function ShowPlace174(stype)
 		addLinkToPlace(md, 'no words are needed, embrace her', 174, 'type=sex');
 		addLinkToPlace(md, '"Later Tess" and go to the hotel bar', 124, '', 'Tess looks disappointed, but she smiles and gives you a quick kiss before dressing and then insists on walking arm-in-arm to the Bar');
 
-		AddRightColumnLarge();
+		AddPeopleColumnLarge();
 		perTess.showPerson("tess11b.jpg");
 	}
 	if (stype === "") return gotoPlace(124);

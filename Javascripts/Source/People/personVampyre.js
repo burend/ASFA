@@ -22,6 +22,7 @@ function initialiseVampyre()
 	perLilith = addPerson("Vampyre", 0, "VampyreLilith", '', false);
 	
 	per.getPersonName = function(full) { return "The Vampyre"; };
+	per.getPersonNameShort = function() { return "Lilith"; };
 	
 	per.isVampyre = function() { return true; };
 	
@@ -35,10 +36,12 @@ function initialiseVampyre()
 	per.whereNow = function()
 	{
 		if (this.isCharmedBy("Sarah")) return !isDay() ? 192 : 0;
-		if (isPossess() && this.place == -1) return perYou.place;
-		if (Place == 40 && this.checkFlag(12)) return 0;
 		if (Place == 450) return 38;
-		if (this.place == -1 && !isOutside() && (!this.checkFlag(13) || isInvisible()))  return 0;
+		if (this.place == -1) {
+			if (Place == 40 && this.checkFlag(12)) return 0;
+			if (isPossess()) return perYou.place;
+			if (!isOutside() && (!this.checkFlag(13) || isInvisible()))  return 0;
+		}
 		if (Place == 196 || Place == 203 || isAtLocation(344)) return 0;
 		var perMG = findPersonNC("MrsGranger");
 		if (isAtLocation(177) && !perMG.isCharmedBy()) return 0;
@@ -52,7 +55,7 @@ function initialiseVampyre()
 	};
 
 	per.isPlaceImageRight = function() {
-		if (Place != 464 && Place != 372 && Place != 450 && sType === '' && this.isHere()) {
+		if (Place != 464 && Place != 372 && Place != 450 && Place != 374 && sType === '' && this.isHere()) {
 			SetRightColumnSize("");
 			return true;
 		}
@@ -105,6 +108,10 @@ function initialiseVampyre()
 				this.place = 325;
 				return '';	// You are in the church
 			}
+			if (this.checkFlag(27)) {
+				this.place = 374;
+				return '';
+			}
 			this.place = -1;
 			if (Place != 247) return "<p>The vampyre rejoins you as night falls." + this.addPersonFace(false, "15%") + "</p>";
 		}
@@ -113,10 +120,10 @@ function initialiseVampyre()
 	per.passTimeDay = function() {
 		setPlaceFlag("SacredClearing", 2, false);
 		this.setFlag(16, false);
-		if (this.place == -1) {
+		if (this.isHere()) {
 			this.place = 247;
 			if (Place != 247) return "<p>The vampyre leaves you and returns to the crypt until night falls" + this.addPersonFace(false, "15%") + "</p>";
-		} else if (this.place == 325) this.place = 247;
+		} else if (this.place == 325 || this.place == 374) this.place = 247;
 		return '';
 	};
 
@@ -166,7 +173,7 @@ function initialiseVampyre()
 		var herName = perF.getPersonName();
 
 		if (q == "create") {
-			md = WritePlaceHeader(false, "", "black");
+			md = WritePlaceHeaderNIP(false, "", "black");
 			this.setFlag(4);
 			this.showPerson("vamp1b.jpg");
 			addPlaceTitle(md, "Vampyre Questioning", '', 0, false, 'white');
@@ -179,7 +186,7 @@ function initialiseVampyre()
 		} else if (q == "heal") {
 
 			// Healing
-			md = WritePlaceHeader(false, "", "black");
+			md = WritePlaceHeaderNIP(false, "", "black");
 			this.showPersonRandom("vamp8", 2, "height:max");
 
 			addPlaceTitle(md, "The 'Gift of Life'", '', 0, false, 'white');
@@ -216,7 +223,7 @@ function initialiseVampyre()
 
 		} else if (perF.health < 100) {
 			// No Feeding
-			md = WritePlaceHeader(false, "", "black");
+			md = WritePlaceHeaderNIP(false, "", "black");
 			this.showPerson("vamp8c.jpg");
 
 			addPlaceTitle(md, "Vampyre and " + herName, '', 0, false, 'white');
@@ -271,7 +278,7 @@ function initialiseVampyre()
 			perF.health -= 20;
 			if (this.health < -100) {
 				// Full (Bad End)
-				md = WritePlaceHeader(false, "", "black");
+				md = WritePlaceHeaderNIP(false, "", "black");
 				this.showPersonRandom("vamp10", 3);
 
 				addPlaceTitle(md, "Vampyre Feeding", '', 0, false, 'white');
@@ -285,13 +292,13 @@ function initialiseVampyre()
 
 				startQuestionsOnly(undefined, 'white', md);
 				addRestartLink(md);
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return;
 
 			} else {
 				// Feeding ok
 				if (perF.fedUponEvent(this)) return;
-				md = WritePlaceHeader(false, "", "black");
+				md = WritePlaceHeaderNIP(false, "", "black");
 				this.showPersonRandom("vamp8", 2, "height:max");
 
 				addPlaceTitle(md, "Vampyre Feedng on " + herName, '', 0, false, 'white');
@@ -303,13 +310,13 @@ function initialiseVampyre()
 				);
 				startQuestions(undefined, 'white', md);
 				addLinkToPlace(md, "satisfy her lust with your body", Place, "type=vampfuck&who=" + perF.uid, '', '', '', "bloodblock");
-				if (perYourBody.FindItem(45) > 0) addLinkToPlace(md, "satisfy her lust on your plastic cocj", Place, "type=vampfuck&strapon=true&who=" + perF.uid, '', '', '', "bloodblock");
+				if (perYourBody.FindItem(45) > 0) addLinkToPlace(md, "satisfy her lust on your plastic cock", Place, "type=vampfuck&strapon=true&who=" + perF.uid, '', '', '', "bloodblock");
 			}
 		}
 
 		addOptionLink(md, "enough of that", "setQueryParams('');DoReturn()", "bloodblock");
 
-		WritePlaceFooter(md, '', true, true);
+		WritePlaceFooter(md);
 	};
 
 
@@ -387,7 +394,7 @@ function initialiseVampyre()
 				else {
 					if (p.uid == "alison") s += '<p>The vampyre looks at Alison with a slight smile';
 					else if (p.uid == "elian") {
-						if (p.checkFlag(3)) s += '<p>The vampyre ignores Rachael';
+						if (p.checkFlag(3)) s += '<p>The vampyre ignores ' + p.getPersonName();
 						else continue;
 					} else s += '<p>The vampyre looks intensely at ' + p.getPersonNameShort();
 					if (p.uid == "miku") s += '. Miku returns the vampyres gaze unflinching, never taking her eyes off her';
@@ -400,8 +407,162 @@ function initialiseVampyre()
 
 	per.showEvent = function()
 	{
-		var md, perS, myName;
+		if (Place == 192) return this.showEventSarah();
 		
+		var md;
+			
+		// Events anywhere, generally when she is following you
+		
+		if (sType == "chatvampyre") {
+			// Chat to her while she is your follower OR in the lounge room at home
+			md = WritePlaceHeaderNIP();
+			if (Place == 374) {
+				this.showPerson("loungec.jpg");
+				addPlaceTitle(md, "Chatting with Lilith");
+				md.write(
+					'<p>You sit on another chair and talk to Lilith for a little.</p>'
+				);
+			} else {
+				this.showPerson("vamp5b.jpg");
+				addPlaceTitle(md, "Chatting with the Vampyre");
+				md.write(
+					'<p>You stop for a moment to talk to the vampyre.</p>'
+				);				
+			}
+			startQuestionsOnly();
+
+			// General Questions
+			addQuestionR(md, '"I need to do something else, please leave me for now"',
+				'"Of course ' + perYou.getMaster() + '"' +
+				(isPersonHere("Tracy") ? ' To your surprise Lilith says goodbye to Tracy' : ''),
+				"Vampyre",
+				"movePerson(\\'Vampyre\\',247)",
+				""
+			);
+			if (this.place != -1 && Place != 247) {
+				addQuestionR(md, '"Please come with me now"',
+					'"Of course ' + perYou.getMaster() + '"',
+					"Vampyre",
+					"movePerson(\\'Vampyre\\',-1)",
+					""
+				);
+			}
+
+			if (this.checkFlag(25) || this.checkFlag(17)) {
+				if (!this.checkFlag(13)) {
+					addQuestionR(md, '"You can accompany me when I enter a building"',
+						'"Yes ' + perYou.getMaster() + '"',
+						"Vampyre",
+						"setPersonFlag(\\'Vampyre\\',13)",
+						""
+					);
+				} else {
+					addQuestionR(md, '"Please wait outside when I visit someone"',
+						'"I prefer the night ' + perYou.getMaster() + ', I will wait for you until needed"',
+						"Vampyre",
+						"setPersonFlag(\\'Vampyre\\',13,false)",
+						""
+					);				
+				}
+			}
+			if (!this.checkFlag(28) && this.checkFlag(29)) {
+				// Ask about Elian
+				addPopupLinkC(md, "ask about her hostility to Elian", "Lilith and Elian",
+					this.addPersonString("vamp11b.jpg", "height:max%", "right") +
+					'You ask her about her hostility to Elian, and she almost snarls as ahe bares her fangs. She really does not like Elian! She angrily says,</p>' +
+					'<p>"I will <b>never</b> touch it and I will not attack unless you command me to", you ask again, as she did not really answer your question. She says,</p>' +
+					'<p>"Demons hunt like a predator, but they toy and torture and kill for a whim or pleasure. A demon is not a person, it is a thing from beyond, a watcher from beyond the gates. I will not deal with them, and it is a mistake to deal with them."</p>' +
+					'<p>She refuses to discuss it any more',
+					false, 'setPersonFlag("Vampyre",28);dispPlace()'
+				);
+			}
+			if (checkPlaceFlag("Hotel", 11) && Place == 269) {
+				if (!this.checkFlag(14)) {
+					addPopupLinkC(md, 'ask if she would like to go for a swim', "Vampyres and Swimming",
+					this.addPersonString("pool-ask.jpg", "20%", "right") +
+					'She looks at you as if you are out of your mind, and then says "Not in water, and it would require a lot of people to fill this with blood". She turns her back on you dismissively.</p>' +
+					'<p>Well you can just let it go but at times her attitude is frustrating, she says she is yours, heart and body, but refuses you more often than not.</p>' +
+					addOptionLink("string", 'accept it', "setPersonFlag('Vampyre',14);dispPlace(Place)", "chatblock", "width:50%;margin-left:10%") +
+					addOptionLink("string", 'force the issue', "setPersonFlag('Vampyre',14);dispPlace(Place,'type=forcevampyre')", "chatblock", "width:50%;margin-left:10%"),
+					false, "", true);
+				}
+				if (this.checkFlag(15)) {
+					if (this.checkFlag(16)) addLinkToPlace(md, 'tell her we are going for a swim', Place, '', 'She looks at you, "We already have today" and turns her back on you');
+					else addLinkToPlace(md, 'tell her we are going for a swim', Place, 'type=vampyrepool');	
+				}
+			}
+			if (Place == 281 || Place == 282 || Place == 280) {
+				this.addDancingLink(md, 'talk to Lilith about dancing',
+					'You talk to Lilith about dancing here, and you expected her to snarl and refuse or make some cruel remark, instead she says,</p>' +
+					'<p>&quot;Certainly, to seduce and attract our prey are our art. I will show you how we hold they eye before the final kill...or other act&quot; You speak to Jade and arrange for Lilith to dance, not mentioning anything about Lilith\'s nature, but then again if Jade is as knowledgeable as she claims she should realise what Lilith is anyway.'
+				);
+			}
+			if (this.checkFlag(18) && !this.checkFlag(19)) {
+				addPopupLinkC(md, 'ask why she did not enter the restaurant', "Vampyres and Restaurants",
+					this.addPersonString("notinvited.jpg", "20%", "right") +
+					'You ask Lilith why she did not follow you into the restaurant. She stares at you without answering, so you stare back waiting for her answer. She hisses a reply,</p>' +
+					'<p>"The place reeks and I hate that caterwalling they call music there."</p>' +
+					'<p>No way, she is lying to you, and then you realise what it is, the restaurant uses garlic a lot...enough that it may repel Lilith, or at least make it repulsive for her...and you are not sure you disagree with her about the music. Alright then you will allow her to wait for you outside when you enter the restaurant.',
+					false, "setPersonFlag('Vampyre',19)"
+				);
+			}
+			if (this.checkFlag(24) && !this.checkFlag(25)) {
+				addPopupLinkC(md, 'ask why she did not follow you inside', "Vampyres and Invisibility",
+					this.addPersonString("notinvited.jpg", "20%", "right") +
+					'You ask Lilith why she did not follow you into the building. She replies,</p>' +
+					'<p>"Your cloak means you wish to hunt alone, I will wait for you outside"</p>' +
+					'<p>You try to tell her she can come inside with you if you are invisible, but she flatly refuses with no explanation or discussion',
+					false, "setPersonFlag('Vampyre',25)"
+				);
+			}			
+			if (Place == 38) {
+				var perLeanne = findPerson("Leanne");
+				if (perLeanne.place == 450 && perLeanne.isCharmedBy("Demon") && !isDemonGone()) {
+					// Leanne is saveable and the Vampyre is here
+					addLinkToPlaceC(md, 'tell the vampyre "Go inside and bring the thrall"', 53, 'type=vampabduct');
+				}
+			}
+			
+			addLinkToPlace(md, 'continue on', Place);
+			WritePlaceFooter(md);			
+			return true;
+		}
+
+		// Sex with the Vampyre
+		if (sType == "vampfuck") {
+			var perWith = findPerson(sWho);		// Who else is here, ie just go fed on
+			md = WritePlaceHeaderNIP(false, "", "black");
+
+			if (getQueryParam("strapon") == "true") this.showPersonRandomX("strapon", 2);
+			else if (isExplicit()) {	
+				if (perYou.isMaleSex()) this.showPersonRandomX("vamp9b", 2);
+				else this.showPersonRandomX("vamp9g", 2);
+			} else if (perYou.isMaleSex()) this.showPerson("vamp9b.jpg");
+			else this.showPersonRandom("vamp9g", 2);
+
+			addPlaceTitle(md, "Lust of the Vampyre", '', 0, false, 'white');
+			md.write(
+				'<p>Still dazed from the feeding, ' + perWith.getPersonNameShort() + ' watches in morbid fascination as Lilith pushes you to sit on the ground and straddles you, wasting no time to remove your top and pressing her lips against yours in a wild, hungry kiss.</p>' +
+				'<p>Her skin touches yours, flawless, wonderfully silken to the touch, and yet strangely cold. She has no heartbeat or breath but feels very much alive, her mere presence intoxicating to you as her tongue passionately mingles with your own. You quickly feel yourself getting swept away by the moment until she suddenly pushes your shoulders roughly to the ground and her lips come to rest on your neck. You realize her fangs are briefly scraping over your skin, forcing a weirdly pleasant shiver to rush through your entire body, and a strange part of you is almost disappointed as she recoils with a frustrated hiss.</p>' +
+				'<p>“You did not actually expect that to work?” You ask, with maybe a little more worry in your voice than you had intended, and she gives you a wide predatory grin as she pulls off your pants. “No, not today, ' + perYou.getMaster() + '.”</p>' +
+				'<p>Before you are able to speak further, her teeth briefly dig into your inner thigh. She doesn\'t draw blood, but there is a brief rush of pain followed by a wave of intense euphoria washing through your entire body as ' + (perYou.isMaleSex() ? 'her long fingers reach for your rock-hard cock and guide it into her pussy.' : 'her sharp fingernails carefully slide over your folds and legs before she presses her own pussy forcefully against yours.') + '</p>' +
+				'<p>Suffice to say, she does not feel cold everywhere. The two of you engage in a rough, passionate act of animistic sexuality, almost more of a sexual struggle who will be on top in the end, while ' + perWith.getPersonNameShort() + ' begins to slowly pleasure herself, her eyes still drowsy as she stares at the surreal scenario before her.</p>'
+			);
+			startQuestionsOnly(undefined, 'white', md);
+			addOptionLink(md, "enough of that", "setQueryParams('');DoReturn()", "bloodblock");
+
+			WritePlaceFooter(md);
+			return true;
+		}
+
+		if (sType == "feedOn" && getQueryParam("by") == this.uid) {
+			this.feedOnEvent(sWho);
+			return true;
+		}
+		
+		// Location specific events
+		
+		// Avernus club
 		if (Place == 282 && sType == "clubtakevampyre") {
 			md = WritePlaceHeader();
 			if (perYou.isMaleSex()) this.showPersonRorX("poledance-sexb.jpg");
@@ -424,157 +585,44 @@ function initialiseVampyre()
 			return true;			
 		}
 		
-		if (Place == 269 && sType == "vampyrepool") {
-			WaitHereOnly(4);
-			md = WritePlaceHeader();
-			this.showPerson("pool.jpg");
-			addPlaceTitle(md, "Ordering Lilith to Swim");
-			md.write(
-				'<p>At your orders Lilith removed her robe and put on a sort of swimsuit...well if you call the collection of straps a swimsuit and poses at the edge of the pool. She is clearly reluctant to actually swim.</p>' +
-				'<p>As you stated when insisting, this is for swimming so you you tell her to follow you into the pool. She does and it seems she has little skill in swimming so you keep to the shallows. After a little while you allow her to leave and you follow her out. As you start to dry off she states,</p>' +
-				'<p>"Satisfied? You have seen my wet body and your lusts must now be aroused, will you take me as well?"</p>'
-			);
-			startQuestions();
-			addLinkToPlaceC(md, 'as she says, take her!', Place, 'type=vampyrepoolsex');
-			addLinkToPlace(md, 'redress and continue on', Place);
-			WritePlaceFooter(md);
-			return true;
-		}
-		if (Place == 269 && sType == "vampyrepoolsex") {
-			md = WritePlaceHeader(false, perYou.isMaleSex() ? '' : 'td-left-large');
-			if (perYou.isMaleSex()) this.showPersonRorX("pool-sex-male.jpg");
-			else this.showPerson("pool-sex-female.jpg");
-			this.setFlag(16);
-			addPlaceTitle(md, "Take the Vampyre by the Pool");
-			md.write(
-				'<p>Your vampyre is cool to the touch but a bit warmer than usually, the pool was heated. Despite how cool to the touch she is, she is hot!</p>' +
-				'<p>You are amazed at times of her skill and passion but then again how long has she been around, learning these wonderful erotic talents, years, decades, centuries?</p>' +
-				'<p>Later she puts back on her hooded robe and quietly waits for you to dress and to leave this place. It is difficult at times to read her expression, did she enjoy it, does that matter to you or not...</p>'
-			);
-			startQuestions();
-			addLinkToPlace(md, 'redress and continue on', Place);
-			WritePlaceFooter(md);
-			return true;
-		}
-		
-		if (sType == "chatvampyre") {
-			// Chat to her while she is your follower
-			md = WritePlaceHeader();
-			this.showPerson("vamp5b.jpg");
-			addPlaceTitle(md, "Chatting with the Vampyre");
-			md.write(
-				'<p>You stop for a moment to talk to the vampyre.</p>'
-			);
-			startQuestionsOnly();
-			// General Questions
-			addQuestionR(md, '"I need to do something else, please leave me for now"',
-				'"Of course ' + perYou.getMaster() + '"',
-				"Vampyre",
-				"movePerson(\\'Vampyre\\',247)",
-				""
-			);
-			if (this.checkFlag(25) || this.checkFlag(17)) {
-				if (!this.checkFlag(13)) {
-					addQuestionR(md, '"You can accompany me when I enter a building"',
-						'"Yes ' + perYou.getMaster() + '"',
-						"Vampyre",
-						"setPersonFlag(\\'Vampyre\\',13)",
-						""
-					);
-				} else {
-					addQuestionR(md, '"Please wait outside when I visit someone"',
-						'"I prefer the night ' + perYou.getMaster() + ', I will wait for you until needed"',
-						"Vampyre",
-						"setPersonFlag(\\'Vampyre\\',13,false)",
-						""
-					);				
-				}
-			}
-			if (checkPlaceFlag("Hotel", 11) && Place == 269) {
-				if (!this.checkFlag(14)) {
-					addPopupLinkC(md, 'ask if she would like to go for a swim', "Vampyres and Swimming",
-					this.addPersonString("pool-ask.jpg", "20%", "right") +
-					'She looks at you as if you are out of your mind, and then says "Not in water, and it would require a lot of people to fill this with blood". She turns her back on you dismissively.</p>' +
-					'<p>Well you can just let it go but at times her attitude is frustrating, she says she is yours, heart and soul, but refuses you more often than not.</p>' +
-					addOptionLink("string", 'accept it', "setPersonFlag('Vampyre',14);dispPlace(Place)", "chatblock", "width:50%;margin-left:10%") +
-					addOptionLink("string", 'force the issue', "setPersonFlag('Vampyre',14);dispPlace(Place,'type=forcevampyre')", "chatblock", "width:50%;margin-left:10%"),
-					false, "", true);
-				}
-				if (this.checkFlag(15)) {
-					if (this.checkFlag(16)) addLinkToPlace(md, 'tell her we are going for a swim', Place, '', 'She looks at you, "We already have today" and turns her back on you');
-					else addLinkToPlace(md, 'tell her we are going for a swim', Place, 'type=vampyrepool');	
-				}
-			}
-			if (Place == 281 || Place == 282 || Place == 280) {
-				this.addDancingLink(md, 'talk to Lilith about dancing',
-					'You talk to Lilith about dancing here, and you expected her to snarl and refuse or make some cruel remark, instead she says,</p>' +
-					'<p>&quot;Certainly, to seduce and attract our prey are our art. I will show you how we hold they eye before the final kill...or other act&quot; You speak to Jade and arrange for Lilith to dance, not mentioning anything about Lilith\'s nature, but then again if Jade is as knowledgeable as she claims she should realise what Lilith is anyway.'
+		if (Place == 269) {
+			//Hotel swimming pool
+			if (sType == "vampyrepool") {
+				WaitHereOnly(4);
+				md = WritePlaceHeader();
+				this.showPerson("pool.jpg");
+				addPlaceTitle(md, "Ordering Lilith to Swim");
+				md.write(
+					'<p>At your orders Lilith removed her robe and put on a sort of swimsuit...well if you call the collection of straps a swimsuit and poses at the edge of the pool. She is clearly reluctant to actually swim.</p>' +
+					'<p>As you stated when insisting, this is for swimming so you you tell her to follow you into the pool. She does and it seems she has little skill in swimming so you keep to the shallows. After a little while you allow her to leave and you follow her out. As you start to dry off she states,</p>' +
+					'<p>"Satisfied? You have seen my wet body and your lusts must now be aroused, will you take me as well?"</p>'
 				);
+				startQuestions();
+				addLinkToPlaceC(md, 'as she says, take her!', Place, 'type=vampyrepoolsex');
+				addLinkToPlace(md, 'redress and continue on', Place);
+				WritePlaceFooter(md);
+				return true;
 			}
-			if (this.checkFlag(18) && !this.checkFlag(19)) {
-				addPopupLinkC(md, 'ask wy she did not enter the restaurant', "Vampyres and Restaurants",
-					this.addPersonString("notinvited.jpg", "20%", "right") +
-					'You ask Lilith why she did not follow you into the restaurant. She stares at you without answering, so you stare back waiting for her answer. She hisses a reply,</p>' +
-					'<p>"The place reeks and I hate that caterwalling they call music there."</p>' +
-					'<p>No way, she is lying to you, and then you realise what it is, the restaurant uses garlic a lot...enough that it may repel Lilith, or at least make it repulsive for her...and you are not sure you disagree with her about the music. Alright then you will allow her to wait for you outside when you enter the restaurant.',
-					false, "setPersonFlag('Vampyre',19)"
+			if (sType == "vampyrepoolsex") {
+				md = WritePlaceHeader();
+				if (perYou.isMaleSex()) this.showPersonRorX("pool-sex-male.jpg");
+				else this.showPerson("pool-sex-female.jpg");
+				this.setFlag(16);
+				addPlaceTitle(md, "Take the Vampyre by the Pool");
+				md.write(
+					'<p>Your vampyre is cool to the touch but a bit warmer than usually, the pool was heated. Despite how cool to the touch she is, she is hot!</p>' +
+					'<p>You are amazed at times of her skill and passion but then again how long has she been around, learning these wonderful erotic talents, years, decades, centuries?</p>' +
+					'<p>Later she puts back on her hooded robe and quietly waits for you to dress and to leave this place. It is difficult at times to read her expression, did she enjoy it, does that matter to you or not...</p>'
 				);
+				startQuestions();
+				addLinkToPlace(md, 'redress and continue on', Place);
+				WritePlaceFooter(md);
+				return true;
 			}
-			if (this.checkFlag(24) && !this.checkFlag(25)) {
-				addPopupLinkC(md, 'ask wy she did not follow you inside', "Vampyres and Invisibility",
-					this.addPersonString("notinvited.jpg", "20%", "right") +
-					'You ask Lilith why she did not follow you into the building. She replies,</p>' +
-					'<p>"Your cloak means you wish to hunt alone, I will wait for you outside"</p>' +
-					'<p>You try to tell her she can come inside with you if you are invisible, but she flatly refuses with no explanation or discussion',
-					false, "setPersonFlag('Vampyre',25)"
-				);
-			}			
-			if (Place == 38) {
-				var perLeanne = findPerson("Leanne");
-				if (perLeanne.place == 450 && perLeanne.isCharmedBy("Demon") && !isDemonGone()) {
-					// Leanne is saveable and the Vampyre is here
-					addLinkToPlaceC(md, 'tell the vampyre "Go inside and bring the thrall"', 53, 'type=vampabduct');
-				}
-			}
-			addLinkToPlace(md, 'continue on', Place);
-			WritePlaceFooter(md, '', true, true);			
-			return true;
 		}
 
-		// Sex with the Vampyre
-		if (sType == "vampfuck") {
-			var perWith = findPerson(sWho);		// Who else is here, ie just go fed on
-			md = WritePlaceHeader(false, isExplicit() && perYou.isMaleSex() ? "td-left-med" : "", "black");
-
-			if (getQueryParam("strapon") == "true") this.showPersonRandomX("strapon", 2);
-			else if (isExplicit()) {	
-				if (perYou.isMaleSex()) this.showPersonRandomX("vamp9b", 2);
-				else this.showPersonRandomX("vamp9g", 2);
-			} else if (perYou.isMaleSex()) this.showPerson("vamp9b.jpg");
-			else this.showPersonRandom("vamp9g", 2);
-
-			addPlaceTitle(md, "Lust of the Vampyre", '', 0, false, 'white');
-			md.write(
-				'<p>Still dazed from the feeding, ' + perWith.getPersonNameShort() + ' watches in morbid fascination as Lilith pushes you to sit on the ground and straddles you, wasting no time to remove your top and pressing her lips against yours in a wild, hungry kiss.</p>' +
-				'<p>Her skin touches yours, flawless, wonderfully silken to the touch, and yet strangely cold. She has no heartbeat or breath but feels very much alive, her mere presence intoxicating to you as her tongue passionately mingles with your own. You quickly feel yourself getting swept away by the moment until she suddenly pushes your shoulders roughly to the ground and her lips come to rest on your neck. You realize her fangs are briefly scraping over your skin, forcing a weirdly pleasant shiver to rush through your entire body, and a strange part of you is almost disappointed as she recoils with a frustrated hiss.</p>' +
-				'<p>“You did not actually expect that to work?” You ask, with maybe a little more worry in your voice than you had intended, and she gives you a wide predatory grin as she pulls off your pants. “No, not today, ' + perYou.getMaster() + '.”</p>' +
-				'<p>Before you are able to speak further, her teeth briefly dig into your inner thigh. She doesn\'t draw blood, but there is a brief rush of pain followed by a wave of intense euphoria washing through your entire body as ' + (perYou.isMaleSex() ? 'her long fingers reach for your rock-hard cock and guide it into her pussy.' : 'her sharp fingernails carefully slide over your folds and legs before she presses her own pussy forcefully against yours.') + '</p>' +
-				'<p>Suffice to say, she does not feel cold everywhere. The two of you engage in a rough, passionate act of animistic sexuality, almost more of a sexual struggle who will be on top in the end, while ' + perWith.getPersonNameShort() + ' begins to slowly pleasure herself, her eyes still drowsy as she stares at the surreal scenario before her.</p>'
-			);
-			startQuestionsOnly(undefined, 'white', md);
-			addOptionLink(md, "enough of that", "setQueryParams('');DoReturn()", "bloodblock");
-
-			WritePlaceFooter(md, '', true, true);
-			return true;
-		}
-
-		if (sType == "feedOn" && getQueryParam("by") == this.uid) {
-			this.feedOnEvent(sWho);
-			return true;
-		}
-
+		// Sacred clearing
 		if (Place == 141 && this.isMonstersInSacredClearing() && sType === "" && !checkPlaceFlag("SacredClearing", 2)) {
-
 			// Guarding against monsters?
 			// Will guard if you have charmed her or you are on the conspiracy path and she is charmed by Sarah
 			var bGuarded = (isConspiracyPath() && this.isCharmedBy("Sarah")) || (this.isCharmedBy("You") && this.isHere());
@@ -582,7 +630,7 @@ function initialiseVampyre()
 				// You are guarded!
 				if (this.isCharmedBy("Sarah")) {
 					// Sarah is her mistress!
-					md = WritePlaceHeader(true, '', 'black');
+					md = WritePlaceHeaderNIP(true, '', 'black');
 					if (this.checkFlag(9)) {
 						// a later encounter
 						showPopupWindow("<i>Too Thin</i> Sacred Clearing",
@@ -608,7 +656,7 @@ function initialiseVampyre()
 					}
 				} else if (this.place == -1) {
 					// You are her master/mistress
-					md = WritePlaceHeader(true, '', 'black');
+					md = WritePlaceHeaderNIP(true, '', 'black');
 					if (this.checkFlag(9)) {
 						showPopupWindow("<i>Too Thin</i> Sacred Clearing",
 							"<img src='Images/People/VampyreLilith/vamp11a.jpg' style='position:absolute;width:100%;bottom:0;right:0;margin-left:5px' alt='Vampyre'>" +
@@ -632,76 +680,80 @@ function initialiseVampyre()
 
 				} else return false; 
 				setPlaceFlag("SacredClearing", 2);
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			return false;
 		}
 
-		if (Place == 247 && sType == "bound") {
-			md = WritePlaceHeader(false, "", "black");
-			this.showPerson("vamp1b.jpg", "height:max");
+		if (Place == 247) {
+			// Crypt
+			if (sType == "bound") {
+				md = WritePlaceHeaderNP(false, "", "black");
+				this.showPerson("vamp1b.jpg", "height:max");
 
-			this.moveThem(-1);
-			this.charmThem(4);
-			this.other = 100;
-			setPersonOther("Sarah", 116);
+				this.moveThem(-1);
+				this.charmThem(4);
+				this.other = 100;
+				setPersonOther("Sarah", 116);
 
-			addPlaceTitle(md, "Vampyre Bound", '', 0, false, 'white');
-
-			md.write(
-				'<p>You start to recite the spell Sarah taught you, and the vampyre screams and collapses onto the floor crying out in pain or ecstasy and you finish the spell.</p>' +
-				'<p>The Vampyre stands with inhuman grace, and she partially removes her clothing, leaving a hood in place to cover most of her face. She has a beautiful, if pale body, and black hair, but her hair had odd qualities, and can appear reddish at times.</p>' +
-				'<p>She stands and looks intensely at you, and speaks, her voice sensual but with a dangerous quality,<br>' +
-				'<p>"' + perYou.getMaster() + ', that was the spell of Necromancy the charm of \'Bind the Dead\', or \'Unlife Enspelled\'. It has made me your thrall, in body and heart. I will do anything you command, my mind is my own but I still must obey and love you."</p>' +
-				'<p>You ask her what her name is, and she replies, "That I will never tell you, no spell will compel me to reveal that ultimate truth. You may call me Lilith for the woman from legend."</p>' +
-				'<p>You ask the vampyre where she came from, and she replies, "' + perYou.getMaster() + ', I am yours to command, let us return to the witch-girl before, I will kill them, and you can make them a loyal thrall. <b>You</b> may command me to do anything, except answer questions."</p>' +
-				'<p>She continues, "I am yours, I will follow you to the grave, but in the daytime I must rest here."</p>' +
-				'<p>She looks at you closely, "' + perYou.getMaster() + ', the ways are opening, the <i>thin</i> places will be very dangerous, and those of power, do not venture there without me, then again, I will never leave your side..."</p>'
-			);
-			startQuestions();
-			addLinkToPlace(md, 'examine the coffin', 248);
-			addLinkToPlace(md, 'exit the crypt?', 26);
-			WritePlaceFooter(md, '', false, true);
-			return true;
-		}
-
-		if (Place == 247 && this.other == 60 && sType === "") {
-			md = WritePlaceHeader(false, "td-left-large", "black");
-
-			// Vampyre is here!
-			if (perYourBody.FindItem(46) !== 0 || perYourBody.FindItem(44) !== 0) {
-				this.showPerson("vamp4a.jpg");
-
-				addPlaceTitle(md, "Vampyre At Bay", '', 0, false, 'white');
+				addPlaceTitle(md, "Vampyre Bound", '', 0, false, 'white');
 
 				md.write(
-					'<p>As you enter the crypt a black shadow leaps at you, the female vampyre. Again she recoils at the last moment, unable to quite approach you. She desperately struggles to approach and kill you!</p>'
+					'<p>You start to recite the spell Sarah taught you, and the vampyre screams and collapses onto the floor crying out in pain or ecstasy and you finish the spell.</p>' +
+					'<p>The Vampyre stands with inhuman grace, and she partially removes her clothing, leaving a hood in place to cover most of her face. She has a beautiful, if pale body, and black hair, but her hair had odd qualities, and can appear reddish at times.</p>' +
+					'<p>She stands and looks intensely at you, and speaks, her voice sensual but with a dangerous quality,<br>' +
+					'<p>"' + perYou.getMaster() + ', that was the spell of Necromancy the charm of \'Bind the Dead\', or \'Unlife Enspelled\'. It has made me your thrall, in body and heart. I will do anything you command, my mind is my own but I still must obey and love you."</p>' +
+					'<p>You ask her what her name is, and she replies, "That I will never tell you, no spell will compel me to reveal that ultimate truth. You may call me Lilith for the woman from legend."</p>' +
+					'<p>You ask the vampyre where she came from, and she replies, "' + perYou.getMaster() + ', I am yours to command, let us return to the witch-girl before, I will kill them, and you can make them a loyal thrall. <b>You</b> may command me to do anything, except answer questions."</p>' +
+					'<p>She continues, "I am yours, I will follow you to the grave, but in the daytime I must rest here."</p>' +
+					'<p>She looks at you closely, "' + perYou.getMaster() + ', the ways are opening, the <i>thin</i> places will be very dangerous, and those of power, do not venture there without me, then again, I will never leave your side..."</p>'
 				);
 				startQuestions();
-				addLinkToPlaceC(md, 'flee the crypt?', 26, '', '', '', "setPersonOther('Vampyre', 1000);");
+				addLinkToPlace(md, 'examine the coffin', 248);
+				addLinkToPlace(md, 'exit the crypt?', 26);
 				WritePlaceFooter(md);
 				return true;
-
-			} else {
-				// You left your defenses elsewhere
-				this.showPerson("vamp2.jpg");
-				addPlaceTitle(md, "Vampyre Attacks", '', 0, false, 'white');
-
-				md.write(
-					'<p>You enter the dark crypt and a black shadow leaps at you, a female with bared fangs, the vampyre! She pounces on your throat!</p>' +
-					'<p>Your life drains away, you did not have any <b>defenses</b> against the vampyre, you were an easy prey for the vampyre.</p>' +
-					'<p style="text-align:center"><b>This is the end, there is nothing left for you, you can only try again.</p>'
-				);
-
-				startQuestionsOnly();
-				addRestartLink(md);
 			}
-			WritePlaceFooter(md);
-			return true;
+
+			if (this.other == 60 && sType === "") {
+				md = WritePlaceHeader(false, "td-left-large", "black");
+
+				// Vampyre is here!
+				if (perYourBody.FindItem(46) !== 0 || perYourBody.FindItem(44) !== 0) {
+					this.showPerson("vamp4a.jpg");
+
+					addPlaceTitle(md, "Vampyre At Bay", '', 0, false, 'white');
+
+					md.write(
+						'<p>As you enter the crypt a black shadow leaps at you, the female vampyre. Again she recoils at the last moment, unable to quite approach you. She desperately struggles to approach and kill you!</p>'
+					);
+					startQuestions();
+					addLinkToPlaceC(md, 'flee the crypt?', 26, '', '', '', "setPersonOther('Vampyre', 1000);");
+					WritePlaceFooter(md);
+					return true;
+
+				} else {
+					// You left your defenses elsewhere
+					this.showPerson("vamp2.jpg");
+					addPlaceTitle(md, "Vampyre Attacks", '', 0, false, 'white');
+
+					md.write(
+						'<p>You enter the dark crypt and a black shadow leaps at you, a female with bared fangs, the vampyre! She pounces on your throat!</p>' +
+						'<p>Your life drains away, you did not have any <b>defenses</b> against the vampyre, you were an easy prey for the vampyre.</p>' +
+						'<p style="text-align:center"><b>This is the end, there is nothing left for you, you can only try again.</p>'
+					);
+
+					startQuestionsOnly();
+					addRestartLink(md);
+				}
+				WritePlaceFooter(md);
+				return true;
+			}
 		}
 		
 		if (Place == 464) {
+			// Alison's home
 			if (sType == "bitealison") {
 				setPersonFlag('Alison', 8);
 				md = WritePlaceHeader(false, 'td-left-med');
@@ -740,11 +792,14 @@ function initialiseVampyre()
 				return true;
 			}	
 		}
-		
-		if (Place != 192) return false;
-
+		return false;
+	};
+	
+	per.showEventSarah = function()
+	{
+		// Sarah's room
 		var perSarah = findPerson("Sarah");
-		var perB, myName;
+		var md, perB, myName;
 		
 		if (sType == "vampsarahthreesome") {
 			perSarah.setFlag(13);
@@ -972,7 +1027,7 @@ function initialiseVampyre()
 			// attacks, but Sarah has the book AND you can defend here (ie have the rosay or Pamela's bracelet)
 			// Binding the Vampyre
 			if (!isConspiracyPath()) passTimeNight();
-			md = WritePlaceHeader(false, "td-left-med", "black");
+			md = WritePlaceHeaderNIP(false, "td-left-med", "black");
 
 			this.showPerson("vamp1a.jpg");
 			this.charmThem(4, "Sarah");
@@ -990,13 +1045,13 @@ function initialiseVampyre()
 
 			startQuestions();
 			addLinkToPlaceC(md, "ask Sarah what she did", Place, "type=askvampyre");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
 		if (sType == "askvampyre") {
 
-			md = WritePlaceHeader(false, "", "black");
+			md = WritePlaceHeaderNIP(false, "", "black");
 			this.showPerson("vamp1b.jpg", "height:max");
 			this.moveThem(192);
 
@@ -1021,7 +1076,7 @@ function initialiseVampyre()
 			startQuestions();
 			addLinkToPlaceC(md, "talk more to Sarah", 192);
 
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -1037,7 +1092,7 @@ function initialiseVampyre()
 			if (!isConspiracyPath()) passTimeNight();
 			myName = perSarah.isCharmedBy() ? perYou.getMaster() : perYou.getPersonName();
 
-			md = WritePlaceHeader(false, !bKilled ? "td-left-large" : "", "black");
+			md = WritePlaceHeaderNIP(false, !bKilled ? "td-left-large" : "", "black");
 			ClearComments();
 
 			if (bKilled) {
@@ -1088,13 +1143,13 @@ function initialiseVampyre()
 				startQuestions();
 				addLinkToPlaceC(md, "reassure Sarah", Place, 'type=reassure');
 			}
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
 		if (sType == "reassure") {
 
-			md = WritePlaceHeader(false, "", "black");
+			md = WritePlaceHeaderNIP(false, "", "black");
 			this.showPerson("vamp4b.jpg");
 			addPlaceTitle(md, "Vampyre Repelled", '', 0, false, 'white');
 
@@ -1108,7 +1163,7 @@ function initialiseVampyre()
 
 			startQuestions();
 			addLinkToPlaceC(md, "talk more to Sarah", 192);
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
@@ -1181,6 +1236,42 @@ function initialiseVampyre()
 			return true;
 		}
 		
+		if (Place == 374 && this.isHere()) {
+			// Lounge room at your home and she is waiting here for you
+			var perTracy = findPerson("Tracy");
+			if (!this.checkFlag(28) && !this.checkFlag(29) && !perTracy.isHere()) {
+				// Tracy is in bed/not here
+				this.setFlag(28);
+				showPopupWindow("Lilith in the Lounge Room",
+					this.addPersonString("loungeb.jpg", "height:max%", "right") +
+					'You see Lilith is sitting on one of the plush chairs in the lounge room in a corner, looking surprisingly relaxed. So this is what she meant by waiting nearby.</p>' +
+					'<p>You ask her about her hostility to Elian, and she almost snarls as ahe bares her fangs. She really does not like Elian! She angrily says,</p>' +
+					'<p>"I will <b>never</b> touch it and I will not attack unless you command me to", you ask again, as she did not really answer your question. She says,</p>' +
+					'<p>"Demons hunt like a predator, but they toy and torture and kill for w whim or pleasure. A demon is not a person, it is a thing from beyond, a watcher from beyond the gates. I will not deal with them, and it is a mistake to deal with them."</p>' +
+					'<p>She refuses to discuss it any more'
+				);
+				return true;
+			}
+			if (!this.checkFlag(29) && perTracy.isHere()) {
+				// Tracy is here
+				// Two versions, did you previously see Lilith here or not
+				this.setFlag(29);
+				perTracy.setFlag(18);
+				perTracy.setFlag(19);
+				showPopupWindow("Tracy and Lilith in the Lounge Room",
+					perTracy.addPersonString("loungeteasea.jpg", "height:max%", "right") +
+					'As you walk toward the lounge room you hear some muffled words like "quick..almost here" and movement. You step into the room and you see Tracy and Lilith posed on the couch a bit provocatively. Tracy smiles, and says,</p>' +
+					'<p>"Hey Little ' + perTracy.getYourNameFor() + ' Lilith and I were just...exercising, did you want to join us? Three is always more fun than two?" Tracy is just being a tease as usual, but you are surprised Lilith went along with it! You say you will happily give them a workout later and Tracy laughs and returns to sitting on the couch.</p>' +
+					'<p>You see Lilith walks over and sits on one of the plush chairs in the corner, looking surprisingly relaxed. So this is what she meant by waiting nearby.</p>' +
+					(!this.checkFlag(28) ? '<p>You think about asking her about Elian, but decide you should do this elsewhere and Tracy is not around</p>' : '') +
+					'<p>Tracy chats to Lilith and yourself, though Lilith says little, <b>but</b> she does reply at times. Tracy comments,</p>' +
+					'<p>"Lilith is a cool companion here, she\'s not very talkative but you really know what she means or wants. She really hates nicknames, don\'t call her Lilly or something like that. She really likes action movies, the more violence the better. Despite her dress horror is not her thing!"</p>' +
+					'<p>Somehow Tracy and Lilith get on well together, you have no idea why, but they clearly do get on!'
+				);
+				return true;				
+			}			
+		}
+		
 		if (Place == 450 && isCharmedBy("Leanne", "Demon") && nFromPlace == 38 && this.place == -1) addComments('<p style="margin-top: 0em; margin-bottom: 0.5em;font-size:large;cursor: pointer;"><b>Vampyre</b></p>“This place... I will not be able to get past its threshold.” Lilith seems annoyed.</p><p>“I shall wait outside, do not take too long, ' + perYou.getMaster() + '". Maybe you should talk to her when you finish inside.');
 		else if (Place != 178 && !this.checkFlag(13) && !isOutside() && isOutside(nFromPlace) && this.place == -1 && sType === "") {
 			if (!this.checkFlag(17)) {
@@ -1222,7 +1313,7 @@ function initialiseVampyre()
 				this.addPersonString("pool-force.jpg", "height:max%", "right") +
 				'You have had enough of her attitude, and while she is frightening you cannot let her dominate as much as she does. You cover what fear you are feeling and trust to the spell she is under and tell her,</p>' +
 				'<p>"Enough, I am your ' + perYou.getMaster() + ' and you will do as I command. This is not running water and will not harm you. You will go swimming with me any time I so command."</p>' +
-				'<p>She snarls and you realise you just called the predatory vampyre a coward. You cover your fear and quickly continue, "A powerful vampyre like you is unaffected by still water and if I want to see your body or use it for my pleasure, then I will. You are mine, heart and soul!". You remind her of her own words.</p>' +
+				'<p>She snarls and you realise you just called the predatory vampyre a coward. You cover your fear and quickly continue, "A powerful vampyre like you is unaffected by still water and if I want to see your body or use it for my pleasure, then I will. You are mine, heart and body!". You remind her of her own words.</p>' +
 				'<p>She looks at you oddly, is that a smile or even a look of respect. No, more likely of contempt well hidden. She answers,</p>' +
 				'<p>"Yes ' + perYou.getMaster() + ', as you command." and she starts stripping her robe...',
 				"setPersonFlag('Vampyre',15);dispPlace(Place,'type=vampyrepool')"
@@ -1266,7 +1357,7 @@ function initialiseVampyre()
 			return true;			
 		}
 		
-		if (Place == 46 && !this.checkFlag(22) && this.isHere()) {
+		if (Place == 46 && !this.checkFlag(22) && !this.checkFlag(27) && this.isHere()) {
 			// Visiting the bedroom for the first time
 			if (getTotalPeopleHere(true) > 0) {
 				// Someoe else is here (Tess etc)
@@ -1339,18 +1430,20 @@ function initialiseVampyre()
 	per.showDancing = function()
 	{
 		var md = WritePlaceHeader();
-		this.showPerson("poledancea.jpg");
+		var chc = getImagePicked(this.showPersonRandom("poledance"), "poledance");
 		addPlaceTitle(md, "Lilith\'s Dance");
 		AddCash(10);
+		md.write('<p>You lose track of Lilith for a moment and then she gracefully takes to the stage, her makeup is different ');
+		if (chc == "poledancea") md.write('and she is wearing an outfit made of straps and her cloak. She dramatically bares her fangs, and you hear people near whispering "A vampire costume, a bit cliché but still hot". You have to agree.');
+		else md.write('looking more \'human\' and dressed in a top and shorts, the \'Daisy Duke\' look, and damn it looks hot on her! You do hear someone comment "Has she got fangs?", they must be very observant, you did not notice any.');
 		md.write(
-			'<p>You lose track of Lilith for a moment and then she gracefully takes to the stage, her makeup is different and she is wearing an outfit made of straps and her cloak. She dramatically bares her fangs, and you hear people near whispering "A vampire costume, a bit cliché but still hot". You have to agree.</p>' +
-			'<p>You have to admit her confident talk about seducing people is completely shown here. She dances in a highly erotic way, emphasising her agility and strength. She dances to show her erotic power over her audience, and that she has!</p>' +
+			'</p><p>You have to admit her confident talk about seducing people is completely shown here. She dances in a highly erotic way, emphasising her agility and strength. She dances to show her erotic power over her audience, and that she has!</p>' +
 			'<p>After joins you, wearing very little, most eyes in the club still on her. She tells you,</p>' +
 			'<p>"Their lusts and mine are enflamed. Take me, or I will have one of them take me"</p>' +
 			'<p>You consider her decree, and wonder if anyone else she takes will survive the encounter ' + (isMurderPath() ? 'alive' : 'uninjured') + '.</p>'
 		);
 		startQuestions();
-		addLinkToPlaceC(md, 'take her in a private booth', Place, 'type=clubtakevampyre');
+		addLinkToPlaceC(md, 'take her in a private booth', Place, 'type=clubtakevampyre?chc=' + chc);
 		addLinkToPlaceC(md, 'let her go with another', Place, '', 'She leaves you and gestures to an audience member and they leave the club for an encounter. Maybe 10 minutes later she returns without her companion.');
 		WritePlaceFooter(md);
 	};

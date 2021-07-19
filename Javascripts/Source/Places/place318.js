@@ -41,6 +41,14 @@ function ShowPlace318(stype)
 		);
 		setQueryParams();
 	}
+	if (!checkPlaceFlag("Church", 2)) {
+		showPopupWindow("Nun Praying",
+			addImageString("Church/Nun7/start.jpg", "height:max%", "right") +
+			"You see a nun in the distance praying, this reminds you that the church has an abbey attached and the public are only allowed in the main area here!"
+		);
+		setPlaceFlag("Church", 2);
+	}
+		
 
 	// Title
 	addPlaceTitle(md, "Lady of Our Heavenly Father", "church2.jpg");

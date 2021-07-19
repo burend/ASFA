@@ -103,6 +103,10 @@ function ShowPlace192(stype)
 
 	}
 
+	// Murder (charmed) or conspiracy
+	if (((bMurder && bCharmed) || isConspiracyPath()) && checkPersonFlag("Brandi", 15) && (!per.checkFlag(17) && !per.checkFlag(18) && !per.checkFlag(19) && !per.checkFlag(20))) addQuestionC(md, 'ask Sarah to borrow her limo on the weekend', "Sarah", 960);
+
+
 	// Conspiracy only
 	if (isConspiracyPath()) {
 		// Learn a training

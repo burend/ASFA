@@ -58,7 +58,7 @@ function CastingPassSpell()
 		if (wherePerson("Catherine") == 436 && wherePerson("AdeleRoss") != 436) gotoPlace(37, '', 'The house is securely locked, there might be someone home but there is no answer to the door or their phones.');
 		else addComments('You cast a spell.... but it fizzles.');
 	}
-	else if (Place == 42) {
+	else if (Place == 52) {
 		//Alley to the "Secret Room"
 		if (isPlaceKnown("HiddenRoom")) addComments('You already know how to enter the hidden room, you can just walk there!');
 		else CastPassSpell(53, '', "A wall in the alley shimmers and you realise there is a door there. The spell has unlocked the door for you. The door is very well concealed but you can now enter the room whenever you like.");
@@ -74,7 +74,7 @@ function CastingPassSpell()
 	}
 	else if (Place == 44) {
 		// Kollam Street
-		CastPassSpell(42);
+		CastPassSpell(52);
 	}
 	else if (Place == 65) {
 		// Active crime scene
@@ -144,7 +144,7 @@ function CastingPassSpell()
 		}
 
 	}
-	else if (Place == 276) addComments('You try and cast the spell... but it almost seems to <i>bounce</i> off of the safe.  Somehow it must be protected from magic.  You\'ll have to find another way.</p>');
+	else if (Place == 244) addComments('You try and cast the spell... but it almost seems to <i>bounce</i> off of the safe.  Somehow it must be protected from magic.  You\'ll have to find another way.</p>');
 	else if (Place == 229 && isPlaceKnown("GinasHouse")) {
 		// Rathdown Road to Gina's house
 		CastPassSpell(302);
@@ -229,6 +229,10 @@ function CastingPassSpell()
 		// Construction road to Yoolaroo Rd
 		CastPassSpell(43, 'type=gate', 'You cast the spell and step through the fence, avoiding the gate and the symbol. You appear on the edge of Yoolaroo Drive.');
 	}
+	else if (Place == 481 && checkPlaceFlag("Park", 8)) {
+		// Construction site to enter the office
+		if (CastPassSpell(482)) return "nofooterrefresh";
+	}	
 	else addComments('You cast a spell.... but it fizzles.');
 
 	return isCommentsShown() ? undefined : "nofooter";

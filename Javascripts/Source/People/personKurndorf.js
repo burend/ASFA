@@ -141,7 +141,7 @@ function RepliesKurndorf(nR)
 		PlaceI(50, 45); //Salt Shaker in your kitchen (Done)
 		PlaceI(51, 318); //Ritual Chalice @ the Church Congregation (Done)
 		PlaceI(53, 321); //Silver Dagger  @ the Church Storeroom (Done)
-		PlaceI(59, 242); //Chalk @ the teachers lounge (Done)
+		PlaceI(59, 72); //Chalk @ the teachers lounge (Done)
 	}
 	else if (nR == 143101) // Researching Invisibility
 	{
@@ -272,7 +272,7 @@ function initialiseKurndorf()
 			md.write('<input type="button" name="button" value="please" onClick="ResearchOLD(\'I\',document.FormChar.research.value)"></p></form><p>');
 			addLinkToPlace(md, 'Never mind...', 342);
 			
-			AddRightColumnLarge(md);
+			AddPeopleColumnLarge(md);
 			AddImage("kurndorf.jpg");
 			WritePlaceFooter(md);
 			return true;

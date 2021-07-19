@@ -10,8 +10,8 @@ function RepliesGina(nR)
 	{
 		bChat = false;
 		setPlaceFlag("Museum", 3, false);	// Set safe as Open   SAFE CLOSED = FALSE
-		moveItem(29, 276);  // Place the Vase in that location
-		Place = 276;
+		moveItem(29, 244);  // Place the Vase in that location
+		Place = 244;
 		addComments('<table><tr><td>' + this.addPersonString("gina3.jpg", "30%") + '</td><td>');
 		addComments('Gina moves to open the safe for you.  "Anything else ' + myName + '?" she asks quickly, a longing look on her face.</td></tr></table>');
 	}
@@ -49,7 +49,7 @@ function initialiseGina()
 	};
 	
 	per.whereNow = function() {
-		if ((Place == 241 || Place == 304) && this.place == 0) return Place;
+		if ((Place == 241 || Place == 245) && this.place == 0) return Place;
 		if (Place == 303 && sType == "ginabath") return Place;
 		return this.place;
 	};
@@ -93,6 +93,19 @@ function initialiseGina()
 
 	per.showEventPopup = function()
 	{
+		if (sType == "ginatransformbody") {
+			CastTransform(1);
+			if (this.dress == "Shyla") this.dress = "Bridgette";	
+			else this.dress = "Shyla";
+			showPopupWindow("Transformed",
+				this.addPersonString("gina12.jpg", "height:max%", "right") +
+				'Gina\'s body starts to subtly change, her face completely changes as if a different person is standing in fromt of you.<p>' +
+				'<p>You tentatively as if she is alright and she replies and she is definitely still Gina, still an attractive blonde and the same person she was before',
+				'dispPlace()'
+			);
+			return true;
+		}
+		
 		if (sType !== "") return false;
 
 		if (Place == 239 && !this.checkFlag(1) && this.place === 0) {
@@ -216,7 +229,7 @@ function initialiseGina()
 		
 		if (Place == 303) {
 			if (sType == "mirror") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPerson("gina27.jpg");
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>In the mirror you see Gina, or actually yourself possessing Gina. You are wearing a bathtowel and it appears nothing else. Gina&apos;s large breasts are keeping the towel from falling or is it that the towel is barely containing them?');
@@ -227,11 +240,11 @@ function initialiseGina()
 				startQuestions();
 				addLinkToPlace(md, 'look closer', 303, 'type=mirror1');
 				addLinkToPlace(md, 'look away', 303, 'type=');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;
 
 			} else if (sType == "mirror1") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPerson("ginashower1.jpg");
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>You look fascinated and see out of the corner of your eye there is a full length mirror nearby and you hear the shower is running. You look in the mirror and see Gina, or is it you?</p>');
@@ -239,11 +252,11 @@ function initialiseGina()
 				startQuestions();
 				addLinkToPlace(md, 'well... while you are here', 303, 'type=mirror2');
 				addLinkToPlace(md, 'No, no get back what you were here for', 303, 'type=');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;				
 
 			} else if (sType == "mirror2") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPersonRandom("ginashower2", 2);
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>You step into the shower and lean against the glass wall, pressing Gina\'s...your breasts against the glass wall. In the mirror you can see the lovely sight.</p>');
@@ -251,11 +264,11 @@ function initialiseGina()
 				startQuestions();
 				addLinkToPlace(md, '...she was just about to have a shower...', 303, 'type=mirror3');
 				addLinkToPlace(md, 'No, no get back what you were here for', 303, 'type=');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;				
 
 			} else if (sType == "mirror3") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPerson("ginashower3.jpg");
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>You feel the shower on your body and start to rub your body with hands and soap. You start to feel very aroused, especially when you touch your large breasts.</p>');
@@ -263,11 +276,11 @@ function initialiseGina()
 				startQuestions();
 				addLinkToPlace(md, 'you have to explore more...', 303, 'type=mirror4');
 				addLinkToPlace(md, 'No, no get back what you were here for', 303, 'type=');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;
 				
 			} else if (sType == "mirror4") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPersonRorX("ginashower4.jpg");
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>You touch your pussy, well Gina\'s, and feel a surge of arousal. quickly feeling close to your first orgasm in her body...</p>');
@@ -275,11 +288,11 @@ function initialiseGina()
 				startQuestions();
 				addLinkToPlace(md, '...what is that over there...', 303, 'type=mirror5');
 				addLinkToPlace(md, 'No, no get back what you were here for', 303, 'type=');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;				
 
 			} else if (sType == "mirror5") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPerson("ginashower5.jpg");
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>You see a dildo sitting on a shelf nearby, ready for use...</p>');
@@ -287,11 +300,11 @@ function initialiseGina()
 				startQuestions();
 				addLinkToPlace(md, '...well Gina uses it...', 303, 'type=mirror6');
 				addLinkToPlace(md, 'No, no get back what you were here for', 303, 'type=');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;			
 
 			} else if (sType == "mirror6") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPersonRorX("ginashower6.jpg");
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>You play with the dildo for a little, but very quickly ');
@@ -301,18 +314,18 @@ function initialiseGina()
 
 				startQuestions();
 				addLinkToPlace(md, '...ummm...', 303, 'type=mirror7');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;
 
 			} else if (sType == "mirror7") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNI();
 				this.showPerson("ginashower7.jpg");
 				addPlaceTitle(md, "Gina\'s Bathroom Mirror");
 				md.write('<p>You look at Gina in the mirror in the afterglow of your orgasm, vowing to try this again sometime...</p>');
 
 				startQuestions();
 				addLinkToPlace(md, 'Enough for now, get back to what you were here for', 303, 'type=');
-				WritePlaceFooter(md, '', true);
+				WritePlaceFooter(md);
 				return true;
 			}
 		}
@@ -365,7 +378,7 @@ function initialiseGina()
 					addLinkToPlaceC(md, '"drink my juices"', Place, "type=ginabj");
 				}
 				addLinkToPlaceC(md, '"play with yourself"', Place, "type=ginaplay");
-				addLinkToPlace(md, "let her finish, then speak with Gina some more", 304);
+				addLinkToPlace(md, "let her finish, then speak with Gina some more", 245);
 				addLinkToPlace(md, "leave the Museum", 238);
 			}
 			else //@ home
@@ -419,7 +432,7 @@ function initialiseGina()
 			}
 			startQuestions();
 			if (bMuseum) {
-				addLinkToPlace(md, "let her finish, then speak with Gina some more", 304);
+				addLinkToPlace(md, "let her finish, then speak with Gina some more", 245);
 				addLinkToPlace(md, "leave the Museum", 238);
 			} else {
 				//@ home
@@ -463,7 +476,7 @@ function initialiseGina()
 			}
 			startQuestions();
 			if (bMuseum) {
-				addLinkToPlace(md, "let her finish, then speak with Gina some more", 304);
+				addLinkToPlace(md, "let her finish, then speak with Gina some more", 245);
 				addLinkToPlace(md, "leave the Museum", 238);
 			} else {
 				//@ home
@@ -500,7 +513,7 @@ function initialiseGina()
 			);
 			startQuestions();
 			if (bMuseum) {
-				addLinkToPlace(md, "let her finish, then speak with Gina some more", 304);
+				addLinkToPlace(md, "let her finish, then speak with Gina some more", 245);
 				addLinkToPlace(md, "leave the Museum", 238);
 			} else {
 				//@ home
@@ -530,7 +543,7 @@ function initialiseGina()
 			}
 			startQuestions();
 			if (bMuseum) {
-				addLinkToPlace(md, "let her finish, then speak with Gina some more", 304);
+				addLinkToPlace(md, "let her finish, then speak with Gina some more", 245);
 				addLinkToPlace(md, "leave the Museum", 238);
 			} else {
 				//@ home
@@ -680,7 +693,7 @@ function initialiseGina()
 			startQuestions();
 			if (this.place === 0) //@ the Museum
 			{
-				addLinkToPlace(md, "let her finish, then speak with Gina some more", 304);
+				addLinkToPlace(md, "let her finish, then speak with Gina some more", 245);
 				addLinkToPlace(md, "leave the Museum", 238);
 			} else {
 				//@ home
@@ -689,7 +702,61 @@ function initialiseGina()
 			}
 			WritePlaceFooter(md);
 			return true;
-		}		
+		}	
+	
+		if (sType == "asklola") {
+			md = WritePlaceHeader();
+			this.showPerson("ginamuseum2.jpg");
+			setPersonFlag("Lola", 4);
+			addPlaceTitle(md, "Gina gives information on the Curator");
+
+			md.write(
+			  '<p>Oh ' + perYou.getMaster() + ' I think you will like the curator of the museum. Her name is Lola and she is a huge history nerd. I think she has a kinky side though. It was actually her idea to set up bondage displays in the Museum.</p>' +
+			  '<p>You ask, "Interesting.  And where can I find her."</p>' +
+			  '<p>Gina answers, "Oh her office is right off of the Main Lobby of the Museum.  She is almost always in there if the museum is open. I can give you the key that unlocks it so you can walk right in."</p>' +
+			  '<p>You compliment her, "Thank you slave. You have been most helpful."</p>'
+			 );
+
+			startQuestions();
+			addLinkToPlace(md, 'talk more to Gina', 245);
+			WritePlaceFooter(md);
+			return true;
+		}
+		
+		// Museum Security Guard
+
+		if (sType == "approachgina") {
+			md = WritePlaceHeader();
+			
+			if (this.isCharmedBy()) {
+				// Gina is CHARMED
+				return dispPlace(245);
+			}
+
+			var perMG = findPerson("Mrs Granger");
+			var perDA = findPerson("Diane");
+			
+			if (perMG.other >= 50 && perDA.getQuestArrested() < 50) this.showPerson("gina1c.jpg");	// Previously tried to take the vase?
+			else this.showPerson("gina1a.jpg");
+
+			addPlaceTitle(md, "Museum Guard");
+
+			if (isShopOpen(2, 0, true)) md.write('<p>The security guard stops you to ask your business. She is not pleased to see you wandering around.</p>');
+			else md.write('<p>The security guard stops you seeming to think you are an employee of the museum working late into the night.</p>');
+
+			// If you had Mrs Granger Jump the Guard && haven't been aquitted in court yet.
+			if (perMG.other >= 50 && perDA.getQuestArrested() < 50) {
+				md.write('<p>She recognizes you from the vase robbery and immediately reaches for her pistol. "Hold it right there!" she cries.</p>');
+			}
+
+			startQuestions();
+
+			if (isShopOpen(2, 0, true)) addLinkToPlace(md, "exit the museum before you get arrested", 238);
+			else addLinkToPlace(md, 'run away from her', 239);
+
+			WritePlaceFooter(md);
+			return true;
+		}
 		
 		return false;
 	};
@@ -716,7 +783,7 @@ function initialiseGina()
 		// Casting the charm spell
 		if (no == 14 && cmd == 2) {
 			// Museum Guard Gina
-			if (Place == 241 || Place == 277 || Place == 302) {
+			if (Place == 241 || Place == 245 || (Place == 239 && sType == "approachgina") || Place == 302) {
 				if (isPossess("Gina")) ddComments("You are currently Possessing Gina, there is no-one else around.");
 				else {
 					if (this.FindItem(43) > 0) {
@@ -729,6 +796,22 @@ function initialiseGina()
 					}
 				}
 				return "handled";
+			}
+		}
+		// Casting the transform spell
+		if (no == 18 && cmd == 2) {
+
+			if (this.isHere()) {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her.");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				ClearComments();
+				dispPlace(Place, 'type=ginatransformbody');
+				return "nofooter";
 			}
 		}
 		return "";		// do nothing

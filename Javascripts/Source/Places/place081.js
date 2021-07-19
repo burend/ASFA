@@ -56,7 +56,7 @@ function ShowPlace81(stype)
 				'<p>You realize she still has some memories of Davy and suggest delaying this for a while, but she shakes her head.</p>' +
 				'<p>"N...no, It\'s fine. Let me show you my love another way, instead."</p>' +
 				'<p>She asks you to sit down and kneels before you, reaching out with both hands to open your pants, but once again recoils after a few seconds, looking both confused and embarrassed.</p>' +
-				'<p>“Come to think of it, Tina and Mrs. Robbins might hear us.” You finally interrupt her, realizing that she might still be fighting both your charm and the memories of her time as Davys slave in her subconsciousness.“ We might be taking this too fast, anyway, '
+				'<p>“Come to think of it, Tina and Mrs. Robbins might hear us.” You finally interrupt her, realizing that she might still be fighting both your charm and the memories of her time as Davy\'s slave in her subconsciousness.“ We might be taking this too fast, anyway, '
 			);
 			if (!perYou.isBornMale()) md.write('and you didn\'t even know you could fall for another woman until now, ');
 			md.write(
@@ -207,7 +207,7 @@ function ShowPlace81(stype)
 						'<p>Ellie looks at you curiously, "Well...I am feeling a bit odd...'
 					);
 					if (perYou.isBornMale()) md.write('but yes you are handsome');
-					else md.write('nd yes, you are beautiful... but I am not really into girls');
+					else md.write('and yes, you are beautiful... but I am not really into girls');
 					md.write(
 						'..."</p><p>She looks at you more closely, and as the idea of you as a potential lover sinks into her mind, you reinforce it,</p>' +
 						'<p>"You are a very cute girl and I did not come here expecting you to <b>fall in love with me</b>, I mean love at first sight is something for romance novels"</p>' +

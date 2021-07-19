@@ -109,6 +109,18 @@ function RepliesBambi(nR)
 		addComments('"You\'re a little forward, aren\'t you? I don\'t usually give customers extra service ' + myLord + ', but in your case..." She eyes you up and down and you suddenly feel as if you\'re nothing more than a piece of meat. Then she continues, "I think ' + sCurrency + '100 should buy you some of my time."');
 		per.other = 5;
 	}
+	else if (nR == 10803)
+	{
+		bChatLeft = false;
+		if (bCharm) {
+			// Charmed
+			addComments('"The courts are this way ' + myLord + '" She leads you to the access door and gives you a small keycard to access the private courts');
+			setPlaceKnown("TennisCourts");
+		} else {
+			// Normal
+			addComments('"The courts are available to paying guests of the Hotel and select other people" and that seems to not include you.');
+		}
+	}	
 	else if (nR == 10805)
 	{
 
@@ -571,11 +583,11 @@ function initialiseBambi()
 		if (this.isHere() && sType == "transformbreasts") {
 			// BE Transformation
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(16)) {
 				this.setFlag(16);
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/be c.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/be c.jpg', "50%") +
 					'<p>You cast the spell and Bambi groans, "Ah ' + perYou.getLord() + ' what is this?" and pulls apart her top. You see her breasts swelling, growing larger and larger, her modest sized breasts growing to quite large.</p>' +
 					'<p>As she groans you thought you heard some laughing, a customer elsewhere in the hotel maybe. Bambi sighs as her breasts stop growing, and she says, panting a little,<p>' +
 					'<p>"' + perYou.getLord(true) + ' I am yours anyway, but I had always liked my breasts as they were. If I thought customers wanted more I would of sought augmentation. I know men prefer larger generally, but not all. Still, if you could do this on demand, you could make a fortune!."</p>' +
@@ -584,14 +596,31 @@ function initialiseBambi()
 			} else {
 				this.setFlag(16, false);
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/bs d.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/bs d.jpg', "50%") +
 					'<p>You cast the spell and Bambi groans, "Ah ' + perYou.getLord() + ' what is this?" and pulls apart her top. You see her breasts diminishing, smaller and smaller, her huge sized breasts diminishing to quite normal.</p>' + 
 					"<p>As she groans you thought you heard some laughing, a customer elsewhere in the hotel maybe. Bambi sighs as her breasts stop diminishing, and she says, panting a little,<p>" + '<p>"' + perYou.getLord(true) + ' I am yours anyway, but I had always liked my breasts as they were! I know men prefer larger generally, but not all. Still, if you could do this on demand, you could make a fortune!."</p>' +
 					"<p>A business doing magical augmentations? You do not think you could control the spell enough to do this reliably, and there is the question of mana. You look at Bambi, she seems to have recovered and accepted her old attributes back.</p>"
 				);
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
+			return true;
+		}
+		
+		if (this.isHere() && sType == "transformbody") {
+			// BE Transformation
+			CastTransform(1);
+			if (this.dress == "Kiki") this.dress = "Jessica";
+			else this.dress = "Kiki";
+			md = WritePlaceHeaderNIP(true, '', 'black');
+			showPopupWindow("Transformation",
+				this.addPersonString("bambi18.jpg", "height:max%", "rightpopup") +
+				'<p>You cast the spell and Bambi groans, "Ah ' + perYou.getLord() + ' what is this?" and and she turns around. As she does you see her figure and face shifting.</p>' + 
+				"<p>A few minute later the change stops and Bambi? sighs and she says,<p>" + '<p>"' + perYou.getLord(true) + ' what was that, I feel nothing different?"</p>' +
+				"<p>You look at her, she sounds similar and her attitude is the same. It still seems to be Bambi, just her body has changed!</p>"
+			);
+			setQueryParams("");
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -746,11 +775,16 @@ function initialiseBambi()
 					return "handled";
 				}
 				if (!CastTransform(1, true)) return "handled";
-
+				
 				// It can be cast
-				ClearComments();
-				dispPlace(Place, 'type=transformbreasts');
-				return "nofooter";
+				setCommentsNoClick(
+					'<div class="conversebubble" style="cursor:default">' +
+					'<table><tr><td width="80%"><p>You decide to try the transformation spell on Bambi and tell her to prepare herself. As you start to recite the spell she falls into a sort of trance. As she does your attention is drawn to...</p>'
+				);
+				addOptionLink("comments", 'her face', "ClearComments();dispPlace(" + Place + ",'type=transformbody')");
+				addOptionLink("comments", 'her breasts', "ClearComments();dispPlace(" + Place + ",'type=transformbreasts')");
+				addComments('</td><td width="20%">' + this.addPersonString("bambi18.jpg") + '</td></tr></table>');
+				return "handled";
 			}
 		}
 

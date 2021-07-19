@@ -104,7 +104,7 @@ function initialiseCharlie()
 			WaitHereOnly(6);		// 1Hr
 			var wd = this.dress == "Male" && isExplicit() && Math.random() < 0.5
 			md = WritePlaceHeader();
-			if (this.dress == "Male") this.showPersonRorX("break-discipline1" + (wd ? "a" : "b"));
+			if (this.dress == "Male") this.showPersonRorX("break-discipline1" + (wd ? "a" : "b") + ".jpg");
 			else this.showPersonRandom("break-discipline" + (sType == "charliebambipyhsical1" ? "1" : "2"), sType == "charliebambipyhsical1" ? 3 : 2);
 			addPlaceTitle(md, "Bambi\'s Physical Discipline");
 			md.write(
@@ -294,9 +294,9 @@ function initialiseCharlie()
 			if (sType == "charlietransformgendermale") {
 				CastTransform(1);
 				this.dress = "Female";
-				md = WritePlaceHeader(true, '', 'black');
+				md = WritePlaceHeaderNIP(true, '', 'black');
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/' + getImageRandom('tgm2f ', oImages.GenericSex.tg_m2f) + '.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="TG">' +
+					addImageRandomString('GenericSex/tgm2f', oImages.GenericSex.tgm2f, "50%") +
 					'You cast the spell and Charlie cries out and he strips off his clothing. As you watch his body changes, growing plusher and you see his cock shrinking. His chest expands as you see large breasts grow and his face softens to a feminine appearance.</p>' +
 					'<p>As you watch <i>her</i> tattoos change colour and seem to just become paint on <b>her</b> skin. Now <b>she</b> is very definitely female, nothing masculine is left, she is completely a woman!</p>' +
 					'<p>She looks quite confused...</p>' +
@@ -305,11 +305,11 @@ function initialiseCharlie()
 					'</div>',
 					'', '', true, true
 				);
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType == "charlietransformgendermale2") {
-				md = WritePlaceHeader(true, '', 'black');
+				md = WritePlaceHeaderNIP(true, '', 'black');
 		
 				showPopupWindow("Transformed",
 					this.addPersonString("transform.jpg", "height:max%", "right") +
@@ -319,14 +319,14 @@ function initialiseCharlie()
 					'dispPlace()', '', true
 				);
 				setQueryParams("");
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}	
 			if (sType == "charlietransformgenderfemale") {
-				md = WritePlaceHeader(true, '', 'black');
+				md = WritePlaceHeaderNIP(true, '', 'black');
 				this.dress = "Male";
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/' + getImageRandom('tgf2m ', oImages.GenericSex.tg_f2m) + '.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="TG">' +
+					addImageRandomString('GenericSex/tgf2m', oImages.GenericSex.tgf2m, "50%") +
 					'You cast the spell and Charlie\'s cries out and she strips off her clothing. As you watch her body changes, growing more muscular and you see a cock growing between her legs. Her chest shrinks as her large breasts recede to a masculine chest and her face hardens to a equally masculine appearance.</p>' +
 					'<p>As you watch <i>his</i> body you see markings start to form, markings all over <i>his</i> body looking very muck like extensive tattoos.</p>' +
 					'<p>Charlie looks quite confused...</p>' +
@@ -335,11 +335,11 @@ function initialiseCharlie()
 					'</div>',
 					'', '', true, true
 				);
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType == "charlietransformgenderfemale2") {
-				md = WritePlaceHeader(true, '', 'black');
+				md = WritePlaceHeaderNIP(true, '', 'black');
 				showPopupWindow("Transformed",
 					this.addPersonString("transform.jpg", "height:max%", "right") +
 					'Charlie\s body is clearly male and you ask him about his tattoos and how he feels,</p>' +
@@ -348,7 +348,7 @@ function initialiseCharlie()
 					'dispPlace()', '', true
 				);
 				setQueryParams("");
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			
@@ -559,7 +559,7 @@ function initialiseCharlie()
 			if (sType == "charlie69") {
 				// 69 with Charlie (felame Charlie only)
 				md = WritePlaceHeader(false, 'td-left-med');
-				if (perYou.isMaleSex()) this.showPersonRandomRorX("home-69-b", 2);
+				if (perYou.isMaleSex()) this.showPersonRandomRorX("home-69-b", isExplicit() ? 2 : 1);
 				else this.showPersonRandom("home-69-g", 1);
 
 				addPlaceTitle(md, "Charlie");
@@ -815,7 +815,7 @@ function initialiseCharlie()
 			}
 		}
 		
-		if (Place == 435 && this.place == 435) {		
+		if (Place == 435 && this.place == 435 && sType === "") {		
 			// The Gym during business hours
 			if (!this.checkFlag(2)) {
 				addPopupLinkC(md, 'ask around to find Charlie', 'Locker Room',

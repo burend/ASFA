@@ -127,6 +127,11 @@ function isArrestPossible()
 	} else return false;
 }
 
+function addEndGamePregnancies(md)
+{
+	perYou.addEndGamePregnanciesBase(md);
+};
+
 // Initialise
 
 function initialiseYou()
@@ -137,8 +142,8 @@ function initialiseYou()
 	
 	// Player Avatar images, a folder containing the images, in Images/Player
 	// The following are a comma separated list of valid folders
-	perYou.sMaleFolderList = "JamesDeen,MilesPride,Tommy,Billy,SammyCase,BrentCorrigan,Stephan";
-	perYou.sFemaleFolderList = "Eufrat,TeenKasia,TaylorSands,Beata,Arianna,Natasha,FayeReagan,ElsaJean,DakotaSkye";
+	perYou.sMaleFolderList = "JamesDeen,MilesPride,Tommy,Billy,SammyCase,BrentCorrigan,Stephan,Nobody/Male";
+	perYou.sFemaleFolderList = "Eufrat,TeenKasia,TaylorSands,Beata,Arianna,Natasha,FayeReagan,ElsaJean,DakotaSkye,Nobody/Female";
 
 	// Naming
 	perYou.getPersonGender = function() {
@@ -182,6 +187,7 @@ function initialiseYou()
 		updateLeftBar();
 	};
 	
+	perYou.getAccountMax = function() { return this.checkFlag(9) ? -1 : (Math.floor(nTime / 288) > 30 ? -1 : 200); };
 	perYou.getBankBalance = function() { return this.extra[12]; };
 	perYou.setBankBalance = function(no) { this.extra[12] = no; };
 	perYou.changeBankBalance = function(no) 
@@ -243,7 +249,7 @@ function initialiseYou()
 	// Popup events for yourself
 	perYou.showEventPopup = function()
 	{
-		if (Place == 1 && nFromPlace != 1) {
+		if (Place == 1 && nFromPlace != 1 && sType === "") {
 			showPopupWindow("",
 				'<img src="UI/logo.png" style="width:90%;margin:auto"><br>' +
 				"This is an adults only game and please do not go any further if you are under 18 years old.<br><br>" +
@@ -251,6 +257,7 @@ function initialiseYou()
 				"to improve your relations with the locals, your friends and relatives, or just to simply gain power over them.<br><br>" +
 				"If you find any mistakes or have ideas of your own then join the <a href='https://hypnopics-collective.net/smf_forum/index.php' target='_top'>Hypnopics Collective Forums</a> and join the discussion.<br><br>" +
 				'<b>Some notes on game play</b><br>' +
+				'<b>Items and Inventory:</b> to pickup or use an item, cast a spell and so on use the inventory in the right bar. There will NOT be choices in the "Do you want to..." list of questions.<br>' +
 				'<img src="data:image/gif;base64,R0lGODlhKAAoAOMKAKioqKmpqaqqqqurq6ysrLm5ubq6uru7u/39/f7+/v///////////////////////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACH5BAEKAA8ALAAAAAAoACgAAAT+8Jkgqr046xzMO8JAbWR5BYMABqjpkuJothbLXuJrpqFc8zzdbOMTlooYpDFZQY2czaVrEGNRpcdaIKFQJG5R7OnU7fqUwmBvUFaI1OosJUCAvgXttcBZ3/tJMnEVeRlBaGE/eylUXF5XOTljOyGIbGWGFYs6KXMYKXlxnYKeI5ylFI0Jik0UPDQlIl5ts7RlXK87AbUKCF5cvbW4LrJdjcTGyAovQALJbQnGxbaU1LCITm1QYaOFpZSdeGVRrdTC3ThqhJlq5jiZJwBB6gMAPswbQa6R4V0/3u9ScuiCpmAONzEy1B1CWCEVIjE4fPhSlghiE0w1LOyz6AkgRw4jfs6E/JgRkI4WCy22QgGApIl431yCTFGgnUwRBSSk5NjhQQQAOw==" width="30"/> - these indicate that a bar can be expanded for more details.<br>' +
 				'<img src="UI/themes/theme0/collapse.png" width="30"/> - these indicate the bar can be minimised.<br>' +
 				'<img src="UI/apps.png" width="30"/> - Check your phone\'s apps for settings and your alarm clock. Check the themes to vary the game\'s appearance.<br>' +
@@ -383,7 +390,7 @@ function initialiseYou()
 					// Stage 5
 					this.setFlag(55);
 					showPopupWindow("Changed",
-						addImageString("GenericSex/" + (perYou.isMan() ? "tg a.gif" : "be a.gif"), "height:max%", "right") +
+						addImageString("GenericSex/" + (perYou.isMan() ? "tgm2f a.jpg" : "be a.jpg"), "height:max%", "right") +
 						'You feel tension build up from deep within your body, slowly but steadily, each step you take sending a rumble of pleasure into you until you are finally no longer able to take it.</p>' +
 						'<p>You are climaxing. Hard, loud and over and over and over again.</p>' +
 						'<p>Hell, climax, orgasm, cum, all of these terms seem insufficient to describe what is going on within your body right now. It feels as if your mind is swept away on a constant stream of orgasmic bliss while you can\'t help but release a staccato of loud, lustful moans.</p>' +
@@ -566,7 +573,7 @@ function initialiseYou()
 						'You sit down for a bit and think about how things are ' +
 						(isPersonHere("Tess") ? 'and you look into the adoring eyes of Tess' :
 															  'and you consider the new women in your life') + ', you have to think that things are good!<br><br>' +
-						'You have dealt with Davy, Kurdorf and the Demon, and thetown is more or less yours. The police and town hall are under your influence and you have done ' +
+						'You have dealt with Davy, Kurdorf and the Demon, and the town is more or less yours. The police and town hall are under your influence and you have done ' +
 						(totc == totcan ? 'all that you can think to do' : 'enough, though there is probably more that could be done') + '.<br><br>' +
 						'You wonder then if you should just relax and enjoy yourself now you have control over the "Sacred Book of Control" and the people of the town' + (isCharmedBy("Mom") || isCharmedBy("Tracy") ? ' and your family' : '') + '. Then again you could continue, looking for new opportunities, sources of magic and people, or just visiting those you are involved with.<br><br>' +
 						addLinkToPlace('string', "It is time to enjoy what you have", 46, "type=endgame1harem&stage=random", '', '', 'perYou.setFlag(38)', undefined, 'margin-left:5%;margin-right:50%;width:45%') +
@@ -603,11 +610,6 @@ function initialiseYou()
 		}
 		if (param) return false;		// An event is pending, do nothing tonight
 		
-		if (!checkPersonFlag('Elian', 1) && checkPersonFlag("Glenvale", 67) && getPersonOther("Vampyre") >= 60 && isSpellKnown("Teleport")) {
-			// Demon Elian 'Come to me'
-			WaitforForDayNight(s, plc, 'type=dreamdemoncome');
-			return true;
-		}
 		// Dreams disabled by pink noise app
 		if (this.checkFlag(40)) return false;
 		
@@ -646,7 +648,7 @@ function initialiseYou()
 			WaitforForDayNight(s, plc, 'type=dreamkinglater');
 			return true;
 		}
-		// Deamon in the bath
+		// Demon in the bath
 		if (!this.checkFlag(45) && isDemonFreed() && Math.random() < 0.5) {
 			WaitforForDayNight(s, plc, 'type=dream8');
 			return true;
@@ -730,7 +732,7 @@ function initialiseYou()
 		}		
 		
 		if (Place == 161 && sType == "bimbobadend1") {
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 			perYou.setFlag(31);
 			var perJessica = findPerson("Jessica");
 			switch(Math.floor(getHour() / 6)) {
@@ -752,12 +754,12 @@ function initialiseYou()
 			);
 			startQuestions();
 			addLinkToPlace(md, 'return the smile and see what Jessica wants to do with you', 161, 'type=bimbobadend2');
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
 		if (Place == 161 && sType == "bimbobadend2") {
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 			perYou.setFlag(31);
 			var perJessica = findPerson("Jessica");
 			AddImage("Player/Bimbo/bimboplayer1.jpg");
@@ -770,7 +772,7 @@ function initialiseYou()
 				'<p>Your new body is much better suited for mindless sex, anyway, and Mistress makes sure you get a lot of it to keep you happy and obedient.</p>'
 			);
 			addRestartLink(md);
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
@@ -821,36 +823,64 @@ function initialiseYou()
 	
 	perYou.addEndGameOthers = function(md, stage)
 	{
+		// Things that failed 
+		if (sType != "endgame1kategone" && sType != "endgame1family1" && sType != "endgame1family2" && sType != "endgame1davy" && sType != "endgame1cult" && sType != "endgame1cultpreg" && sType != "endgame1elian" && ((isDemonGone() && sType !== "endgame1demonloose") || wherePerson("Kate") == 9999)) addLinkToPlace(md, 'but not everything went well...', 46, 'type=' + (isDemonGone() ? 'endgame1demonloose' : 'endgame1kategone') + (stage == "random" ? "&stage=random" : ""));
+
 		// Others
-		if ((isCharmedBy("Mom") || isCharmedBy("Tracy")) && sType != "endgame1family1" && sType != "endgame1family2" && sType != "endgame1davy" && sType != "endgame1cult" && sType != "endgame1other") addLinkToPlace(md, 'then again there is your family', 46, 'type=endgame1family1' + (stage == "random" ? "&stage=random" : ""));
-		else if (isCharmedBy("Kylie") && sType != "endgame1family2" && sType != "endgame1davy" && sType != "endgame1cult" && sType != "endgame1other") addLinkToPlace(md, 'then again there is your extended family', 46, 'type=endgame1family2' + (stage == "random" ? "&stage=random" : ""));
-		else if (isDavyCaptive() && sType != "endgame1davy" && sType != "endgame1cult") addLinkToPlace(md, 'then again there is Davy', 46, 'type=endgame1davy' + (stage == "random" ? "&stage=random" : ""));
-		else if (checkPersonFlag("Daria", 12) && sType != "endgame1cult") addLinkToPlace(md, 'there is also Mother Superior and her Cult', 46, 'type=endgame1cult' + (stage == "random" ? "&stage=random" : ""));
+		else if ((isCharmedBy("Mom") || isCharmedBy("Tracy")) && sType != "endgame1family1" && sType != "endgame1family2" && sType != "endgame1davy" && sType != "endgame1cult" && sType != "endgame1cultpreg" && sType != "endgame1elian") addLinkToPlace(md, 'then again there is your family', 46, 'type=endgame1family1' + (stage == "random" ? "&stage=random" : ""));
+		else if (isCharmedBy("Kylie") && sType != "endgame1family2" && sType != "endgame1davy" && sType != "endgame1cult" && sType != "endgame1cultpreg" && sType != "endgame1elian") addLinkToPlace(md, 'then again there is your extended family', 46, 'type=endgame1family2' + (stage == "random" ? "&stage=random" : ""));
+		else if (isDavyCaptive() && sType != "endgame1davy" && sType != "endgame1cult" && sType != "endgame1cultpreg" && sType != "endgame1elian" ) addLinkToPlace(md, 'then again there is Davy', 46, 'type=endgame1davy' + (stage == "random" ? "&stage=random" : ""));
+		else if (checkPersonFlag("Daria", 12) && sType != "endgame1cult" && sType != "endgame1cultpreg" && sType != "endgame1elian") addLinkToPlace(md, 'there is also Mother Superior and her Cult', 46, 'type=endgame1cult' + (stage == "random" ? "&stage=random" : ""));
+		else if (isCharmedBy("Elian") && per.place < 1000 && sType != "endgame1elian") addLinkToPlace(md, "then there is Elian", 46, 'type=endgame1elian' + (stage == "random" ? "&stage=random" : ""));
+
 		else addLinkToPlace(md, 'why not indulge with others?', 46, 'type=endgame1other' + (stage == "random" ? "&stage=random" : "&stage=1"));
 	};
 	
-	perYou.addEndGamePregnancies = function(md)
+	perYou.addEndGamePregnancy = function(cond, evt)
+	{
+		var stage = getQueryParam("stage");
+		var state = getQueryParam("state");
+		if (state === '' || state === undefined) state = 0;
+		else state = parseInt(state);
+		if (state >= this.charmedTime) return false;
+		if (!cond) return false;
+		
+		addLinkToPlace(mdCache, "that was not all the 'good news'", 46, 'type=' + evt + '&stage=' + stage + '&state=' + this.charmedTime);
+		return true;
+	};
+	
+	perYou.addEndGamePregnanciesBase = function(md)
 	{
 		hideSidebars();
-		var stage = getQueryParam("stage");
-		var state = sType === "endgame1logan" ? 0 : sType == "endgame1dianegrangers" ? 1 : sType == "endgame1rosssisters" ? 2 : sType == "endgame1beasleydidi" ? 3 : sType == "endgame1carolellie" ? 4 : sType == "endgame1abbymiku" ? 5 : sType == "endgame1alisonjenny" ? 6 : sType == "endgame1anitamelissa" ? 7 : sType == "endgame1townhall" ? 8 : sType == "endgame1delivery" ? 9 : sType == "endgame1hannahcamryn" ? 10 : sType == "endgame1donnapamela" ? 11 : sType == "endgame1elian" ? 98 : 99;
 		
-		if (state < 1 && ((isCharmed("MrsGranger") && isCharmed("Kate")) || isCharmed("Diane"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1dianegrangers&stage=' + stage);			
-		else if (state < 2 && (isCharmed("AdeleRoss") || checkPersonFlag("Catherine", 5) || (isCharmed("AmyRoss") || checkPersonFlag("AmyRoss", 9)))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1rosssisters&stage=' + stage);
-		else if (state < 3 && ((perBeasley.getPersonGender() == "woman" && perBeasley.getCharmedLevel() == 2) || isCharmed("Didi"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1beasleydidi&stage=' + stage);
-		else if (state < 4 && (isCharmed("Carol") || isCharmed("Ellie"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1carolellie&stage=' + stage);
-		else if (state < 5 && (isCharmed("Abby") || isCharmed("Miku"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1abbymiku&stage=' + stage);
-		else if (state < 6 && (isCharmed("Alison") || isCharmed("Jenny"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1alisonjenny&stage=' + stage);
-		else if (state < 7 && (isCharmed("Anita") || isCharmed("Melissa"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1anitamelissa&stage=' + stage);
-		else if (state < 8 && (isCharmed("Mayor") || isCharmed("Angela") || isCharmed("Emily"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1townhall&stage=' + stage);
-		else if (state < 9 && (isCharmed("Madison") || isCharmed("Zoey") || isCharmed("Nina"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1delivery&stage=' + stage);
-		else if (state < 10 && (isCharmed("Hannah") || isCharmed("Camryn"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1hannahcamryn&stage=' + stage);
-		else if (state < 11 && (isCharmed("Pamela") || isCharmed("Donna"))) addLinkToPlace(md, "that was not all the 'good news'", 46, 'type=endgame1donnapamela&stage=' + stage);
-		else if (state < 98 && checkPersonFlag("Elian", 18)) addLinkToPlace(md, "one more disturbing 'good news'", 46, 'type=endgame1elian&stage=' + stage);
+		this.charmedTime=1; if (this.addEndGamePregnancy((isCharmedBy("MrsGranger") && isCharmedBy("Kate")) || isCharmedBy("Diane"), "endgame1dianegrangers")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("AdeleRoss") || checkPersonFlag("Catherine", 5) || (isCharmedBy("AmyRoss") || checkPersonFlag("AmyRoss", 9)), "endgame1rosssisters")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy((perBeasley.getPersonGender() == "woman" && perBeasley.getCharmedLevel() == 2) || isCharmedBy("Didi"), "endgame1beasleydidi")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Carol") || isCharmedBy("Ellie"), "endgame1carolellie")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Abby") || isCharmedBy("Miku"), "endgame1abbymiku")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Alison") || isCharmedBy("Jenny"), "endgame1alisonjenny")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Anita") || isCharmedBy("Melissa"), "endgame1anitamelissa")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy((isCharmedBy("Mayor") && !per.isMan()) || isCharmedBy("Angela"), "endgame1townhall1")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Tammy") || isCharmedBy("Emily"), "endgame1townhall2")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Madison") || isCharmedBy("Zoey") || isCharmed("Nina"), "endgame1delivery")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Hannah") || isCharmedBy("Camryn"), "endgame1hannahcamryn")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Pamela") || isCharmedBy("Donna"), "endgame1donnapamela")) return;
+		this.charmedTime++; if (this.addEndGamePregnancy(isCharmedBy("Victoria") || isCharmedBy("Nella"), "endgame1victorianella")) return;
 
-		// Things that failed 
-		else if (isDemonGone() || wherePerson("Kate") == 9999) addLinkToPlace(md, 'but not everything went well...', 46, 'type=' + (isDemonGone() ? 'endgame1demonloose' : 'endgame1kategone') + '&stage=' + stage);
-		else this.addEndGameOthers(md, stage);
+		// Add other pregnancies from person objects, excluding you, town, kurndorf, dor ronald
+		var p;
+		for (i = 0, ie = arPeople.length - 4; i < ie; i++) {
+			this.charmedTime++;
+			p = arPeople[i];
+			var s = p.checkEndGamePregnancy();
+			if (s != '') {
+				if (this.addEndGamePregnancy(true, s)) return true;
+			}
+		}
+		
+		// Others
+		var stage = getQueryParam("stage");
+		this.addEndGameOthers(md, stage);
 	};
 	
 	perYou.showEventEndGame = function() 
@@ -864,15 +894,15 @@ function initialiseYou()
 			stage = getQueryParam("stage");
 			ar = [];
 			var ps;
+			if (getCharmedLevel("Tracy") == 2 && isExplicit(true)) ar.push("Explicit/endgame1-harem1.gif");			
 			if (isCharmedBy("MrsGranger")) {
-				if (isExplicit(true)) ar.push("Explicit/endgame1-harem1.gif");
 				if (isCharmedBy("MsJones")) ar.push("endgame1-harem4.jpg");
 				if (checkPersonFlag("Catherine", 5)) ar.push("endgame1-harem5.jpg");
-				if (isMurderPath() && isCharmedBy("Sofia")) ar.push("endgame1-harem9.jpg");
 				if (isCharmedBy("Alison")) ar.push("endgame1-harem13.jpg");
 			}
 			if (checkPersonFlag("Catherine", 5)) {
-				if (isCharmedBy("Mayor")) ar.push("endgame1-harem7.jpg");
+				findPerson("Mayor")
+				if (per.isCharmedBy() && !per.isMan()) ar.push("endgame1-harem7.jpg");
 				if (isCharmedBy("Sarah")) ar.push("endgame1-harem11.jpg");
 				if (isCharmedBy("MsJones") && isCharmedBy("Louise")) ar.push("endgame1-harem15.jpg");
 			}
@@ -887,14 +917,17 @@ function initialiseYou()
 			ar.push("endgame1-harem17.jpg");
 			if (isMurderPath() && isCharmedBy("Sarah")) ar.push("endgame1-harem18.jpg");
 			//else if (!isMurderPath() && isCharmedBy("Lauren")) ar.push("endgame1-harem18.jpg");
-			if (isCharmedBy("Mayor") && isCharmedBy("Lauren")) ar.push("endgame1-harem19.jpg");
+			if (isCharmedBy("Mayor") && !per.isMan() && isCharmedBy("Lauren")) ar.push("endgame1-harem19.jpg");
 			findPerson("Jessica");
 			if ((per.isRival() || per.getRivalry() > 2) && isCharmedBy("Desiree")) ar.push("endgame1-harem20.jpg");
 			if (isCharmedBy("Didi") && isCharmedBy("MsTitus")) ar.push("endgame1-harem21.jpg");
 			if (isCharmedBy("MsJones") && isCharmedBy("Monique")) ar.push("endgame1-harem22.jpg");
 			if (perYou.isMaleSex() && isExplicit(true) && isCharmedBy("MsTitus") && isCharmedBy("Monique")) ar.push("Explicit/endgame1-harem23.jpg");
 			if (checkPersonFlag("Catherine", 5) && isCharmedBy("MsJones")) ar.push("endgame1-harem24.jpg");
-			if (isCharmedBy("Vampyre") && isCharmedBy("Alison")) ar.push("meetalison.jpg");
+			if (isCharmedBy("Vampyre")) {
+				if (isCharmedBy("Alison")) ar.push("meetalison.jpg");
+				if (isMurderPath() && isCharmedBy("Sofia")) ar.push("endgame1-harem9.jpg");
+			}
 			
 			// Image and stage
 			stg = stage == "random" ? Math.floor(Math.random() * ar.length) + 1 : parseInt(stage, 10);
@@ -938,10 +971,10 @@ function initialiseYou()
 
 			switch(no) {
 			case 1:
-				// Mrs Granger threesome with unidentified blond
+				// Tracy threesome with unidentified blond
 				md.write(
-					'<p>Mrs. Granger is no matter how you think of her, a bit of a slut, and more so since you charmed her. You still think of her as <b>Mrs.</b> Granger not just Marie as you like to consider her your MILF slut and she goes along with this completely.</p>' +
-					'<p>At times she brings home friends, or work colleagues to share with you, either as a new slave or just for a night of passion with them.</p>'
+					'<p>Tracy is a beautiful and playful sister and lover, exactly as you have always desired.</p>' +
+					'<p>At times she brings home friends tp \'play\' but she usually likes to playfully tell you that they are \'hers\'.</p>'
 				);
 				break;
 			case 2:
@@ -995,11 +1028,11 @@ function initialiseYou()
 				);
 				break;
 			case 9:
-				// Mrs Granger and Sofia
+				// Lilith and Sofia
 				md.write(
-					'<p>Mrs. Granger is no matter how you think of her, a bit of a slut, and more so since you charmed her. You still think of her as <b>Mrs.</b> Granger not just Marie as you like to consider her your MILF slut and she goes along with this completely.</p>' +				
+					'<p>Lilith still claims to be your loyal slave in heart and soul, but she will still not tell you her true name, or answer most questions about her. A loyal slave, who is clearly using you in some way, but you are happy to use her as well.</p>' +
 					'<p>Sofia the chauffuer is under your control, no matter how reluctantly she is yours. You were surprised one day when you saw her talking with Mrs. Granger at the shopping center. It seems she was allowed to hire out the limousine when it was not otherwise used. You have no difficulties with this now, and it seems Mrs. Granger likes to ride in style at times.</p>' +
-					'<p>Well, this has opened up pleasant encounters with the two of them, generally with Mrs. Granger in charge, or a least as much as you allow...</p>'
+					'<p>Well, this has opened up some encounters with the two of them, with Lilith firmy diminating Sofia, but you have been so far careful to not tell Sofia about Lilith\'s true nature.</p>'
 				);
 				break;				
 			case 11:
@@ -1069,7 +1102,7 @@ function initialiseYou()
 			case 20:
 				// Jessica and Sister Desiree
 				md.write(
-					'<p>One odd encouter you had was meeting the Witch Jessica talking to Sister Desiree but realise they have a lot in common. Sister Desiree is fascinated by the paranormal, the occult and Jessica <b>is</b> the occult personified here in Glenvale. Jessica on the other hand has an other time respect for the church and a romantic, or is it erotic, interest in Nuns.</p>' +
+					'<p>One odd encounter you had was meeting the Witch Jessica talking to Sister Desiree but realise they have a lot in common. Sister Desiree is fascinated by the paranormal, the occult and Jessica <b>is</b> the occult personified here in Glenvale. Jessica on the other hand has an other time respect for the church and a romantic, or is it erotic, interest in Nuns.</p>' +
 					'<p>You are quite happy for them to have a friendship, well maybe a little closer than that, but make it clear to Jessica that Sister Desiree is yours foremost. Jessica agrees completely and never crosses that line in respect for you saving her from imprisonment.</p>'
 				);
 				break;
@@ -1093,7 +1126,7 @@ function initialiseYou()
 				md.write(
 					'<p>The librarian Karen Titus is a complete submissive, a slave for you who will do anything you ask of her, anything at all. She is enthusiastic about playing with others of your harem, and she welcomed being able to play with her fellow librarian Monique.</p>' +
 					'<p>Monique on the other hand is utterly devoted to you, focused on your needs and desires. A nervous but complex woman, interested in the occult, but also frightened of it. A person who loves cars and friends with Hannah, but who does not own a car.</p>' +
-					'<p>Karen is enthusiastic, but Monique only plays with her to pleasure or entertain you, but still the sight of the two librarians at your feet is a rush of peasure and power.</p>'
+					'<p>Karen is enthusiastic, but Monique only plays with her to pleasure or entertain you, but still the sight of the two librarians at your feet is a rush of pleasure and power.</p>'
 				);
 				break;
 			case 24:
@@ -1115,7 +1148,7 @@ function initialiseYou()
 				// Alison and Lilith
 				md.write(
 					'<p>Alison has retained some of her independence from her defensive spell and still likes to be in charge of things when you are with her. It is of no concern to you, she is somewhat insatiable so she requires little more than sex, sex and more sex. Certainly the spell helped with this but a lot is just her nature.</p>' +
-					'<p>Lilith on the other hand, still claim to be your loyal slave in heart and soul, but she will still not tell you her true name, or answer most questions about her. A loyal slave, who is clearly using you in some way, but you are happy to use her as well.</p>' +
+					'<p>Lilith on the other hand, still claims to be your loyal slave in heart and soul, but she will still not tell you her true name, or answer most questions about her. A loyal slave, who is clearly using you in some way, but you are happy to use her as well.</p>' +
 					'<p>You found you could have Lilith the vampyre indulge her lusts with ALison after feeding and both seem to very much enjoy their encounters.</p>'
 				);
 				break;	
@@ -1163,10 +1196,10 @@ function initialiseYou()
 			
 			startQuestions();
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 
 			if (isCharmedBy("OfficerSmith")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				findPerson("OfficerSmith").showPerson("pregnant.jpg");
 			}					
 			WritePlaceFooter(md);
@@ -1195,10 +1228,10 @@ function initialiseYou()
 			
 			startQuestions();
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 
 			if (isCharmed("MrsGranger") && isCharmed("Kate") && isCharmedBy("Diane")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				findPerson("Diane").showPerson("pregnant.jpg");
 			}
 			WritePlaceFooter(md);
@@ -1227,7 +1260,7 @@ function initialiseYou()
 			if (isCharmedBy("AdeleRoss")) {
 				if (checkPersonFlag("Catherine", 5)) md.write('<p>As she says this Adele also tells you');
 				else md.write('<p>Some time later and Adele tells you');	
-				md.write(' she is pregnent. Catherine is enormously amused ');
+				md.write(' she is pregnant. Catherine is enormously amused ');
 				if (checkPersonFlag("Catherine", 5))  md.write('welcoming her sister to motherhood');
 				else md.write('at her sister\'s condition');
 				md.write('.');
@@ -1239,10 +1272,10 @@ function initialiseYou()
 			
 			startQuestions();
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (rtot > 1) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				if (isCharmedBy("AdeleRoss")) findPerson("AdeleRoss").showPerson("pregnant.jpg");
 				else findPerson("AmyRoss").showPerson(isCharmed("AmyRoss") ? "pregnantc.jpg" : "pregnantu.jpg");
 			}
@@ -1272,10 +1305,10 @@ function initialiseYou()
 			
 			startQuestions();
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if ((perBeasley.getPersonGender() == "woman" && perBeasley.getCharmedLevel() == 2) && isCharmed("Didi")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				perBeasley.showPerson("pregnant.jpg");
 			}
 			WritePlaceFooter(md);
@@ -1302,10 +1335,10 @@ function initialiseYou()
 			
 			startQuestions();
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (isCharmed("Carol") && isCharmed("Ellie")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				findPerson("Ellie").showPerson("pregnant.jpg");
 			}
 			WritePlaceFooter(md);
@@ -1333,10 +1366,10 @@ function initialiseYou()
 			
 			startQuestions();
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (isCharmed("Abby") && isCharmed("Miku")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				findPerson("Miku").showPerson("pregnant.jpg");
 			}
 			WritePlaceFooter(md);
@@ -1364,10 +1397,10 @@ function initialiseYou()
 			
 			startQuestions();	
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (isCharmed("Jenny") && isCharmed("Alison")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				findPerson("Alison").showPerson("pregnant.jpg");
 			}
 			WritePlaceFooter(md);
@@ -1390,63 +1423,93 @@ function initialiseYou()
 			if (isCharmedBy("Melissa")) {
 				if (!isCharmedBy("Anita")) md.write('<p>A more pleasant announcement ');
 				else md.write('<p><p>Some time later and ');
-				md.write('when you meet Melissa at the pool after a time neglicting her. You clearly see she is <i>very</i> pregnant, and you are reminded to keep a closer eye on your slaves.</p>');
+				md.write('when you meet Melissa at the pool after a time neglecting her. You clearly see she is <i>very</i> pregnant, and you are reminded to keep a closer eye on your slaves.</p>');
 			}
 			
 			startQuestions();	
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (isCharmed("Anita") && isCharmed("Melissa")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				findPerson("Melissa").showPerson("pregnant.jpg");
 			}
 			WritePlaceFooter(md);
 			return true;
 		}	
 		
-		if (sType == "endgame1townhall") {
-			// End Game - Bred the people at Town Hall
-			var ttot = isCharmed("Mayor") ? 1 : 0;
+		if (sType == "endgame1townhall1") {
+			// End Game - Bred the people at Town Hall part 1
+			var bMayor = isCharmed("Mayor") && !per.isMan();
+			var ttot = bMayor ? 1 : 0;
 			if (isCharmedBy("Angela")) ttot++;
-			if (isCharmedBy("Emily")) ttot++;
 			
-			md = WritePlaceHeader(false, ttot == 3 ? 'td-left-small' : '');
-			if (isCharmedBy("Mayor")) findPerson("Mayor").showPerson("pregnant.jpg");
+			md = WritePlaceHeader();
+			if (bMayor) findPerson("Mayor").showPerson("pregnant.jpg");
 			else if (isCharmedBy("Angela")) findPerson("Angela").showPerson("pregnant.jpg");
-			else findPerson("Emily").showPerson("!pregnant.jpg");
 			
 			addPlaceTitle(md, "A Definitely Contagious Mayoral Lesson?");
 
-			if (ttot == 3) findPerson("Emily").showPerson("!pregnant.jpg", "35%", "right");
-			if (isCharmedBy("Mayor")) {
+			if (bMayor) {
 				md.write(
-					'<p>A few weeks later when you viait the Town Hall, the Mayor tells you confidently that she is pregnant.</p>'
+					'<p>A few weeks later when you visit the Town Hall, the Mayor tells you confidently that she is pregnant.</p>'
 				);				
 			}
 			if (isCharmedBy("Angela")) {
-				if (isCharmedBy("Mayor")) md.write('<p>As she says this Angela peeks her head in and also tells you');
-				else md.write('<p>When yo u are visiting Town Hall Angela tells you');	
-				md.write(' she is pregnent. The Mayor is dismissive telling her to not let it get in the way of her work.');
+				if (bMayor) md.write('<p>As she says this Angela peeks her head in and also tells you');
+				else md.write('<p>When you are visiting Town Hall Angela tells you');	
+				md.write(' she is pregnant. The Mayor is dismissive telling her to not let it get in the way of her work.');
 				md.write('.');
 			}
-			if (isCharmed("Emily")) {
-				md.write("<p>You meet Emily in the break room, and she closes the door and explains that she is " + (ttot > 1 ? "also" : "") + " pregnant!</p>");
-			}
-			if (ttot == 3) md.write("<p>While it was not your intention it seems you have impregnated Town Hall! Miss Logan would be proud...</p>");
+			if (ttot == 2) md.write("<p>While it was not your intention it seems you have impregnated much of Town Hall! Miss Logan would be proud...</p>");
 			
 			startQuestions();
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (ttot > 1) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				if (isCharmedBy("Angela")) findPerson("Angela").showPerson("pregnant.jpg");
-				else findPerson("Emily").showPerson("!pregnant.jpg");
 			}
 			WritePlaceFooter(md);
 			return true;
 		}
+		
+		if (sType == "endgame1townhall2") {
+			// End Game - Bred the people at Town Hall part 2
+			var ttot = isCharmed("Emily") ? 1 : 0;
+			if (isCharmedBy("Tammy")) ttot++;
+			
+			md = WritePlaceHeader();
+			if (isCharmedBy("Emily")) findPerson("Emily").showPerson("!pregnant.jpg");
+			else if (isCharmedBy("Tammy")) findPerson("Tammy").showPerson("pregnant.jpg");
+			
+			addPlaceTitle(md, "A Definitely Contagious Civic Lesson?");
+
+			if (isCharmedBy("Emily")) {
+				md.write(
+					"<p>You meet Emily in the break room, and she closes the door and explains that she is pregnant!</p>"
+				);				
+			}
+			if (isCharmedBy("Tammy")) {
+				if (isCharmedBy("Emily")) md.write('<p>As she says this Tammy peeks her head in and also tells you');
+				else md.write('<p>When you are visiting Town Hall Tammy tells you');	
+				md.write(' she is pregnant');
+				md.write('.');
+			}
+			if (ttot == 2) md.write("<p>While it was not your intention it seems you have impregnated the rest of the Town Hall! Miss Logan would be proud...</p>");
+			
+			startQuestions();
+			// Add pregnancies/other
+			addEndGamePregnancies(md);
+			
+			if (ttot > 1) {
+				AddPeopleColumnMed(md);
+				if (isCharmedBy("Tammy")) findPerson("Tammy").showPerson("pregnant.jpg");
+			}
+			WritePlaceFooter(md);
+			return true;
+		}		
 		
 		if (sType == "endgame1delivery") {
 			// End Game - Bred Madison and Zoey
@@ -1477,10 +1540,10 @@ function initialiseYou()
 			
 			startQuestions();	
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (dtot > 1) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				if (dtot == 3) findPerson("Zoey").showPerson("pregnant.jpg");
 				else if (isCharmedBy("Zoey")) findPerson("Zoey").showPerson("pregnant.jpg");
 				else findPerson("Nina").showPerson("pregnant.jpg");
@@ -1498,7 +1561,7 @@ function initialiseYou()
 			addPlaceTitle(md, "A Very Contagious Lesson?");
 
 			md.write(
-				'<p>When you visit Hannah at her appartment, you see clearly from catching a ride on her a while ago she has picked up a passenger.'
+				'<p>When you visit Hannah at her apartment, you see clearly from catching a ride on her a while ago she has picked up a passenger.'
 			);				
 			if (isCharmedBy("Camryn")) {
 				md.write(' As you think about what to say Camryn joins her and you see she has been a \'bad girl\' or is it \'good\'?</p>');
@@ -1506,7 +1569,7 @@ function initialiseYou()
 			
 			startQuestions();	
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			WritePlaceFooter(md);
 			return true;			
@@ -1527,36 +1590,47 @@ function initialiseYou()
 			if (isCharmedBy("Pamela")) {
 				if (isCharmedBy("Donna")) md.write('<p>Another time you visit your other red-headed slave Pamela');
 				else md.write('<p>You stop by Pamela in her small home');
-				md.write(' and you see her cradling her swolen belly, it seems your \'treatments\' for her condition have been quite effective just not in the way intended, unless you are Miss Logan that is.</p>');
+				md.write(' and you see her cradling her swollen belly, it seems your \'treatments\' for her condition have been quite effective just not in the way intended, unless you are Miss Logan that is.</p>');
 			}
 			
 			startQuestions();	
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
+			addEndGamePregnancies(md);
 			
 			if (isCharmed("Pamela") && isCharmed("Donna")) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				findPerson("Pamela").showPerson("pregnant.jpg");
 			}			
 			WritePlaceFooter(md);
 			return true;				
 		}
 		
-		if (sType == "endgame1elian") {
-			// End Game - Bred Elian
-			md = WritePlaceHeader(false, '', 'black');
-			findPerson("Elian").showPerson("pregnant.jpg");			
-			addPlaceTitle(md, "A last lesson in demonology");
+		if (sType == "endgame1victorianella") {
+			// End Game - Bred Victoria & Nella
+			md = WritePlaceHeader();
+			if (isCharmedBy("Victoria")) findPerson("Victoria").showPerson("pregnant.jpg");
+			else findPerson("Nella").showPerson("!pregnant.jpg");			
+			addPlaceTitle(md, "A Very Contagious Lesson for the Antique Business?");
 
-			md.write(
-				'<p>One night when you meet Elian at the club she ask to talk privately, and it is more than intended as a moment later you are standing with her in that other place you first met her.</p>' +
-				'<p>Her form shimmers a little and you can now see her large pregnant belly. What can a human impregnate a demon> It would seem it is possible but what will her child be, a human, a demon? Elian seems as uncertain as you, she has no knowedge of humans siring demonic children aside from in legend.</p>' +
-				'<p>It would seem you will have to research this more, maybe Jade can help out, then again do you want to tell her about this...</p>'
-			);
+			if (isCharmedBy("Victoria")) {
+				md.write(
+					'<p>One evening you visit Victoria in her home and in her calm and assured way reveals to you how attentive she has been to Miss. Logan\'s teachings!</p>'
+				);
+			}
+			if (isCharmedBy("Nella")) {
+				if (isCharmedBy("Victoria")) md.write('<p>Another time you visit Nella asks you to speak to her');
+				else md.write('<p>You stop by and visit Nella');
+				md.write(' and you see her she has also be learning from Miss. Logan!</p>');
+			}
+			
 			startQuestions();	
 			// Add pregnancies/other
-			this.addEndGamePregnancies(md);
-						
+			addEndGamePregnancies(md);
+			
+			if (isCharmed("Nella") && isCharmed("Victoria")) {
+				AddPeopleColumnMed(md);
+				findPerson("Nella").showPerson("pregnant.jpg");
+			}			
 			WritePlaceFooter(md);
 			return true;				
 		}
@@ -1644,7 +1718,7 @@ function initialiseYou()
 			this.addEndGameOthers(md, stage);
 			
 			if (perMom.getCharmedLevel() != 4 || perTracy.getCharmedLevel() != 2) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				if (perTracy.getCharmedLevel() == 2 && bPreg && perMom.getCharmedLevel() != 4) perTracy.showPersonRandom("pregnant", 2);
 				else perTracy.showPerson("tracylunch3.jpg");
 			}
@@ -1662,7 +1736,7 @@ function initialiseYou()
 			md = WritePlaceHeader();
 			if (perAunt.isCharmedBy() && perKylie.isCharmedBy()) perAunt.showPerson(bPreg ? "pregnant-auntcousin.jpg" : "endgame1-familyextended.jpg");
 			else if (perKylie.isCharmedBy() && bPreg) perKylie.showPerson("pregnant.jpg");
-			else perKylie.showPerson("kylie5b.jpg");
+			else perKylie.showPerson("kyliesms3b.jpg");
 			addPlaceTitle(md, "Your Extended Family");			
 			md.write('<p>Things have changed also for the other members of your family, your cousin Kylie and Aunt Brandi. ');
 			if (perKylie.isCharmedBy() && perAunt.isCharmedBy()) {
@@ -1682,7 +1756,7 @@ function initialiseYou()
 			this.addEndGameOthers(md, stage);
 			
 			if (!perAunt.isCharmedBy() || !perKylie.isCharmedBy()) {
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				if (perAunt.isCharmedBy()) perAunt.showPerson("pregnant.jpg");
 				else perAunt.showPerson("endgame1.jpg");
 			}
@@ -1725,19 +1799,40 @@ function initialiseYou()
 			stage = getQueryParam("stage");
 			hideSidebars();
 			md = WritePlaceHeader();
-			AddImageRandom("Endings/endgame1-cult", 2);
+			if (isExplicit()) AddImageRandom("Church/Explicit/endgame1-cult", 4);
+			else AddImageRandom("Church/endgame1-cult", 6);
 			addPlaceTitle(md, "Mother Superior's Cult");
 
 			md.write(
-				'<p>Mother Supoerior, or Daria as she prefers when being intimate, has pushed ahead with her plan to form a cult of <b>you</b> treating you as some sort of holy being. It feels at times a little too messiahanical and this seems the route to attracting too much attention and following Kurndorf into madness and lust for power.</p>' +
+				'<p>Mother Superior, or Daria as she prefers when being intimate, has pushed ahead with her plan to form a cult of <b>you</b> treating you as some sort of holy being. It feels at times a little too messiahanical and this seems the route to attracting too much attention and following Kurndorf into madness and lust for power.</p>' +
 				'<p>Still regularly Mother Superior calls for you to induct another of her nuns into the cult, and for you to show your power, and charm them. You have to admit having a group of nuns dedicated to your ' + (perYou.isMaleSex() ? 'cock' : 'pussy') + ' is enormously appealing.</p>' +
 				'<p>This is still a path you have to take care with, to avoid Kurndorf\'s fate and temptations.</p>'
 			);
 			startQuestions();
-			this.addEndGameOthers(md, stage);
+			if (checkPersonFlag("MissLogan", 1))  addLinkToPlace(md, "there was also some other 'good news' from them", 46, 'type=endgame1cultpreg&stage=' + stage);
+			else this.addEndGameOthers(md, stage);
 			WritePlaceFooter(md);
 			return true;
-		}		
+		}	
+		
+		if (sType == "endgame1cultpreg") {
+			// End Game - Cult
+			stage = getQueryParam("stage");
+			hideSidebars();
+			md = WritePlaceHeader();
+			findPerson("Desiree").showPerson("pregnant.jpg");
+			addPlaceTitle(md, "Mother Superior's Cult");
+			AddImage("Church/pregnant1.jpg", "15%", "right");
+			md.write(
+				'<p>Miss Logan\'s influence spreads to Mother Superior\'s cult, notably to your devoted acolyte Sister Desiree. She proudly shows you the sign of her devotion and explains that some of the initiates are also following in her footsteps.</p>'
+			);
+			startQuestions();
+			this.addEndGameOthers(md, stage);
+			AddPeopleColumnMed(md);
+			AddImage("Church/pregnant2.jpg");
+			WritePlaceFooter(md);
+			return true;
+		}			
 		
 		if (sType == "endgame1other") {
 			// End Game 1 - Others
@@ -1781,7 +1876,7 @@ function initialiseYou()
 				// old Diane model
 				md.write(
 					'<p>This woman you met at the Police Station, an aspiring member of the ' + getProsecutor() + 's office. She is one you kept, the more control over the legal authorities the better..</p>' +
-					'<p>One stange thing though, she reminds you of Diane White in some way, her attitude is similar. It is like she would like to <b>be Diane</b> at sometime. You obliged her, and made her a slave just like Diane!</p>'
+					'<p>One strange thing though, she reminds you of Diane White in some way, her attitude is similar. It is like she would like to <b>be Diane</b> at sometime. You obliged her, and made her a slave just like Diane!</p>'
 				);
 				break;
 			case 2:
@@ -1824,7 +1919,7 @@ function initialiseYou()
 				// exhibitionist from the shop
 				md.write(
 					'<p>The woman you have seen flashing herself in the general store is one you have played with reguarly. She delights in public nudity and you have had her indulge in a little more than that at times.</p>' +
-					'<p>One stange thing though, for no reason you can quite pin down, she reminds you a lot of Leanne, a slightly older version, not her mother, but like another version...</p>'
+					'<p>One strange thing though, for no reason you can quite pin down, she reminds you a lot of Leanne, a slightly older version, not her mother, but like another version...</p>'
 				);
 				break;
 			case 9:
@@ -1953,7 +2048,7 @@ function initialiseYou()
 	perYou.showPersonChat = function(bGeneral, md)
 	{
 		var perGlenvale;
-		
+				
 		// Invisible options (with improved invisibility) for general cases
 		if (Place == 70 && isShopOpen(2) && this.checkFlag(28)) {
 			// At school and it is open
@@ -1967,13 +2062,15 @@ function initialiseYou()
 		}
 		
 		if (sType !== "") return;
+		
+		if (Place == 45) 	addLinkToPlace(md, 'go to your bedroom', 46, '', '', '', "Leave45()");
 
 		if (Place == 269 || (Place == 423 && isCharmed("Carol"))) {
 			// Swimming
 			addLinkToPlace(md, "go for a swim in the pool", Place, 'type=poolswim&who=you');
 		}
 		if (this.checkFlag(38) && !isDay() && getDay() == "Sunday") {
-			if (wherePerson("Tess") == 170) addLinkToPlaceC(md, "talk about relaxing from your exploration", 46, 'type=endgame1start');
+			if (wherePerson("Tess") == 46 && isPersonHere("Tess")) addLinkToPlaceC(md, "talk about relaxing from your exploration", 46, 'type=endgame1start');
 			else if (isPersonHere("Tracy")) addLinkToPlaceC(md, "talk about relaxing from your exploration", 46, 'type=endgame1start');
 		} 
 	};
@@ -2038,14 +2135,14 @@ function initialiseYou()
 				if (perYou.getPersonGender() == "woman") {
 					perYou.setFlag(13);
 					addComments(
-						'<img src="Images/GenericSex/be c.gif" style="width:30%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+						addImageString('GenericSex/be c.jpg', "30%") +
 						'<br><b>Transformation</b></p><p>You cast the spell as you look at yourself in the mirrors, and you feel an incredible surge of lust wash over you. For a moment you thought you heard laughter, but it is lost in the strange feelings swelling in your chest.</p>' +
 						'<p>Your breasts swell, growing larger and larger. After a few seconds they settle down to a <b>much</b> larger size.</p>'
 					);
 				} else {
 					perYou.setFlag(57);
 					addComments(
-						'<img src="Images/GenericSex/cockex a.gif" style="width:30%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="Cock+">' +
+						addImageString('GenericSex/cockex a.jpg', "30%") +
 						'<br><b>Transformation</b></p><p>You cast the spell as you look at yourself in the mirrors, and you feel an incredible surge of lust wash over you. For a moment you thought you heard laughter, but it is lost in the strange feelings swelling in your body.</p>' +
 						'<p>Your groin changes your cock swells, not in erection, but getting larger and larger. After a few seconds it stops growing, but the lust you felt then makes in grow a different way, hardening until fully erect, and <b>much</b> larger than previously.</p>'
 					);

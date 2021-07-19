@@ -956,7 +956,7 @@ function initialiseDianeWhite()
 			return true;
 		}
 
-		if (Place == 304 && this.checkFlag(16) && !this.checkFlag(18) & !this.checkFlag(15) && !this.checkFlag(19)) {
+		if (Place == 245 && this.checkFlag(16) && !this.checkFlag(18) & !this.checkFlag(15) && !this.checkFlag(19)) {
 			md = WritePlaceHeader();
 			perGina.showPerson("ginamuseum" + (this.extra[1] + 1) + ".jpg");
 			addPlaceTitle(md, "Gina and Diane");
@@ -1001,7 +1001,7 @@ function initialiseDianeWhite()
 
 		if (sType == "chatdiane") {
 			// Chat to her while she is your follower
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 			this.showPerson("dianechat1.jpg");
 			addPlaceTitle(md, "Chatting with Diane");
 			md.write(
@@ -1093,7 +1093,7 @@ function initialiseDianeWhite()
 				);
 			}
 			addLinkToPlace(md, 'continue on', Place, getQueryParam("car") == "true" ? "type=victoriascar" : "");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		return false;

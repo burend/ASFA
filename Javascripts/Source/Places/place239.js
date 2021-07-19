@@ -20,22 +20,23 @@ function ShowPlace239()
 		setPlaceKnown("Aquarium");
 	}
 	if (!checkPlaceFlag("Museum", 8) && perGina.isCharmedBy()) md.write('<p>You see your slave Gina waving to you and gesturing towards a door, the security office it seems.</p>');
+	
 	startQuestions();
-
-	addLinkToPlace(md, 'examine the museum safe', 276);
+	addLinkToPlace(md, 'examine the museum safe', 244);
 	addLinkToPlace(md, 'check the local history exhibits', 240);
-	addLinkToPlace(md, 'check the other exhibits', 249);
+	addLinkToPlace(md, 'check the other exhibits', 242);
+	if (checkPersonFlag("Lola", 4) && per.whereNow() == 243) addLinkToPlace(md, 'enter the Curator\'s office', 243);
 
 	// Is POSSESSION SPELL CAST
 	if (isPossess()) {
 		// Yes, Options ONLY IF Possession is CAST
-		addLinkToPlace(md, 'check out the Security Office', 304);
+		addLinkToPlace(md, 'check out the Security Office', 245);
 	} else {
 		// No, not possessing anyone
 		//Have met Gina and she's AT the Museum?
-		if (perGina.other > 0 && perGina.place === 0 && !perGina.isCharmedBy()) addLinkToPlace(md, 'approach the security guard', 277);
+		if (perGina.other > 0 && perGina.place === 0 && !perGina.isCharmedBy()) addLinkToPlace(md, 'approach the security guard', Place, 'type=approachgina');
 		// Know where the security office is
-		if (checkPlaceFlag("Museum", 8) || perGina.isCharmedBy()) addLinkToPlace(md, 'check out the Security Office', 304);
+		if (checkPlaceFlag("Museum", 8) || perGina.isCharmedBy()) addLinkToPlace(md, 'check out the Security Office', 245);
 
 		// Only get EXIT option if possession spell NOT CAST and the museum is open
 		if (isShopOpen(2, 0, true)) addLinkToPlace(md, 'exit the museum', 238);

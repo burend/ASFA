@@ -89,7 +89,7 @@ function initialiseCarol()
 		
 		if (Place == 424) {
 			sw = perYou.isMaleSex() ? "Volkhov" : "Vedma";
-			var herName = capitalizeFirstLetter(this.getPersonName());
+			var herName = capitalize(this.getPersonName());
 
 			if (sType == "carolfuck") {
 				// Fuck her

@@ -29,7 +29,7 @@ function ShowPlace26()
 		movePerson("OfficerBatton", 168);	// Place her back at the Police station
 	}
 
-	if (perMG.place == 34) {
+	if (perMG.place == 26) {
 		// Mrs Granger is here
 		perMG.showPerson(perMG.getCharmedLevel() == 1 ? "!grangerstones1c.jpg" : "!grangerstones1b.jpg");
 	} else {
@@ -44,7 +44,7 @@ function ShowPlace26()
 
 	addPlaceTitle(md, "Wild Ranges");
 
-	md.write('<p>The stones of the wild ranges are the oldest landmark of the country. Nobody knows how the stones were placed, when the event occurred or who placed the remarkable structure. Some townsfolk claim that the stones were magically transported to this field by witches while most townsfolk refuse to even talk about the evil.</p>');
+	md.write('<p>The stones of the Wild Ranges are the oldest landmark of the country. Nobody knows how the stones were placed, when the event occurred or who placed the remarkable structure. Some townsfolk claim that the stones were magically transported to this field by witches while most townsfolk refuse to even talk about the evil.</p>');
 	if (isPlaceKnown("Tunnel")) addPlaceImage(md, "tunnel.jpg", "15%");
 	md.write(
 		'<p>A long walk brings you to this point. As your skin prickles with an uneasy chill the stones loom above, threatening to expose your secret needs.</p>'
@@ -65,11 +65,11 @@ function ShowPlace26()
 	//*********************************************************
 	startQuestions();
 
-	if (perMG.place == 34) addLinkToPlaceO(md, "approach Mrs Granger", 34);
+	if (perMG.place == 26) addLinkToPlaceO(md, "approach Mrs Granger", 26, 'type=mgstones');
 	
 	if (isPlaceKnown("Crypt")) addLinkToPlaceO(md, "enter the crypt", 247);
 	addLinkToPlaceO(md, "search the stones", 86);
-	if (isPlaceKnown("Campsite")) addLinkToPlace(md, "visit the campsite", 25);
+	addLinkToPlace(md, "visit the campsite", 25);
 	if (isPlaceKnown("Tunnel")) addLinkToPlace(md, "go in the tunnel", 178);
 
 	addLinkToPlace(md, "walk to the pathway", 63);

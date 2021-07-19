@@ -122,7 +122,7 @@ function ShowPlace27(stype)
 
 			'<p><em>Kurndorf stood no more. Women, corrupted by his spirit, ' +
 			'wailed at his passing - while others, now free of his spell, wept ' +
-			'and railed at the heavens for forgiveness of the acts comitted ' +
+			'and railed at the heavens for forgiveness of the acts committed ' +
 			'while under his sway. And yet more looked around, suspicious that the ' +
 			'monster might rise again to possess another. The sermon was brief, ' +
 			'the clergy unwilling to give the devil within the coffin his last rites.</p>' +
@@ -148,7 +148,7 @@ function ShowPlace27(stype)
 			'<p>There are a number of books about history, one of which is titled, "The Gem of the Dragon"</p>' +
 
 			'<p>You sit down and read the story, it is a long story of a hero Duncan fighting against ' +
-			'an evil cult spreading darnkess and foul corruption. One section attracts your interest,</p>' +
+			'an evil cult spreading darkness and foul corruption. One section attracts your interest,</p>' +
 
 			'<p><em>Learning of the evil, Duncan broke into that secret, cursed place and ' +
 			'yanked the gem from the dragon\'s eye. We gaped in horror as the ' +
@@ -175,12 +175,12 @@ function ShowPlace27(stype)
 			'<p>There are a number of books about history and mythology, one of which is titled, "Greek Mythology"</p>' +
 			'<p>You sit down and read some of the legends, and you notice some previous student has marked parts of the text.</p>' +
 
-			'<p><em>The Furies were from the <b>underworld</b> and the female spirits of justice and vengence, servants of Hades and Persephone.</p>' +
+			'<p><em>The Furies were from the <b>underworld</b> and the female spirits of justice and vengeance, servants of Hades and Persephone.</p>' +
 			'<p>They had many types depending on the crime being punished...</em> reading on one part leaps out <em>...the Arae were the bringers of curses and <b>magical bindings</b>.</p>' +
 			'<p>The furies take the form of a harpy, a winged woman, usually ugly and shrill. Shrines and items dedicated to protect from them or appease them usually bear an image of a harpy.</em></p>' +
 			'<p>The text referring to items has an arrow pointing to it in pen and the text <i>"where, where?"</i></p>' +
 
-			'<p>Another part that is marked talks about the <b>Empusae spirits and servants of Hecate</b>, Goddess of Witches, Necromancy, Ghosts, and of crossroads and other passages. The Empusae are female spirits who stalk travellers and drink their blood and eat their flesh.</p>' +
+			'<p>Another part that is marked talks about the <b>Empusae spirits and servants of Hecate</b>, Goddess of Witches, Necromancy, Ghosts, and of crossroads and other passages. The Empusae are female spirits who stalk travelers and drink their blood and eat their flesh.</p>' +
 			'<p>They have may things in common with the traditional vampire myths, protections include the sacred wood of the hawthorn tree and branches of holly and herbs like garlic.</p>' +
 			'<p>You see the word "vampire" heavily underlined.</p>'
 		);
@@ -203,7 +203,7 @@ function ShowPlace27(stype)
 		md.write(
 			'<p>It is a personal letter from the blacksmith\'s wife Mrs. Stears to the regional minister describing the chaos in the area during the apex of the Kurndorf cult</p>' +
 			"<p>After the letter was received by the church, district officials were notified and within a month Carl Kurndorf " +
-			"was killed by a lone gunman. There is no mention of who the gunman was or what happened to him. Many of the townfolk," +
+			"was killed by a lone gunman. There is no mention of who the gunman was or what happened to him. Many of the townsfolk," +
 			"including Mrs. Stears, were directed to the district asylum.</p>"
 		);
 		break;
@@ -225,7 +225,7 @@ function ShowPlace27(stype)
 		perYou.setFlag(29);
 		addPlaceTitle(md, '"Following the Water"', "UI/books/hydromancybook.jpg");
 		md.write(
-			'<p>This book is about scrying using reflections in water or hydromancy, an art long practised thoughout history. Hydromancy can give visions of the past, present or future.</p>' +
+			'<p>This book is about scrying using reflections in water or hydromancy, an art long practiced throughout history. Hydromancy can give visions of the past, present or future.</p>' +
 			'<p>It talks about how you need to develop your natural <b>clairvoyant</b> abilities and while meditating on a reflective pool or large bowl of water you should concentrate and gather your <b>mana</b>. You will then get visions of other places and even other times. It mentions also that the nature of the visions are often random but relate to the mental state of the diviner and the location they attempt the ritual at. It also mentions how hydromancy is less of a strain than other forms of clairvoyance.</p>'
 		);
 		break;	
@@ -235,7 +235,7 @@ function ShowPlace27(stype)
 		setPlaceFlag("HistoryClassroom", 11);
 		addPlaceTitle(md, '"Pharmakopoeia"', "UI/books/herbbook.jpg");
 		md.write(
-			'<p>This book is about herb lore, most of it is about traditional curatives, treatments for illnesses and other domestic use of herbs. A significant part also discusses the use of herbs in wutch-craft, or other occult practises. There is a dry comment that this is to help identify the practitioners not as a guide for use, but that is unlikely given the details it goes into.</p>' +
+			'<p>This book is about herb lore, most of it is about traditional curatives, treatments for illnesses and other domestic use of herbs. A significant part also discusses the use of herbs in witch-craft, or other occult practices. There is a dry comment that this is to help identify the practitioners not as a guide for use, but that is unlikely given the details it goes into.</p>' +
 			'<p>One part that attracts your interest is where it discusses vampires, and how the only certain way to lay one to rest is to put a stake of hawthorn wood through the heart of the fiend. It does dryly mention this is best done when they are sleeping in their grave.</p>'
 		);
 		break;	
@@ -246,7 +246,7 @@ function ShowPlace27(stype)
 		addPlaceTitle(md, '"Witches of Pennsylvania"', "UI/books/witchbook.jpg");
 		md.write(
 			'<p><i>Since William Penn presided over the state\'s only official witch trial in 1684, witchcraft and folk magic have been a part of the history of the Keystone State. English and German settlers brought their beliefs in magic with them from the Old World--sometimes with dangerous consequences.</i></p?>' +
-			'<p>This book goes in detail into the history of witches in the US state of Pennsylvania. An interesting historic piece but as you are not in Pennsylvania and more interested in the practise of witchcraft then the history.</p>'
+			'<p>This book goes in detail into the history of witches in the US state of Pennsylvania. An interesting historic piece but as you are not in Pennsylvania and more interested in the practice of witchcraft then the history.</p>'
 		);
 		break;	
 	}

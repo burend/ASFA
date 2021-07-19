@@ -6,10 +6,11 @@
 
 function ShowPlace1()
 {
-	var md = WritePlaceHeader(sType !== "", sType !== "" ? "" : "td-none");
+	var md = WritePlaceHeader();
 
 	switch (sType) {
 
+	case "modstart":
 	case "":
 
 		addPlaceTitle(md, "The Start of an Adventure", "", 0, true);

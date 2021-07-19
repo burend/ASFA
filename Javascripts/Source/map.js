@@ -100,40 +100,43 @@ function checkMap()
 }
 
 var oPlaceMap = {
-	"2"  : { ar: [3,6,8,12,13,28,29] },
-	"9"  : { ar: [10,11,27,69,70,74,75,76,144,145,159,160,180,234,242,252] },
+	"2"  : { ar: [3,6,7,8,28,29] },
+	"9"  : { ar: [10,11,27,69,70,72,74,75,76,144,145,159,234,252] },
 	"16" : { ar: [14,15,17,18,19,20,21,65,66,67,155,191,192,199,200,201,202,290,296] },
-	"26" : { ar: [25,34,86,246,247,248] },
-	"42" : { ar: [53] },
-	"45" : { ar: [41,46,122,149,156,170,236,287,355,356,357,358,374,408,410,411] },
+	"25" : { ar: [24] },
+	"26" : { ar: [34,86,247,248] },
+	"45" : { ar: [40,41,46,122,156,287,374] },
+	"52" : { ar: [53] },	
 	"63" : { ar: [87] },
-	"94" : { ar: [95,96,97,98,99,100,110,158] },
+	"94" : { ar: [95,96,97,98,99,100,101,102,110] },
 	"112": { ar: [113] },
-	"123": { ar: [124,133,134,135,136,137,138,161,162,171,173,174,181,182,184,185,193,258,267,269,339,340,341,342,343,375] },
+	"123": { ar: [124,125,133,134,135,136,137,138,161,162,171,173,174,181,182,184,185,193,267,269,339,340,341,342,343,375] },
 	"167": { ar: [168,169,175,260,261] },
 	"176": { ar: [80,81,82,83] },
 	"177": { ar: [35,39,40,108,139] },
-	"194": { ar: [195,196,197,198,203,224,225,227,237,280,281,282,283,284,344,345] },
+	"194": { ar: [195,196,197,198,199,203,224,225,237,280,281,282,283,284,344,345,346,347,348] },
 	"215": { ar: [213,214,275,278,441,442,443,444] },
 	"230": { ar: [231] },
-	"238": { ar: [239,240,241,249,276,277,278,304] },
+	"238": { ar: [239,240,241,242,243,244,245,246.278] },
 	"302": { ar: [303] },
 	"317": { ar: [318,319,320,321,322,326,332,382,383,384,406] },
 	"344": { ar: [345,346,347,348] },
 	"359": { ar: [371,372,412,413,414,415,416,417] },
-	"360": { ar: [361,369,370,394] },
+	"360": { ar: [361,362,363,394] },
+	"400": { ar: [401,402] },
 	"435": { ar: [434] },
-	"456": { ar: [457,458,459,460,461,462,463,464,465,466] },
-	"478": { ar: [471,472,473] }
+	"456": { ar: [457,458,459,460,461,462,463,464,465,466,467,468,469] },
+	"470": { ar: [471,472,473] }
 };
 
-function isAtLocation(plc)
+function isAtLocation(plc, at)
 {
-	if (Place == plc) return true;
+	if (at === undefined) at = Place;
+	if (at == plc) return true;
 	var plclist = Object.getOwnPropertyNames(oPlaceMap);
 	plc = oPlaceMap[plc + ""];
 	if (plc.ar === undefined) return false;
-	return plc.ar.indexOf(Place) != -1;
+	return plc.ar.indexOf(at) != -1;
 }
 
 function getLocationOnMap(map)
@@ -181,7 +184,7 @@ function addPlace(id, name, color, d, text_x, text_pos, classes, hide, construct
 	this.pos			= pos;	// Location for 'Here You are' image
 	this.buildings	= [];   // buildings
 
-	this.addBuilding = function(id, name, img, size, pos, romb)
+	this.addBuilding = function(id, name, img, size, pos, romb, rec)
 	{
 		// function to add buildings
 		var building = {};
@@ -191,18 +194,19 @@ function addPlace(id, name, color, d, text_x, text_pos, classes, hide, construct
 		building.size	= size;	// image size (x,y)
 		building.pos	= pos;	// x,y position of top left corner of the img
 		building.romb	= romb;	// position of romb on the road
+		building.rect = rec !== false;	// Show a border rectangle
 		building.show	= function() {
 			// checks if the building should be printed
 			var bOk = true;
 			if (gameState.plcTitle == "Teleport") {
 				// Special cases
-				if (isPlaceAttuned(53) && this.id == 42) return true;
+				if (isPlaceAttuned(53) && this.id == 52) return true;
 				else if (isPlaceAttuned(319) && this.id == 317) return true;
 				bOk = isPlaceAttuned(this.id) || this.id == 45;		// Attuned or is your home!
 				if (perYou.checkFlag(21)) {
-					if (this.id == 42 || this.id == 26 || this.id == 123 || this.id == 176 || this.id == 177 || this.id == 230 || this.id == 9) bOk = true;
+					if (this.id == 52 || this.id == 26 || this.id == 123 || this.id == 176 || this.id == 177 || this.id == 230 || this.id == 9) bOk = true;
 				}
-			} else bOk = isPlaceKnown(this.name.replace(/_/g,''));
+			} else bOk = isPlaceKnown(this.name.replace(/_/g, ''));
 			return bOk;
 		};
 		this.buildings.push(building); // add building to the place
@@ -237,8 +241,11 @@ function renderPlace(p, plc, clkfn)
 	var clk = '';
 	if (clkfn !== undefined) clk = clkfn(p.id);
 
+	var tname;
+	if (perMod !== undefined) tname = perMod.replaceText(p.name.replace(/_/g,' ')).split('').join(' ');
+	else tname = p.name.split('').join(' ').replace(/_/g,' ');
 	var svg = '<path id="' + p.name + '" ' + classes + ' style="stroke:' + color + ';" d="' + p.d + '"/>';
-	if (p.show()) svg += '<text xml:space="preserve" dx="' + p.text_x + '" dy="' + text_pos + '" fill="' + p.color + '" ><textPath xlink:href="#' + p.name + '">' + p.name.split('').join(' ').replace(/_/g,' ') + '</textPath></text>';
+	if (p.show()) svg += '<text xml:space="preserve" dx="' + p.text_x + '" dy="' + text_pos + '" fill="' + p.color + '" ><textPath xlink:href="#' + p.name + '">' + tname + '</textPath></text>';
 	if (p.pos !== undefined) svg += addHereHex(p.id, plc, p.pos.x, p.pos.y, clk);
 	
 	if (p.show() && p.construction) {
@@ -267,9 +274,13 @@ function renderBuilding(p, b, plc, clkfn)
 	var clk = '';
 	if (clkfn !== undefined) clk = clkfn(b.id);
 	//svg+= '<rect  x="'+b.pos.x+'" y="'+b.pos.y+'" height="'+b.size.y+'" width="'+b.size.x+'" style="stroke:none; fill:#ffffff; " />'; // white background behind images in case the dimensions aren't right;
+	var tname = b.name.replace(/_/g,' ');
+	if (perMod !== undefined) tname = perMod.replaceText(tname);
+
 	return svg +
-		'<image x="' + b.pos.x + '" y="' + b.pos.y + '" height="' + b.size.y + '" width="' + b.size.x + '" xlink:href="' + b.img + (plc != b.id && clk !== '' ? '" cursor="pointer" onclick="' + clk : '') + '"> <title role="tooltip">' + b.name.replace(/_/g,' ') + '</title></image>' +
-		'<rect  x="' + b.pos.x + '" y="' + b.pos.y + '" height="' + b.size.y + '" width="' + b.size.x + '" style="stroke:' + p.color + '; stroke-width:2; fill:none; " />' +
+		(gameState.sMod !== "" ? '<image x="' + b.pos.x + '" y="' + b.pos.y + '" height="' + b.size.y + '" width="' + b.size.x + '" xlink:href="./' + b.img + (plc != b.id && clk !== '' ? '" cursor="pointer" onclick="' + clk : '') + '"> <title role="tooltip">' + tname + '</title></image>' : '') +
+		'<image x="' + b.pos.x + '" y="' + b.pos.y + '" height="' + b.size.y + '" width="' + b.size.x + '" xlink:href="' + b.img + (plc != b.id && clk !== '' ? '" cursor="pointer" onclick="' + clk : '') + '"> <title role="tooltip">' + tname + '</title></image>' +
+		(b.rect ? '<rect  x="' + b.pos.x + '" y="' + b.pos.y + '" height="' + b.size.y + '" width="' + b.size.x + '" style="stroke:' + p.color + '; stroke-width:2; fill:none; " />' : '') +
 		(plc == b.id ? '<image id="here" x="' + (b.pos.x - 23) + '" y="' + (b.pos.y + b.size.y - 60) + '" height="60" width="60" xlink:href="UI/map/here.png"/>' : '') +
 		(bOk ? '<image x="' + b.pos.x + '" y="' + b.pos.y + '" height="18" width="18" xlink:href="UI/themes/theme0/symbol1.png"/>' : '');
 }
@@ -298,10 +309,11 @@ function addRomb(p, x, construction)
 function renderMap(clkfn)
 {
 	var map = {};
+	var tnm = gameState.sTown;
 
 	// streets definitions
 	map['Amaranth_Place']	= new addPlace(38,	'Amaranth_Place',		'#ff0066', "M569.1,542.8v-29.4c0-5.1,2.5-9,9-9l173-0.1", 15, 'up', false, false, false, {x:600, y:450});
-	map['Cherise_Road']		= new addPlace(37,	'Cherise_Road',		'#0066ff', "M305.8,576.9h48.8c4.3,0,8-4,8-8V445.7 c0-4.5-3.1-8.3-8.3-8.3h-83.1", 85, 'up', false,false, false, {x:335, y:400});
+	map['Cherise_Road']		= new addPlace(37,	'Cherise_Road',		'#0066ff', "M305.8,576.9h48.8c4.3,0,8-4,8-8V445.7 c0-4.5-3.1-8.3-8.3-8.3h-83.1", 85, 'up', false, false, false, {x:335, y:400});
 	map['Tunnel']				= new addPlace(178,	'Tunnel',				'#000080', "M271.1,187.1l-0.3-96.7", 45, 'up', "dash", true, false);
 	map['Catacomb_Tunnel']	= new addPlace(323,	'Catacomb_Tunnel',	'#202090', "M516.3,482.4h180.9c7.7,0,10.2-2.6,10.2-10.2l0-61.9", 115, "down", "dash", true, false);
 	map['Park_Bridge']		= new addPlace(216,	'Park_Bridge',			'#9a00c0', "M271.1,227.8h81", 5, 'down', false, false, false);
@@ -310,7 +322,7 @@ function renderMap(clkfn)
 	map['Scholastic_Road']	= new addPlace(2,		'Scholastic_Road',	'#01fa01', "M271.1,318.4h187.5", 45, 'down', false, false, false);
 	map['Rathdown_Road']		= new addPlace(229,	'Rathdown_Road',		'#aa0088', "M458.5,543.8h110.6", 5, 'up', false, false, false, {x:500, y:490});
 	map['Dervish_Road']		= new addPlace(5,		'Dervish_Road',		'#00aa88', "M178.4,499.6l-0.1,77.1c0,16.4,7.6,18.6,18.3,18.6 h90.3c12.1,0,18.9-4.2,18.9-18.3", 115, 'up', false, false, false, {x:168, y:540});
-	map['Alleyway']			= new addPlace(42,	'Alleyway',				'#000080', "M154.3,369.4l116.8-0.1", 5, 'up', false, true, false);
+	map['Alleyway']			= new addPlace(52,	'Alleyway',				'#000080', "M154.3,369.4l116.8-0.1", 5, 'up', false, true, false);
 	map['Church_Lane']		= new addPlace(317,	'Church_Lane',			'#00ccff', "M751.1,356.1v148.3", 5, 'up', false, false, 80);
 	map['Broken_Oar_Street']= new addPlace(123,	'Broken_Oar_Street',	'#ff00cc', "M458.6,318.4v224.8", 5, 'up', false, false, false);
 	map['Main_Street']		= new addPlace(94,	'Main_Street',			'#ff6600', "M458.6,318.1l86.4,0c48.4,0,59.3,38.3,99.7,38.2 l106.3-0.3", 120, 'up', false, false, 230);
@@ -322,31 +334,37 @@ function renderMap(clkfn)
 	map['Celeste_Road']		= new addPlace(455,	'Celeste_Road',		'#4b834b', "M544.6,109.2h236.8v91", 5, 'up', false, false, false, {x:594,y:49});
 
 	// buildings definitions
-	map['Oakpine_Road'].addBuilding(		360,	"Glenvale Aquarium",			"Images/aquarium1.jpg",	{x:90, y:60 }, {x:445, y:100}, 228);
-	map['Oakpine_Road'].addBuilding(		238,	"Glenvale Museum",			"Images/museum.jpg",		{x:72, y:60 }, {x:555, y:120}, 215);
+	map['Oakpine_Road'].addBuilding(		360,	tnm + " Aquarium",			"Images/aquarium1.jpg",	{x:90, y:60 }, {x:445, y:100}, 228);
+	map['Oakpine_Road'].addBuilding(		238,	tnm + " Museum",				"Images/museum.jpg",		{x:72, y:60 }, {x:555, y:120}, 215);
 
 	map['Celeste_Road'].addBuilding(		456,	"Apartments",					"Images/apartments1.jpg",{x:60, y:60 }, {x:555, y:35}, 41);
 
 	map['Kollam_Street'].addBuilding(	45,	"Home",							"Images/house4.jpg",		{x:70, y:(70/600*370) }, {x:280, y:330}, 33);
 	map['Kollam_Street'].addBuilding(	112,	"Kellys' House",				"Images/house7.jpg",		{x:70, y:(70/600*382) }, {x:280, y:380}, 83);
 	
-	map['Alleyway'].addBuilding(			42,	"Alley",							"Images/alley1.jpg",		{x:46, y:60}, {x:190, y:369.5}, -1); //width="460" height="600"
+	map['Alleyway'].addBuilding(			52,	"Alley",							"Images/alley1.jpg",		{x:46, y:60}, {x:190, y:369.5}, -1); //width="460" height="600"
 	map['Church_Lane'].addBuilding(		317,	"Lady of Our Heavenly Father","Images/church1.jpg",{x:80, y:79}, {x:665, y:365}, 45); // width="737" height="721"
-	map['Main_Street'].addBuilding(		94,	"Glenvale Town Hall",		"Images/cityhall1.jpg", {x:60, y:(60/472*576)}, {x:540, y:240}, 77);// width="472" height="576"
+	map['Main_Street'].addBuilding(		94,	tnm + " Town Hall",			"Images/cityhall1.jpg", {x:60, y:(60/472*576)}, {x:540, y:240}, 77);// width="472" height="576"
 
 	map['Cherise_Road'].addBuilding(		435,	"Gym",							"Images/gymoutside1.jpg",{x:55, y:(55/785*600)}, {x:280, y:445}, 270); // width="785" height="600"
 	map['Cherise_Road'].addBuilding(		440,	"Logan House",					"Images/house16.jpg",	{x:75, y:(75/6*4)}, {x:373, y:430}, 176); // width="600" height="400"	
 	map['Cherise_Road'].addBuilding(		436,	"Ross' House",					"Images/house11.jpg",	{x:75, y:(75/6*4)}, {x:373, y:490}, 114); // width="600" height="400"
-	map['Cherise_Road'].addBuilding(		433,	"Aunt's House",				"Images/house12.jpg",	{x:70, y:70/450*339}, {x:373, y:550}, 50); // width="600" height="400"
+	map['Cherise_Road'].addBuilding(		400,	"Aunt's House",				"Images/house12.jpg",	{x:70, y:70/450*339}, {x:373, y:550}, 50); // width="600" height="400"
+	map['Cherise_Road'].addBuilding(		432,	"Melanie's House",			"Images/house17.jpg",	{x:50, y:80/450*339}, {x:315, y:585}, 40); // width="600" height="400"
 
-	map['Park'].addBuilding(				47,	"Glenvale Park",				"Images/park1.jpg",		{x:45, y:60}, {x:280, y:250}, 38); // width="450" height="600"
+	map['Park'].addBuilding(				47,	tnm + " Park",					"Images/park1.jpg",		{x:45, y:60}, {x:280, y:250}, 38); // width="450" height="600"
 	map['Park'].addBuilding(				63,	"Park Pathway",				"Images/park3.jpg",		{x:35, y:(35/256*375)}, {x:225, y:226}, 90.5); // width="256" height="375"
+	map['Park'].addBuilding(				60,	"Barn",							"Images/barn2.jpg",		{x:30, y:(25/256*375)}, {x:195, y:226}, -1); // width="256" height="375"
 	map['Park'].addBuilding(				26,	"Wild Ranges",					"Images/stones.jpg",		{x:70, y:70}, {x:190, y:150}, 140); //width="439" height="434"
-	map['Scholastic_Road'].addBuilding(	9,		"Glenvale High School",		"Images/school1.jpg",	{x:60, y:(60/491*600)}, {x:200, y:283}, 0); //width="491" height="600"
+	map['Park'].addBuilding(				25,	"Campsite",						"Images/campsite3.jpg",	{x:27, y:45}, {x:162, y:150}, -1); //width="439" height="434"	
+	map['Park'].addBuilding(				25,	"Cabin",							"Images/cabin1.jpg",		{x:30, y:20}, {x:144, y:129}, -1); //width="439" height="434"		
+	map['Park'].addBuilding(				23, 	"Glenvale Lake", 				"Images/lake.png", 		{x:140, y:130}, {x:55, y:165}, -1, false);
+
+	map['Scholastic_Road'].addBuilding(	9,		tnm + " High School",		"Images/school1.jpg",	{x:60, y:(60/491*600)}, {x:200, y:283}, 0); //width="491" height="600"
 	map['Scholastic_Road'].addBuilding(	2,		"Glenvale Library",			"Images/library1.jpg",	{x:99, y:66}, {x:350, y:245}, 70); //width="660" height="440"
-	map['Park_Bridge'].addBuilding(		215,	'Glenvale Hospital',			"Images/hospital1.jpg",	{x:88, y:(88/640*427)}, {x:350, y:162}, 1000);// width="640" height="427"
+	map['Park_Bridge'].addBuilding(		215,	tnm + ' Hospital',			"Images/hospital1.jpg",	{x:88, y:(88/640*427)}, {x:350, y:162}, 1000);// width="640" height="427"
 	map['Park_Bridge'].addBuilding(		216,	"Park Bridge",					"Images/park2.jpg",		{x:48, y:(48/665*799)}, {x:280, y:162}, 33);// width="665" height="799"
-	map['Broken_Oar_Street'].addBuilding(325,	"Glenvale Graveyard",		"Images/graveyard.jpg",	{x:68, y:43}, {x:468, y:440}, 143); // width="800" height="528"
+	map['Broken_Oar_Street'].addBuilding(325,	tnm + " Graveyard",			"Images/graveyard.jpg",	{x:68, y:43}, {x:468, y:440}, 143); // width="800" height="528"
 	map['Broken_Oar_Street'].addBuilding(123,	"Broken Inn Hotel",			"Images/hotel1.jpg",		{x:85, y:70}, {x:365, y:350}, 70); // width="500" height="400"
 
 	map['Yoolaroo_Drive'].addBuilding(	177,	"Granger's House",			"Images/house3.jpg",		{x:75, y:(75/600*365)}, {x:50, y:347}, 145); // width="600" height="365"
@@ -369,15 +387,18 @@ function renderMap(clkfn)
 
 	map['Amaranth_Place'].addBuilding(	450,	"Leanne's House",				"Images/house10.jpg",	{x:(60/45*60), y:60}, {x:740, y:513}, 210);// width="600" height="450"
 	map['Amaranth_Place'].addBuilding(	452,	"Gabby's House",				"Images/house9.jpg",		{x:(60/45*60), y:60}, {x:650, y:513}, 131);// width="600" height="450"
-
+	map['Amaranth_Place'].addBuilding(	451,	"Lola's House",				"Images/house11.jpg",	{x:(60/45*60), y:60}, {x:765, y:440}, 260);// width="600" height="450"
+	
 	map['Radio_Drive'].addBuilding(		167,	"Police Station",				"Images/police1station.jpg", {x:50, y:(50/215*287)}, {x:485, y:330}, 45);// width="215" height="287"
 	map['Radio_Drive'].addBuilding(		359,	"TV &amp; Radio Station",	"Images/radio1.jpg",		{x:85, y:(85/277*237)}, {x:570, y:403}, 1000); //width="277" height="237"
 
+	if (perMod !== undefined) perMod.addMapLocations(map);
+	
 	var cPS = 20; // constructionPatternSize
 
 	// svg definitions
 	var mapSvg =
-		"<?xml version=\"1.0\" encoding=\"utf-8\"?><svg class=\"shadow\" version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 860 620\" xml:space=\"preserve\"><defs>" + 
+		"<?xml version=\"1.0\" encoding=\"utf-8\"?><svg class=\"shadow\" version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" viewBox=\"0 0 860 660\" xml:space=\"preserve\"><defs>" + 
 		'<pattern id="construction" patternUnits="userSpaceOnUse" width="' + cPS + '" height="' + cPS + '"><rect x="0" y="0" width="' + cPS + '" height="' + cPS + '" fill="#000000" /><path style="stroke:#ffff00; stroke-width:' + (cPS / 3) + ';" d="M-4,4 l8,-8 M0,' + cPS + ' l' + cPS + ',-' + cPS + ' M' + (cPS - 4) + ',' + (cPS + 4) + ' l8,-8\" /></pattern>' +
 		"<style type=\"text/css\">	path {fill: none;stroke-width:2;stroke-linecap: round;stroke-linejoin: round;} text {font-family:Tahoma, Arial;font-size:8px;font-weight:bold;letter-spacing:0px;stroke:none;} #outside {stroke:#b3b3b3;} .dash {stroke-dasharray:5,4;}</style></defs>" +
 		// dashed outside roads

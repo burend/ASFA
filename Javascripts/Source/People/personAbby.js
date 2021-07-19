@@ -126,7 +126,7 @@ function initialiseAbby()
 					if (stage == "abby3b") stage = "abby3c";
 					else if (stage == "abby3c") stage = "abby3d";
 				} else if (stage === "abby3d") {
-						md.write('Abby is standing naked before you looking completely comformatable and happy, and excited. You start to tell her to show more, but maybe it is time to move to the next level when she just talks over you,</p><p>"Would you like me to give you a little show here, or maybe elsewhere?"</p>');
+						md.write('Abby is standing naked before you looking completely comforatable and happy, and excited. You start to tell her to show more, but maybe it is time to move to the next level when she just talks over you,</p><p>"Would you like me to give you a little show here, or maybe elsewhere?"</p>');
 						stage = "abby3e";
 				} else if (stage === "abby3e") {
 						md.write('Abby turns around to show you more of her shapely rear, and notice her tattoo. You start to ask her about it, and again she talks over you,</p><p>"My tattoo is a family thing, all women get one like this, the men get much more extensive ones. It&apos;s a heritage of a rough time in our past, the designs are always related to the legends of our family past. Mine is a tale of a dragon, the daichunai that would steal the heart and souls of people, and how a brave ancestor of mine was finally able to defeat it."</p>');
@@ -224,7 +224,7 @@ function initialiseAbby()
 				if (Place == 394) {
 					// Aquarium
 					if (perYou.isMaleSex()) {
-						this.showPerson("abby-home-sex-b.jpg");
+						this.showPersonRorX("abby-home-sex-b.jpg");
 						addPlaceTitle(md, "Abby's Office Help");
 					} else {
 						this.showPersonRorX("abby-home-sex-g.jpg");
@@ -233,7 +233,7 @@ function initialiseAbby()
 				} else {
 					// Her apartment
 					if (perYou.isMaleSex()) {
-						this.showPerson("abby-home-sex-b.jpg");
+						this.showPersonRorX("abby-home-sex-b.jpg");
 						addPlaceTitle(md, "Abby's Home Help");
 					} else {
 						this.showPersonRorX("abby-home-sex-g.jpg");
@@ -308,9 +308,9 @@ function initialiseAbby()
 		this.showPerson("poledancea.jpg");
 		addPlaceTitle(md, "Abby\'s Dance");
 		md.write(
-			'<p>When Abby arrives there are two unusual things you notice immediately, she is dressed in a harem-girl outfit, unusualy as she seems to have lost all interest in clothing since being charmed. The other thing is she is smiling but is quiet, and she does not talk for her entire performance!</p>' +
+			'<p>When Abby arrives there are two unusual things you notice immediately, she is dressed in a harem-girl outfit, unusually as she seems to have lost all interest in clothing since being charmed. The other thing is she is smiling but is quiet, and she does not talk for her entire performance!</p>' +
 			'<p>You enjoy her performance, both for she excellent dance and for the lack of her chatter. She is cute and sexy but if only she would be quiet like she is now more often!</p>' +
-			'<p>After she joins you for a while, not bothering to re-dress but also resuming her cherrful conversation!</p>'
+			'<p>After she joins you for a while, not bothering to re-dress but also resuming her cheerful conversation!</p>'
 		);
 		startQuestions();
 		addLinkToPlaceC(md, 'enjoy the club after her dance', Place);

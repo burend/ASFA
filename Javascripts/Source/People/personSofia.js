@@ -93,7 +93,7 @@ function initialiseSofia()
 				perAngela.addPersonString("!angela14.jpg", "height:max%", "right") +
 				'<p>You close the office door and would be on your way out when you see Angela waiting for you. She comes to you, after the regular greeting ' + (perAngela.getCharmedLevel() == 2 ? ' by giving you an enthusiastic kiss' : ', which means she kisses your hand, like a subject does to her ' + perYou.getLord()) + ' and after that she starts to talk,</p>' +
 				'<p>"' + myName + '! I’ve heard your conversation with Miss Thomas. I’m sorry, I couldn’t help myself and the walls are too thin anyway.", she pleads and waits for your reaction. You don’t mind that a bit, you know she just wants to please you. Sje continues,</p>' +
-				'<p>"I know of a ' + this.name + '. She is a hispanic woman in her mid twenties. She was the personal driver to ' + perGates.getPersonNameShort() + ' Gates. Is she the one you are looking for?" she asks.</p>',
+				'<p>"I know of a ' + this.getPersonNameShort() + '. She is a hispanic woman in her mid twenties. She was the personal driver to ' + perGates.getPersonNameShort() + ' Gates. Is she the one you are looking for?" she asks.</p>',
 				"dispPlace(95)"
 			);
 			return true;
@@ -123,32 +123,32 @@ function initialiseSofia()
 			WaitHereOnly(6);
 			md = WritePlaceHeader();
 			this.showPerson("sofia-pool.jpg");
-			addPlaceTitle(md, "Swimming with " + this.name);
+			addPlaceTitle(md, "Swimming with " + this.getPersonNameShort());
 			md.write(
-				'<p>You ask Bambi to get ' + this.name + ' a spare bikini and she quickly finds one for ' + this.name + ', who changes into it, ready to serve you in any way you wish!</p>'
+				'<p>You ask Bambi to get ' + this.getPersonNameShort() + ' a spare bikini and she quickly finds one for ' + this.getPersonNameShort() + ', who changes into it, ready to serve you in any way you wish!</p>'
 			);
 			startQuestions();
 			addLinkToPlaceC(md, 'she is willing to do more..', Place, 'type=sofiapoolsex');
-			addLinkToPlaceC(md, 'say goodbye to ' + this.name, Place);
+			addLinkToPlaceC(md, 'say goodbye to ' + this.getPersonNameShort(), Place);
 			WritePlaceFooter(md);
 			return true;
 		}
 		if (Place == 269 && sType == "sofiapoolsex") {
 			md = WritePlaceHeader();
 			this.showPerson("sofia-pool-sex.jpg");
-			addPlaceTitle(md, "Being Discrete and Private with " + this.name);
+			addPlaceTitle(md, "Being Discrete and Private with " + this.getPersonNameShort());
 			md.write(
-				'<p>You ask ' + this.name + ' for more with her privately, and she seductively removes most of her swimsuit and plays with her large breasts for your pleasure.</p>'
+				'<p>You ask ' + this.getPersonNameShort() + ' for more with her privately, and she seductively removes most of her swimsuit and plays with her large breasts for your pleasure.</p>'
 			);
 			startQuestions();
-			addLinkToPlaceC(md, 'later...say goodbye to ' + this.name, Place);
+			addLinkToPlaceC(md, 'later...say goodbye to ' + this.getPersonNameShort(), Place);
 			WritePlaceFooter(md);
 			return true;
 		}
 
 		if (Place == 110 && sType =='asksofia1') {
 			this.setFlag(11);
-			md = WritePlaceHeader(false, 'td-left-med');
+			md = WritePlaceHeaderNP(false, 'td-left-med');
 			findPerson("Mayor").showPerson("mayor12.jpg");
 			addPlaceTitle(md, "Assistance from the Mayor");
 
@@ -170,14 +170,14 @@ function initialiseSofia()
 
 			startQuestions();
 			addLinkToPlace(md, 'go to the reception', 95);
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
 		if (Place == 95 && sType =='asksofia2') {
 			this.setFlag(13);
-			md = WritePlaceHeader();
-			findPerson("Angela").showPerson("!angela1c.jpg");
+			md = WritePlaceHeaderNP();
+			findPerson("Angela").showPerson("Small!angela1c.jpg");
 			addPlaceTitle(md, "Angela Explains");
 			var perAngela = findPerson("Angela");
 			var myName = perAngela.getYourNameFor();
@@ -200,14 +200,14 @@ function initialiseSofia()
 
 			startQuestions();
 			addLinkToPlaceC(md, 'talk more to Angela', 95);
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
 		if (Place == 168) {
 			if (sType =='asksofia3') {
 				this.setFlag(14);
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNP();
 				findPerson("OfficerBatton").showPerson("polbsofia1.jpg");
 				addPlaceTitle(md, "Police Assistance");
 
@@ -224,7 +224,7 @@ function initialiseSofia()
 				startQuestions();
 				addLinkToPlaceC(md, 'Kerry has a last point', 168, 'type=asksofia4');
 				addLinkToPlaceC(md, 'finish talking to Kerry', 168);
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType =='asksofia4') {
@@ -248,7 +248,7 @@ function initialiseSofia()
 			}
 
 			if (isMurderPath() && this.checkFlag(15) && !this.checkFlag(24) && sType === "") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNP();
 				findPerson("OfficerBatton").showPerson("polbsofia1.jpg");
 				addPlaceTitle(md, "Next Stage of the Plan for Sofia");
 
@@ -264,7 +264,7 @@ function initialiseSofia()
 				);
 				startQuestions();
 				addLinkToPlaceC(md, 'wait for them to return', 168, 'type=waiting');
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 		}
@@ -299,7 +299,7 @@ function initialiseSofia()
 				return true;
 			}
 			if (sType === "charm1") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNP();
 				this.showPerson("sofia_charm1.jpg");
 				addPlaceTitle(md, "Sofia Under a Charm Spell");
 
@@ -309,11 +309,11 @@ function initialiseSofia()
 
 				startQuestions();
 				addLinkToPlace(md, 'wait further in silence', 175, 'type=charm2');
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType === "charm2") {
-				md = WritePlaceHeader(false, 'td-left-med');
+				md = WritePlaceHeaderNP(false, 'td-left-med');
 				this.showPerson("sofia_charm2.jpg");
 				addPlaceTitle(md, "Sofia Under a Charm Spell");
 
@@ -324,11 +324,11 @@ function initialiseSofia()
 
 				startQuestions();
 				addLinkToPlaceC(md, '"You are one hot slut, you know that?"', 175, 'type=charm3');
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType === "charm3") {
-				md = WritePlaceHeader(false, 'td-left-med');
+				md = WritePlaceHeaderNP(false, 'td-left-med');
 				this.showPerson("sofia_charm2.jpg");
 				addPlaceTitle(md, "Sofia Under a Charm Spell");
 
@@ -339,11 +339,11 @@ function initialiseSofia()
 
 				startQuestions();
 				addLinkToPlaceC(md, perYou.isMaleSex() ? '"Swear your allegiance to me, slave. Suck my cock now!"' : '"Swear undying loyalty to me now, slave! Use your mouth!"', 175, 'type=charm4');
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType === "charm4") {
-				md = WritePlaceHeader(false, perYou.isMaleSex() ? isExplicit() ? 'td-left-med' : '' : 'td-left-large');
+				md = WritePlaceHeaderNP(false, perYou.isMaleSex() ? isExplicit() ? 'td-left-med' : '' : 'td-left-large');
 				if (perYou.isMaleSex()) this.showPersonRorX("sofia_charm_male1.jpg");
 				else this.showPerson("sofia_charm_female1.jpg");
 				addPlaceTitle(md, "Sofia Under a Charm Spell");
@@ -362,11 +362,11 @@ function initialiseSofia()
 
 				startQuestions();
 				addLinkToPlace(md, perYou.isMaleSex() ? 'keep on enjoying the experience' : 'let her finish pleasuring you!', 175, 'type=charm5');
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType === "charm5") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNP();
 				if (perYou.isMaleSex()) this.showPersonRorX("sofia_charm_male2.jpg");
 				else this.showPerson("sofia_charm_female2.jpg");
 				addPlaceTitle(md, "Sofia Under a Charm Spell");
@@ -383,11 +383,11 @@ function initialiseSofia()
 
 				startQuestions();
 				addLinkToPlaceC(md, '"Heh! That was amazing! I’m going to need this regularly!"', 175, 'type=charmend');
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			if (sType === "charmend") {
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNP();
 				this.showPerson("sofia_charm_ending.jpg");
 				addPlaceTitle(md, "Sofia Under a Charm Spell");
 				this.moveThem(14);
@@ -409,73 +409,73 @@ function initialiseSofia()
 
 				startQuestions();
 				addLinkToPlaceC(md, 'leave the interrogation room', 168);
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 		}
 		
 		if (sType == "sofialimosex") {
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 			this.showPersonRandom("sofia-limosex", 2);
-			addPlaceTitle(md, this.name + " in the Backseat");
+			addPlaceTitle(md, this.getPersonNameShort() + " in the Backseat");
 
 			md.write(
-				'<p>You ask ' + this.name + ' to join you in the backseat of the limo. Dutifully she joins you, her expression clearly shows she knows what her duties will be.</p>'
+				'<p>You ask ' + this.getPersonNameShort() + ' to join you in the backseat of the limo. Dutifully she joins you, her expression clearly shows she knows what her duties will be.</p>'
 			);
 
 			startQuestionsOnly();			
 			// General sex scene in the limo
-			addLinkToPlace(md,'"' + this.name + ', time to sit in my lap"', Place, 'type=sofialimofuck');
-			addLinkToPlace(md,'"' + this.name + ', help me get comfortable"', Place, 'type=sofialimobj');
-			if (perYou.isMaleSex()) addLinkToPlace(md,'"' + this.name + ', let me park something in your cleavage"', Place, 'type=sofialimotitfuck');
-			WritePlaceFooter(md, '', true, true);
+			addLinkToPlace(md,'"' + this.getPersonNameShort() + ', time to sit in my lap"', Place, 'type=sofialimofuck');
+			addLinkToPlace(md,'"' + this.getPersonNameShort() + ', help me get comfortable"', Place, 'type=sofialimobj');
+			if (perYou.isMaleSex()) addLinkToPlace(md,'"' + this.getPersonNameShort() + ', let me park something in your cleavage"', Place, 'type=sofialimotitfuck');
+			WritePlaceFooter(md);
 			return true;
 		}
 		if (sType == "sofialimofuck") {
-			md = WritePlaceHeader(false, !isExplicit() && perYou.isMaleSex() ? '' : 'td-left-large');
+			md = WritePlaceHeaderNP(false, !isExplicit() && perYou.isMaleSex() ? '' : 'td-left-large');
 			if (perYou.isMaleSex()) this.showPersonRorX("sofia-limosex-fuckb.jpg");
 			else this.showPerson("sofia-limosex-fuckg.jpg");
-			addPlaceTitle(md, "Riding " + this.name);
+			addPlaceTitle(md, "Riding " + this.getPersonNameShort());
 
 			md.write(
-				'<p>You tell ' + this.name + ' it is time for her to sit on your lap, in a somewhat intimate way.</p>'
+				'<p>You tell ' + this.getPersonNameShort() + ' it is time for her to sit on your lap, in a somewhat intimate way.</p>'
 			);
 
 			startQuestionsOnly();
 			addLinkToPlaceC(md, 'continue on your way', Place);
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
 		if (sType == "sofialimobj") {
-			md = WritePlaceHeader(false, perYou.isMaleSex() ? 'td-left-large' : '');
+			md = WritePlaceHeaderNP(false, perYou.isMaleSex() ? 'td-left-large' : '');
 			if (perYou.isMaleSex()) this.showPersonRorX("sofia-limosex-bjb.jpg");
 			else this.showPersonRorX("sofia-limosex-bjg.jpg");
-			addPlaceTitle(md, this.name + "\'s Comfort");
+			addPlaceTitle(md, this.getPersonNameShort() + "\'s Comfort");
 
 			md.write(
-				'<p>You ask ' + this.name + ' to help you get comfortable, and she kneels down ready to make you feel a lot more relaxed.</p>'
+				'<p>You ask ' + this.getPersonNameShort() + ' to help you get comfortable, and she kneels down ready to make you feel a lot more relaxed.</p>'
 			);
 
 			startQuestionsOnly();
 			addLinkToPlaceC(md, 'continue on your way', Place);
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
 		if (sType == "sofialimotitfuck") {
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNP();
 			if (isExplicit()) this.showPersonRandomX("sofia-limosex-titfuck", 2);
 			else this.showPerson("sofia-limosex-titfuck.jpg");
-			addPlaceTitle(md, "Parking in " + this.name + "\'s Cleavage");
+			addPlaceTitle(md, "Parking in " + this.getPersonNameShort() + "\'s Cleavage");
 
 			md.write(
-				'<p>You discuss parking with ' + this.name + ', and she gestures towards a garage. You instead gesture at her large breasts and suggest parking your cock <i>there</i>!</p>'
+				'<p>You discuss parking with ' + this.getPersonNameShort() + ', and she gestures towards a garage. You instead gesture at her large breasts and suggest parking your cock <i>there</i>!</p>'
 			);
 
 			startQuestionsOnly();
 			addLinkToPlaceC(md, 'continue on your way', Place);
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		if (Place != 14) return false;
@@ -484,14 +484,14 @@ function initialiseSofia()
 			md = WritePlaceHeader(false, 'td-left-large');
 			if (perYou.isMaleSex()) this.showPerson("sofia-officesex-fuckb.jpg");
 			else this.showPerson("sofia-officesex-fuckg.jpg");
-			addPlaceTitle(md, "Riding " + this.name);
+			addPlaceTitle(md, "Riding " + this.getPersonNameShort());
 
 			md.write(
-				'<p>There is more than one way to go for a ride with ' + this.name + ', and some do not even need you to leave the office.</p>'
+				'<p>There is more than one way to go for a ride with ' + this.getPersonNameShort() + ', and some do not even need you to leave the office.</p>'
 			);
 
 			startQuestions();
-			addLinkToPlaceC(md, 'talk more with ' + this.name, Place);
+			addLinkToPlaceC(md, 'talk more with ' + this.getPersonNameShort(), Place);
 			WritePlaceFooter(md);
 			return true;
 		}
@@ -500,14 +500,14 @@ function initialiseSofia()
 			md = WritePlaceHeader(false, perYou.isMaleSex() ? '' : 'td-left-large');
 			if (perYou.isMaleSex()) this.showPersonRorX("sofia_charm_male1.jpg");
 			else this.showPerson("sofia_charm_female1.jpg");
-			addPlaceTitle(md, this.name + "\'s Lift");
+			addPlaceTitle(md, this.getPersonNameShort() + "\'s Lift");
 
 			md.write(
-				'<p>You ask ' + this.name + ' to give you a lift, she moves to get her keys and then sees you removing your clothing. She realises what you want her to lift and she steps over and kneels down ready to lift <i>you</i>.</p>'
+				'<p>You ask ' + this.getPersonNameShort() + ' to give you a lift, she moves to get her keys and then sees you removing your clothing. She realises what you want her to lift and she steps over and kneels down ready to lift <i>you</i>.</p>'
 			);
 
 			startQuestions();
-			addLinkToPlaceC(md, 'talk more with ' + this.name, Place);
+			addLinkToPlaceC(md, 'talk more with ' + this.getPersonNameShort(), Place);
 			WritePlaceFooter(md);
 			return true;
 		}
@@ -516,14 +516,14 @@ function initialiseSofia()
 			md = WritePlaceHeader();
 			if (isExplicit()) this.showPersonRandomX("sofia-officesex-titfuck", 2);
 			else this.showPerson("sofia-officesex-titfuck.jpg");
-			addPlaceTitle(md, "Parking in " + this.name + "\'s Cleavage");
+			addPlaceTitle(md, "Parking in " + this.getPersonNameShort() + "\'s Cleavage");
 
 			md.write(
-				'<p>You discuss parking with ' + this.name + ', and she gestures towards the garage. You instead gesture at her large breasts and suggest parking your cock <i>there</i>!</p>'
+				'<p>You discuss parking with ' + this.getPersonNameShort() + ', and she gestures towards the garage. You instead gesture at her large breasts and suggest parking your cock <i>there</i>!</p>'
 			);
 
 			startQuestions();
-			addLinkToPlaceC(md, 'talk more with ' + this.name, Place);
+			addLinkToPlaceC(md, 'talk more with ' + this.getPersonNameShort(), Place);
 			WritePlaceFooter(md);
 			return true;
 		}
@@ -1049,17 +1049,25 @@ function initialiseSofia()
 
 	per.isPhoneable = function() {
 		if (checkPlaceFlag("Hotel", 11) && Place == 269 && this.isCharmedBy()) return true;
+		if (this.isCharmedBy() && checkPersonFlag("Brandi", 15) && (!per.checkFlag(17) && !per.checkFlag(18) && !per.checkFlag(19) && !per.checkFlag(20))) return true;
 		return perYou.isQuestComplete(7) && isOutside() && isMurderPath(); 
 	};
 
 	per.callThem = function()
 	{
+		if (this.isCharmedBy() && checkPersonFlag("Brandi", 15) && (!per.checkFlag(17) && !per.checkFlag(18) && !per.checkFlag(19) && !per.checkFlag(20))) {
+			dispPlace();
+			setPersonFlag("Brandi", 20);
+			receiveCall('', 'You call ' + this.getPersonNameShort() + ' to ask her to give your Mom and Aunt a limo ride on the weekend and she says she should be able to arrange it. You discuss details of when to arrive and so on and the thank her and end the call.');
+			WriteCommentsFooter(bChat, bChatLeft);
+			return;
+		}
 		if (Place == 269) {
 			var bMurder = isMurderPath();
-			if ((bMurder && (getHour() > 7 && getHour() < 10)) || (!bMurder && getHour() >= 8 && getHour() < 13)) WriteComments("You call " + this.name + " to invite her to join you at the pool for a swim, but there is no answer, she must be out driving");
+			if ((bMurder && (getHour() > 7 && getHour() < 10)) || (!bMurder && getHour() >= 8 && getHour() < 13)) WriteComments("You call " + this.getPersonNameShort() + " to invite her to join you at the pool for a swim, but there is no answer, she must be out driving");
 			else {
-				gotoPlace(Place, 'type=sofiapool');
-				receiveCall('', 'You call ' + this.name + ' to invite her to join you at the pool for a swim, and she answers, "I\'ll be there".');
+				gotoPlace(Place, 'type=sofiabrandilimo');
+				receiveCall('', 'You call ' + this.getPersonNameShort() + ' to invite her to join you at the pool for a swim, and she answers, "I\'ll be there".');
 				WriteCommentsFooter(bChat, bChatLeft);
 			}
 		}			
@@ -1100,6 +1108,6 @@ function initialiseSofia()
 		return '';
 	};
 	
-	per.isSMSImageDressVersion = function(id) { return id == 143; };
+	per.isSMSImageDressVersion = function(id) { return id == 143 || id == 144; };
 
 }

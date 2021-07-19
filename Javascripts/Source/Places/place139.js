@@ -84,7 +84,7 @@ function ShowPlace139(stype)
 			);
 			startQuestions();
 			addQuestionR(md, 'convince her you are trustworthy, and you love her',
-				'You explain ernestly to the hypnotised Kate that you can be trusted and that you love her completely. You talk at length try to explain, but in the back of your mind you wonder if secretly is it that you want her as your slave?</p>' +
+				'You explain earnestly to the hypnotised Kate that you can be trusted and that you love her completely. You talk at length try to explain, but in the back of your mind you wonder if secretly is it that you want her as your slave?</p>' +
 				'<p>I her trance Kate replies, "Yes...yes...you did so much, I love you too"</p>' +
 				'<p>It is a strange thing to hear her confess love this way but it is hopefully enough',
 				"",
@@ -206,7 +206,7 @@ function ShowPlace139(stype)
 			
 			md.write(
 				'<p>You ask Kate about the photo and comment how it is an actual printed photo, and she almost looks embarrassed,</p>' +
-				'<p>"It is one memento from a holiday I took with some friends at my old school, before we moved to Glenvale. You know my Mama is really good with computers and insists on kowning my passwords. It is difficult to keep digital things private from her at times. She is cool, but there are things I do not want to share with her, particular this holiday!"</p>' +
+				'<p>"It is one memento from a holiday I took with some friends at my old school, before we moved to Glenvale. You know my Mama is really good with computers and insists on knowing my passwords. It is difficult to keep digital things private from her at times. She is cool, but there are things I do not want to share with her, particular this holiday!"</p>' +
 				'<o>She leans over and whispers to you "There are more photos, some more interesting. Some day I may show them to you"</p>' +
 				'<p>She pulls back, this was clearly not an invitation to kiss her or something similar, but she smiles at you.</p>'
 			);

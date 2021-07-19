@@ -55,6 +55,11 @@ function ShowPlace456()
 		if (wherePerson("Jenny") == 467) addLinkToPlace(md, 'visit Jenny\'s apartment', 467);
 		else addLinkToPlace(md, "visit Jenny's apartment", 456, '', 'There is no answer at the bell, she is probably not home.');
 	}	
+	if (isCharmedBy("Sharon")) {
+		if (wherePerson("Sharon") == 468) addLinkToPlace(md, 'visit Sharon\'s apartment', 468);
+		else addLinkToPlace(md, "visit Sharon's apartment", 456, '', 'There is no answer at the bell, she is probably not home.');
+	}
+
 	addLinkToPlace(md, 'leave the apartment building', 455);
 
 	WritePlaceFooter(md);

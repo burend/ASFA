@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -240,12 +239,19 @@ person.flags
 	37		= help I am stuck - Church
 	38		= danced at the club
 	39		= Futa reaction
+	40		= asked about being unable to charm Aunt Brandi 1
+	41		= told that you can visit Aunt Brandi
+	42		= asked about visiting Aunt Brandi NOT at home (rest on charm/free/return home)
+	43		= going out with Aunt Brandi event
+	44		= clear to go out with Aunt Brandi
+	45		= ask again about Aunt Brani (post 'What to Do'
 
 Note: "Glenvale" flag 69 = hydromancy vision for Mom
 
 person.place where she is
 	154 	= her bedroom
 	415 	= office at work
+	899	= out for the night
 	998 	= hiding with Gabby
 	999 	= run away with Gabby
 	1000 	= gone from the game
@@ -315,7 +321,13 @@ person.flags
 	12		= danced at the club
 	13		= watched dance at club at home
 	14		= Futa reaction
+	15		= clearning (ever)
+	16		= cleaning (today)
+	17		= met Elian (phone call)
+	18		= tease today with Lilith
+	19		= met Lilith in the lounge (same as flag 29 for Vampyre)
 	20-24	= sleep 1-4
+	32		= poledance with Lilith
 
 
 ----------------------------------------------
@@ -349,6 +361,12 @@ person.flags
 	6		- called today
 	7		- 'why not your place
 	8		- SMS 3
+	9		- SMS 4
+	10		- first visit to her bedroom
+	11		- ask generally about Aunt Brandi
+	12		- ask about Aunt Brandi and the occult
+	13		- post peek ask about Aunt Brandi
+	14		- what?
 
 
 ----------------------------------------------
@@ -356,10 +374,10 @@ Aunt Brandi
 person "Brandi"
 
 Introduction
-- Mom's sister
+- Mom's younger sister
 
 Personality Notes
--
+- controlling, athletic
 
 ----------------------------------------------
 
@@ -369,8 +387,41 @@ person.place
 person.flags
 	1		- sighting 1
 	2		- sighting 2
-
-
+	3		- met at the Gym
+	4		- talked in the Gym
+	5		- dream 1
+	6		- dream 2
+	7		- tried to charm her at the gym
+	8		- Mom has arranged for you to visit
+	9		- initial visit
+	10		- ask about her job
+	11		- SMS 370 (logically from Kylie)
+	12		- ask about occult
+	13		- peeking
+	14		- dream 3
+	15		- decider (= Mom 45)
+	16		- watch tennis
+	17		- watch limo
+	18		- nympho
+	19		- strong willed
+	20		- arranged a limo
+	21		- tried augmented hypnosis
+	22		- taught Kylie hypnosis 1/tease 1
+	23		- taught Kylie hypnosis 2/tease 2
+	24		- taught Kylie hypnosis 3/tease 3
+	25		- tease/study today
+	26		- SMS hypno 1 (294)
+	27		- SMS hypno 2 (295)
+	28		- SMS hypno 3 (296)
+	29		- tennis lesson today
+	30		- talk to Kylie dialogue
+	
+person.other
+	time last encountered
+	
+person.extra
+	0		- times teased/hypno
+	
 *******************************************************************************
 ***** Family: Adams
 *******************************************************************************
@@ -403,6 +454,7 @@ person.charmed
 
 person.other
 	events while Tess Adams is Charmed
+	25		- lead you to her home to get the Silver Ring from John
 	Dresses
 	27		- cheerleader dress
 	28		- nun dress
@@ -446,9 +498,7 @@ Personality Notes
 ----------------------------------------------
 person.place Current location
 	230	- Home
-	194	- shopping center alley
-	344	- outside New Age Shop
-	345	- inside the New Age Shop
+	96		- his office at Town Hall
 	1000	- out
 
 
@@ -473,6 +523,7 @@ person.flags
 	9		- distracted
 	10		- SMS 320
 	11		- picked up ring
+	12		- working in the office again
 
 Note: from Jessica
 perJessica.flag
@@ -706,6 +757,7 @@ person.flags
 	Party Puzzle
 	33	- original party
 	34	- 'panty' puzzle
+	35		- Tranform Younger
 
 person.charmed Mrs Granger flags
 	flag
@@ -920,6 +972,8 @@ person.flag
 	11		- first meeting at home
 	12		- tried threesome (uncharmed girlfriend)
 	13		- dated today
+	14		- dyed her hair once today
+
 	
 person.charmed
 	2		- Girlfriend charm
@@ -1321,6 +1375,24 @@ person.place
 
 person.extra[0] - Dragon Gem Quest
 
+----------------------------------------------
+Ash (Construction worker)
+person "Ash"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	4		- charmed, slave
+
+person.flags
+	1		- Met
+
+person.place
+@ 482 always
 
 ----------------------------------------------
 Alison (Restaurant Waitress on Weekends)
@@ -1448,6 +1520,46 @@ person.flags
 	11		= return to shop
 
 
+----------------------------------------------
+Betty (Farmers Daughter)
+person "Betty"
+
+Introduction
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	4		- charmed, slave
+
+person.flags
+	1		- Met
+	2		- checkled the barn
+
+person.place
+
+
+----------------------------------------------
+Charley (Hair Salon)
+person "Charley"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	1		- slave
+	3		- lover
+	
+person.flags
+	1		- met
+	2		- brunette
+	3		- name Karley
+	4		- dyed her hair once today
+
+
 --------------------------------------------
 Charlie
 person "Charlie"
@@ -1460,7 +1572,7 @@ Personality Notes
 ----------------------------------------------
 person.charmed
 	1		= friends
-	2		= sfriends with benefits
+	2		= friends with benefits
 
 person.place
 	0		= not available yet
@@ -1483,6 +1595,26 @@ person.flags
 	12		= SMS 39
 	
 person.other - number of times 'convinced'
+
+----------------------------------------------
+Campers (Wild Ranges Campsite)
+person "Campers"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+connt currently
+	
+person.flags
+	1		- seen today
+	
+person.place
+	0		- not met
+	25		- at the campsite
 
 --------------------------------------------
 Diane White (District Attorney)
@@ -1605,9 +1737,14 @@ Introduction
 Personality Notes
 
 ----------------------------------------------
-person.charmed
-	not charmable
-
+person.charmed (actually pact terms than charm spell as such)
+	2		- demon lover
+	3		- demon bride
+	4		- demon servant
+	
+person.extra
+	0		- last location teleported from
+	
 person.flags
 	1		- 'come to me' dream
 	2		- came to her
@@ -1634,11 +1771,29 @@ person.flags
 	24		- annoint bracelet
 	25		- bath scene
 	26		- ask Jade about contract
-
-
+	27		- could not pay the price!
+	28		- initial bedroom event
+	29		- met Lilith
+	30		- met Mom
+	31		- dream 1 post pact
+	32		- first time teleport visit to her lair
+	33		- question: tell me about demons
+	34		- what is this place
+	35		- 'playthings?'
+	36		- talk of ending the pact for 'demond bride'
+	37		- her age
+	38		- has done futa fuck
+	39		- asked to sleep with her as servant
+	40		- has done futa tit-fuck
+	41		- servant sex talk
+	42		- cleaning initial sighting
+	43		- Tess event
 
 person.place
 	500	- her lair
+	1000	- unavailable until dawn
+	1001	- dawn of pact, pending phone call or arrive in your bedroom
+	9999	- left town
 	
 person.other
 	timer for assorted events
@@ -1662,6 +1817,8 @@ person.flags
 	1		- first meeting
 	2		- SMS 1
 	3		- SMS 2
+	4		- phone call for Tammy
+	5		- SMS 3 (335)
 
 person.place
 	0		- not around yet
@@ -2083,6 +2240,25 @@ person.extra
 		- slave - time enslaved
 		- rival - time released
 
+----------------------------------------------
+Karma (Camper at the Cabin)
+person "Marma"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	3		- charmed girlfriend
+	4		- charmed, slave
+
+person.flags
+	1		- Met
+
+person.place
+@ 24 always
 
 ----------------------------------------------
 Kristin (Bank Manager)
@@ -2282,6 +2458,28 @@ Person.place
 	325	- Graveyard
 	9999	- fled town
 
+----------------------------------------------
+Lola (Museum Curator)
+person "Lola"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	3		- charmed, lover
+	4		- charmed, slave
+
+person.flags
+	1		- Met
+	2		- asked about bondage gear
+	3		- Gina version or Lola version of bondage. Set Lola
+	4		- asked Gina about the museum curator
+
+person.place
+@ 243, 451 but this is always 243
 
 ----------------------------------------------
 Louise
@@ -2354,7 +2552,7 @@ per.other
 
 
 ----------------------------------------------
-Mayor Beatrice Thomas
+Mayor Beatrice Thomas/Bertie Thomas
 person "Mayor Thomas"
 
 Introduction
@@ -2394,6 +2592,7 @@ person.flags
 	5		- trio event done
 	6		- (murder path) asked about the Book this visit (reset every time you leave)
 	7		- law event
+	8		- if set initially at start of game they were male
 
 ----------------------------------------------
 Megan (ICU Nurse)
@@ -2418,6 +2617,26 @@ person.flags
 	1		- met
 	2		- know her name
 
+----------------------------------------------
+Melanie (Aunt Brandi's neighbour)
+person "Melanie"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	3		- charmed girlfriend
+	4		- charmed, slave
+
+person.flags
+	1		- Met
+	2		- SMS 355
+
+person.place
+@ 432 always
 
 ----------------------------------------------
 Melissa (Cleaner at the Aquarium)
@@ -2645,6 +2864,9 @@ person.charmed
 person.place
 	382	- her room
 	384	- her room (post possessions)
+	
+person.other
+	count of cult initiations
 
 person.flags
 	1		- took thrall while possessed
@@ -2658,8 +2880,9 @@ person.flags
 	9		- warning on trying to enter her room after second possession
 	10		- futa transformation
 	11		- BE transformation
-	12		- spoke after the charm scene
+	12		- spoke after the charm scene on the Cult of Flesh
 	13		- futa reaction
+	14		- cult event today
 
 person.extra[0] = time left alone (after you teleport Leanne out of there)
 
@@ -3042,6 +3265,49 @@ person.flags
 	1		- found out where she is
 	2		- know her name
 
+	
+----------------------------------------------
+Savanna (Town Hall Intern)
+person "Savanna"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+prtson.other
+	last time chatted
+	
+person.charmed
+	4		- charmed
+
+person.flags
+	1		- first meeting (non interview)
+	2		- interviewed her
+	3		- Performance Review
+	4		- friendly meeting (ie girlfriend path)
+	5		- SMS 365
+
+	
+----------------------------------------------
+Sharon (Massage Parlor)
+person "Savanna"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	4		- slave
+	
+person.flags
+	2		- met
+	3		- received free massage
+	5		- SMS 360
+
 
 ----------------------------------------------
 Sarah Gates
@@ -3239,6 +3505,30 @@ person.flags
 	15		- Bible removed
 
 ----------------------------------------------
+Tammy (Town Hall Attorney)
+person "Tammy"
+
+Introduction
+
+
+Personality Notes
+
+----------------------------------------------
+person.charmed
+	2		- charmed, slut Tammy
+	4		- charmed, slave Tamara
+
+person.flags
+	1		- SMS 1
+	2		- asked about poledancing
+	3		- asked about threesome
+
+person.place
+	0		- not around yet
+	101		- her office at the Town Hall
+
+						
+----------------------------------------------
 Tina (School Nurse)
 person object "DoctorKay"
 
@@ -3273,6 +3563,7 @@ Personality Notes
 
 ----------------------------------------------
 person.other	= Path – Vampire
+	-1		= non-human, non-demons are disabled (including ghosts, monsters except some plot specific ones)
 	1 		= asked Sarah why she looks out the window
 	50		= told of the dead rising
 	50.5	= asked if we have time, so can do it tomorrow, becomes 51 at next night fall
@@ -3304,10 +3595,14 @@ person Flags
 	20		- prevented her feeding on Jessica
 	21		- stopped from entering Esmeralda's
 	22		- first visit to your bedroom
-	23		- event when ibnisible and she is with you
+	23		- event when ivnisible and she is with you
 	24		- did not follow inside invisible
 	25		- asked why not follow when invisible
 	26		- did not enter Granger home when Mrs Granger was not charmed
+	27		- met Elian post pact
+	28		- see Lilith in the lounge
+	29		- ...with Tracy
+	30		- TV show
 
 person places
 	0		- start location (technically sacred grove)
@@ -3395,37 +3690,36 @@ Convenient to use a person object for event linking/saving etc
 ----------------------------------------------
 Variables where used will have non-standard use but should keep the same type
 
-person.place - place of current encounter in progress, eg 26.01, place 26, event 1
+person.place 		- place of current encounter in progress, eg 26.01, place 26, event 1
 
-person.other - time public nudity allowed
+person.other 		- time public nudity allowed
+person.extra[0] 	- time public sex allowed
 
 person.charmed		// if used then directly use the variable
 
-person.charmedTime		// if used then directly use the variable
+person.charmedTime// if used then directly use the variable
 
-person.sCharmedBy		// leave as a String but can be arbitrary data
+person.sCharmedBy	// leave as a String but can be arbitrary data
 
 person.health
+	nun seen
 
 person.flags
 	(1-32 reset every day)
 	1		- Museum - old couple
 	2		- Church - religous experience
 	3		- student teacher
-	4		- campers today
+	4
 	5		- busty today
 
 	33	- met girl in the Church
-	34	- met Campers in the Wild Ranges
+	34	- 
 	35	- met exhibitionist in the general store
 	36	- disable SMS notifications
 	37	- Nudism allowed 
 	38	- met busty woman at Aquarium
-	39	- 	
-	40	-
-	
-person.extra
-	0		- flags 32-64 (standard, persistent across the game
+	39	- Public Sex discussed
+	40	- Publuc sex allowed
 
 // To prevent load/save errors leave these alone
 person.Items
@@ -3435,4 +3729,4 @@ person.MaxItems
 ========================================================================================
 </pre>
 </body>
-</html>
+</html>

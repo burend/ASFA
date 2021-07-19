@@ -141,13 +141,13 @@ function initialiseTitus()
 
 	per.passTimeDay = function() {
 		setPlaceFlag("Library", 2, false);	// Open the library on a new day
-		if (Place == 228 && isShopOpen(2, 1, true)) return capitalizeFirstLetter(this.getPersonName()) + ' leaves you to head off to the library';
+		if (Place == 228 && isShopOpen(2, 1, true)) return capitalize(this.getPersonName()) + ' leaves you to head off to the library';
 		return '';
 	};
 
 	per.passTimeNight = function() {
 		this.setFlag(11, !this.checkFlag(11));
-		if (Place == 228 && !isShopOpen(2, 1, true)) return capitalizeFirstLetter(this.getPersonName()) + ' returns home from the library and resumes her duties as your slave';
+		if (Place == 228 && !isShopOpen(2, 1, true)) return capitalize(this.getPersonName()) + ' returns home from the library and resumes her duties as your slave';
 		return "";
 	};
 

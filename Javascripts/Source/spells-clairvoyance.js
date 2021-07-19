@@ -20,7 +20,7 @@ function CastingClairvoyance()
 	var p;
 	for (var i = 0, ie = arPeople.length - 5; i < ie; i++) {
 		p = arPeople[i];
-		if (!p.isHere()) continue;
+		if (!p.isHere() || p.uid == "elian") continue;
 		if (p.isCharmed()) {
 			if (Place == 145) p.setFlag(17);
 			if (p.sCharmedBy == "Demon") addComments('<p>The spell reveals that ' + p.getPersonNameShort() + ' is under some powerful spell.</p>');
@@ -44,6 +44,13 @@ function CastingClairvoyance()
 		addComments('A sacred clearing is revealed.');
 		return "refresh";
 	}
+	else if (Place == 25 && !checkPlaceFlag("WildRanges", 5)) //Revealing path to cabin
+	{
+		setPlaceFlag("WildRanges", 5);
+		PlaceI(5, 24); //Put Old Stone near the cabin
+		addComments(' The spell highlights a faint path leading into the woods.');
+		return "refresh";
+	}	
 	else if (Place == 26 && !checkPlaceFlag("WildRanges", 2)) //Revealing Hemlock @ Wild Ranges
 	{
 		setPlaceFlag("WildRanges", 2);
@@ -63,10 +70,10 @@ function CastingClairvoyance()
 		addComments(' The spell outlines another photo-album well concealed in a messy but not very full  wardrobe.');
 		return "refresh";
 	}
-	else if (Place == 42 && !checkPlaceFlag("Alley", 2)) {
+	else if (Place == 52 && !checkPlaceFlag("Alley", 2)) {
 		// Gutter in the Alley
 		setPlaceFlag("Alley", 2);
-		addComments('A gutter grate is revealed.');
+		addComments('A scraped and scuffed gutter grate is revealed.');
 		return "refresh";
 	}
 	else if (Place == 53)
@@ -99,7 +106,7 @@ function CastingClairvoyance()
 		addComments('<p>The spell reveals something concealed behind a wall.</p>');
 		return;
 	}
-	else if (Place == 242 && !perYou.checkFlag(5)) {
+	else if (Place == 72 && !perYou.checkFlag(5)) {
 		// $25 in teachers lounge
 		perYou.setFlag(5);
 		AddCash(25);
@@ -138,6 +145,11 @@ function CastingClairvoyance()
 		addComments('The borders of a hidden door glow under the power of the spell, revealing a small hidden room.');
 		dispPlace(383,'');
 		return;
+	}
+	else if (Place == 481 && !checkPlaceFlag("Park", 8)) {
+		setPlaceFlag("Park", 8);
+		addComments('The spell draws your attention to the office and you clearly feel there is a person inside.');
+		return "refresh";		
 	}
 	if (!b) addComments('You try to cast a spell.... but it fizzles.');
 	return "";
@@ -238,8 +250,13 @@ function CastingHydromancy()
 	perGlenvale.setFlag(oSelected.id + 64);
 
 	// Show the found event
+	
+	// Do any updates for the event
+	if (oSelected.update !== undefined) oSelected.update();
+	
+	// Image
 	var imar = oSelected.image.split(",");
-	var md = WritePlaceHeader(false, "td-left" + (oSelected.width !== undefined && oSelected.width !== "" ? "-" + oSelected.width : ""));
+	var md = WritePlaceHeader();
 	if (oSelected.image.indexOf("Images/") == -1) {
 		for (var im = 0; im < imar.length; im++) imar[im] = "Visions/" + (bExplicit ? "Explicit/" : "") + imar[im];
 		AddImageArray(imar, "", "", '', '', undefined, md, 'none');

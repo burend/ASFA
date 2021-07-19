@@ -17,7 +17,7 @@ function RepliesTracy(nR)
 	{
 		if (!isPlaceKnown("WildRanges")) setPlaceKnown("WildRanges");	// Access to Wild Ranges
 		setBeasleyServant(32);
-		addComments('"Mr. Beasley? Mana? Well, yes, I heard something about stones in the wild ranges but you must not think of Mr. Beasley as a bad man. He did nothing to me, he was just there when I spoke with Davy last."');
+		addComments('"Mr. Beasley? Mana? Well, yes, I heard something about stones in the Wild Ranges but you must not think of Mr. Beasley as a bad man. He did nothing to me, he was just there when I spoke with Davy last."');
 	}
 	else if (nR == 8901) // v89 = Normal Sister Tracy Path
 	{
@@ -111,6 +111,7 @@ function initialiseTracy()
 	
 	per.passTimeDay = function() {
 		this.setFlag(1, false);
+		if (getDay(true) == "Mon") this.setFlag(16, false);
 		if (this.checkFlag(20)) {
 			this.setFlag(21);
 			this.setFlag(20, false);
@@ -124,6 +125,7 @@ function initialiseTracy()
 			this.setFlag(24);
 			this.setFlag(23, false);
 		}
+		this.setFlag(18, false);
 		return '';
 	};
 	
@@ -135,11 +137,11 @@ function initialiseTracy()
 
 	per.showEventSleep = function(wt, plc, s, param)
 	{
-		if ((Place == 46 || Place == 170) && this.isCharmedBy("Davy") && !perYou.checkFlag(18) && wt > 24 && !this.checkFlag(6) && this.place !== 0 && isSpellKnown("Charm")) {
+		if (Place == 46 && this.isCharmedBy("Davy") && !perYou.checkFlag(18) && wt > 24 && !this.checkFlag(6) && this.place !== 0 && isSpellKnown("Charm")) {
 			// Tracy Bad end start, in your own bed or with Tess
 			passTime(true);
 			passTime(true);
-			dispPlace(46, "type=tracyevent1&plc=" + Place);
+			dispPlace(46, "type=tracyevent1&who=" + sWho);
 			return true;
 		}
 		return false;
@@ -159,7 +161,7 @@ function initialiseTracy()
 				this.place = 1;
 				setPersonFlagAfterTime("Tracy", 3, true, Math.floor(Math.random() * 24) + 24);
 				showPopupWindow("Your Sister Tracy is Home",
-					this.addPersonString("tracy0.jpg", "height:max%", "right") +
+					this.addPersonRandomString("tracy0", 2, "height:max%", "right") +
 					'When you walk in your front door, you see your older sister Tracy is back home. She must have just been changing and decided to get some ice cream from the kitchen, she loves ice cream. She is wearing very little as is her habit, she has little modesty and she is a bit of a tease at times. She brightly says,<br><br>' +
 					'"Hi there little ' + sibling + ', want some? ice cream that is.", yes she\'s a bit of a tease and yes you do want some.<br><br>' +
 					'Tracy is your older sister by two years, and she always wants to be \'on top\' and you have often argued with her. Despite this you get on well with her, she is helpful, funny and energetic.<br><br>' +
@@ -238,7 +240,7 @@ function initialiseTracy()
 				setQueryParams('');
 				showPopupWindow("Whoops!",
 					this.addPersonString("tracy1e.jpg", "height:max%", "right") +
-					'Tracy pants slip down completely to her ankles when she turns to eat some ice cream. She looks back at you,<br><br>' +
+					'Tracy\'s pants slip down completely to her ankles when she turns to eat some ice cream. She looks back at you,<br><br>' +
 					'"I am sure they do, like big sisters sometimes day-dream about their younger siblings"<br><br>' +
 					'She quickly pulls up her pants and completely changes the topic and makes a joke about something different as she passes you some ice cream.<br><br>' +
 					'You realise the moment has passed, and that it seems her experience being charmed has slightly affected her, but is it for the better?',
@@ -246,6 +248,28 @@ function initialiseTracy()
 				);
 				return true;
 
+			}
+			
+			if (!this.checkFlag(16) && getTimeOfDay() == "day" && !this.isCharmedBy("Davy")) {
+				this.setFlag(16);
+				showPopupWindow("Tracy's Chores!",
+					this.addPersonString("cleaning.jpg" + (this.checkFlag(15) && this.isCharmedBy() ? "" : "#t=0,12"), "50%", "right") +
+					(this.checkFlag(15) && this.isCharmedBy() ? 
+						// Seen previously
+						'Tracy is again doing her household chores dressed in her skimpy little outfit, but now after you have charmed as she dances around teasingly she goes futher than simple teasing. Well in her charmed state this is teasing for her, but now she goes as far as a strip-tease down to her panties and nothing else.</p>' +
+						'<p>She looks at you teasingly but also seductively and says "It is better this way, it keeps my clothes clean doesn\'t it Little ' + sibling + '?"'
+					 : (this.checkFlag(15) && !this.isCharmedBy() ? 
+						// Later but uncharmed
+						"Tracy is doing her chores again, once more being the playful tease..."
+						// First time
+					 :	"You see Tracy is doing some of her chores, cleaning the kitchen floor. Mom always makes sure everyone helps out around the house, everyone has their studies or jobs so everyone does some of the housework.</p>" +
+						"<p>Tracy though is being rather playful, she has been a lot more relaxed since you freed her from Davy. Still that little skirt and top and how she is dancing around...Tracy is being the teasing older sister she always has been!</p>" +
+						'<p>She grins and says "This is the only way to dress, Little ' + sibling + ' it keeps me from gettong too dirty!" and she grins.'
+						)
+					 )
+				);
+				this.setFlag(15);
+				return true;
 			}
 
 			// Greeting events for people in the house when Mom is not at home
@@ -329,7 +353,7 @@ function initialiseTracy()
 		if (Place == 122 && !this.checkFlag(14) && perYou.isFuta(true) && !perYou.isBornMale() && this.getCharmedLevel() == 2 && sType === "") {
 			this.setFlag(14);
 			showPopupWindow("Tracy and Your Changes",
-				this.addPersonString("tracy16.jpg", "height:max%", "right") +
+				this.addPersonString("tracy16b.jpg", "height:max%", "right") +
 				'"This..." Tracy stares at your cock as you undress in front of her. "...is definitely one of the stranger things to happen of late... which is saying something."</p>' +
 				'<p>Your sister seems curiously unphased by your new addition, and  when you ask her if she likes it, she gives you a cheeky grin.</p>' +
 				'<p>"I may have fantasized once or twice about being penetrated by you, little Sis, I just thought it would be with a strap on."</p>' +
@@ -445,7 +469,7 @@ function initialiseTracy()
 		if (sType == "listendavy5angry" || sType == "listendavy5jealous") {
 
 			WritePlaceHeader();
-			this.showPerson("tracy16.jpg");
+			this.showPerson("tracy16a.jpg");
 			addPlaceTitle(md, "Finished Spying on Tracy");
 			if (sType == "listendavy5angry") {
 				md.write(
@@ -493,9 +517,9 @@ function initialiseTracy()
 
 		} else if (sType == "charm") {
 			// End of the lover charm process
-			md = WritePlaceHeader(false, perYou.isMaleSex() ? 'td-left-med' : '');
-			if (perYou.isMaleSex()) this.showPersonRandom("tracy10b", 3);
-			else if (isExplicit()) this.showPersonRandomRorX("tracysex1g", 2);
+			md = WritePlaceHeader();
+			if (perYou.isMaleSex()) this.showPersonRandomRorX("tracy10b", isExplicit() ? 4 : 3);
+			else if (isExplicit()) this.showPersonRandomX("tracysex1g", 2);
 			else this.showPerson("tracysex1g.jpg");
 			addPlaceTitle(md, "Making Love to Tracy");
 			md.write(
@@ -608,10 +632,10 @@ function initialiseTracy()
 
 		} else if (sType === "makelove") {
 			// Female 'Make Love'
-			md = WritePlaceHeader(false, perYou.isMaleSex() ? 'td-left-med' : '');
+			md = WritePlaceHeader();
 			sibling = perYou.isBornMale() ? 'brother' : 'sister';
-			if (!perYou.isMaleSex()) this.showPersonRandom("tracy10g", 2);
-			else this.showPersonRandom("tracy10b", 3);
+			if (!perYou.isMaleSex()) this.showPersonRandomRorX("tracy10g", isExplicit() ? 3 : 2);
+			else this.showPersonRandomRorX("tracy10b", isExplicit() ? 4 : 3);
 			addPlaceTitle(md, "Making Love to Tracy");
 			if (!perYou.isMaleSex()) {
 				md.write(
@@ -646,7 +670,7 @@ function initialiseTracy()
 		} else if (sType === "bj") {
 			// Taker into her bedroom (lover charm)
 			md = WritePlaceHeader();
-			if (isExplicit()) this.showPersonRandomRorX(perYou.isMaleSex() ? "tracysex1b" : "tracysex1g", 2);
+			if (isExplicit()) this.showPersonRandomX(perYou.isMaleSex() ? "tracysex1b" : "tracysex1g", perYou.isMaleSex() ? 5 : 2);
 			else this.showPerson(perYou.isMaleSex() ? "tracysex1b.jpg" : "tracysex1g.jpg");
 			addPlaceTitle(md, "Tracy\'s Tongue");
 			if (perYou.isMaleSex()) {
@@ -686,7 +710,7 @@ function initialiseTracy()
 			sibling = 'Sis';
 			if (perYou.isBornMale()) sibling = 'Bro';			
 			md = WritePlaceHeader();
-			this.showPerson("tracy16.jpg");
+			this.showPerson("tracy16b.jpg");
 			if (sType == "waketracy") {
 				addPlaceTitle(md, "Waking Tracy");
 				md.write(
@@ -893,13 +917,12 @@ function initialiseTracy()
 
 			this.showPerson("tracyevent2.jpg");
 			addPlaceTitle(md, "Sleepover?");
-			var plc = getQueryParam("plc");		// Where did you sleep, 46 on own, 170 with Tess
 			md.write(
 				'<p>Tracy is standing close to your cabinets and looks at you like a deer caught in headlights, awkwardly fiddling with her hands before finally speaking up.</p>' +
 				'<p>"Hey little ' + sibling + ', I\'m sorry I woke you up." She stretches herself and presents her body to you invitingly and gives you a sweet smile over the shoulder.. "I\'ve really been having problems sleeping of late, and was wondering if you would mind if I crawl into your bed."</p>' +
 				'<p>"It always helped when we were kids."</p>' +
 				'<p>You are... surprised by her request, to say at least. The two of you have not shared a bed for a long time for obvious reasons, and while Tracy has pretty much enjoyed teasing you from the first day she realized ' + (perYou.isBornMale() ? 'boys found her attractive' : 'you are into girls') + ', there are lines she would usually not cross.</p>' +
-				(plc == "170" ? 'You look to the side and see Tess stir a little, but it does seem like she\'s a heavy sleeper and not bothered by the conversation, and it\'s not like she would protest your decision anyway.' : '') + '</p>'
+				(sWho == "tess" ? 'You look to the side and see Tess stir a little, but it does seem like she\'s a heavy sleeper and not bothered by the conversation, and it\'s not like she would protest your decision anyway.' : '') + '</p>'
 			);
 			startQuestions();
 			addOptionLinkC(md, "deny her request", "WaitforForDayNight('<p>You tell Tracy you are sorry, but this is not something you are comfortable with, and while she pulls a pouty lip, and for a moment seems to desperately try to find another reason to stay, she finally accepts your decision and leaves your room.</p>" +
@@ -924,7 +947,7 @@ function initialiseTracy()
 
 			addPlaceTitle(md, "Something seems to be Missing");
 
-			perYou.showPerson('charmedbydavy-enslaved.jpg', "30%");
+			if (perYou.folder.indexOf("Nobody") == -1) perYou.showPerson('charmedbydavy-enslaved.jpg', "30%");
 
 			// Tracy Bad Ending End and Game Over
 			md.write(
@@ -1276,9 +1299,10 @@ function initialiseTracy()
 	per.showDancing = function()
 	{
 		var img;
-		if (!this.checkFlag(12)) img = this.showPersonString("poledanceb.mp4");
+		if (!this.checkFlag(12)) img = this.showPersonString("poledanceb.jpg");
+		else if (this.checkFlag(19) && isPersonHere("Vampyre") && (!this.checkFlag(32) || Math.random() < 0.2)) img = this.showPersonString("poledance-lilith.jpg");
 		else img = this.showPersonString("poledancea.jpg");
-		var md = WritePlaceHeader(false, img.indexOf("poledanceb") != -1 ? 'td-left-med' : '');
+		var md = WritePlaceHeader();
 		md.write(img);
 		addPlaceTitle(md, "Tracy\'s Dance");
 		md.write('<p>You wait eagerly for Tracy, she was quite eager to try dancing her and you are equally eager to see her!</p>');
@@ -1287,6 +1311,12 @@ function initialiseTracy()
 			md.write(
 				'<p>Tracy steps out in lingerie and does a very erotic dance, not really a strip-tease as she largely keeps the lingerie on. You notice one of the audience members filming her dance and she seems to be equally dancing for you and the camera.</p>' +
 				'<p>After she whispers to the camera man and then joins you. You ask about the camera, and she grims "I got a friend to record it for us..later at home"</p>'
+			);			
+		} else if (img.indexOf("poledance-lilith") != -1) {
+			this.setFlag(32);
+			md.write(
+				'<p>Tracy steps out in lingerie and then you notice someone join her on stage, You realise Lilith is not at your side and that it is her there on stage. She had not said anything to you about this!</p>' +
+				'<p>Tracy and Lilith do a skilled double act on the stage, you wonder if they have been practising?</p>'
 			);			
 		} else {
 			md.write(
@@ -1464,11 +1494,31 @@ function initialiseTracy()
 				return "handled";
 			}
 		}
-
+		
+		// Using/Examining the Silver Ring
+		if (no == 32) {
+			if (cmd == 2) {
+				// Use the Silver Ring
+				if (this.isHere() && this.isCharmedBy("!You")) {
+					// Place 45  - Kitchen and Sister is Charmed by Davy
+					// Place 156 - Laundry and Sister is Charmed by Davy
+					useSilverRingStart();
+					addComments('<p>You clasp the ring with your fist. It glows and, within moments, it absorbs the mana powering the <i>charm</i> over your sister.</p></td></tr></table>');
+					this.unCharmThem();
+					//perT.other = 50; //Free her from Davy's Control
+					AddMana(5);
+					if (Place == 156) dispPlace(45, ''); //Move you to the empty kitchen
+					else if (Place == 176) this.moveThem(1);  // Moves Sister back to your house
+					return "handled";
+				}
+			}
+		}
 		return "";		// do nothing
 	};
 	
 
+	// Phone Cals
+	
 	per.isPhoneable = function() {
 		// Can you call them?
 		return checkPlaceFlag("Hotel", 11) && Place == 269;
@@ -1492,6 +1542,12 @@ function initialiseTracy()
 		} else if (this.place == 1 && this.checkFlag(5)) {
 			// SMS 2, few hours after charming Sister Desiree
 			if (makeCall(true, 21)) this.setFlag(5, false);
+		} else if ((wherePerson("Elian") == 46 || wherePerson("Elian") == 1001) && isMorning() && !isAtLocation(45) && !this.checkFlag(17)) {
+			// Call about Elian, either the morning the pact started or later once she has moved in (and not following you)
+			if (makeCall(true, 24)) {
+				if (wherePerson("Elian") == 1001) movePerson("Elian", 46);
+				this.setFlag(17);
+			}
 		}
 		return false;
 	};
@@ -1502,6 +1558,7 @@ function initialiseTracy()
 		}
 		if (id == 21) return receiveSMS('Tracy', 'Hey little ' + this.getYourNameFor() + ' I heard you visited the Church recently. Like this old Halloween costume of mine?', 'tracysms3.jpg');
 		if (id == 23) return receiveSMS('Tracy', 'Hi! Did you mail-order anything? A package just came in for you. I\'ve put it in your room, but there\'s no sender and the delivery girl couldn\'t tell me who it\'s from, either.' + (isCharmedBy("Madison") ? 'Btw. She asked me to tell you to call her with that longing, desperate look in her eyes. Just how many girlfriends do you have?' : ''));
+		if (id == 24) return receiveSMS('Tracy', 'Hey little ' + this.getYourNameFor() + ' are you buying girlfriends now? Elian says you bargained for her and here she is! A cute one isn\'t she but don\'t tell Mom about buying her!', 'tracyelian1.jpg');
 		return '';
 	};
 }

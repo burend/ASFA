@@ -241,7 +241,7 @@ function initialiseLeanne()
 		var md, s, nInf, stage;
 		
 		if (Place == 195 && sType == "mindstore") {
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 
 			if (this.other === 0) this.other = 1; // Offered to help Leanne
 			addPlaceTitle(md, "General " + getShopStore(), "generalshop1.jpg");
@@ -254,7 +254,7 @@ function initialiseLeanne()
 			startQuestions();
 			addQuestionCO(md, 'take the ' + sCurrency + '20 from the till', "Leanne", -211);
 			addLinkToPlaceO(md, 'leave the ' + sCurrency + '20 and wait for Leanne to return', 195, '', '', '', 'ExitGeneralShop()');
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -262,7 +262,7 @@ function initialiseLeanne()
 
 		if (sType.substr(0, 5) == "charm") {
 			// Charm spell
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNP();
 			nInf = this.getInfluenced();
 			if (sType == "charm1") {
 				this.showPerson("leanne9a.jpg");
@@ -449,7 +449,7 @@ function initialiseLeanne()
 				addLinkToPlace(md, "leave the house", 38);
 			}
 
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 
 		}
@@ -921,7 +921,7 @@ function initialiseLeanne()
 			// Oral Service (Slave Charm)
 			md = WritePlaceHeader();
 			if (isExplicit()) this.showPersonX("leanne20.jpg");
-			else AddImage("GenericSex/sex-mf blowjob brown hair-b.jpg");
+			else AddImage("GenericSex/sex-mf blowjob brown hair b.jpg");
 			addPlaceTitle(md, "Leanne\s Oral Service");
 
 			md.write(

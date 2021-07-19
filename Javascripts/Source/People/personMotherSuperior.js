@@ -1,6 +1,289 @@
 /**************************************************************************
 			Mother Superior
  **************************************************************************/
+ 
+var oChurch = {
+"cult": [
+	{
+		// Nun 1
+		available: function() { return getPersonOther("Daria") === 0; },
+		update: function() { setPersonOther("Daria", 1); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun1/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun1/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun1/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the young nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 2
+		available: function() { return getPersonOther("Daria") === 1; },
+		update: function() { setPersonOther("Daria", 2); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun2/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a dak eyes nun steps into the room and she seems to have more makeup than you would assume nuns wear. She immediately asks if she is here to be disciplined, she seems to be a bit of a trouble maker, but she is quite beautiful!</p>" +
+				"<p>Mother Superior explains that she has a new set of teachings to explain and rules of behaviour. The nun looks annoyed at the reference to 'rules'.</p>" +
+				"<p>The nun looks suspiciously at you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun2/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her rebellious nature and convince her, aided by the spell, that you are changing things and taking over from Mother Superior. You emphasise how she will be freeer if she follows you and you only.!",
+			event : {
+				image: "Images/Church/Nun2/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and you ask for her help in this new organisation and to obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>You then ask her to make an offering, an offering of her body and the nun eagerly gives you her all, her body and devotion!"
+			}					
+		}
+	},
+	{
+		// Nun 3
+		available: function() { return getPersonOther("Daria") === 2; },
+		update: function() { setPersonOther("Daria", 3); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun3/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and young nun steps into the room dressed a little differently. Mother Superior explains to you that she is a novice, not yet a full nun.</p>" +
+				"<p>The novice looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun3/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on the novices curiosity and eagerness to learn and promise to help teach her about the new order that is being formed and how she can become a full nun with some effort!",
+			event : {
+				image: "Images/Church/Nun3/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young novice will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the young novice eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 4
+		available: function() { return getPersonOther("Daria") === 3; },
+		update: function() { setPersonOther("Daria", 4); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun4/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun4/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun4/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the young nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 5
+		available: function() { return getPersonOther("Daria") === 4; },
+		update: function() { setPersonOther("Daria", 5); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun5/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and an older and rather buxom nun steps into the room smiling. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The nun looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun5/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her experience and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is rather proud of her breasts and emphasise how she can serve the new order with hher breasts too!",
+			event : {
+				image: "Images/Church/Nun5/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 6
+		available: function() { return getPersonOther("Daria") === 5; },
+		update: function() { setPersonOther("Daria", 6); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun6/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun6/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun6/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the yound nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 7
+		available: function() { return getPersonOther("Daria") === 6; },
+		update: function() { setPersonOther("Daria", 7); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun7/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun7/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun7/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the yound nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 8
+		available: function() { return getPersonOther("Daria") === 7; },
+		update: function() { setPersonOther("Daria", 8); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun8/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun8/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun8/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the yound nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 9
+		available: function() { return getPersonOther("Daria") === 8; },
+		update: function() { setPersonOther("Daria", 9); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun9/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and two nuns step into the room looking very cute. Mother Superior explains a little jokingly that the sisters are sisters, as in they are blood related sisters and sisters. She leaves aside the \"who's on first\" confusion and they tells them that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The sisters both look curiously at her and then you, you are clearly no church official. Daria introduces her to them and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun9/charm1.jpg",
+			title: "Two Nuns Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell expecting to need to cast it twice, but it seems to affect both of the sisters. You build on their devotion and passion for the church into a passion for you and Mother Superior and their sister and sister nuns. You notice they are <b>very</b> receptive to the idea of passion with each other!",
+			event : {
+				image: "Images/Church/Nun9/charm2.jpg",
+				title: "New Members",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the nuns will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in their bodies and minds.</p>" +
+						"<p>Mother Superior then commands them to make an offering, an offering of their bodies, first with each pther and then with you!"
+			}					
+		}
+	},
+	{
+		// Nun 10
+		available: function() { return getPersonOther("Daria") === 9; },
+		update: function() { setPersonOther("Daria", 10); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun10/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun10/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun10/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the yound nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},
+	{
+		// Nun 11
+		available: function() { return getPersonOther("Daria") === 10; },
+		update: function() { setPersonOther("Daria", 11); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun11/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun11/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun11/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the yound nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	},	
+	{
+		// Nun 12
+		available: function() { return getPersonOther("Daria") === 11; },
+		update: function() { setPersonOther("Daria", 12); setPersonFlag("Daria", 14); AddMana('charm'); },
+		image: "Images/Church/Nun12/start.jpg",
+		title: "Initiation into the Cult",
+		text: "Mother Superior calls and a rather cute young nun steps into the room looking very pious. Mother Superior explains that she has a new set of teachings to explain and rules of behaviour.</p>" +
+				"<p>The young woman looks curiously at her and then you, you are clearly no church official. Daria introduces her to you and hesitates...",
+		button: "you cast the charm spell",
+		event : {
+			image: "Images/Church/Nun12/charm1.jpg",
+			title: "A Nun Under a Charm Spell",
+			button: "the cult has grown",
+			text: "You recite the spell and build on her devotion and passion for the church into a passion for you and Mother Superior and her fellow nuns. You notice she is <b>very</b> receptive to the idea of passion and her fellow nuns!",
+			event : {
+				image: "Images/Church/Nun12/charm2.jpg",
+				title: "A New Member",
+				button: "Mother Superior asks her to leave for now",
+				text: "Mother Superior explains about the cult and her complete devotion to you and how the young nun will help her in all things and obey you above <b>all</b> others. You reinforce this as the spell builds the arousal in her body and mind.</p>" +
+						"<p>Mother Superior then commands her to make an offering, an offering of her body and the yound nun eagerly gives you her all, her body and mind!"
+			}					
+		}
+	}		
+]
+};
+
 function RepliesMotherSuperior(nR)
 {
 	switch (nR) {
@@ -91,6 +374,11 @@ function initialiseMotherSuperior()
 		this.setFlag(6);
 		return true;
 	};
+	
+	per.passTimeDay = function() {
+		this.setFlag(14, false);
+		return '';
+	};
 
 	per.showEventPopup = function()
 	{
@@ -124,6 +412,8 @@ function initialiseMotherSuperior()
 		var futa = this.getPersonGender() == "futa" ? "f" : "g";
 		var fb = futa + be;
 		var td = '';
+		
+		if (sType == "newcultmember") return GeneralEvent(oChurch, undefined, "cult");
 
 		if (sType == "fuck") {
 			// Fuck Mother Superior
@@ -276,7 +566,7 @@ function initialiseMotherSuperior()
 
 		if (sType.substr(0, 5) == "charm") {
 			// Charm spell
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNP();
 			var bWitch = getQueryParam("witch") == "true";
 			perSister = findPerson("Desiree");
 
@@ -359,7 +649,7 @@ function initialiseMotherSuperior()
 
 			}
 
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 
 		} else if (getQueryParam("trance") == "yes") {
@@ -380,7 +670,7 @@ function initialiseMotherSuperior()
 			return true;
 		} else if (sType == "transformcock") {
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(10)) {
 				this.setFlag(10);
 				showPopupWindow("Transformation",
@@ -400,34 +690,35 @@ function initialiseMotherSuperior()
             );				
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 
 		} else if (sType == "transformbreasts") {
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(11)) {
 				this.setFlag(11);
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/be d.gif" style="width:35%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/be d.jpg', "35%") +
 					'<p>You cast the spell and Daria cries out, "God, what is this" and pulls apart her habit. You see her breasts swelling, growing larger and larger.</p>' +
 					'<p>As she groans you can distinctly hear someone laughing but it is drowned out as Daria cries out in ecstasy as her breasts stop growing.'
 				);
 			} else {
             this.setFlag(11, false);
             showPopupWindow("Transformation",
-                '<img src="Images/GenericSex/bs d.gif" style="width:35%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/bs d.jpg', "35%") +
                 '<p>You cast the spell and Daria cries out, "God, what is this" and pulls apart her habit. You see her breasts diminishing, getting smaller and smaller.</p>' +
                 '<p>As she groans you can distinctly hear someone laughing but it is drowned out as Daria cries out in ecstasy as her breasts stop diminishing.'
             );				
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
 		if (sType == "troubled") {
 			this.setFlag(12);
+			this.setFlag(14);
 			md = WritePlaceHeader();
 			var be = this.checkFlag(11) ? "-be" : "";
 			var futa = this.getPersonGender() == "futa" ? "f" : "g";

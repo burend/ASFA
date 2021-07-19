@@ -163,7 +163,7 @@ function initialiseGhost()
 					'<p>You start running the shower while you get undressed so it is running hot before you enter. A bit of steam forms in the stall and fogs the shower screen a bit</p>' +
 					'<p>You move to enter the show and suddenly you see a ghostly transparent figure in the shower leaning against the glass. It has to be Keana though she difficult to see clearly. Despite the realisation you start in surprise and you hear her soft laughter. You tell her,</p>' +
 					'<p>“Very funny Keana, now let me have my shower” and you have your shower.</p>' +
-					'<p>Every so often during the shower you feel a faint caress and see the impression of a figure in the water and steam. Keana is still with you, making for s trange but pleasant experience.</p>'
+					'<p>Every so often during the shower you feel a faint caress and see the impression of a figure in the water and steam. Keana is still with you, making for a strange but pleasant experience.</p>'
 				);
 				startQuestions();
 				addLinkToPlace(md, "finish up and get dressed", Place);
@@ -175,14 +175,14 @@ function initialiseGhost()
 		if (Place == 141 && this.place == -1 && !checkPlaceFlag("SacredClearing", 2) && findPerson("Vampyre").isMonstersInSacredClearing()) {
 
 			// Guarding against monsters
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			showPopupWindow("<i>Too Thin</i> Sacred Clearing",
 				"<img src='Images/" + this.getImg('ghostnurse10.jpg') + "' style='float:right;width:35%;margin-left:5px' alt='Ghost'>" +
 				"You see movement in the darkness, and you feel a hand on your shoulder. Startled you see Keana looking very bright and solid. She steps in front of you wrapped in ectoplasm holding out her hands warding whatever it is away.<br><br>" +
 				"The shape in the darkness retreats and vanishes into the darkness. Keana steps back to your side and rests her hand on your shoulder."
 			);
 			setPlaceFlag("SacredClearing", 2);
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
@@ -195,7 +195,7 @@ function initialiseGhost()
 				}
 			}
 
-			md = WritePlaceHeader(false, this.extra[0] != 3 ? "td-left-large" : "");
+			md = WritePlaceHeaderNIP(false, this.extra[0] != 3 ? "td-left-large" : "");
 
 			// See the ghost
 			AddImage("stones4" + String.fromCharCode(this.extra[0] + 96) + ".jpg");
@@ -213,12 +213,12 @@ function initialiseGhost()
 			startQuestions();
 			addLinkToPlace(md, 'explore the sacred clearing more', 141);
 			addLinkToPlace(md, 'go to ' + perGates.getPersonNameShort() + '\'s estate', 16);
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
 		if (sType == "ghostcharmsex" && Place == 141) {
-			md = WritePlaceHeader(false, !perYou.isMaleSex() && isExplicit() ? "td-left-large" : "");
+			md = WritePlaceHeaderNIP(false, !perYou.isMaleSex() && isExplicit() ? "td-left-large" : "");
 
 			// Charm the ghost
 			if (isExplicit()) this.showPersonRandomAnon("Explicit/" + (perYou.isMaleSex() ? "ghost5b" : "ghost5g"), 3);
@@ -239,7 +239,7 @@ function initialiseGhost()
 			startQuestions();
 			addLinkToPlace(md, 'explore the sacred clearing more', 141);
 			addLinkToPlace(md, 'go to ' + perGates.getPersonNameShort() + '\'s estate', 16);
-			WritePlaceFooter(md, '', false, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
@@ -247,6 +247,7 @@ function initialiseGhost()
 
 			md = WritePlaceHeader();
 			if (!this.checkFlag(8)) this.showPerson("ghostnurse8.jpg");
+			else if (perYou.isMaleSex() && isExplicit()) this.showPersonRandomX("ghostnurse6b", 2);
 			else this.showPerson("ghostnurse6.jpg");
 
 			addPlaceTitle(md, "Communing with the dead");
@@ -294,7 +295,7 @@ function initialiseGhost()
 
 			if (sType.substr(0, 5) == "charm") {
 				// Charm spell
-				md = WritePlaceHeader();
+				md = WritePlaceHeaderNIP();
 				var idx = parseInt(sType.charAt(5), 10) + 3;
 				if (idx == 4) this.showPersonRorX("ghostnurse4.jpg");
 				else this.showPerson("ghostnurse" + idx + ".jpg");
@@ -343,10 +344,10 @@ function initialiseGhost()
 
 				}
 
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				perNS.showPerson("sandra10.jpg");
 
-				WritePlaceFooter(md, '', false, true);
+				WritePlaceFooter(md);
 				return true;
 
 			} else if (sType == "seeghost") {
@@ -405,7 +406,7 @@ function initialiseGhost()
 				startQuestions();
 				addLinkToPlaceO(md, 'well that is solved', 443, '', perNS.addPersonFace() + '<b>Sandra</b><br><br>&quot;Sorry Boss...I..I will go back to my ward&quot;');
 				if (checkPlaceFlag("Hospital", 4)) addLinkToPlace(md, 'return to the main part of the basement', 442);
-				AddRightColumnMed(md);
+				AddPeopleColumnMed(md);
 				perNS.showPerson("sandra10.jpg");
 
 				WritePlaceFooter(md);
@@ -539,7 +540,7 @@ function initialiseGhost()
 		// Casting the clairvoyance
 		if (no == 15 && cmd == 2) {
 			// At the Sacrd Clearning?
-			if (Place == 141 && !isDay()) {
+			if (Place == 141 && !isDay() && getPersonOther("Vampyre") >= 0) {
 				if (!this.checkFlag(1)) {
 					dispPlace(141,'type=ghostclairvoyance1');
 					return "nofooter";
@@ -548,7 +549,7 @@ function initialiseGhost()
 					return "handled";
 				}
 			}
-			if (Place == 443)
+			if (Place == 443 && getPersonOther("Vampyre") >= 0)
 			{
 				if (!checkPlaceFlag("Hospital", 2)) {
 					addComments('Why would you want to? There is nothing here in this abandoned place');

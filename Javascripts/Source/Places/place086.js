@@ -6,12 +6,13 @@ function ShowPlace86(stype)
 	
 	var perThrall1 = findPerson("Seraphina");
 
-	addPlaceImage(md, "stones.jpg");
+	if (stype == "thrall1") perThrall1.showPerson("thrall1-0.jpg");
+	else addPlaceImage(md, "stones.jpg");
 	if (checkPlaceFlag("WildRanges", 4)) addPlaceImage(md, "hawthorn.jpg");
 	addPlaceTitle(md, "Searching the Stones");
 
 	md.write(
-		'<p>You search among the stones - between the massive boulders of the wild ranges and under the clumps of sticks and pebbles.</p>'
+		'<p>You search among the stones - between the massive boulders of the Wild Ranges and under the clumps of sticks and pebbles.</p>'
 	);
 	if (checkPlaceFlag("WildRanges", 4)) md.write("<p>A few hawthorn trees, well more like bushes, grow wild near the stones.</p>");
 	
@@ -53,12 +54,7 @@ function ShowPlace86(stype)
 
 	startQuestions();
 	if (checkPlaceFlag("WildRanges", 4)) addLinkToPlace(md, "craft some stakes from hawthorn wood", Place, '', 'You find some pieces of fallen wood and trim them with a small pocket knife you have. You engrave the runes and place the stakes in your bag', '', 'bChatLeft=false;perYou.AddItem(65)');
-	addLinkToPlace(md, "walk to the wild ranges", 26);
-	
-	if (stype == "thrall1") {
-		AddPeopleColumnLarge(md);
-		perThrall1.showPerson("thrall1-0.jpg");
-	}
+	addLinkToPlace(md, "walk to the Wild Ranges", 26);
 
 	WritePlaceFooter(md);
 }

@@ -75,7 +75,10 @@ function ShowPlace124(stype)
 
 	// Bar Person options
 	if (perBarPerson !== undefined) {
-		if (perBarPerson.other > 0) addQuestionC(md, 'tell ' + perBarPerson.getPersonName(true) + ' "I\'d like a scotch on the rocks, please."', perBarPerson.uid, 10801);
+		if (perBarPerson.other > 0) {
+			addQuestionC(md, 'tell ' + perBarPerson.getPersonName(true) + ' "I\'d like a scotch on the rocks, please."', perBarPerson.uid, 10801);
+			if (!isPlaceKnown("TennisCourts")) addQuestionC(md, 'ask ' + perBarPerson.getPersonName(true) + ' about the tennis courts', perBarPerson.uid, 10803);
+		}
 		if (perBarPerson.isCharmedBy()) {
 			// Bambi is charmed
 			if (!isDay() && !isPlaceKnown("DonnasRoom") && perDonna.isCharmedBy()) {
@@ -132,6 +135,7 @@ function ShowPlace124(stype)
 		addLinkToPlace(md, 'go down the stairs to the cellar', 161);
 	}
 	addLinkToPlace(md, 'go to the hotel pool', 269);
+	if (isPlaceKnown("TennisCourts")) addLinkToPlace(md, 'go to the tennis courts', 125);
 	addLinkToPlace(md, 'exit the hotel', 123);
 
 	// People

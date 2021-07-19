@@ -9,6 +9,7 @@ function getPhoneNotes(stype)
 	
 	var perSarah = findPerson("Sarah");
 	
+	var tnm = gameState.sTown;
 	var ha = Math.round(0.072 * getHeight(document));
 	var wtab = 5;
 	if (!gameState.bPhoneLandscape || isScreenSmall()) wtab = 10;
@@ -50,7 +51,7 @@ function getPhoneNotes(stype)
 		// Personal Notes
 		s += getLSD(gameState.bPhoneLandscape || isScreenSmall() ? "20%" : "35%") +
 			  '<p style="font-size:medium;font-weight:bold;margin-bottom:2px">Personal Details:</p>' +
-		     '<b>Name, Address</b><br>' + perYou.getPersonName() + ", 16 Kollam St, Glenvale, " + (isBritish() ? "UK" : "USA") + "<br>";
+		     '<b>Name, Address</b><br>' + perYou.getPersonName() + ", 16 Kollam St, " + tnm + ", " + (isBritish() ? "UK" : "USA") + "<br>";
 		
 		if (perYou.getPersonGender() == "futa") s += "You are neither male or female, you are a fully functioning hermaphrodite.<br>";
 		else s += "You are a " + perYou.getSex() + '.<br>';
@@ -108,7 +109,7 @@ function getPhoneNotes(stype)
 			if (perDavy.checkFlag(9)) s += "&nbsp;&nbsp;&nbsp;That bastard tried to hurt me!!!<br>";
 			if (isMurderPath() && perGates.other == 600) s += '&nbsp;&nbsp;&nbsp;Davy\'s woman killed ' + perGates.getPersonName() + '<br>';
 			s += showQuestF(checkPlaceFlag("Hotel", 8), getPersonOther("Jessica") > 0, "&nbsp;&nbsp;&nbsp;Find out what Davy wanted in the Hotel Cellar");
-			s += showQuestF(true, isDavyDefeated(), perDavy.checkFlag(6) ? "&nbsp;&nbsp;&nbsp;Davy has Fled Glenvale" : "&nbsp;&nbsp;&nbsp;Defeat Davy");
+			s += showQuestF(true, isDavyDefeated(), perDavy.checkFlag(6) ? "&nbsp;&nbsp;&nbsp;Davy has Fled " + tnm : "&nbsp;&nbsp;&nbsp;Defeat Davy");
 			if (isDavyCaptive()) {
 				s += "&nbsp;&nbsp;&nbsp;Davy is my captive!<br>";
 				s += showQuestF(true, perDavy.isCharmedBy(), "&nbsp;&nbsp;&nbsp;Charm Davy");
@@ -228,7 +229,7 @@ function getPhoneNotes(stype)
 		findPerson("Kate");
 		if (per.place != 47) {
 			sp = '';
-			if (per.place == 9999) sp += '&nbsp;&nbsp;&nbsp;Kate has left Glenvale forever!!<br>';
+			if (per.place == 9999) sp += '&nbsp;&nbsp;&nbsp;Kate has left ' + tnm + ' forever!!<br>';
 			else {
 				if (per.place === 3) sp += '&nbsp;&nbsp;&nbsp;Remember to meet Kate to study in the library<br>';
 				if (per.checkFlag(36) && !per.checkFlag(7)) sp += '&nbsp;&nbsp;&nbsp;I would like to see her holiday photos<br>';
@@ -311,6 +312,33 @@ function getPhoneNotes(stype)
 			}
 		}
 		
+		findPerson("Brandi");
+		if (per.checkFlag(4)) {
+			s += showQuestFH(true, per.isCharmedBy(), "Aunt Brandi");
+			s += showQuestF(true, isPlaceKnown("AuntsHouse"), "&nbsp;&nbsp;&nbsp;I need to ask Mom so I can visit Kylie and Aunt Brandi\'s home");
+			s += showQuestF(per.checkFlag(7), per.isCharmedBy(), "&nbsp;&nbsp;&nbsp;Why can\'t I charm Aunt Brandi?");
+			if (per.checkFlag(15)) {
+				if (!per.checkFlag(17)) s += showQuestF(true, per.checkFlag(16), "&nbsp;&nbsp;&nbsp;Watch Aunt Brandi teaching tennis");
+				if (!per.checkFlag(16)) s += showQuestF(true, per.checkFlag(17), "&nbsp;&nbsp;&nbsp;Arrange to be on one of her dates with Mom");
+				if (per.checkFlag(18)) {
+					s += "&nbsp;&nbsp;&nbsp;Aunt Brandi is a nymphomaniac<br>";
+					s += showQuestF(true, per.checkFlag(22), "&nbsp;&nbsp;&nbsp;Tease her with Kylie 1");
+					s += showQuestF(true, per.checkFlag(23), "&nbsp;&nbsp;&nbsp;Tease her with Kylie 2");
+					s += showQuestF(true, per.checkFlag(24), "&nbsp;&nbsp;&nbsp;Tease her with Kylie 3");
+				} else if (per.checkFlag(19)) {
+					s += "&nbsp;&nbsp;&nbsp;Aunt Brandi is exceptionally string willed<br>";
+					if (perYou.checkFlag(25)) {
+						s += showQuestF(true, per.checkFlag(21), "&nbsp;&nbsp;&nbsp;Try to hypnotise Aunt Brandi<br>");
+						if (per.checkFlag(21)) {
+							s += showQuestF(true, per.checkFlag(22), "&nbsp;&nbsp;&nbsp;Teach Kylie hypnosis 1");
+							s += showQuestF(true, per.checkFlag(23), "&nbsp;&nbsp;&nbsp;Teach Kylie hypnosis 2");
+							s += showQuestF(true, per.checkFlag(24), "&nbsp;&nbsp;&nbsp;Teach Kylie hypnosis 3");
+						}
+					}
+				}
+			}
+		}
+		
 		if (perGlenvale.checkFlag(67)) {
 			// Elian, had the initial hydromancy vision
 			var perJade = findPerson("Jade");
@@ -331,7 +359,17 @@ function getPhoneNotes(stype)
 					s += showQuestF(per.checkFlag(21), per.checkFlag(17), "&nbsp;&nbsp;&nbsp;Lick her");
 					s += showQuestF(per.checkFlag(22), per.checkFlag(18), "&nbsp;&nbsp;&nbsp;Fuck her");
 					s += showQuestF(per.checkFlag(26), per.isCharmedBy(), "Enter a contract with Elian");
-					if (per.checkFlag(26)) s += "You could teleport from the Sacred Clearing anytime at night to Elian using her true name.<br>";
+					if (per.isCharmedBy()) {
+						s += "Elian is bound by a pact ";
+						if (per.getCharmedLevel() == 4) s += "as your demon servant and seductress. You must pay 10";
+						else if (per.getCharmedLevel() == 2) s += "and is your love-slave until you end the pact. You must pay 5";
+						else s += "and is you demon bride. The pact cannot be ended but with a minimal cost of 1 mana per day if available.<br>";
+						if (per.getCharmedLevel() != 3) s += ' mana per day to maintain the pact. If you do not have the mana at dawn the pact is ended and she will take one of your slaves.<br>';
+						s += "You can visit her lair <b>anytime<b> using the teleport spell for no mana cost<br>";
+					} else if (per.checkFlag(26)) {
+						if (per.place == 9999) s += "You have told Elian to leave you alone and never return to Glenvale.<br>";
+						else s += "You could teleport from the Sacred Clearing anytime at night to Elian using her true name.<br>";
+					}
 				}
 			}
 		}
@@ -395,7 +433,7 @@ function getPhoneNotes(stype)
 		// General Notes
 		s += '<p style="font-size:medium;font-weight:bold;margin-bottom:2px">General Notes:</p>';
 
-		if (perBeasley.checkFlag(14)) s += "I Read Mr. Beasley's lecture on Carl Kurndorf<br>";
+		if (perBeasley.checkFlag(14)) s += "I read Mr. Beasley's lecture on Carl Kurndorf<br>";
 		if (perYou.isQuestStarted(1) && (isCharmedPath() || isGoodPath())) s += "I am " + perGates.getPersonName() + "'s apprentice!<br>";
 		else if (isConspiracyPath()) s += perSarah.checkFlag(1) ? "Sarah Gates is helping my researches<br>" : "I have an anonymous friend helping my researches<br>";
 		else if (isMurderPath()) {
@@ -404,13 +442,16 @@ function getPhoneNotes(stype)
 		}
 		
 		s += addHeader("Places");
-		if (gameState.bAllPlaces) s += "I know Glenvale very well, and know where almost every place is and how to get there.<br>";
-		else s += 'I do not know Glenvale very well and often need directions on how to get places.<br>';
+		if (gameState.bAllPlaces) s += "I know " + tnm + " very well, and know where almost every place is and how to get there.<br>";
+		else s += 'I do not know ' + tnm + ' very well and often need directions on how to get places.<br>';
 		if (checkPlaceFlag("Museum", 8)) s += "The Mayor has closed the museum.<br>";
 		if (checkPersonFlag("Kristin", 9)) s += "Kristin has closed the bank.<br>";
 		if (checkPlaceFlag("Library", 2))  s += "Ms. Titus has closed the library.<br>";
 		if (isPlaceKnown("AvernusClub")) s += 'The Avernus Club is open late night near the shopping center.<br>';
 		if (checkPlaceFlag("Hotel", 11)) s += "I can call people to go for a swim with me in the Hotel Pool.<br>";
+		if (isPlaceKnown("TennisCourts")) s += "I have access to the tennis courts at the Hotel.<br>";
+		findPerson("Brandi");
+		if (!per.isCharmedBy() && per.checkFlag(8)) s += 'I am allowed to visit Kylie and Aunt Brandi\'s home in the eveng, 8:30pm to 10:30pm.<br>';
 		
 		sp = '';
 		if (perSarah.other > 0) sp += "Sarah Gates is now at the Mansion<br>";
@@ -418,13 +459,21 @@ function getPhoneNotes(stype)
 		if (per.isFreeSlave()) sp += "Ms. Titus is my willing slave<br>";
 		s += addHeader("People", sp);
 		
+		var perGlenvale = findPerson("Glenvale");
+		findPerson("Mayor");
+		if (per.checkFlag(7) && perGlenvale.checkFlag(37)) {
+			sp = "Public nudity is legal in Glenvale<br>";
+			if (perGlenvale.checkFlag(40)) sp += "Public sex is allowed in Glenvale<br>";
+			s += addHeader("Laws", sp);
+		}
+		
 		s += addHeader("Transport");
 		if (perYou.isQuestComplete(7) && isMurderPath()) s += "Sofia, your personal chauffeur comes to your every morning. She can give you a lift anywhere around town. You can also call her anytime if you want her to come pick you up.<br>";
 		else if (checkPersonFlag("Hannah", 17)) s += "Hannah can give you a ride anywhere you need, just visit her " + getShopStore() + " or apartment.<br>";
 		else s += "Walking or the occasional taxi are the main way I get around.<br>";
 		
 		sp = '';
-		if (perYou.checkFlag(38)) sp += "I have done almost everything I can in Glenvale. I could <b>end</b> my adventure for now on a <b>Sunday night at home</b>, talk to Tess or Tracy.<br>";
+		if (perYou.checkFlag(38)) sp += "I have done almost everything I can in " + tnm + ". I could <b>end</b> my adventure for now on a <b>Sunday night at home</b>, talk to Tess or Tracy.<br>";
 		s += addHeader("Other", sp);
 
 		s += '<br></div>' +		

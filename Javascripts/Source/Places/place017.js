@@ -36,7 +36,7 @@ function ShowPlace17()
 			md.write(
 				'<p>An elderly gentleman is sitting behind a large desk made from oak. The whole room is stuffed with things from the past. Paintings and pictures from 19th century decorate the walls and a great Chandelier hangs from the ceiling. The dark blue  color of the walls and the smell of old wood sets the mood of the place. It is certainly a very old room!</p>' +
 				'<p>The old man must be ' + perGates.getPersonNameShort() + ' himself! He’s kind of a legend around here, becoming part of the mythos involving the witches and warlocks of the past. Some say he is a warlock himself who’s here to guard something very important. On a more earthly plane, some people claim that ' + perGates.getPersonNameShort() + ' served in army intelligence while others believe that he worked for S-Biomed, the elusive FBI branch dedicated to preempting chemical warfare. Nobody knows how he earned his knighthood and, if ' + perGates.getPersonNameShort() + ' has anything to do with it, they will never find out.</p>' +
-				'<p>The moustached man looks at with you with wise eyes. You can feel his commanding presence even though he looks to be in his 70’s. He has a wooden pipe in his hands, toying with it while glancing at you. After a while he stops, puts the pipe in his mouth, and lights it. Finally he gestures for you to approach. You know he can be an influential ally… or a powerful enemy if you anger him.</p>' +
+				'<p>The moustached man looks at you with wise eyes. You can feel his commanding presence even though he looks to be in his 70’s. He has a wooden pipe in his hands, toying with it while glancing at you. After a while he stops, puts the pipe in his mouth, and lights it. Finally he gestures for you to approach. You know he can be an influential ally… or a powerful enemy if you anger him.</p>' +
 				'<p>"Welcome," he says with a silvery voice. "I don\'t get to receive guests very often, and even less often do I receive uninvited guests. I assume that you are here to sell me something. Well, as I told the last salesman, I have all that I need right here."</p>' +
 				'<p>Something catches your eye; beside ' + perGates.getPersonNameShort() + '\'s desk is a book. Could it be the one? It is, you are sure it is!</p>'
 			);
@@ -174,7 +174,7 @@ function ShowPlace17()
 		}
 		
 		// Charmed spell query
-		if (isSpellKnown("Charm") && !perGates.checkFlag(7)) addQuestionC(md, 'ask ' + perGates.getPersonNameShort() + ' about the Charm spell', "SirRonald", 14);
+		if (isSpellKnown("Charm") && !perGates.checkFlag(7)) addLinkToPlace(md, 'ask ' + perGates.getPersonNameShort() + ' about the Charm spell', Place, "type=askcharm");
 
 		if (perYourBody.FindItem(39) > 0) {
 			//Have the Rusty Key
@@ -221,6 +221,9 @@ function ShowPlace17()
 		
 		if (perSarah.place == 192 && perSarah.other > 101 && !perGates.checkFlag(3) && (perLauren.checkFlag(8) || perGates.checkFlag(5))) addQuestionC(md, '"' + perGates.getPersonNameShort() + ' why is the Mansion locked at night?"', "SirRonald", 600);
 		if (perLeanne.place == 382 && !perLeanne.checkFlag(7)) addQuestionC(md, 'ask ' + perGates.getPersonNameShort() + ' about saving Leanne', "SirRonald", 700);
+		
+		if (checkPersonFlag("Brandi", 15) && (!per.checkFlag(17) && !per.checkFlag(18) && !per.checkFlag(19) && !per.checkFlag(20))) addQuestionC(md, 'ask ' + perGates.getPersonNameShort() + ' to borrow his limo on the weekend', "SirRonald", 960);
+
 	}
 
 	if (perSarah.place == 192 && perSarah.other >= 101) {

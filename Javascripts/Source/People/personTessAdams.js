@@ -172,7 +172,6 @@ function RepliesTessAdams(nR)
 			} else {
 				addComments('<p>"Yes ' + myName + ', I\'ll look forward to speak to Karen and Monique again" she says, grabbing a few things and leaving the house immediately.');
 				perT.setFlag(8);
-				if (Place == 170) Place = 46;
 			}
 			perT.place = 0; // Put her back at the library
 		}
@@ -211,13 +210,14 @@ function initialiseTessAdams()
 	per.getPersonAddress = function() { return isPlaceKnown("AdamsHouse") ? '2121 Rathdown Rd, Glenvale' : ''; };
 
 	per.whereNow = function() {
+		if (Place == 231 && (sType.indexOf("tess") != -1 || sWho.indexOf("tess") != -1)) return Place;
 		if (this.place === 0) {
 			if (isShopOpen(2, 1, true)) return this.isCharmedBy() ? 29 : 28;
 			if (Place == 29) return 29;
 			if (Place == 3 && this.isCharmedBy()) return 29;
 			return this.checkFlag(6) ? 46 : 230;
 		}
-		if (Place == 170 || Place == 171) return Place;
+		if (Place == 171) return Place;
 		return this.place;
 	};
 	per.getPossessionFace = function() { return "tess-face"; };
@@ -227,22 +227,21 @@ function initialiseTessAdams()
 		return '';
 	};
 
-	per.isPlaceImageRight = function()
-	{
-		return Place == 2 && !this.checkFlag(9) && !perYou.isQuestComplete(1);
-	};
-
-	per.showPlaceImageRight = function(md)
-	{
-		if (Place == 2 && !this.checkFlag(9) && !perYou.isQuestComplete(1)) {
-			this.showPerson("tess0.jpg");
-			this.setFlag(9);	// Show once!
-		}
-	};
-
 	per.showEventPopup = function()
 	{
 		if (sType !== "") return false;
+		
+		// First glimpse
+		if (Place == 2 && !this.checkFlag(9) && !perYou.isQuestComplete(1)) {
+			this.setFlag(9);	// Show once!
+			showPopupWindow("Who is that?",
+				this.addPersonString("tess0.jpg", "height:max%", "right") +
+				'As you approach the library you notice a beautiful woman leaving. You think she is one of the librarians, you may have seen her there before. You hear her call out</p>' +
+				'<p>"I\'ll be back soon once I change my top, silly pen breaking and ruining my nice coat..."</p>' +
+				'She gets into a taxi waiting nearby and leaves. You wonder if she was the librarian Mrs. Adams, you have heard she is gorgeous and accident prone.'
+			);
+			return true;
+		}
 
 		if (Place == 46 && this.isHere() && !isDay() && !this.checkFlag(4)) {
 			this.setFlag(4);
@@ -258,9 +257,124 @@ function initialiseTessAdams()
 		return false;
 	};
 
+	per.showEventBedroom = function()
+	{
+		var md;
+
+		if (sType == "tessprivate") {
+			// Talking to Tess
+			md = WritePlaceHeader();
+
+			var perJ = findPerson("JohnAdams");
+			var perTanika = findPerson("MrsTanika");
+			var clvT = perTanika.getCharmedLevel();
+			var nmT = perTanika.getPersonName();
+			var nmTs = perTanika.getPersonNameShort();
+
+			var myName = this.getYourNameFor();
+
+			// State changes
+			if (this.other == 10) this.other = 11; //  Opening up the option for Tess to Talk about her husband.
+
+			// Comments
+			//if (stype === "enter") {
+				//WriteComments('"I\'m so glad that you like it '+ myName +'. Here, do you want to kiss these?" She asks, exposing her breasts for your viewing pleasure.<br>');
+				//setQueryParams('');
+			//}
+
+			// Images
+			if (!isDay()) this.showPerson("tess20b.jpg");
+			else if (this.other == 27) this.showPerson("tess14c.jpg");
+			else this.showPerson("tess8.jpg");
+
+			// Title
+			addPlaceTitle(md, "Mrs. Adams In Your Bedroom");
+
+			// Description
+			md.write('<p>Mrs. Adams holds her breasts out for you to play with. You take your time to explore her mounds and she groans as your fingers touch each nipple.</p>');
+
+			// Questions
+			startQuestions();
+			addLinkToPlace(md, 'play with Tess even more', Place, 'type=tessplaymore');
+			// Both Tess and Mrs Tanika
+			if (perTanika.whereNow() == 46) {
+				addLinkToPlace(md, "ask Tess and " + nmTs + " to work together for you", Place, 'type=tesstanikathreesome');
+				addLinkToPlace(md, "ask " + nmTs + " and Tess to play with each other", Place, 'type=tanikatesssex');
+			}
+
+			if (this.other == 11) addQuestionC(md, '"Tess, do you have any magic artifacts?"', "Tess", 2011);
+			else if (this.other == 12) addQuestionC(md, '"Ask your husband for magic, but do <b>NOT</b> tell him about <i>us</i>."', "Tess", 2012);
+			else if (isDay() && perJ.checkFlag(2)) addLinkToPlaceC(md, 'Tess, "Maybe you could change your outfit?"', 46, '', '&quot;Of course my love, I will change for you immediately&quot;', '', 'TessChangeClothes();');
+			if (perYourBody.FindItem(4) > 0 && perYou.checkFlag(11) && perYou.canUseExperience()) addOptionLink(md, 'ask Tess for help deciphering the passages in the book', 'spendExperience()');
+
+			if (this.other > 24) {
+				if (isShopOpen(2, 1, true)) addQuestionC(md, '"Tess, let\'s meet at the library"', "Tess", 10421);
+				if (wherePerson("JohnAdams") == 230) addQuestionC(md, '"Tess, let\'s visit ' + findPerson("JohnAdams").getPersonName() + '"', "Tess", 10422);
+			}
+			//if (!isMurderPath()) addOptionLinkC(md, '"Tess, can you take me somewhere in your car?"', "carRide('Tess','Tess smiles at you. &quot;Where do you want to go, my love?&quot;',', she looks at you longingly as you leave the car. She blows you a kiss and drives back to your home')");
+			this.addDancingLink(md, 'talk to Tess about dancing in the club',
+				'You ask Tess about dancing and mention the Avernus club. She looks uncertain,</p>' +
+				'<p>&quot;My love, I could dance for you here, but for others...&quot; and you tell her how beautiful she is and you want to show her off to everyone. She is still not sure but replies,</p>' +
+				'<p>"It\'s ok, I will give it a try" and with that you call Jade to arrange a dance for Tess.'
+			);
+			this.addSleepLink(md, "go to bed for the night with Tess", "Going to Bed with Tess", 
+					'<p style="position:absolute;left:2%;top:2em;cursor:pointer;font-size:1.1em;width:66%">As you prepare to go to bed for the night, Tess lies down on the bed looking beautiful as always. She looks at you with desire and you can see you will not be sleeping for a while...</p>',
+					'tess20c.jpg', true
+			);
+
+			addLinkToPlace(md, 'finish playing with Tess', 46);
+
+			WritePlaceFooter(md);
+			return true;
+		}
+
+		if (sType == "tessplaymore") {
+			// Event: Play with Tess alone ib your bedroom
+			md = WritePlaceHeader(false, isExplicit() ? "td-left-med" : "");
+
+			if (!isExplicit()) this.showPerson("tess-play.jpg");
+			else if (perYou.isMaleSex()) AddImage("GenericSex/Explicit/sex-mf pussy h.jpg");
+			else AddImageArray(["GenericSex/Explicit/sex-ff lick f.jpg", "GenericSex/Explicit/sex-ff lick g.jpg"]);
+
+			addPlaceTitle(md, "Playing with Tess\'s Body");
+
+			md.write(
+				'<p>You ask Tess for something more, and she asks, "You mean you want to make love?"</p>' +
+				'<p>She asks in such a cute and almost hesitant way there is no way you could say no, and you nod your head "yes". Tess embraces you and have a wonderful sexual encounter with her</p>' +
+				'<p>After she says "I wish I had you only to myself!"</p>'
+			);
+
+			startQuestions();
+			addLinkToPlace(md, "return to your bedroom", 46);
+			WritePlaceFooter(md);
+			return true;
+		}
+		
+		return false;
+	};
+	
 	per.showEvent = function()
 	{
+		if (Place == 46) return this.showEventBedroom();
+		
 		var md, img;
+		
+		if (Place == 96 && this.isHere() && sType === "") {
+			md = WritePlaceHeader(false, "td-left-med");
+		
+			this.showPerson("tess1a.jpg");
+			addPlaceTitle(md, "Tess Adams Hiding?");
+
+			md.write(
+				'<p>You see Mrs. Adams sitting on a chair in the office, looking very nervous, she looks up "John...." but her voice trails away as she sees you.</p>' +
+				'<p>"Oh ' + perYou.getPersonName() + '...sorry I ran out on you, I really had to see my husband, but he is not here, but I called he will be soon...I should go and wait for him...."'
+			);
+
+			startQuestions("You have to hurry..");
+			addLinkToPlace(md, "order Tess to stay", Place, 'type=charmtess2');
+			WritePlaceFooter(md);
+			return true;
+		}
 
 		if ((Place == 28 || Place == 29) && sType == "learnpass") {
 			// Tess Adam's Learn Pass
@@ -274,7 +388,7 @@ function initialiseTessAdams()
 			md.write('<p><input type="text" size="20" name="research"><input type="button" name="button" value="please" onClick="ResearchOLD(\'T\', document.FormChar.research.value)"></p>');
 			md.write('</form><p>');
 			addLinkToPlace(md, 'Never mind...', 28);
-			AddRightColumnLarge(md);
+			AddPeopleColumnLarge(md);
 			if (isCharmedBy("Tess")) this.showPerson("tess5a.jpg");
 			else this.showPerson("tess5.jpg");
 			WritePlaceFooter(md);
@@ -506,28 +620,6 @@ function initialiseTessAdams()
 			WritePlaceFooter(md);
 			return true;
 		}
-
-		if (Place == 170 && sType == "tessplaymore") {
-			// Event: Play with Tess alone ib your bedroom
-			md = WritePlaceHeader(false, isExplicit() ? "td-left-med" : "");
-
-			if (!isExplicit()) this.showPerson("tess-play.jpg");
-			else if (perYou.isMaleSex()) AddImage("GenericSex/Explicit/sex-mf pussy h.gif");
-			else AddImageArray(["GenericSex/Explicit/sex-ff lick f.gif", "GenericSex/Explicit/sex-ff lick g.gif"]);
-
-			addPlaceTitle(md, "Playing with Tess\'s Body");
-
-			md.write(
-				'<p>You ask Tess for something more, and she asks, "You mean you want to make love?"</p>' +
-				'<p>She asks in such a cute and almost hesitant way there is no way you could say no, and you nod your head "yes". Tess embraces you and have a wonderful sexual encounter with her</p>' +
-				'<p>After she says "I wish I had you only to myself!"</p>'
-			);
-
-			startQuestions();
-			addLinkToPlace(md, "return to your bedroom", 46);
-			WritePlaceFooter(md);
-			return true;
-		}
 		
 		if (Place == 194) {
 
@@ -624,7 +716,7 @@ function initialiseTessAdams()
 				);
 				
 				startQuestions();
-				addLinkToPlace(md, plcJ == 231 ? 'talk to the Adamses a bit more' : 'talk to Tess a bit more', 231);
+				addLinkToPlace(md, plcJ == 231 ? 'talk to the Adamses a bit more' : 'talk to Tess a bit more', 231, 'type=' + sWho);
 				addLinkToPlace(md, 'exit the Adams home', 229);
 				WritePlaceFooter(md);
 				return true;
@@ -656,7 +748,7 @@ function initialiseTessAdams()
 				}
 				
 				startQuestions();
-				addLinkToPlace(md, plcJ == 231 ? 'talk to the Adamses a bit more' : 'talk to Tess a bit more', 231);
+				addLinkToPlace(md, plcJ == 231 ? 'talk to the Adamses a bit more' : 'talk to Tess a bit more', 231, 'type=' + sWho);
 				addLinkToPlace(md, 'exit the Adams home', 229);
 				WritePlaceFooter(md);
 				return true;
@@ -695,7 +787,12 @@ function initialiseTessAdams()
 		}
 		if (sType == "private") {
 			// Private Time with Tess at the Library after you ask her to return to the library
-			img = this.showPersonArray(["tess-office-1.jpg", "tess-office-2.jpg", "tess-office-3.jpg", "tess-office-4.jpg"], '', '', '', '', false, "string");
+			var ar = ["tess-office-1.jpg", "tess-office-2.jpg", "tess-office-3.jpg", "tess-office-4.jpg"];
+			if (isExplicit() && perYou.isMaleSex()) {
+				ar.push("Explicit/tess-office-1.jpg");
+				ar.push("Explicit/tess-office-1.jpg");
+			}
+			img = this.showPersonArray(ar, '', '', '', '', false, "string");
 			md = WritePlaceHeader(false, img.indexOf("office-4") == -1 ? '' : 'td-left-large');
 			md.write(img);
 
@@ -723,7 +820,7 @@ function initialiseTessAdams()
 			// Threesome with Tess and Ms. Titus
 			md = WritePlaceHeader(false, isExplicit() ? "" : "td-left-med");
 			if (isExplicit()) findPerson("MsTitus").showPersonX(perYou.isMaleSex() ? "titustessb.jpg" : "titustessg.jpg");
-			else AddImage("GenericSex/threesome2.jpg");
+			else AddImage("GenericSex/threesome any b.jpg");
 
 			addPlaceTitle(md, "Ms. Titus Assists Tess");
 
@@ -778,15 +875,28 @@ function initialiseTessAdams()
 
 	per.showPersonTextHere = function(md)
 	{
-		// First glimpse
-		if (Place == 2 && !this.checkFlag(9) && !perYou.isQuestComplete(1)) {
-			md.write(
-				'<p>As you approach the library you notice a beautiful woman leaving. You think she is one of the librarians, you may have seen her there before. You hear her call out<br>' +
-				'"I\'ll be back soon once I change my top, silly pen breaking and ruining my nice coat..."<br>' +
-				'She gets into a taxi waiting nearby and leaves. You wonder if she was the librarian Mrs. Adams, you have heard she is gorgeous and accident prone.</p>'
-			);
-		}
 		if (this.whereNow() == 46 && (sType == "anitabj" || sType == "anitafuck" || sType == "tanikafuck" || sType == "tanikabj")) md.write('<p>During the act, you catch Tess watching you from the corner of your eye. Her eyes are locked on your crotch and following every single one of the other woman\'s motions jealously while she subconsciously sucks on her fingers, quickly pulling in her lower lip with a sheepish smile the moment she notices you watching her.</p>');
+	};
+	
+	// Can you chat with Tess or someone else
+	per.showPersonChat = function(bGeneral, md)
+	{
+		if (Place != 230 || !this.isHere() || sType !== "") return;
+		
+		var perJohn = findPerson("JohnAdams");
+		if (!perJohn.isCharmedBy() && perJohn.other > 9) {
+			if (perJohn.checkFlag(10)) {
+				if (!perJohn.isCharmedBy() && !this.checkFlag(13)) {
+					addQuestionC(md, '"I think I prefer you in my bedroom, Tess."', "Tess", 10420);
+					if (isShopOpen(2, 1, true)) addQuestionC(md, '"Tess, let\'s meet at the library"', "Tess", 10421);
+				}
+				if (perYourBody.FindItem(4) > 0 && perYou.checkFlag(11) && perYou.canUseExperience()) addOptionLink(md, 'ask Tess for help deciphering the passages in the book', 'spendExperience()');
+			}
+		} else if (perJohn.isCharmedBy()) {
+			addQuestionC(md, '"I think I prefer you in my bedroom, Tess."', "Tess", 10420);
+			if (isShopOpen(2, 1, true) && this.place == 230) addQuestionC(md, '"Tess, let\'s meet at the library"', "Tess", 10421);
+			if (perYourBody.FindItem(4) > 0 && perYou.checkFlag(11) && perYou.canUseExperience()) addOptionLink(md, 'ask Tess for help deciphering the passages in the book', 'spendExperience()');
+		}
 	};
 	
 	// Cast a spell on them

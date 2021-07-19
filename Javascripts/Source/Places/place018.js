@@ -72,7 +72,7 @@ function ShowPlace18(stype)
 		startQuestions();
 		addLinkToPlaceC(md, "visit " + perGates.getPersonName(), 17);
 		addLinkToPlace(md, "go upstairs", 18, 'area=upstairs');
-		AddRightColumnMed();
+		AddPeopleColumnMed();
 		perLauren.showPersonDN("lauren1b.jpg");
 		WritePlaceFooter(md);
 		return;
@@ -164,7 +164,7 @@ function ShowPlace18(stype)
 			'<p>"Good evening ' + myLord + '! Please follow me", she says in a slight english accent.</p>' +
 			'<p>She leads the way upstairs, but this time she does not bend over.</p>'
 		);
-		if (perLilith.isCharmedBy("Sarah") && !this.checkFlag(12)) {
+		if (perLilith.isCharmedBy("Sarah") && !perLauren.checkFlag(12)) {
 			md.write(
 				'<p>At the top of the stairs Lauren hesitates and you hear her mutter "blood bitch", you are quite sure who she means and you ask her if everything is alright,</p>' +
 				'<p>"No ' + myLord + ' the foul monster is determined to be the only person in my Lady\'s life, not..not that it is my place to complain...but death is not how I wish to leave this time of servitude", she shakes her head, "Please, My Lady is waiting for you"</p>'

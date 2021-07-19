@@ -25,11 +25,38 @@ function initialiseNurseMegan()
 	
 	per.getPossessionFace = function() { return "megan-face"; };
 	
+	per.showEventPopup = function()
+	{
+		if (Place == 269 && this.isHere() && this.dress === "" && sType === "") {
+			showPopupWindow("Where is the Nurse",
+				"<img src='Images/People/NurseMegan/Sandra/poolmeet.jpg' class='imgpopup' style='float:left;margin-right:5px' alt='Who' title='Brunette'>" +
+				"<img src='Images/People/NurseMegan/Farrah/poolmeet.jpg' class='imgpopup' alt='Who' title='Blonde'>" +
+				'<p>You see a few people around at the pool and you are not sure which is the nurse Bambi mentioned. Is it the...</p>' +
+				addOptionLink("string", '&#8592; brunette', "findPerson('NurseMegan').dress='Sandra';dispPlace()", "chatblock", "width:30%;margin-left:30%") +
+				addOptionLink("string", 'blonde &#8594;', "findPerson('NurseMegan').dress='Farrah';dispPlace()", "chatblock", "width:30%;margin-left:30%"),
+				'', '', true, true, true
+			);
+			return true;
+		}
+		if (Place == 275 && this.isHere() && this.dress === "" && sType === "") {
+			showPopupWindow("Which Nurse To Speak To",
+				"<img src='Images/People/NurseMegan/Sandra/megan1b.jpg' class='imgpopup' style='float:left;margin-right:5px' alt='Who' title='Brunette'>" +
+				"<img src='Images/People/NurseMegan/Farrah/megan1b.jpg' class='imgpopup' alt='Who' title='Blonde'>" +
+				'<p>You see a few nurses moving around in the ICU, and you are unsure who is in charge. Is it the...</p>' +
+				addOptionLink("string", '&#8592; brunette', "findPerson('NurseMegan').dress='Sandra';dispPlace()", "chatblock", "width:30%;margin-left:30%") +
+				addOptionLink("string", 'blonde &#8594;', "findPerson('NurseMegan').dress='Farrah';dispPlace()", "chatblock", "width:30%;margin-left:30%"),
+				'', '', true, true, true
+			);
+			return true;
+		}		
+		return false;
+	};
+	
 	per.showEvent = function()
 	{
 		var md;
 			
-		if (Place == 269 && this.isHere() && sType === "") {
+		if (Place == 269 && this.isHere() && sType === "" && this.dress !== "") {
 			md = WritePlaceHeader();
 			// Megan at the pool 1
 			this.place = 275;		// Gone back to hospital
@@ -67,6 +94,23 @@ function initialiseNurseMegan()
 			addLinkToPlace(md, "go to the Hotel Bar", 124);
 			WritePlaceFooter(md);
 			return true;
+		}
+		
+		if (sType == "endgame1megan") {
+			// End Game - Nurse MEgan
+			md = WritePlaceHeader();
+			this.showPerson("pregnant.jpg");			
+			addPlaceTitle(md, "A Very Contagious Lesson for Nurses?");
+
+			md.write(
+				'<p>One day visit Megan at the ICU and you see her belly is swelling, and she tells you she will have to take maternity leave soon! Miss. Logan strikes again!</p>'
+			);
+			
+			startQuestions();	
+			// Add pregnancies/other
+			addEndGamePregnancies(md);		
+			WritePlaceFooter(md);
+			return true;				
 		}
 		
 		if (Place != 275) return false;
@@ -226,7 +270,31 @@ function initialiseNurseMegan()
 			WritePlaceFooter(md, "Script by Tilde");
 			return true;
 		}
+		
+		if (sType == "transformmodel") {
+			// Body transformation
+			CastTransform(1);
+			md = WritePlaceHeaderNIP(true, '', 'black');
+			if (this.dress == "Sandra") this.dress = "Farrah";
+			else this.dress = "Sandra";
+			showPopupWindow("Transformation",
+				this.addPersonString("megan5.jpg", "height:max%", "rightpopup") +
+				'You cast the spell and Megan cries out something inarticulate and you see her figure shifting and her face distorting. After a few minutes the changes settle down and she looks back at you smiling again, almost as it nothing happened.</p>' +
+				'<p>She looks like a completely different person, even her clothing is different. You ask her if she is feeling good and she answers "Why ' + perYou.getMaster() + ' is there something wrong?".</p>' +
+				'<p>She certainly seems to be the same Megan she was before despite her different appearance.',
+				'dispPlace()', '', false
+			);
+			setQueryParams("");
+			WritePlaceFooter(md);
+			return true;
+		}
 		return false;
+	};
+	
+	
+	per.checkEndGamePregnancy = function()
+	{
+		return this.isCharmedBy() ? "endgame1megan" : "";
 	};
 	
 	// Items
@@ -249,6 +317,25 @@ function initialiseNurseMegan()
 				return "handled";
 			}
 		}
+		
+		// Casting the transform spell
+		else if (no == 18 && cmd == 2) {
+
+			// In the office at the TV Station
+			if (Place == 275 && sType === "") {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				ClearComments();
+				dispPlace(Place, 'type=transformmodel');
+				return "nofooter";
+			}
+		}
+
 		return '';
 	};
 }

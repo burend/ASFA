@@ -68,7 +68,7 @@ function RepliesJohnAdams(nR)
 				'<p>“So, why don\'t we trade it with one of mine, give him/her that old trinket and I...” She whispers something into John\'s ear that certainly got his attention, and you notice his cheeks taking on a deep blush as his eyes dart around between you, the ring and Tess, who has a very suggestive smile on her lips.</p>' +
 				'<p>“Fine, take it and leave my house.” He glares at you as he hands you the ring. “And this better concludes whatever business you have with my wife, too, or I swear the police will get involved.”'
 			);
-			if (wherePerson("MsJones") == 242) movePerson("MsJones", isMurderPath() ? 0 : 145);
+			if (wherePerson("MsJones") == 72) movePerson("MsJones", isMurderPath() ? 0 : 145);
 		} else addComments("Wait a moment, you do not think you can carry anything more, better drop off something first");
 	}
 	return true;
@@ -95,7 +95,7 @@ function initialiseJohnAdams()
 	per.getPersonAddress = function() { return isPlaceKnown("AdamsHouse") ? '2121 Rathdown Rd, Glenvale' : ''; };
 
 	per.getPossessionFace = function() {
-		if (this.isCharmedBy()) return "john11";
+		if (this.isCharmedBy() || this.getPersonGender() == "woman") return "john11";
 		return "john10";
 	};
 	per.isPersonInfo = function() { return this.isCharmedBy(); };
@@ -107,6 +107,12 @@ function initialiseJohnAdams()
 			return "<img src='Images/People/JohnAdams/" + this.dress + "/john3.jpg' class='imgpopup' alt='John'>" +
 				this.getPersonName(true) + " is your slave, the once proud husband of Tess now finally joined her in serving your wishes. Now <b>she</b> is a " + (this.checkFlag(6) ? 'slim woman' : 'very large breasted woman') + " who has joined your harem!";
 		}			
+	};
+	
+	per.whereNow = function() {
+		if (Place == 231 && (sType.indexOf("john") != -1 || sWho.indexOf("john") != -1)) return Place;
+		if (isShopOpen(0) && this.checkFlag(12)) return 96;		// Back to work
+		return this.place;
 	};
 	
 	per.showEventPopup = function()
@@ -165,6 +171,25 @@ function initialiseJohnAdams()
 			return true;
 		}
 		
+		if (Place == 96) {
+			if (sType == "johnofficesex") {
+				// John only
+				md = WritePlaceHeader();
+				if (isExplicit() && perYou.isMaleSex()) this.showPersonRandomX("office-sex", 2);
+				else this.showPerson("office-sex.jpg");
+
+				addPlaceTitle(md, "Fucking " + nmJ + " Adams");
+
+				md.write('<p>You ask ' + nmJ + ' to have sex here in the office. Little speaking takes place as you make love with ' + nmJ + '. ' + nmJ + ' repeatedly confesses love to you making no mention of Tess.</p>');
+
+				startQuestions();
+				addLinkToPlace(md, 'talk to ' + nmJ + ' a bit more', Place);
+				addLinkToPlace(md, "go to the reception area.", 95);
+				WritePlaceFooter(md);
+				return true;
+			}
+		}
+		
 		if (Place != 230 && Place != 231) return false;
 		
 		if (sType == "johncharm1") {
@@ -188,7 +213,7 @@ function initialiseJohnAdams()
 
 			startQuestions();
 			addLinkToPlace(md, 'you want him to desire you', 230, 'type=johncharmdesire');
-			addLinkToPlace(md, 'tou want him to serve you, but not sexually', 230, 'type=johncharmserve');
+			addLinkToPlace(md, 'you want him to serve you, but not sexually', 230, 'type=johncharmserve');
 			WritePlaceFooter(md);
 			return true;
 		}
@@ -293,8 +318,8 @@ function initialiseJohnAdams()
 		
 		if (sType == "johnsexenjoy") {
 			// John only
-			md = WritePlaceHeader(false, this.dress == "Male" ? 'td-left-med' : '');
-			if (this.isMan()) this.showPerson("john-sex1.gif");
+			md = WritePlaceHeader();
+			if (this.isMan()) this.showPerson("john-sex1.jpg");
 			else this.showPerson("john4.jpg");
 			plcT = wherePerson("Tess");
 
@@ -345,7 +370,7 @@ function initialiseJohnAdams()
 			}
 
 			startQuestions();
-			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231);
+			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231, 'type=' + sWho);
 			addLinkToPlace(md, 'exit the Adams home', 229);
 			WritePlaceFooter(md);
 			return true;
@@ -353,12 +378,13 @@ function initialiseJohnAdams()
 		
 		if (sType == "johnsexfuckyou") {
 			// John only fucking you
-			md = WritePlaceHeader(false, this.dress == "Male" && !perYou.isFuta() ? 'td-left-med' : '');
+			md = WritePlaceHeader();
 			if (this.isMan()) {
-				if (perYou.isMaleSex()) this.showPerson("john-sex2m.gif");
-				else if (perYou.isFuta()) this.showPerson("john-sex2f.gif");
+				if (perYou.isMaleSex()) this.showPerson("john-sex2m.jpg");
+				else if (perYou.isFuta()) this.showPerson("john-sex2f.jpg");
 				else this.showPersonRandom("john-sex2g", 2);
-			} else AddImageRandom("GenericSex/Explicit/sex-fm anal strapon ", 3);
+			} else if (perYou.isMan()) AddImageRandom("GenericSex/Explicit/sex-fm anal strapon", 3);
+			else AddImageRandom("GenericSex/Explicit/sex-ff strapon", 8);
 			plcT = wherePerson("Tess");
 
 			addPlaceTitle(md, nmJ + " Adams Fucking You");
@@ -388,7 +414,7 @@ function initialiseJohnAdams()
 			}
 
 			startQuestions();
-			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231);
+			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231, 'type=' + sWho);
 			addLinkToPlace(md, 'exit the Adams home', 229);
 			WritePlaceFooter(md);
 			return true;
@@ -398,9 +424,9 @@ function initialiseJohnAdams()
 			// John only
 			md = WritePlaceHeader();
 			if (this.isMan()) {
-				if (perYou.isMan()) this.showPerson("john-sex3m.gif");
-				else this.showPerson("john-sex3f.gif");
-			} else if (perYou.isMan()) AddImageRandom("GenericSex/Explicit/sex-ff lick ", 7);
+				if (perYou.isMan()) this.showPerson("john-sex3m.jpg");
+				else this.showPerson("john-sex3f.jpg");
+			} else if (perYou.isMan()) AddImageRandom("GenericSex/Explicit/sex-ff lick", 7);
 			else AddImageRandom("GenericSex/sex-mf lick", 3);
 			plcT = wherePerson("Tess");
 
@@ -427,7 +453,7 @@ function initialiseJohnAdams()
 			}
 
 			startQuestions();
-			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231);
+			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231, 'type=' + sWho);
 			addLinkToPlace(md, 'exit the Adams home', 229);
 			WritePlaceFooter(md);
 			return true;
@@ -437,8 +463,8 @@ function initialiseJohnAdams()
 			// John only
 			md = WritePlaceHeader(false, 'td-left-med');
 			if (this.isMan()) {
-				if (perYou.isMaleSex()) this.showPerson("john-sex4m.gif");
-				else this.showPerson("john-sex4f.gif");
+				if (perYou.isMaleSex()) this.showPerson("john-sex4m.jpg");
+				else this.showPerson("john-sex4f.jpg");
 			} else this.showPerson("john4.jpg");
 			plcT = wherePerson("Tess");
 
@@ -461,7 +487,7 @@ function initialiseJohnAdams()
 			}
 
 			startQuestions();
-			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231);
+			addLinkToPlace(md, plcT == 231 ? 'talk to the Adamses a bit more' : 'talk to ' + nmJ + ' a bit more', 231, 'type=' + sWho);
 			addLinkToPlace(md, 'exit the Adams home', 229);
 			WritePlaceFooter(md);
 			return true;
@@ -473,8 +499,8 @@ function initialiseJohnAdams()
 			if (this.isMan()) {
 				if (perYou.isMaleSex()) this.showPerson("john-tess-sex1m.jpg");
 				else this.showPerson("john-tess-sex1f.jpg");
-			} else if (perYou.isMaleSex()) AddImage("GenericSex/sex-mff threesome a.jpg");
-			else AddImage("GenericSex/foursomea.jpg");
+			} else if (perYou.isMaleSex()) AddImageRandom("GenericSex/threesome any", 2);
+			else AddImageRandom("GenericSex/foursome", 2);
 
 			addPlaceTitle(md, "Making Love with the Adamses");
 
@@ -495,7 +521,7 @@ function initialiseJohnAdams()
 			
 
 			startQuestions();
-			addLinkToPlace(md, 'talk to the Adamses a bit more', 231);
+			addLinkToPlace(md, 'talk to the Adamses a bit more', 231, 'type=' + sWho);
 			addLinkToPlace(md, 'exit the Adams home', 229);
 			WritePlaceFooter(md);
 			return true;
@@ -503,9 +529,9 @@ function initialiseJohnAdams()
 
 		if (sType == "johntransformgender1") {
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			showPopupWindow("Transformation",
-				'<img src="Images/GenericSex/tg a.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="TG">' +
+				addImageRandomString('GenericSex/tgm2f', oImages.GenericSex.tgm2f, "50%") +
 				'You cast the spell and John cries out and he strips off his clothing. As you watch his body changes, growing plusher and you see his cock shrinking. His chest expands as you see large breasts grow and his face softens to a feminine appearance.</p>' +
 				'<p>As you watch <i>her</i> figure changes, becoming slimmer, her breasts shrinking. It seems to settle for a moment and then fills out again as if it is uncertain on it\'s final form, but no matter what John is a <b>he</b>, now <b>she</b> is very definitely female, nothing masculine is left, she is completely a woman!</p>' +
 				'<p>She looks quite confused, has John been affected mentally by this? How does John\'s form finally settle down?</p>' +
@@ -516,11 +542,11 @@ function initialiseJohnAdams()
 				'', '', true, true
 			);
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		if (sType == "johntransformgender2") {
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (this.checkFlag(6)) this.dress = "Female2";
 			else this.dress = "Female1";
 	
@@ -536,11 +562,11 @@ function initialiseJohnAdams()
 				'', '', true, true
 			);
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}	
 		if (sType == "johntransformgender3") {
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			showPopupWindow("Transformation",
 				'<img src="Images/People/JohnAdams/' + this.dress + '/xf2.jpg" class="imgpopup" alt="TG3">' +
 				(!this.checkFlag(5) ? 
@@ -551,7 +577,7 @@ function initialiseJohnAdams()
 				'dispPlace()', '', true
 			);
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		if (sType == "johntransformgendermale") {
@@ -560,13 +586,13 @@ function initialiseJohnAdams()
 			this.setFlag(5, false);
 			this.setFlag(6, false);
 			this.dress = "Male";
-			md = WritePlaceHeader(true, "", "black");
+			md = WritePlaceHeaderNIP(true, "", "black");
 			showPopupWindow("Transformation",
-				'<img src="Images/GenericSex/tg b.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="TG">' +
+				addImageRandomString('GenericSex/tgf2m', oImages.GenericSex.tgf2m, "50%") +
 				"You cast the spell and John cries out and he strips off his clothing. As you watch his body changes, growing firmer and you see his cock growing. His chest diminshes as you see large breasts dissapear and his face hardens to a masculine appearance.</p>"
 			);
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		return false;
@@ -592,6 +618,42 @@ function initialiseJohnAdams()
 		addLinkToPlaceC(md, 'enjoy the club after ' + this.getHisHer() + ' dance', Place);
 		WritePlaceFooter(md);
 	};
+	
+	// Can you chat with John/Joan or someone else
+	per.showPersonChat = function(bGeneral, md)
+	{
+		var nmJ, perTess;
+		if (Place != 230 || !this.isHere() || sType !== "") return;
+		
+		// At the Adams Home and he is here
+		nmJ = this.getPersonName(false);
+		perTess = findPerson("Tess");
+		if (!this.isCharmedBy()) {
+			// ONLY do these dialogue options if John is NOT CHARMED
+			if (this.other === 0)	{
+				addQuestionC(md, '"You don\'t happen to have any <i>more</i> magical items, do you John?"', "JohnAdams", 10400);
+				addQuestionC(md, '"Like the way Tess has been dressing lately, John?"', "JohnAdams", 10405);
+			}	else if (this.other == 1) {
+				addQuestionC(md, '"May I see the ring, John?"', "JohnAdams", 10401);
+			}	else if (this.other == 2) {
+				addQuestionC(md, '"Tess, get the ring!"', "JohnAdams", 10402);
+			}	else if (this.other == 5) {
+				addQuestionC(md, '"Do you like the way she\'s been dressing lately?"', "JohnAdams", 10405);
+				if (this.checkFlag(11)) addLinkToPlace(md, '"Tess, distract him!"', 229, 'type=exitdistract');
+			}	else if (this.other == 6) {
+				addQuestionC(md, '"You see John, I can make Tess dress anyway I want."', "JohnAdams", 10406);
+			}	else if (this.other == 7) {
+				//  This one is in Tess's Response Bank
+				addQuestionC(md, '"Go put on something <i>nice</i> for your husband, Tess."', "Tess", 10407);
+			}	else if (this.other == 8) {
+				addQuestionC(md, 'threaten - "Back away or I\'ll turn Tess into a prudish nun."', "JohnAdams", 10408);
+			} else if (this.other == 9) {
+				if (this.checkFlag(11)) addLinkToPlace(md, '”The ring will be enough, for now.”', 229, '', '“Fine, take it and leave my house.” John glares at you as you put the ring on your finger, but he makes no further attempt to stop you. “And this better concludes whatever business you have with my wife, too, or I swear the police will get involved.”', '', "setPersonOther('JohnAdams',10)");
+				else addQuestionC(md, '”I want any other magical items you have.”', "JohnAdams", 10409);
+			}
+		}
+		
+	};
 
 	per.handleItem = function(no, cmd)
 	{	
@@ -613,6 +675,10 @@ function initialiseJohnAdams()
 			if (this.isHere()) {
 				if (!this.isCharmedBy()) {
 					addComments("The spell washes over him but nothing happens, you seem to need a magical link to him");
+					return "handled";
+				}
+				if (Place == 96) {
+					addComments("The spell seems to have no effect, you feel you must do this somewhere else.");
 					return "handled";
 				}
 				if (wherePerson("Tess") == 230) {
@@ -664,7 +730,20 @@ function initialiseJohnAdams()
 				// SMS 320, 1hr after being kicked out of Adams home, technically from Tess
 				if (makeCall(true, 320)) this.setFlag(10);
 			}
+			return false;
+		}
+		if (this.hoursCharmed() > 8 && !this.checkFlag(12) && !isAtLocation(230) && getHour() >= 8) {
+			if (makeCall(true, 325)) this.setFlag(12);
 		}
 		return false;
+	};
+	
+	per.isSMSImageDressVersion = function(id) { return true; };
+	
+	per.getPersonSMS = function(id) {
+		switch(id) {
+			case 325: return receiveSMS(this.getPersonName(true), 'Hi there, I am just heading off to work at the Town Hall, come see me in my office any time. A taste of what there is to see!', 'sms1.jpg');
+		}
+		return '';
 	};
 }

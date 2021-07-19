@@ -97,10 +97,10 @@ function initialiseAlison()
 			if (sType == "alisonpool") {
 				WaitHereOnly(4);
 				md = WritePlaceHeader();
-				this.showPerson("alison-pool.gif");
+				this.showPerson("alison-pool.jpg");
 				addPlaceTitle(md, "Swimming with Alison");
 				md.write(
-					'<p>Alison joins you wearing a lovely bikini and she sits down and asks, well tells you, "Hey cutie, model for me your sexy figure!". You plans were the other way round, but Alison always takes the lead, and it dord not matter really, so you make a play of posing for her.</p>' +
+					'<p>Alison joins you wearing a lovely bikini and she sits down and asks, well tells you, "Hey cutie, model for me your sexy figure!". You plans were the other way round, but Alison always takes the lead, and it does not matter really, so you make a play of posing for her.</p>' +
 					'<p>She comments, "Nice, now how about I model for you but in something less...more naked"</p>'
 				);
 				startQuestions();
@@ -110,9 +110,8 @@ function initialiseAlison()
 				return true;
 			}
 			if (sType == "alisonpoolsex") {
-				md = WritePlaceHeader(false, isExplicit() ? '' : 'td-left-med');
-				if (isExplicit()) this.showPersonX("alison-pool-sex.mp4");
-				else this.showPerson("alison-pool-sex.jpg");
+				md = WritePlaceHeader();
+				this.showPersonRorX("alison-pool-sex.jpg");
 				addPlaceTitle(md, "Being Discrete and Private with Alison");
 				md.write(
 					'<p>You agree and your busty waitress seductively removes most of her bikini, ready for you for some more intimate games.</p>'
@@ -150,27 +149,27 @@ function initialiseAlison()
 				if (sType == "bj") {
 					// Blowjob/lick
 					if (perYou.isMaleSex()) {
-						this.showPersonRandomRorX("alison6b", isExplicit() ? 2 : 1);
+						this.showPersonRandomRorX("alison6b", isExplicit() ? 4 : 1);
 						addPlaceTitle(md, "An Energetic Chat");
-						md.write('</p><p>You instead ask Alison to use her mouth to pleasure you. She eagerly agrees and she is not inexperienced and skillfully pleasures you until you release into her mouth. She happily swallows as the good slave she is.');
+						md.write('<p>You instead ask Alison to use her mouth to pleasure you. She eagerly agrees and she is not inexperienced and skillfully pleasures you until you release into her mouth. She happily swallows as the good slave she is.</p>');
 					} else {
-						this.showPersonRandomRorX("alison6g", 2);
+						this.showPersonRandomRorX("alison6g", 3);
 						addPlaceTitle(md, "An Energetic Chat");
-						md.write('</p><p>You accept Alison\' suggestion and ask her to use her fingers and tongue to pleasure you. To your surprise and delight she appears quite skilled at this and you enjoy her attentions until you cry out your pleasure.');
+						md.write('<p>You accept Alison\' suggestion and ask her to use her fingers and tongue to pleasure you. To your surprise and delight she appears quite skilled at this and you enjoy her attentions until you cry out your pleasure.</p>');
 					}
 
 				} else if (sType == "fuck") {
 					// Fuck (Male Only)
-					this.showPersonRandomRorX("alison5b", isExplicit() ? 2 : 1);
+					this.showPersonRandomRorX("alison5b", isExplicit() ? 3 : 1);
 					addPlaceTitle(md, "An Energetic Chat");
 					md.write(
-						'</p><p>You accept Alison\'s offer, and you energetically discuss matters of your cock and her pussy.</p>'
+						'<p>You accept Alison\'s offer, and you energetically discuss matters of your cock and her pussy.</p>'
 					);
 
 				} else if (sType == "titsfuck") {
 					// Tits Fuck (Male only)
-					if (isExplicit()) this.showPerson("alison7b.jpg");
-					else this.showPersonRandomX("alison7b", 2);
+					if (!isExplicit()) this.showPerson("alison7b.jpg");
+					else this.showPersonRandomX("alison7b", 3);
 					addPlaceTitle(md, "An Energetic Chat");
 					md.write(
 						'<p>You ask Alison to play with her tits, but instead she plays with them around your cock, once again taking control, but you your considerable pleasure.</p>'
@@ -257,7 +256,7 @@ function initialiseAlison()
 				// Charm 3 (end)
 				this.setFlag(2);
 				md = WritePlaceHeader(false, !isExplicit() ? 'td-left-large' : '');
-				this.showPersonRandomRorX(perYou.isMaleSex() ? "alison5b" : "alison6g", isExplicit() ? 2 : (perYou.isMaleSex() ? 1 : 2));
+				this.showPersonRandomRorX(perYou.isMaleSex() ? "alison5b" : "alison6g", isExplicit() ? 3 : (perYou.isMaleSex() ? 1 : 2));
 				addPlaceTitle(md, "Alison Under a Spell-ish");
 				if (perYou.isMaleSex()) {
 					md.write(
@@ -351,7 +350,7 @@ function initialiseAlison()
 		} else if (Place == 438 && sType == "alisoncatherine4") {
 			// Scene with Alison and Catherine - Join
 			md = WritePlaceHeader(false, (perYou.isMaleSex() && isExplicit()) || !perYou.isMaleSex() ? 'td-left-large' : '');
-			if (perYou.isMaleSex()) this.showPersonRorX("alisoncatherine1c.jpg");
+			if (perYou.isMaleSex()) this.showPersonRorX("alisoncatherine1c" + (perYou.isFuta() && !isExplicit() ? "-futa" : "") + ".jpg");
 			else this.showPerson("alisoncatherine1d.jpg");
 			addPlaceTitle(md, "Joining Catherine and Alison");
 			md.write(
@@ -405,7 +404,7 @@ function initialiseAlison()
 				md = WritePlaceHeader();
 				if (perYou.isMaleSex()) this.showPersonRandomRorX("alison-gym3b", 2);
 				else {
-					if (isExplicit()) this.showPersonRandomX("alison6g", 2);
+					if (isExplicit()) this.showPersonRandomX("alison6g", 3);
 					else this.showPersonRandom("alison-gym3b", 2);
 				}
 				addPlaceTitle(md, "An Energetic Break");
@@ -624,7 +623,7 @@ function initialiseAlison()
 			if (this.whereNow() == 196) WriteComments("You call Alison to invite her to join you at the pool for a swim, but someone else picks up and says Alison is busy serving customers and for you to call back later.");
 			else {
 				gotoPlace(Place, 'type=alisonpool');
-				receiveCall('', 'You call Alison to invite her to join you at the pool for a swim, and she answers conifdently, "I\'d love to see you in your swimwear, I\'ll be there".');
+				receiveCall('', 'You call Alison to invite her to join you at the pool for a swim, and she answers confidently, "I\'d love to see you in your swimwear, I\'ll be there".');
 				WriteCommentsFooter(bChat, bChatLeft);
 			}
 		}

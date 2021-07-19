@@ -9,6 +9,7 @@ function ShowPlace38()
 	// Placing the pictures
 	addPlaceImage(md, "house10.jpg", "90%");
 	addPlaceImage(md, "house9.jpg", "90%");
+	addPlaceImage(md, "house11.jpg", "90%");
 
 	// Description
 	addPlaceTitle(md, "Amaranth Place");
@@ -22,8 +23,11 @@ function ShowPlace38()
 		else if (perLeanne.whereNow() == 450) md.write(' It looks like Leanne is home.');
 	}
 	if (isPlaceKnown("GabbysHouse")) {
-		md.write('<p>11 Amaranth Pl is the home of Gabrielle Halliway, your mothers Assistant. She usually doesn\'t receive visitors and you have only ever seen it from afar.</p>');
+		md.write('</p><p>11 Amaranth Pl is the home of Gabrielle Halliway, your mothers Assistant. She usually doesn\'t receive visitors and you have only ever seen it from afar.');
 	}
+	if (isPlaceKnown("LolasHouse")) {
+		md.write('</p><p>23 Amaranth Pl is the home of Lola, the museum curator.');
+	}	
 	md.write('</p>');
 
 	// Questions
@@ -40,7 +44,7 @@ function ShowPlace38()
 		else if (!isMurderPath() && checkPersonFlag("Gabby", 13)) addLinkToPlace(md, "visit Gabby's house", 38, '', 'No one seems to be home!');
 		else addLinkToPlace(md, "visit Gabby's house", 452);
 	}
-
+	if (isPlaceKnown("LolasHouse")) addLinkToPlace(md, "visit Lola's house", 451);
 	addLinkToPlace(md, "walk to Rathdown Road", 229);
 
 	WritePlaceFooter(md);

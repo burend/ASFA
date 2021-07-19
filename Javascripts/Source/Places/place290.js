@@ -44,16 +44,9 @@ function ShowPlace290(stype)
 	startQuestions();
 
 	if (stype == "escort") addLinkToPlaceC(md, '"Thank you Lauren, that will be all"', 290);
-	if (perLauren.isCharmedBy()) addLinkToPlaceC(md, "ask Lauren for service", 290, 'type=laurenplay');
 
 	if (!isDay()) {
-		if (perLauren.isCharmedBy()) {
-			perLauren.addSleepLink(md, "go to bed for the night", "Sleeping with some Service",
-				'<p style="position:absolute;left:25%;top:15%;cursor:pointer;font-size:1.1em;width:50%">' +
-				'You start to prepare for bed and as you do you see the maid Lauren silently start to remove her clothing and their lies on the bed awaiting you, ready to serve you however you wish.', 
-				Math.random() < 0.5 ? "lauren-bed1.jpg" : "lauren-bed2.jpg", true
-			);
-		} else addLinkToPlace(md, "go to bed for the night", '', '', 'You retire to bed for the night', '', "WaitforForDayNight()");
+		if (!perLauren.isCharmedBy()) addLinkToPlace(md, "go to bed for the night", '', '', 'You retire to bed for the night', '', "WaitforForDayNight()");
 	} else addOptionLink(md, 'wait for darkness', 'WaitforForDayNight()');
 	
 	if (isMurderPath()) addOptionLink(md, "exit the guest room", "visitSarah()");

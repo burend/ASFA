@@ -133,7 +133,7 @@ var SNAKE = (function () {
 	  snake.unshift(n);
 
 	  // if there's food there
-	  console.log(food.x + ' ' + food.y + ' ' + n.x + ' ' + n.y);
+	  //console.log(food.x + ' ' + food.y + ' ' + n.x + ' ' + n.y);
 	  if (meal(n)) {
 		 newfood(); // we eat it and another shows up
 		 

@@ -1,6 +1,18 @@
 /***********************************************
 	Mrs Marie Granger
 ***********************************************/
+
+function PuzzleParty(doc) {
+	var perMG = findPerson("MrsGranger");
+	if (perMG.checkFlag(33)) {
+		if ((doc.Puzzle.answer.value * 40 / 5) == 56) gotoPlace(Place,'type=partyright');
+		else gotoPlace(Place,'type=partywrong');
+	} else {
+		if (doc.Puzzle.answer.value == 3) gotoPlace(Place,'type=partyright');
+		else gotoPlace(Place,'type=partywrong');
+	}
+}
+
 function RepliesMrsGranger(nR)
 {
 	function mentionWildRanges()
@@ -125,7 +137,7 @@ function RepliesMrsGranger(nR)
 		if (clv == 1) addComments('"Well no my dear, have you heard there is something important there?", Mrs Granger replies. You tell her a little about what you have heard about the place and it\'s importance in the early days of Glenvale and the time of the covens.</p><p>"Alright dear, I have some free time, I will do a survey of the area. I will meet you back here if I find anything."</p>');
 		else addComments('"Whatever you say dear", Mrs Granger replies. "I will meet you back here if I find anything."</p>');
 		if (isDay()) {
-			perMG.place = 34; // Put her in the wild ranges
+			perMG.place = 26; // Put her in the Wild Ranges
 			perMG.other = 2.1;
 		} else addComments('<p>She notices that night has fallen, "I will go there first thing in the morning, dear. Maybe you would like to spend the night?"</p>');
 	}
@@ -240,6 +252,10 @@ function initialiseMrsGranger()
 	per.extra = [0, 0];
 	per.Replies = RepliesMrsGranger;
 	
+	per.getDressBase = function() {
+		return this.checkFlag(35) ? "Younger/" : "Natural/";
+	};
+	
 	per.getNextDress = function(drs) {
 		var clv = this.getCharmedLevel();
 		if (clv == 3) return "ShinyBlue";
@@ -292,7 +308,7 @@ function initialiseMrsGranger()
 			if (Place == 177) return this.addPersonFace() + "<p>In the morning Mrs Granger gives you a kiss and tells you she is off to the <b>Museum</b>.</p>";
 		}
 		if (this.place == 177 && Math.floor(this.other) == 2 && this.other < 2.2) {
-			this.place = 34;
+			this.place = 26;
 			this.other = 2.1;
 			if (Place == 177) return this.addPersonFace() + "<p>In the morning Mrs Granger gives you a kiss and tells you she is off to the <b>Wild Ranges</b>.</p>";
 		}
@@ -310,9 +326,9 @@ function initialiseMrsGranger()
 			if (Place == 240) return this.addPersonFace() + "<p>As the museum starts to close Mrs. Granger tells you she will return <b>home</b> for the night and return tomorrow</p>";
 		}
 		// Is she at the Wild Ranges, then return home for the night
-		if (this.place == 34 && Math.floor(this.other) == 2) {
+		if (this.place == 26 && Math.floor(this.other) == 2) {
 			this.place = 177;
-			if (Place == 34) return this.addPersonFace() + "<p>As night starts to fall Mrs. Granger tells you she will return <b>home</b> for the night and return tomorrow</p>";
+			if (Place == 26) return this.addPersonFace() + "<p>As night starts to fall Mrs. Granger tells you she will return <b>home</b> for the night and return tomorrow</p>";
 		}
 		return '';
 	};
@@ -346,6 +362,29 @@ function initialiseMrsGranger()
 					'. She looks at you with an open look of desire, she is completely under the spell and embracing your earlier comments about being a slut. She smiles and says<br><br>' +
 					'"I felt like a change, ' + perYou.getPersonName() + ' dear, something more to my taste and yours. Now is there anything I can do to make you comfortable?"'
 					)
+				);
+				return true;
+			}
+			
+			if (sType == "mrsgrangertransformagenatural") {
+				CastTransform(1);
+				this.setFlag(35);
+				showPopupWindow("Rejunenated!",
+					this.addPersonString("!home-sex-tfa.jpg", "height:max%", "right") +
+					'Mrs Granger\'s appearance shifts but it is only subtle, and after a minute you realise she is looking younger, like you have seen in old family photos. Nothing else is changed but she looks 10 maybe 20 years younger!</p>' +
+					'<p>You ask how she is feeling and she replies she is feeling fit and energetic!',
+					'dispPlace()'
+				);
+				return true;
+			}	
+			if (sType == "mrsgrangertransformageyounger") {
+				CastTransform(1);
+				this.setFlag(35, false);
+				showPopupWindow("Restored!",
+					this.addPersonString("!home-sex-tfa.jpg", "height:max%", "right") +
+					'Mrs Granger\'s appearance shifts but it is only subtle, and after a minute you realise she is looking older, returning back to how she was before you cast the transform spell on her before, back to her natural age!</p>' +
+					'<p>You ask how she is feeling and she replies she is feeling fine, maybe a little tired',
+					'dispPlace()'
 				);
 				return true;
 			}
@@ -405,51 +444,71 @@ function initialiseMrsGranger()
 			return true;
 		}
 		
-		if (Place == 269 && sType == "grangerpool") {
-			WaitHereOnly(6);
-			md = WritePlaceHeader();
-			this.showPerson((this.checkFlag(42) ? "!" : "") + "granger-pool.jpg");
-			addPlaceTitle(md, "Swimming with Mrs. Granger");
-			if (this.checkFlag(42)) {
-				md.write(
-					'<p>Mrs. Granger arrives and changes into her bikini, and you swim for a while with her. At the end when she get out of the pool, you see her bikini has slipped off somehow, but from her smile you think it less an accident and more deliberate!</p>'
-				);
-				this.setFlag(42, false);
-			} else {
-				md.write(
-					'<p>Mrs. Granger arrives and changes into her bikini, and looks at you smiling and seductively, as she always does.</p>'
-				);
-				this.setFlag(42);				
-			}
-			startQuestions();
-			if (this.dress != "Leather") addLinkToPlaceC(md, 'it is fairly private here...', Place, 'type=grangerpoolsex');
-			addLinkToPlaceC(md, 'say goodbye to Mrs. Granger', Place);
-			WritePlaceFooter(md);
-			return true;
-		}
-		if (Place == 269 && sType == "grangerpoolsex") {
-			md = WritePlaceHeader();
-			this.showPerson("granger-pool-sex.jpg");
-			addPlaceTitle(md, "More Than Swimming With Mrs. Granger");
-			if (this.checkFlag(42)) {
-				md.write(
-					'<p>You accept her implied seduction, and she removes the rest of her bikini ready for you to take her!</p>'
-				);
-			} else {
-				md.write(
-					'<p>You accept her implied seduction, and as she is not wearing her bikini she is ready for you to take her!</p>'
-				);
-			}
-			startQuestions();
-			addLinkToPlaceC(md, 'later...say goodbye to Mrs. Granger', Place);
-			WritePlaceFooter(md);
-			return true;
-		}
-
-
 		if (sType === "") return false;
 		
 		var clv;
+		
+		if (Place == 269) {
+			if (sType == "grangerpool") {
+				WaitHereOnly(6);
+				md = WritePlaceHeader();
+				this.showPerson((this.checkFlag(42) ? "!" : "") + "granger-pool.jpg");
+				addPlaceTitle(md, "Swimming with Mrs. Granger");
+				if (this.checkFlag(42)) {
+					md.write(
+						'<p>Mrs. Granger arrives and changes into her bikini, and you swim for a while with her. At the end when she get out of the pool, you see her bikini has slipped off somehow, but from her smile you think it less an accident and more deliberate!</p>'
+					);
+					this.setFlag(42, false);
+				} else {
+					md.write(
+						'<p>Mrs. Granger arrives and changes into her bikini, and looks at you smiling seductively, as she always does.</p>'
+					);
+					this.setFlag(42);				
+				}
+				if (!isDay()) md.write("<p>Mrs. Granger suggests \"Hun, it is getting late, what about if I get a room for the night. We can have dinner in the restaurant and then...\" It is clear what she means for later.</p>");
+				
+				startQuestions();
+				if (this.dress != "Leather") addLinkToPlaceC(md, 'it is fairly private here...', Place, 'type=grangerpoolsex');
+				if (!isDay()) addLinkToPlaceC(md, '"Sure let\'s make a night of it"', Place, 'type=grangerhotelsex');
+				addLinkToPlaceC(md, 'say goodbye to Mrs. Granger', Place);
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType == "grangerpoolsex") {
+				md = WritePlaceHeader();
+				this.showPerson("granger-pool-sex.jpg");
+				addPlaceTitle(md, "More Than Swimming With Mrs. Granger");
+				if (this.checkFlag(42)) {
+					md.write(
+						'<p>You accept her implied seduction, and she removes the rest of her bikini ready for you to take her!</p>'
+					);
+				} else {
+					md.write(
+						'<p>You accept her implied seduction, and as she is not wearing her bikini she is ready for you to take her!</p>'
+					);
+				}
+				startQuestions();
+				addLinkToPlaceC(md, 'later...say goodbye to Mrs. Granger', Place);
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType == "grangerhotelsex") {
+				md = WritePlaceHeader();
+				if (perYou.isMaleSex()) this.showPersonRandomRorX("!hotelroomb");
+				else this.showPersonRandom("!hotelroomg");
+				addPlaceTitle(md, "Hotel Room With Mrs. Granger");
+				md.write('<p>Mrs. Granger leaves to book the room for the night and returns a little while later and she says ');
+				if (isCharmedBy("Bambi")) md.write('the cute girl said the room was free for you. She smiles but does not comment on anything between you andBambi.');
+				else md.write('the room is ready.');
+				md.write(
+					'</p><p>You get changed and have a nice dinner with Mrs. Granger! Later you head up to the room for the night, but of course Mrs. Granger suggests more than just sleeping!</p>'
+				);
+				startQuestions();
+				addOptionLink(md, 'in the morning kiss goodbye to Mrs. Granger', "WaitforForDayNight('',124)");
+				WritePlaceFooter(md);
+				return true;
+			}			
+		}
 		
 		if (Place == 161) {
 			if (sType == "bondageplay") {
@@ -844,7 +903,7 @@ function initialiseMrsGranger()
 					'<p>Once again the magic courses through her, pulsing within her body, causing the heat to grow, stronger and stronger. ' +
 					'She can\'t help but let her gaze fasten upon you, her lips suddenly dry, beckoning her to give them a slow, nervous lick across their expanse.</p>' +
 					'<p>She draws a deep, staggering breath, teeth lightly biting into her lower lip, before releasing it in a slow, needy moan, her voice trembling with hunger.</p>' +
-					'<p>Whthout your asking she start to remove her top...</p>'
+					'<p>Without your asking she start to remove her top...</p>'
 				);
 				startQuestions();
 				if (clv != 1) addOptionLink(md, "leave the house and Mrs. Granger as she gets used to the spell?", 'LeaveMinMrsGranger(false)');
@@ -932,7 +991,7 @@ function initialiseMrsGranger()
 				} else this.showPerson("!grangerfamily2.jpg");
 				addPlaceTitle(md, "Playing with the Granger Family");
 				md.write(
-					'<p>After all you have been through for and with Kate and Mrs. Granger, it is time to enjoy the fruits of your efforts and the both of them! Time for yout hot school friend and her equally hot mother to thank you properly with their bodies.</p>'
+					'<p>After all you have been through for and with Kate and Mrs. Granger, it is time to enjoy the fruits of your efforts and the both of them! Time for your hot school friend and her equally hot mother to thank you properly with their bodies.</p>'
 				);
 				startQuestions();
 				addLinkToPlaceC(md, "talk more to them", 177);
@@ -959,7 +1018,7 @@ function initialiseMrsGranger()
 					);
 					if (perKate.isCharmedBy("Davy")) {
 						md.write(
-							'<p>You can see her reluctance to do anything with Kate around, especially as you have not dealt with Davy and the uncertaintly there. Maybe you should just talk more to her.</p>'
+							'<p>You can see her reluctance to do anything with Kate around, especially as you have not dealt with Davy and the uncertainty there. Maybe you should just talk more to her.</p>'
 						);
 					}
 				} else md.write('<p>Mrs. Granger makes herself comfortable for you. &quot;What are you waiting for, dear?&quot; she asks. Her invitation is clear, or would you prefer to just talk more to her.</p>');
@@ -1050,8 +1109,8 @@ function initialiseMrsGranger()
 				addPlaceTitle(md, this.getPersonName());
 
 				md.write(
-					'<p>After disrobing upon after following her into the bedroom, you catch sight of her, already nude and happy to see you have clearly come here for pleasure rather than business. You take out your strap-on and start to put it on. Mrs. Granger comments, "I am more used to wearning one of those, but why not, if you want Hon I want it.". She kneels down and starts to lick it as if it were a real cock, both to arouse you and lubricate it. She then bends over and presents her large juicy ass and asks "Put it in my ass Hon". You are happy to oblige!</p>' +
-					'<p>Some time later after a vigourous ass-fuck and mutual orgasms she sighs, "Thank you Hon"</p>'
+					'<p>After disrobing upon after following her into the bedroom, you catch sight of her, already nude and happy to see you have clearly come here for pleasure rather than business. You take out your strap-on and start to put it on. Mrs. Granger comments, "I am more used to wearing one of those, but why not, if you want Hon I want it.". She kneels down and starts to lick it as if it were a real cock, both to arouse you and lubricate it. She then bends over and presents her large juicy ass and asks "Put it in my ass Hon". You are happy to oblige!</p>' +
+					'<p>Some time later after a vigorous ass-fuck and mutual orgasms she sighs, "Thank you Hon"</p>'
 				);
 
 				// Questions
@@ -1085,7 +1144,7 @@ function initialiseMrsGranger()
 				} else {
 					md.write(
 						'<p>You have barely finished giving the order as Mrs Granger already wordlessly throws you on a nearby couch and begins to take off your clothes, well, more like tearing them off.</p>' +
-						'<p>You have to restrain her enthusiasm a little out off fear that you are left without anything to wear, and while she does slow down, her lack of patience is obvious. Your last remaining clothes are hastely pushed aside, and as your underwear finally flies into an undisclosed corner of the room, her lips are already firmly placed on your folds and her tongue slowly drags along their entire length.</p>' +
+						'<p>You have to restrain her enthusiasm a little out off fear that you are left without anything to wear, and while she does slow down, her lack of patience is obvious. Your last remaining clothes are hastily pushed aside, and as your underwear finally flies into an undisclosed corner of the room, her lips are already firmly placed on your folds and her tongue slowly drags along their entire length.</p>' +
 						'<p>You exhale a soft gasp as she flicks it over your clit and  allow your body to lie back, arms spread out behind you to let her tend to your needs.</p>' +
 						'<p>Mrs Granger spreads your legs wide and takes in your scent. You enjoy the sensation of her fingers parting your folds, and your breath quickens as she begins to tickle your clit with her tongue. You close your eyes as the first waves of pleasure rush through your body and shiver blissfully as her thumbs gently massage your sensitive petals two fingers push into your warm canal to massage your inner walls, causing you to dig your own fingers into the pillows beneath.</p>' +
 						'<p>In the following minutes, she watches every single of your reactions with delight, and you feel her fingers trailing over your legs and stomach to send pleasant shudders through your body, frequently tending to your sex while the motions of her tongue on your sensitive areas lure one lewd moan after another from your lips.</p>' +
@@ -1108,7 +1167,7 @@ function initialiseMrsGranger()
 				addPlaceTitle(md, this.getPersonName());
 
 				md.write(
-					'<p>After disrobing upon after following her into the bedroom, you catch sight of her, already nude and happy to see you have clearly come here for pleasure rather than business. You sit on her bed and gesture to her breasts and then your cock. She happily sequuzes her breasts together before leaning in to lick your cock to full hardness. When you are she slips you cock between her large tits and you proceed to fuck your cock between them as she holds them help you stay in place and feel the presssure. In fairly quick order you speed up and then unload your cum over her breasts and some on her face as well!</p>' +
+					'<p>After disrobing upon after following her into the bedroom, you catch sight of her, already nude and happy to see you have clearly come here for pleasure rather than business. You sit on her bed and gesture to her breasts and then your cock. She happily squeezes her breasts together before leaning in to lick your cock to full hardness. When you are she slips you cock between her large tits and you proceed to fuck your cock between them as she holds them help you stay in place and feel the presssure. In fairly quick order you speed up and then unload your cum over her breasts and some on her face as well!</p>' +
 					'<p>"Thank you Hon" is all she says, the first words either of you have spoken during the entire exchange.</p>'
 				);
 
@@ -1118,8 +1177,231 @@ function initialiseMrsGranger()
 				addLinkToPlace(md, "exit the house", 43);
 				WritePlaceFooter(md);
 				return true;				
-			} 			
+			}
+			
+			if (sType == "partyright") {
+				md = WritePlaceHeader(true);
+				
+				addPlaceTitle(md, "Right Answer", '', 0, true);
 
+				AddCash(5);
+				this.extra[1] = 10;
+
+				if (this.checkFlag(33)) {
+					// Party
+					md.write(
+						'<table class="table-main"><tr><td style="width:70%">' +
+						'<p>Mrs. Granger is overjoyed with the help that you gave her. <p>&quot;How did you figure it out?&quot; she asks. &quot;The party ' +
+						'will consist of 2 little girls and a boy, their father and mother, and their father\'s father and mother. Now I ' +
+						'can have a party with my family. Here, let me give you ' + sCurrency + '5 for your help.&quot;</p>' +
+						'<p>You thank the lady for the money and slip the cash ' +
+						'into your wallet. It might not be much but you never know when it will come in handy.</p>' +
+						'<p>&quot;It\'s such a pleasure to have you visit ' + perYou.getPersonName() + ',&quot; Mrs. Granger says, smiling in gratitude.</p>' +
+						'<p>She moves to sit down, but seems to have another idea, "One last question, what sort of hostess do you think I will make at the party?"</p>'
+					);
+					startQuestions("You answer");
+					addLinkToPlaceC(md, '"An elegant hostess"', 177, "", "She smiles at your compliment and sits down to talk more with you", "Mrs. Granger");
+					addLinkToPlaceC(md, '"A beautiful hostess"', 177, "", "She smiles at your compliment and sits down to talk more with you", "Mrs. Granger");
+					addLinkToPlaceC(md, '"A sexy hostess"', 177, "", "She blushes, &quot;You should not let Kate hear you say that, Hon&quot; and leans in and gives you a kiss on your cheek. You notice she slipped an extra " + sCurrency + "5 in your pocket as she did.", "Mrs. Granger", "setPersonFlag('MrsGranger',2);AddCash(5);");
+				} else {
+					// Pantie
+					md.write(
+						'<table class="table-main"><tr><td style="width:70%">' +
+						'<p>Mrs. Granger is overjoyed with the help that you gave her. <p>&quot;That makes sense, ' +
+						'at the worst case I take out a white pair then a pink pair. The next pair will match one of the previous picks&quot; she says.' +
+						'"Here, let me give you ' + sCurrency + '5 as a reward.&quot;</p>' +
+						'<p>You thank the lady for the money and slip the cash into your wallet. It might not be much but you never know when it will come in handy.</p>' +
+						'<p>&quot;It\'s such a pleasure to have you visit ' + perYou.getPersonName() + ',&quot; Mrs. Granger says, "Fortunately I do not <i>have</i> to work today".</p>' +
+						'<p>She moves to sit down, and a wicked smile forms on her face, "One last question, what colour am I wearing today?"</p>'
+					);
+					startQuestions("You answer");
+					addLinkToPlaceC(md, '"White"', 177, "", "She smiles &quot;Not today&quot; and sits down to talk more with you", "Mrs. Granger");
+					addLinkToPlaceC(md, '"Pink"', 177, "", "She smiles &quot;Not today&quot; and sits down to talk more with you", "Mrs. Granger");
+					addLinkToPlaceC(md, '"You are not wearing any"', 177, "", "She smiles and leans over and whispers in your ear, &quot;As if I would do that&quot; but does not correct your answer. She gives you a kiss on your cheek and returns to where she was sitting. You notice she slipped an extra " + sCurrency + "5 in your pocket as she did.", "Mrs. Granger", "setPersonFlag('MrsGranger', 2);AddCash(5);");
+				}
+
+				addLinkToPlace(md, "decline to answer and talk to Mrs. Granger some more", 177);
+				AddPeopleColumnMed(md);
+				this.showPerson("granger4b.jpg");
+				WritePlaceFooter(md);
+				return true;
+			}
+
+			if (sType == "partywrong") {
+				md = WritePlaceHeader(true);
+				this.extra[1] = 9;
+
+				addPlaceTitle(md, "Wrong Answer", '', 0, true);
+
+				md.write(
+					'<table class="table-main"><tr><td style="width:70%">' +
+					'Mrs. Granger is disappointed..<p>&quot;Kate told me how clever you are!&quot; she sighs. &quot;Well maybe you are clever ' +
+					'compared to the other youth of today but you are of no help to me.&quot;</p>' +
+					'<p>Embarrassed about your mistake, you mumble apologies. It is a shame that you got the wrong answer. After a ' +
+					'moment of discomfort Mrs. Granger smiles her forgiveness.</p>'
+				);
+
+				startQuestions();
+				addLinkToPlace(md, "talk to her some more", 177);
+				AddPeopleColumnMed(md);
+				this.showPerson("granger4b.jpg");
+				WritePlaceFooter(md);
+				return true;					
+			} 
+			if (sType == "partypuzzle") {
+				md = WritePlaceHeader(true);
+
+				if (this.extra[1] > 6) return dispPlace(177);
+
+				addPlaceTitle(md, this.checkFlag(33) ? "Party Puzzle" : "Panty Puzzle", '', 0, true);
+				
+				if (this.checkFlag(33)) {
+					// Party
+					md.write(
+						'<table class="table-main" style="vertical-align:top"><tr><td>' +
+						'I want to invite a family to a party.<br><br>' +
+						'The family has 1 grandfather, 1 grandmother, 2 fathers, 2 mothers, 4 children, 3 grandchildren, ' +
+						'1 brother, 2 sisters, 2 sons, 2 daughters, 1 father-in-law, 1 ' +
+						'mother-in-law, and 1 daughter-in-law.<br><br>A total of 23 ' +
+						'people, you might think, but that\'s not correct. Oh, how ' +
+						'many people are there?' +
+						'<form method="POST" name="Puzzle">' +
+							'<p style="text-align:center">Answer: <select name="answer" size="1">' +
+								'<option selected value="1">1</option>' +
+								'<option value="2">2</option>' +
+								'<option value="3">3</option>' +
+								'<option value="4">4</option>' +
+								'<option value="5">5</option>' +
+								'<option value="6">6</option>' +
+								'<option value="7">7</option>' +
+								'<option value="8">8</option>' +
+								'<option value="9">9</option>' +
+								'<option value="10">10</option>' +
+								'<option value="11">11</option>' +
+								'<option value="12">12</option>' +
+								'<option value="13">13</option>' +
+								'<option value="14">14</option>' +
+								'<option value="15">15</option>' +
+								'<option value="16">16</option>' +
+								'<option value="17">17</option>' +
+								'<option value="18">18</option>' +
+								'<option value="19">19</option>' +
+								'<option value="20">20</option>' +
+								'<option value="21">21</option>' +
+								'<option value="22">22</option>' +
+								'<option value="23">23</option>' +
+							'</select> ');
+				} else {
+					// Panty
+					md.write(
+						'<table class="table-main" style="vertical-align:top"><tr><td>' +
+						'I am curious about getting dressed for work. I do like my short skirts and my job can be quite messy. So I <i>have</i> to wear panties to work and I usually take a spare pair in case of problems on a dig.<br><br>' +
+						'My drawer contains 10 pairs of white panties and 10 pairs of pink panties and I usually get dressed when it is still a bit dark. I take one pair at a time and check their colour after I take them out of the drawer. How many pairs do I need to take out to be guaranteed I have two pairs the same colour?' +
+						'<form method="POST" name="Puzzle">' +
+							'<p style="text-align:center">Answer: <select name="answer" size="1">' +
+								'<option selected value="1">1</option>' +
+								'<option value="2">2</option>' +
+								'<option value="3">3</option>' +
+								'<option value="4">4</option>' +
+								'<option value="5">5</option>' +
+								'<option value="6">6</option>' +
+								'<option value="7">7</option>' +
+								'<option value="8">8</option>' +
+								'<option value="9">9</option>' +
+								'<option value="10">10</option>' +
+								'<option value="11">11</option>' +
+								'<option value="12">12</option>' +
+								'<option value="13">13</option>' +
+								'<option value="14">14</option>' +
+								'<option value="15">15</option>' +
+								'<option value="16">16</option>' +
+								'<option value="17">17</option>' +
+								'<option value="18">18</option>' +
+								'<option value="19">19</option>' +
+								'<option value="20">20</option>' +
+							'</select> ');
+				}
+
+				md.write('<input type="button" name="button" value="Go" onClick="PuzzleParty(document)"></p></form>');
+
+				AddPeopleColumnMed(md);
+				this.showPerson("granger4a.jpg", "height:max");
+				WritePlaceFooter(md);
+				return true;
+			}			
+
+		}
+
+		if (Place == 26 && sType.indexOf("mgstones") != -1) {
+			// Meet Mrs Granger at the Wild Ranges
+			md = WritePlaceHeader();
+
+			var herName = this.getPersonName();
+			var clv = this.getCharmedLevel();
+			var sDH = clv == 1 ? "Dear" : "Hon";
+			
+			if (sType == "mgstones") {
+				//this.place = 177; // Send her home
+				this.other = 2.2;
+				this.showPerson(clv == 1 ? "!grangerstones1b.jpg" : "!grangerstones1a.jpg");
+				addPlaceTitle(md, herName + " Studying the Wild Ranges");
+
+				md.write('<p>You approach Mrs. Granger and you see she had just been starting to pack away some of her archaeology equipment when you arrived. ');
+				if (clv == 1) md.write('She stands to greet you and you see she is dresses quite..simply. She happily says,');
+				else md.write('As she sees you she stands and poses for you seductively. She eagerly says,');
+				md.write(
+					'</p><p>"' + sDH + ', it&apos;s wonderful to see you, I was just about finished here, maybe we can go back to my place and I can ' + (clv == 1 ? 'help you' : 'make you real happy') + '."</p>' +
+					'<p>You ask about her findings and if she has found anything more about this place that has been the center of magic for the area. She looks a bit disappointed when you ignore her offer,</p>' +
+					'<p>"This is an interesting site ' + sDH + ', but I need to do some computer analysis of the resistivity scans, it won&apos;t take long but I need access to the University computers from my home."</p>'
+				);
+				if (clv == 1) {
+					md.write(
+						'<p>Mrs. Granger looks around from side to side in a theatrical way,</p>' +
+						'<p>"It is very private here, and there is no chance Kate might interrupt us, no matter what we do?"</p>'
+					);
+				} else md.write('<p>Maybe you can gruntle your slightly disgruntled servant, or you can just meet her back at her home later.</p>');
+				startQuestions();
+				if (clv == 1) addLinkToPlaceC(md, '"What did you have on your mind?"', Place, 'type=mgstonesmind');
+				else addLinkToPlaceO(md, "reward Mrs. Granger", Place, 'type=mgstonesreward');
+			}
+			if (sType == "mgstonesbj") {
+				if (isExplicit()) this.showPersonX(perYou.isMaleSex() ? "!grangerstones3b.jpg" : "!grangerstones3g.jpg");
+				else this.showPerson("!grangerstones3.jpg");
+				addPlaceTitle(md, herName + " Studying the Wild Ranges");
+
+				if (perYou.isMaleSex()) md.write('<p>You agree and she eagerly unzips your trousers and you quickly realise she is very, very skilled at this. You try to enjoy her skills but she is so very skilled and eager that you quickly fill her mouth with your cum. She swallows with no reservations and some pleasure.</p>');
+				else md.write('<p>You agree and she eagerly unzips your pants and pulls them down and pushes your panties aside and you quickly realise she is not inexperiences at this. You are surprised by her skills and she is very eager. Her tongue and fingers quickly make you orgasm and she happily licks up all your juices</p>');
+				md.write('<p>"Thanks ' + sDH + ', I should get back and run that analysis, if that is ok with you?"</p>');
+				startQuestions();
+			} 
+			if (sType == "mgstonesreward") {
+				this.showPerson("!grangerstones2a.jpg");
+				addPlaceTitle(md, herName + " Studying the Wild Ranges");
+
+				md.write(
+					'<p>You tell Mrs. Granger that you are pleased with her study here and that she deserves a reward. She looks eagerly at you, and you tell her to pleasure herself for both of your enjoyment.</p>' +
+					'<p>She looks a little surprised, clearly expecting a more personal touch from you. Still, she eagerly touches herself and brings herself to a fast, intense orgasm.</p>' +
+					'<p>"Thanks Hon, you must be feeling hot, why don&apos;t you let me take care of that?"</p>' +
+					'<p>She licks her lips while kneeling in front of you.</p>'
+				);
+				startQuestions();
+				addLinkToPlaceO(md, "let her pleasure you", Place, 'type=mgstonesbj');
+			}
+			if (sType == "mgstonesmind") {
+				this.showPerson("!grangerstones2b.jpg");
+				addPlaceTitle(md, herName + " Studying the Wild Ranges");
+
+				md.write(
+					'<p>You ask what she is suggesting, but the way she is standing and touching herself it seems clear at least partly what she wants,</p>' +
+					'"I know you and Kate and I do not get involved in her relationships...it is just dear that...you do find me attractive and as long as we never tell anyone else, and <i>never</i> tell Kate. We can..play here."</p>'
+				);
+				startQuestions();
+				addLinkToPlaceC(md, '"I won\'t tell Kate"', Place, 'type=mgstonesbj');
+			}
+			// Common choice
+			addLinkToPlaceO(md, "let her return home?", 26, '', '', '', "movePerson('MrsGranger',177)");
+			WritePlaceFooter(md);
+			return true;
 		}
 
 		if (Place == 278 && sType == "mariefrisky") {
@@ -1308,8 +1590,8 @@ function initialiseMrsGranger()
 			endAlternatives();
 		} else if (this.extra[1] == 2) addQuestionC(md, 'ask Mrs. Granger about her work in archaeology', "MrsGranger", 242);
 		else if (this.extra[1] == 6) {
-			if (isPuzzles()) addLinkToPlace(md, 'try the puzzle', 39);
-			else addLinkToPlace(md, 'try the puzzle', 39, 'type=right', 'You discuss her problem and easily work out a solution for her');
+			if (isPuzzles()) addLinkToPlace(md, 'try the puzzle', Place, 'type=partypuzzle');
+			else addLinkToPlace(md, 'try the puzzle', Place, 'type=partyright', 'You discuss her problem and easily work out a solution for her');
 		}
 		if (checkPersonFlag("Vampyre", 26) && !this.checkFlag(19)) addQuestionC(md, 'ask Mrs. Granger what she knows about vampires', "MrsGranger", 333);
 		
@@ -1336,8 +1618,8 @@ function initialiseMrsGranger()
 			// General conversation points for Mrs Granger
 			if  (this.extra[1] == 15) addQuestionC(md, 'ask if she has ever found anything magical', "MrsGranger", 2415);
 
-			if  (this.other == 1) addQuestionC(md, clv == 1 ? 'ask her if she has ever explored the Wild Ranges' : 'ask her to explore the wild ranges', "MrsGranger", 231);
-			else if (Math.floor(this.other) == 2 && this.other > 2) addQuestionC(md, 'ask what she found in the wild ranges', "MrsGranger", 232);
+			if  (this.other == 1) addQuestionC(md, clv == 1 ? 'ask her if she has ever explored the Wild Ranges' : 'ask her to explore the Wild Ranges', "MrsGranger", 231);
+			else if (Math.floor(this.other) == 2 && this.other > 2) addQuestionC(md, 'ask what she found in the Wild Ranges', "MrsGranger", 232);
 			else if (this.other == 3) addQuestionC(md, 'ask if she found anything else', "MrsGranger", 233);
 			else if (whereItem(29) == 240 && this.other == 4 && !checkPlaceFlag("Museum", 8) && perAbby.getQuestDragonGem() > 0) {
 				//Ready to be sent to the Museum && the museum is NOT CLOSED and have started the Dragon Vase Path
@@ -1352,7 +1634,7 @@ function initialiseMrsGranger()
 				this.addSleepLink(md, "ask Mrs Granger to spend the night", "",
 					"<p style='position:absolute;top:3%;left:45%;width:55%;cursor:pointer;margin-top:-12px;font-size:x-large'><b>Sleeping over with Mrs. Granger</b></p>" +
 					'<p style="position:absolute;left:45%;top:5%;cursor:pointer;font-size:1.1em;width:55%">You ask Mrs. Granger if they have a spare room and she immediately invites you,<br>' +
-					'"Why not sleep with...spend the night here?", and she shows you to the spare bedroom. A little later you step out and see Mrs. Granger exercising in the lounge-room, completely naked. As you look appreciately, she looks back and smiles,<br>' +
+					'"Why not sleep with...spend the night here?", and she shows you to the spare bedroom. A little later you step out and see Mrs. Granger exercising in the lounge-room, completely naked. As you look appreciatively, she looks back and smiles,<br>' +
 					'"I love working up a sweat! Could you help me to get off...I mean up"<br><br><br><br><br><br>' +
 					'You find it a little harder to get to sleep after this encounter!',
 					'granger-bed.jpg'
@@ -1394,6 +1676,24 @@ function initialiseMrsGranger()
 			// Granger House
 			if (Place == 177 && this.place == 177) {
 				CastCharmSpell("MrsGranger", Place, 1, 'type=charmmrsgranger1', '', 'type=recharm1');
+				return "handled";
+			}
+		}
+		
+		// Casting the transform spell
+		else if (no == 18 && cmd == 2) {
+
+			// At home and charmed
+			if (Place == 177 && this.isHere() && (sType == "comfortable" || sType === "")) {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				//ClearComments();
+				dispPlace(Place, 'type=mrsgrangertransformage' + this.getDressBase().toLowerCase().split("/").join(""));
 				return "handled";
 			}
 		}

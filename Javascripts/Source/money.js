@@ -5,16 +5,17 @@ var nMoney;			// Players money
 
 function AddCash(no) { perYou.addCashOnHand(no); }
 
+
 // Use the ATM
 
 function useATM()
 {
-	var md = WritePlaceHeader(false, "td-left-small");
+	var md = WritePlaceHeaderNIP(false, "td-left-small");
 
 	// General Description
-	addPlaceTitle(md, "Checking the ATM", "atm.jpg", 0, false, '', true);
+	addPlaceTitle(md, "Checking the ATM", "atm.jpg", 0, false, '', true, '', true, true);
 
-	var accountMax = perYou.checkFlag(9) ? -1 : (Math.floor(nTime / 288) > 30 ? -1 : 200);
+	var accountMax = perYou.getAccountMax();
 	var accountBalance = perYou.getBankBalance() - 1;
 	
 	var nCashOnHand = perYou.getCashOnHand();
@@ -66,7 +67,7 @@ function useATM()
 	md.write('9. <a class="black" href="javascript:dispPlace(' + Place + ')">END TRANSACTION</a><br><br>');
 	
 	if (accountMax > 0) md.write('<b>* - unlimited account balance begins after 1 month of activity.</b><br>');
-	md.write('<p style="text-align:center;margin-bottom:-6px;font-size:small">PRODUCT OF GLENVALE FINANCIAL SOLUTIONS</div><br>');
+	md.write('<p style="text-align:center;margin-bottom:-6px;font-size:small">PRODUCT OF ' + gameState.sTown.toUpperCase() + ' FINANCIAL SOLUTIONS</div><br>');
 
-	WritePlaceFooter(md, '', true, true);
+	WritePlaceFooter(md);
 }

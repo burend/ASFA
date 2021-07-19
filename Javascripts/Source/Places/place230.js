@@ -5,11 +5,9 @@ function ShowPlace230()
 	var md = WritePlaceHeader(false, "td-left-small");
 
 	var perJohn = findPerson("JohnAdams");
-	if (perJohn.place == 231) perJohn.place = 230;
 	var nmJ = perJohn.getPersonName(false);
 	var clvJ = perJohn.getCharmedLevel();
 	var perTess = findPerson("Tess");
-	if (perTess.place == 231) perTess.place = 230;
 	
 	if (perJohn.checkFlag(9) && !perJohn.checkFlag(10)) return gotoPlaceDelayed(229, '', 'Better not Risk going back until John has calmed down or you found a way to deal with him for good.');
 
@@ -42,7 +40,7 @@ function ShowPlace230()
 		if (perJohn.isCharmedBy()) // CHARMED
 		{
 			if (clvJ == 2) {
-				md.write('<p>' + nmJ + ' welcomes you with a passionate french kiss and a hug. ' + capitalizeFirstLetter(perJohn.getHeShe()) + ' squeezes your arse just the way ' + perJohn.getHeShe() + ' knows you like it and whispers, "It is so good to have you here, Mistress."</p>');
+				md.write('<p>' + nmJ + ' welcomes you with a passionate french kiss and a hug. ' + capitalize(perJohn.getHeShe()) + ' squeezes your arse just the way ' + perJohn.getHeShe() + ' knows you like it and whispers, "It is so good to have you here, Mistress."</p>');
 			} else {
 				md.write('<p>' + nmJ + ' eagerly welcomes you in, reaffirming once again that ' + perJohn.getHisHer() + ' home is yours and that ' + perJohn.getHeShe() + ' would do anything to please you.</p>');
 			}
@@ -81,50 +79,7 @@ function ShowPlace230()
 
 	// ************** DIALOGUE OPTIONS  ****************
 	startQuestions();
-
-	if (perJohn.place === 230 && perTess.other >= 25) {
-		if (!perJohn.isCharmedBy()) // ONLY do these dialogue options if John is NOT CHARMED
-		{
-			if (perJohn.other === 0)	{
-				addQuestionC(md, '"You don\'t happen to have any <i>more</i> magical items, do you John?"', "JohnAdams", 10400);
-				addQuestionC(md, '"Like the way Tess has been dressing lately, John?"', "JohnAdams", 10405);
-			}	else if (perJohn.other == 1) {
-				addQuestionC(md, '"May I see the ring, John?"', "JohnAdams", 10401);
-			}	else if (perJohn.other == 2) {
-				addQuestionC(md, '"Tess, get the ring!"', "JohnAdams", 10402);
-			}	else if (perJohn.other == 5) {
-				addQuestionC(md, '"Do you like the way she\'s been dressing lately?"', "JohnAdams", 10405);
-				if (perJohn.checkFlag(11)) addLinkToPlace(md, '"Tess, distract him!"', 229, 'type=exitdistract');
-			}	else if (perJohn.other == 6) {
-				addQuestionC(md, '"You see John, I can make Tess dress anyway I want."', "JohnAdams", 10406);
-			}	else if (perJohn.other == 7) {
-				//  This one is in Tess's Response Bank
-				addQuestionC(md, '"Go put on something <i>nice</i> for your husband, Tess."', "Tess", 10407);
-			}	else if (perJohn.other == 8) {
-				addQuestionC(md, 'threaten - "Back away or I\'ll turn Tess into a prudish nun."', "JohnAdams", 10408);
-			} else if (perJohn.other == 9) {
-				if (perJohn.checkFlag(11)) addLinkToPlace(md, '”The ring will be enough, for now.”', 229, '', '“Fine, take it and leave my house.” John glares at you as you put the ring on your finger, but he makes no further attempt to stop you. “And this better concludes whatever business you have with my wife, too, or I swear the police will get involved.”', '', "setPersonOther('JohnAdams',10)");
-				else addQuestionC(md, '”I want any other magical items you have.”', "JohnAdams", 10409);
-			}
-		}
-
-		/*
-		// Can be charmed or not
-		if (perJohn.other == 9) {
-			addQuestionC(md, '"I want you to find more magic items for me John."', "JohnAdams", 10409);
-		}
-		*/
-	}
 	
-	if (perTess.whereNow() == 230 && !perJohn.isCharmedBy() && perJohn.other > 9) {
-		if (perJohn.checkFlag(10)) {
-			if (!perJohn.isCharmedBy() && !perTess.checkFlag(13)) {
-				addQuestionC(md, '"I think I prefer you in my bedroom, Tess."', "Tess", 10420);
-				if (isShopOpen(2, 1, true)) addQuestionC(md, '"Tess, let\'s meet at the library"', "Tess", 10421);
-			}
-			if (perYourBody.FindItem(4) > 0 && perYou.checkFlag(11) && perYou.canUseExperience()) addOptionLink(md, 'ask Tess for help deciphering the passages in the book', 'spendExperience()');
-		}
-	}	
 
 	if ((perJohn.isCharmedBy() || perJohn.place != 230) && (perTess.whereNow() == 230 || perJohn.place == 230)) {
 		// One of them is here, and John is charmed or left
@@ -138,13 +93,8 @@ function ShowPlace230()
 				addQuestionC(md, '"Tess, are there any other magical items your husband mentioned?"', "Tess", 10301);
 			}
 		}
-		if (perTess.whereNow() == 230) {
-			addQuestionC(md, '"I think I prefer you in my bedroom, Tess."', "Tess", 10420);
-			if (isShopOpen(2, 1, true) && perTess.place == 230) addQuestionC(md, '"Tess, let\'s meet at the library"', "Tess", 10421);
-			if (perYourBody.FindItem(4) > 0 && perYou.checkFlag(11) && perYou.canUseExperience()) addOptionLink(md, 'ask Tess for help deciphering the passages in the book', 'spendExperience()');
-		}
 
-		if (perJohn.place === 230) addLinkToPlace(md, 'take ' + nmJ + ' into the bedroom', 231, 'type=johnxxx');
+		if (perJohn.place === 230 && clvJ == 2) addLinkToPlace(md, 'take ' + nmJ + ' into the bedroom', 231, 'type=johnxxx');
 		if (perTess.whereNow() == 230) {
 			addLinkToPlace(md, 'take Tess into the bedroom', 231, 'type=tessxxx');
 			if (perJohn.place === 230) addLinkToPlace(md, 'take ' + nmJ + ' and Tess into the bedroom', 231, 'type=johntessxxx');
@@ -184,7 +134,7 @@ function ShowPlace230()
 
 	if (bTwoCols) // Tess Adams is HERE
 	{
-		AddRightColumnMed(md);
+		AddPeopleColumnMed(md);
 		if (perTess.other == 27) perTess.showPerson("tess14a.jpg", "95%", "right");
 		else if (perTess.other == 28) perTess.showPerson("tess15.jpg", "95%", "right");
 		else perTess.showPerson("tess_driving.jpg", "95%", "right");

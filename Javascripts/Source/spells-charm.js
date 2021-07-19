@@ -56,8 +56,9 @@ function CastCharmSpell(ps, sPlace, nLike, params, txt, refine, noex)
 			if (refine !== undefined && refine !== '' && perYou.checkFlag(26)) {			
 				if (pPerson.hoursCharmed() < 12) addComments('<table><tr><td width="80%;margin-right:2em"><p>You have already charmed ' + pPerson.getPersonNameShort() + ' but you feel you could alter the nature of the charm, for a price...</p><p>Trouble is you have only recently charmed ' + pPerson.getPersonNameShort() + ', you should leave them for a time for the effects of the spell to settle down. You are not sure how long, but dawn and midnight are important occult times, so you will leave it for a day and try again later.</p>');
 				else {
+					if (sPlace === "") sPlace = Place;
 					setCommentsNoClick(
-						'<div style="margin-top:1em;margin-bottom:1em;margin-left:4em;margin-right:2em;cursor:default;">' +
+						'<div style="color:black;margin-top:1em;margin-bottom:1em;margin-left:4em;margin-right:2em;cursor:default;">' +
 						'<table><tr><td width="80%;margin-right:2em"><p>You have already charmed ' + pPerson.getPersonNameShort() + ' but you feel you could alter the nature of the charm, for a price...</p>'
 					);	
 					addOptionLink("comments", 'No, they are fine as they are', "dispPlace(" + sPlace + ",'', '" + pPerson.addPersonFace(true) + "The cost is not worth it, you leave " + pPerson.getPersonNameShort() + " unchanged.')");
@@ -76,6 +77,12 @@ function CastCharmSpell(ps, sPlace, nLike, params, txt, refine, noex)
 			updateRightBar();
 			AddMana(cost * -1);
 			pPerson.charmThem(nLike);
+			if (sPlace === "") {
+				if (txt !== '' && txt !== undefined) {
+					setCommentsNoClick(txt);
+					return true;
+				} else sPlace = Place;
+			}
 			if (txt !== '' && txt !== undefined) addComments(txt);
 			else sComment = '';
 			dispPlace(sPlace, params === undefined ? '' : params);

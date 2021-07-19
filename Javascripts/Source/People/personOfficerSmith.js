@@ -88,6 +88,29 @@ function initialiseOfficerSmith()
 		// Popup evets for Bambi
 	per.showEventPopup = function()
 	{
+		if (sType == "beckytransformbodyhaley") {
+			CastTransform(1);
+			this.dress = "Alanah";	
+			showPopupWindow("Transformed",
+				this.addPersonString("polg8.jpg", "height:max%", "right") +
+				'Officer Smith\'s body starts to subtly change, filling out and becoming rounder, and her breast growing. Her face completely changes as if a different person is standing in fromt of you.<p>' +
+				'<p>You tentatively as if she is alright and she replies and she is definitely still the same person she was before',
+				'dispPlace()'
+			);
+			return true;
+		}	
+		if (sType == "beckytransformbodyalanah") {
+			CastTransform(1);
+			this.dress = "Haley";
+			showPopupWindow("Transformed",
+				this.addPersonString("polg8.jpg", "height:max%", "right") +
+				'Officer Smith\'s body starts to subtly change, her breasts shrinking, and her figure slimming down. Her face changes as if a different person is standing in fromt of you.<p>' +
+				'<p>You tentatively as if she is alright and she replies and she is definitely still the same person she was before',
+				'dispPlace()'
+			);
+			return true;
+		}
+		
 		if (sType !== "") return false;
 		
 		if (Place == 261 && this.dress === "") {
@@ -131,6 +154,7 @@ function initialiseOfficerSmith()
 			);
 			return true;
 		}
+		
 		return false;
 	};
 
@@ -278,6 +302,24 @@ function initialiseOfficerSmith()
 				}
 			}
 		}
+		
+		// Casting the transform spell
+		else if (no == 18 && cmd == 2) {
+
+			if (this.isHere()) {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her.");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				ClearComments();
+				dispPlace(Place, 'type=beckytransformbody' + this.dress.toLowerCase());
+				return "nofooter";
+			}
+		}
+
 
 		return "";		// do nothing
 	};

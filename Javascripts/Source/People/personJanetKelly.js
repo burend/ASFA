@@ -605,7 +605,7 @@ function initialiseJanetKelly()
 				} else if (clvJ != 2) {
 					// Bimbo/Slave Janet
 					md.write(
-						capitalizeFirstLetter(hJ) + 'Janet is perfectly happy to! Debra looks at you reluctantly, until Janet tells her,</p>' +
+						capitalize(hJ) + 'Janet is perfectly happy to! Debra looks at you reluctantly, until Janet tells her,</p>' +
 						'<p>"You know, you are totally hot, let\'s put on a show for ' + perYou.getPersonName() + '!"</p>' +
 						'<p>This seems to convince Debra and they kiss, every so often looking over at you, but their passion quickly builds, and they concentrate in each other more and more. A little later they are licking each other to mutual orgasms, while calling out for you!</p>'
 					);

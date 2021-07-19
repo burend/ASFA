@@ -13,7 +13,7 @@ var oBaseItems = {
 		startingplace: "You",
 		image: 'phone.jpg',
 		getDescription: function() { return 'It\'s your mobile phone, not particularly high-end but it is adequate for basic apps and making calls. It is not connected to the web, darn it!'; },
-		//pickup: function(per) { per.MaxItems += 1; },		// Does not count as a carried item for encumberance
+		//pickup: function(per) { per.MaxItems += 1; },		// Does not count as a carried item for encumbrance
 		//drop: function(per) { per.MaxItems -= 1; }
 	},
 	"3": {
@@ -47,14 +47,14 @@ var oBaseItems = {
 		startingname: 'Robbins address',
 		name: '',
 		image: 'note.jpg',
-		getDescription: function() { return '<i>Mr. Beasley,<br><br>You are correct about the magic spell. I have used it on some of the people in my neighborhood and they are head over heels in love with me. I am keeping the code in my room at my house for safe keeping and heading out to find more magic artifacts.  Perhaps I\'ll have one of my new <i>friends</i> help me look.<br><br>Thank you,<br>Davy</i>'; }
+		getDescription: function() { return '<i>Mr. Beasley,<br><br>You are correct about the magic spell. I have used it on some of the people in my neighbourhood and they are head over heels in love with me. I am keeping the code in my room at my house for safe keeping and heading out to find more magic artifacts.  Perhaps I\'ll have one of my new <i>friends</i> help me look.<br><br>Thank you,<br>Davy</i>'; }
 	},
 	"8": {
 		startingplace: 0,
 		startingname: 'Envelope',
 		name: '',
 		image: 'envelope.jpg',
-		getDescription: function() { return '<i>Mr. Beasley,<br><br>You are correct about the magic spell. I have used it on some of the people in my neighborhood and they are head over heels in love with me. I am keeping the code in my room at my house for safe keeping and heading out to find more magic artifacts.  Perhaps I\'ll have one of my new <i>friends</i> help me look.<br><br>Thank you,<br>Davy</i>'; }
+		getDescription: function() { return '<i>Mr. Beasley,<br><br>You are correct about the magic spell. I have used it on some of the people in my neighbourhood and they are head over heels in love with me. I am keeping the code in my room at my house for safe keeping and heading out to find more magic artifacts.  Perhaps I\'ll have one of my new <i>friends</i> help me look.<br><br>Thank you,<br>Davy</i>'; }
 	},
 	"9": {
 		startingplace: 0,
@@ -231,10 +231,10 @@ var oBaseItems = {
 			var s = 'A very old blue bottle with a stopper attached.';
 			if (perDavy.getQuestBlueBottle() < 20) {
 				// You haven't used the bottle on Davy yet
-				return s + ' The inside smells fanitly of brimstone.</p>';
+				return s + ' The inside smells faintly of brimstone.</p>';
 			} else {
 				// You HAVE and its full
-				return s + ' The swirling colors inside remind you of the power contained within.</p>';
+				return s + ' The swirling colours inside remind you of the power contained within.</p>';
 			}
 		}
 	},
@@ -279,7 +279,7 @@ var oBaseItems = {
 		pickup: function(per) {
 			if (perYou.getQuestRustyKey() == 900) perYou.setQuestRustyKey(6);  // Resets the Rusty Key path
 		},
-		getDescription: function() { return 'A small magnet. What could you use it for?'; }
+		getDescription: function() { return 'A small magnet with a loop to fix it in place. You could hang it from something if you wanted or had some string to <b>use</b>.'; }
 	},
 	"39": {
 		startingplace: 0,
@@ -293,7 +293,7 @@ var oBaseItems = {
 		startingname: 'Bottle of Wine',
 		name: '',
 		image: 'wine.jpg',
-		getDescription: function() { return 'An Australian vintage shiraz wine. The label says 1903, that was a very good year'; }
+		getDescription: function() { return 'An Australian vintage Shiraz wine. The label says 1903, that was a very good year'; }
 	},
 	"41": {
 		startingplace: 0,
@@ -384,7 +384,7 @@ var oBaseItems = {
 			if (perYou.getHolyWaterUses() > 1) return s + 's.';
 			else return s + '.';
 		}
-	},				// To annoint the relic
+	},				// To anoint the relic
 
 	"50": {	// Salt - Ritual Ingredient
 		startingplace: 0,
@@ -568,7 +568,7 @@ function setItemName(no, nm)
 	if (itm !== undefined) itm.name = nm;
 }
 
-// Simple object for tiems not in someones inventory, but in a location in the game
+// Simple object for items not in someone's inventory, but in a location in the game
 function OutsideItem(itm, plc)
 {
 	this.item = itm;			// item number
@@ -579,6 +579,7 @@ function OutsideItem(itm, plc)
 // no is the number or name of an item
 // returns the first found location of an item
 //   < 0 means it is in your inventory
+//	  0 means the item is not present anywhere
 //   commonly 1000 means a unique item that is no longer in the game, used/destroyed
 // NOTE: does not handle items in the inventory of another person!
 function whereItem(no)
@@ -692,20 +693,20 @@ function createMenu() /* Arguments - 0 number of object, 1 - place where to writ
 	var itm = getBaseItemObj(no);
 	var str = '';
 	if (itm !== undefined) {
-		str = '<img draggable="false" style="float:right;margin-right:10%;max-width:80%;max-height: 80" src="';
+		str = '<img draggable="false" style="float:right;margin-right:5%;max-width:85%;height:5em" src="';
 		if (itm.image.indexOf('Images/') == -1 && itm.image.indexOf('UI/') == -1) str += 'Images/Items/';
-		str += itm.image + '" height="100" alt="' + itm.image + '"/><span style="clear:both"> </span>';
+		str += itm.image + '" alt="' + itm.image + '"/><span style="clear:both"> </span>';
 	}
 	if (gameState.bUseIcons) {
 		var nt = nTheme;
 		var st = ';float:right';
 		for (var i = 1; i < createMenu.arguments.length; i++)	{
 			var a = createMenu.arguments[i];
-			if (a == 1) str += a1 + 1 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'examine.png" width="40px" style="margin-right:2px' + st + '" title="Examine" alt="Examine"></a>';
-			else if (a == 2) str += ' ' + a1 + 2 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'use.png" width="40px" style="margin-right:2px' + st + '" title="' + (itm == 4 ? 'Open' : 'Use') + '" alt="' + (itm == 4 ? 'Open' : 'Use') + '"></a>';
-			else if (a == 3) str += ' ' + a1 + 3 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'give.png" width="40px" style="margin-right:2px' + st + '" title="Give" alt="Give"></a>';
-			else if (a == 4) str += ' ' + a1 + 4 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'pickup.png" width="40px" style="margin-right:2px' + st + '" title="Pick Up" alt="Pick Up"></a>';
-			else if (a == 5) str += ' ' + a1 + 5 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'drop.png" width="40px" style="margin-right:5px' + st + '" title="Drop" alt="Drop"></a>';
+			if (a == 1) str += a1 + 1 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'examine.png" style="max-width:40px;height:3em;margin-right:2px' + st + '" title="Examine" alt="Examine"></a>';
+			else if (a == 2) str += ' ' + a1 + 2 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'use.png" style="max-width:40px;height:3em;margin-right:2px' + st + '" title="' + (itm == 4 ? 'Open' : 'Use') + '" alt="' + (itm == 4 ? 'Open' : 'Use') + '"></a>';
+			else if (a == 3) str += ' ' + a1 + 3 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'give.png" style="max-width:40px;height:3em;margin-right:2px' + st + '" title="Give" alt="Give"></a>';
+			else if (a == 4) str += ' ' + a1 + 4 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'pickup.png" style="max-width:40px;height:3em;margin-right:2px' + st + '" title="Pick Up" alt="Pick Up"></a>';
+			else if (a == 5) str += ' ' + a1 + 5 + a2 + '<img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'drop.png" style="max-width:40px;height:3em;margin-right:5px' + st + '" title="Drop" alt="Drop"></a>';
 			else if (a == 6) str += ' ' + a1 + 6 + a2 + 'Buy</a>';
 		}
 	} else {
@@ -729,7 +730,7 @@ function getItemsHere()
 	var str = "";
 	// Special items shown in a location but not actual items as such
 	var th = '<b>' + (isScreenSmall() ? "Items:" : "Things here:") + '</b><span style="font-size:small">';
-	if ((Place == 436 && sType === "") || (Place == 249 && sType == "egypt")) {
+	if ((Place == 436 && sType === "") || (Place == 242 && sType == "egypt")) {
 		str = th + '<div style="clear:both;text-align:center;"><b>Painting</b><br><img draggable="false" style="float:right;margin-right:10%;max-width:80%;max-height: 80" src="Images/amyancestor1.jpg" height="100" alt="Painting"/><br><a href="javascript:examinePainting()">Examine</a></div>';
 		found++;
 	} else if (Place == 345 && checkPersonFlag("Jessica", 26)) {
@@ -758,11 +759,12 @@ function getItemsHere()
 // Show the items present in a location
 function ShowItems()
 {
+	if (gameState.bNoItems) return;
 	var s = getItemsHere();
 	if (s === "") return;
 	var md = mdCache;
-	AddRightColumn(md);
-	md.write('<div id="itemshere" style="text-align:center">' + s + '</div>');
+	//AddRightColumn(md);
+	md.write('<div id="itemshere" style="float:right;width:25%;text-align:center">' + s + '</div>');
 }
 
 function reShowItems()
@@ -796,14 +798,14 @@ function getItemLinks(no, nt)
 	if (perYou.getInventoryItem(no) >= 10 && perYou.getInventoryItem(no) <= 20) {
 		// Spell
 		if (gameState.bUseIcons) {
-			if (itm == 16 && isPossess()) return '<a href="javascript:Dispossession()"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'delete.png" width="20px" style="margin-right:5px' + st +'" title="End the Spell" alt="End the Spell"></a>';
-			else if (itm == 17 && isInvisible()) return '<a href="javascript:CastInvisibilityItm()"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'delete.png" width="20px" style="margin-right:5px' + st +'" title="End the Spell" alt="End the Spell"></a>';
+			if (itm == 16 && isPossess()) return '<a href="javascript:Dispossession()"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'delete.png" style="width:15%;margin-right:5px;max-height:2em' + st +'" title="End the Spell" alt="End the Spell"></a>';
+			else if (itm == 17 && isInvisible()) return '<a href="javascript:CastInvisibilityItm()"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'delete.png" style="width:15%;margin-right:5px;max-height:2em' + st +'" title="End the Spell" alt="End the Spell"></a>';
 			else if (isScreenSmall()) {
-				return '<a href="javascript:HandleItem(' + no + ',1,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'information.png" width="20px" style="margin-right:2px' + st + '" title="Review" alt="Review"></a>' +
-				'<a href="javascript:HandleItem(' + no + ',2,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'mana.png" width="20px" style="margin-right:5px' + st + '" title="Cast" alt="Cast"></a>';
+				return '<a href="javascript:HandleItem(' + no + ',1,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'information.png" style="width:15%;margin-right:2px;max-height:2em' + st + '" title="Review" alt="Review"></a>' +
+				'<a href="javascript:HandleItem(' + no + ',2,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'mana.png" style="width:15%;margin-right:5px' + st + '" title="Cast" alt="Cast"></a>';
 			}
-			return '<a href="javascript:HandleItem(' + no + ',2,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'mana.png" width="20px" style="margin-right:5px' + st + '" title="Cast" alt="Cast"></a>' +
-				'<a href="javascript:HandleItem(' + no + ',1,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'information.png" width="20px" style="margin-right:2px' + st + '" title="Review" alt="Review"></a>';
+			return '<a href="javascript:HandleItem(' + no + ',2,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'mana.png" style="width:15%;margin-right:5px;max-height:2em' + st + '" title="Cast" alt="Cast"></a>' +
+				'<a href="javascript:HandleItem(' + no + ',1,true,true)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'information.png" style="width:15%;margin-right:2px;max-height:2em' + st + '" title="Review" alt="Review"></a>';
 		}
 		if (perYou.getInventoryItem(no) == 16 && isPossess()) return '<a href="javascript:Dispossession()">End the Spell</a>';
 		else if (perYou.getInventoryItem(no) == 17 && isInvisible()) return '<a href="javascript:CastInvisibilityItm()">End the Spell</a>';
@@ -814,15 +816,15 @@ function getItemLinks(no, nt)
 	// Other item
 	if (gameState.bUseIcons) {
 		if (isScreenSmall()) {
-			return '<a href="javascript:HandleItem(' + no + ',1)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'examine.png" width="20px" style="margin-right:2px' + st + '" title="Examine" alt="Examine"></a>' +
-				'<a href="javascript:HandleItem(' + no + ',2)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'use.png" width="20px" style="margin-right:2px' + st + '" title="' + (itm == 4 ? 'Open' : 'Use') + '" alt="' + (itm == 4 ? 'Open' : 'Use') + '"></a>' +
-				'<a href="javascript:HandleItem(' + no + ',3)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'give.png" width="20px" style="margin-right:2px' + st + '" title="Give" alt="Give"></a>' +
-				'<a href="javascript:HandleItem(' + no + ',5)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'drop.png" width="20px" style="margin-right:5px' + st + '" title="Drop" alt="Drop"></a>';
+			return '<a href="javascript:HandleItem(' + no + ',1)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'examine.png" width="22%" style="margin-right:2px;max-height:2em' + st + '" title="Examine" alt="Examine"></a>' +
+				'<a href="javascript:HandleItem(' + no + ',2)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'use.png" width="22%" style="margin-right:2px;max-height:2em' + st + '" title="' + (itm == 4 ? 'Open' : 'Use') + '" alt="' + (itm == 4 ? 'Open' : 'Use') + '"></a>' +
+				'<a href="javascript:HandleItem(' + no + ',3)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'give.png" width="22%" style="margin-right:2px;max-height:2em' + st + '" title="Give" alt="Give"></a>' +
+				'<a href="javascript:HandleItem(' + no + ',5)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'drop.png" width="22%" style="margin-right:5px;max-height:2em' + st + '" title="Drop" alt="Drop"></a>';
 		}
-		return '<a href="javascript:HandleItem(' + no + ',5)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'drop.png" width="20px" style="margin-right:5px' + st + '" title="Drop" alt="Drop"></a>' +
-				 '<a href="javascript:HandleItem(' + no + ',3)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'give.png" width="20px" style="margin-right:2px' + st + '" title="Give" alt="Give"></a>' +
-				 '<a href="javascript:HandleItem(' + no + ',2)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'use.png" width="20px" style="margin-right:2px' + st + '" title="' + (itm == 4 ? 'Open' : 'Use') + '" alt="' + (itm == 4 ? 'Open' : 'Use') + '"></a>' +
-				 '<a href="javascript:HandleItem(' + no + ',1)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'examine.png" width="20px" style="margin-right:2px' + st + '" title="Examine" alt="Examine"></a>';
+		return '<a href="javascript:HandleItem(' + no + ',5)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'drop.png" width="15%" style="margin-right:5px;max-height:2em' + st + '" title="Drop" alt="Drop"></a>' +
+				 '<a href="javascript:HandleItem(' + no + ',3)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'give.png" width="15%" style="margin-right:2px;max-height:2em' + st + '" title="Give" alt="Give"></a>' +
+				 '<a href="javascript:HandleItem(' + no + ',2)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'use.png" width="15%" style="margin-right:2px;max-height:2em' + st + '" title="' + (itm == 4 ? 'Open' : 'Use') + '" alt="' + (itm == 4 ? 'Open' : 'Use') + '"></a>' +
+				 '<a href="javascript:HandleItem(' + no + ',1)"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'examine.png" width="15%" style="margin-right:2px;max-height:2em' + st + '" title="Examine" alt="Examine"></a>';
 	}
 	return '<a href="javascript:HandleItem(' + no + ',1)">Examine</a> ' +
 			 '<a href="javascript:HandleItem(' + no + ',2)">' + (itm == 4 ? 'Open' : 'Use') + '</a> ' +
@@ -883,11 +885,11 @@ function getItemLine(i, bFirst, bLast, nt)
 	if (gameState.bUseIcons) {
 		s = '<div style="width:100%;display:table"><div ' + (no == 2 ? '' : 'id="item' + i + '" draggable="true" ondrop="dropItem(event,this)" ondragover="allowDropItem(event)" ondragstart="dragItem(event)" ') + 'style="clear:both;margin-left:5px;text-align:left;margin-bottom:-4px;display:table-cell;vertical-align:middle">' +
 				'<b><a draggable="false" href="javascript:HandleItem(' + i + ',2)" class="itemtitle" style="text-decoration:none' + (gameState.nWidth < 800 ? '' : ';max-width:calc(100% - 95px);display:inline-block') + '"><span style="font-size:' + (no == 2 ? "1em" : "0.8em") + '">' + getItemName(no) + '</span></a>';
-		if (gameState.nWidth < 800) s += '<br><span style="clear:both">';
+		if (no == 2 && arSMS.length > 0) s += ' <a draggable="false" href="#" onclick="showRightBar(gameState.nRightBarState + 2,\'sms\')"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'smsinvent.png" style="height:1em' + (isScreenSmall() ? ';float:right' : '') + '"></a>';		
+
+		s += '<br><span style="clear:both">';
 		s += getItemLinks(i, nt);
-		if (no == 2 && arSMS.length > 0) s += ' <a draggable="false" href="#" onclick="showRightBar(gameState.nRightBarState + 2,\'sms\')"><img class="image-hover-highlight" src="' + getThemeFolderI(nt) + 'smsinvent.png" style="height:1em' + (isScreenSmall() ? ';float:left' : '') + '"></a>';		
-		if (gameState.nWidth < 800) s += '</span>';
-		s += '</b></div></div>';
+		s += '</span></b></div></div>';
 
 	} else {
 		s = '<table ' + (no == 2 ? '' : 'id="item' + i + '" draggable="true" ondrop="dropItem(event,this)" ondragover="allowDropItem(event)" ondragstart="dragItem(event)" ') + 'style="width:100%"><tr><td style="width:5px">';
@@ -917,7 +919,7 @@ function getInventoryContents(nState)
 	var i;
 	if (nState == 1) {
 		// Full size Inventory window
-		s = '<span class="zoom-icon" style="position:absolute;top:0px;left:0px"><img draggable="false" style="cursor:pointer;" onclick="showRightBar(2)" src="' + getThemeFolderI(nt) + 'collapse.png" width="24" height="24" alt="Zoom" title="Hide your inventory"></span>' +
+		s = '<span class="zoom-icon" style="position:absolute;bottom:2%;left:0px"><img draggable="false" style="cursor:pointer;" onclick="showRightBar(2)" src="' + getThemeFolderI(nt) + 'collapse.png" width="24" height="24" alt="Zoom" title="Hide your inventory"></span>' +
 			 '<img draggable="false" src="' + getThemeFolderI(nt) + 'bartitle.png" style="margin-left:20px;border-style:none;height:40px;margin-bottom:-0.75em;width:95%;width:calc(100% - 20px);" alt="Inventory:">';
 
 		if ((perYourBody.NoItems + perYou.extra[3]) !== 0) {
@@ -932,7 +934,8 @@ function getInventoryContents(nState)
 					s += '<div style="margin-left:5px;text-align:left;margin-bottom:-4px">' +
 							'<a class="booktitle' + cls + '" href="javascript:HandleItem(' + i + ',2)" style="text-decoration:none">' +
 							'<b>' + getItemName(4);
-					if (gameState.nWidth < 800) s += '</div><div style="clear:both">';
+					//if (gameState.nWidth < 800) 
+					s += '</div><div style="clear:both">';
 					s += getItemLinks(i, nt) + '</b></a></div>';
 
 				} else {
@@ -1011,7 +1014,7 @@ function getInventoryContents(nState)
 
 	} else {
 		// Minimised Inventory
-		s = '<span id="zoom-icon" style="top:5%"><img draggable="false" onclick="showRightBar(1)" src="data:image/gif;base64,R0lGODlhKAAoAOMKAKioqKmpqaqqqqurq6ysrLm5ubq6uru7u/39/f7+/v///////////////////////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACH5BAEKAA8ALAAAAAAoACgAAAT+8Jkgqr046xzMO8JAbWR5BYMABqjpkuJothbLXuJrpqFc8zzdbOMTlooYpDFZQY2czaVrEGNRpcdaIKFQJG5R7OnU7fqUwmBvUFaI1OosJUCAvgXttcBZ3/tJMnEVeRlBaGE/eylUXF5XOTljOyGIbGWGFYs6KXMYKXlxnYKeI5ylFI0Jik0UPDQlIl5ts7RlXK87AbUKCF5cvbW4LrJdjcTGyAovQALJbQnGxbaU1LCITm1QYaOFpZSdeGVRrdTC3ThqhJlq5jiZJwBB6gMAPswbQa6R4V0/3u9ScuiCpmAONzEy1B1CWCEVIjE4fPhSlghiE0w1LOyz6AkgRw4jfs6E/JgRkI4WCy22QgGApIl431yCTFGgnUwRBSSk5NjhQQQAOw==" style="width:99%" height="24" alt="Open" style="cursor:pointer" title="Show your inventory"></span><br>';
+		s = '<span id="zoom-icon" style="position:absolute;bottom:2%"><img draggable="false" onclick="showRightBar(1)" src="data:image/gif;base64,R0lGODlhKAAoAOMKAKioqKmpqaqqqqurq6ysrLm5ubq6uru7u/39/f7+/v///////////////////////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACH5BAEKAA8ALAAAAAAoACgAAAT+8Jkgqr046xzMO8JAbWR5BYMABqjpkuJothbLXuJrpqFc8zzdbOMTlooYpDFZQY2czaVrEGNRpcdaIKFQJG5R7OnU7fqUwmBvUFaI1OosJUCAvgXttcBZ3/tJMnEVeRlBaGE/eylUXF5XOTljOyGIbGWGFYs6KXMYKXlxnYKeI5ylFI0Jik0UPDQlIl5ts7RlXK87AbUKCF5cvbW4LrJdjcTGyAovQALJbQnGxbaU1LCITm1QYaOFpZSdeGVRrdTC3ThqhJlq5jiZJwBB6gMAPswbQa6R4V0/3u9ScuiCpmAONzEy1B1CWCEVIjE4fPhSlghiE0w1LOyz6AkgRw4jfs6E/JgRkI4WCy22QgGApIl431yCTFGgnUwRBSSk5NjhQQQAOw==" style="width:99%" height="24" alt="Open" style="cursor:pointer" title="Show your inventory"></span><br>';
 
 		// Item icons
 		i = perYourBody.FindItem(2);
@@ -1155,9 +1158,9 @@ function usingItem(no, desc, img)
 	if (img === undefined) img = getBaseItemObj(no).image;
 
 	if (img !== '') {
-		addComments('<table style="width:100%"><tr><td style="vertical-align:top;width:20%;max-width:8vw"><img draggable="false" src="');
-		if (img.indexOf('Images/') == -1 && img.indexOf('UI/') == -1) addComments('Images/Items/');
-		addComments(img + '"style="width:95%;max-width:8vw" alt="' + img + '"></td><td style="vertical-align:top"><p style="margin-top:0.2em">' + desc + '</p></td></tr></table>');
+		addComments('<img draggable="false" src="');
+		if (img.indexOf('Images/') == -1 && img.indexOf('UI/') == -1) addComments(gameState.getImagesFolder() + 'Items/');
+		addComments(img + '"style="float:left;width:15%;max-width:8vw;margin-bottom:5px;margin-right:5px" alt="' + img + '"><p style="margin-top:0.2em">' + desc + '</p></td></tr></table>');
 	} else addComments(desc);
 }
 function examineItem(no, desc, img) { usingItem(no, desc, img); }
@@ -1224,8 +1227,8 @@ function CheckNo3(cmd, isl)
 		}
 		if (Place == 8) {
 			//Getting the Address @ the Library
-			addComments('<p><i>Kate Granger<br>34 Yoolaroo Drive,<br>Glenvale</i></p>');
-		}	else addComments('<p><i>Kate<br>Come on over whenever you get the time<br> 34 Yoolaroo Drive,<br>Glenvale</i></p>');
+			addComments('<p><i>Kate Granger<br>34 Yoolaroo Drive,<br>' + gameState.sTown + '</i></p>');
+		}	else addComments('<p><i>Kate<br>Come on over whenever you get the time<br> 34 Yoolaroo Drive,<br>' + gameState.sTown + '</i></p>');
 		return "refresh";
 	}
 }
@@ -1425,7 +1428,7 @@ function CheckNo7(cmd, isl)
 			setPlaceKnown("RobbinsHouse"); // Sets it so that you will always know where the Robbin's home is
 			if (!isPlaceKnown("Alley")) setPlaceKnown("Alley"); // Set to know the alley
 		}
-		addComments('<p><i>Robbins House<br><br> 36 Yoolaroo Drive,<br>Glenvale</i></p>');
+		addComments('<p><i>Robbins House<br><br> 36 Yoolaroo Drive,<br>' + gameState.sTown + '</i></p>');
 		return "refresh";
 	}
 }
@@ -1438,7 +1441,7 @@ function CheckNo8(cmd, isl)
 			Converse("Mayor", 81000);
 			return "nofooterconverse";
 		}
-		else if (Place == 285 && !isMurderPath()) {
+		else if (Place == 950 && !isMurderPath()) {
 			// Judge on the Apprentice Path
 			Converse("Trial", 35);
 			return "nofooterconverse";
@@ -1721,7 +1724,7 @@ function CheckNo29(cmd, isl)
 		if (isPossess()) addComments('What would be the point of picking up the vase while possessing someone.  Then you\'d never be able to get it!');
 		else if (Place == 46 || Place == 41) return "default";
 		 // if the safe is open OR the Museum is CLOSED
-		else if ((Place == 276 && !checkPlaceFlag("Museum", 3)) || checkPlaceFlag("Museum", 8)) {
+		else if ((Place == 244 && !checkPlaceFlag("Museum", 3)) || checkPlaceFlag("Museum", 8)) {
 			SetVaseVariables();
 			if (perYourBody.FindItem(29) === 0) perYourBody.PutItem(29);
 			usingItem(29, 'You take the vase and put it into your bag.');
@@ -1747,7 +1750,7 @@ function CheckNo30(cmd, isl)
 			if (!isPlaceKnown("Crypt")) {
 				if (isPuzzles()) {
 					addComments('<p>You unfold the shovel and dig.</p><p>After fifteen minutes you strike a tablet with a weird inscription.</p>');
-					dispPlace(246,'');
+					dispPlace(Place, 'type=tabletpuzzle');
 				} else {
 					addComments('<p>You unfold the shovel and dig.</p><p>After fifteen minutes you strike a tablet with a weird inscription. You quickly decipher the tablet, and the ground shakes as the great tablet before you crumbles to dust beneath your feet. You have discovered an ancient crypt.</p>');
 					setPlaceKnown("Crypt");  // Sets it so you can Enter the Crypt
@@ -1809,8 +1812,8 @@ function CheckNo31(cmd, isl)
 	return "default";
 }
 
-function examineSilverRingStart() { addComments('<table><tr style="vertical-align:top"><td style="width:20%"><img draggable="false" src="Images/Items/ring1.png" style="width:95%" alt="Ring"></td><td width="79%"><p style="margin-top:0">A silver ring made in ancient times, bearing an image of a winged woman.</p>'); }
-function useSilverRingStart() { addComments('<table><tr style="vertical-align:top"><td style="width:20%"><img draggable="false" src="Images/Items/ring1.png" style="width:95%" alt="Ring"></td><td width="79%">'); }
+function examineSilverRingStart() { addComments('<table><tr style="vertical-align:top"><td style="width:20%"><img draggable="false" src="' + gameState.getImagesFolder() + 'Items/ring1.png" style="width:95%" alt="Ring"></td><td width="79%"><p style="margin-top:0">A silver ring made in ancient times, bearing an image of a winged woman.</p>'); }
+function useSilverRingStart() { addComments('<table><tr style="vertical-align:top"><td style="width:20%"><img draggable="false" src="' + gameState.getImagesFolder() + 'Items/ring1.png" style="width:95%" alt="Ring"></td><td width="79%">'); }
 function noeffectSilverRing() { addComments('<p>It feels cold against your finger.</p></td></tr></table>'); }
 function examineSilverRingReacts(nm) {
 	examineSilverRingStart();
@@ -1844,16 +1847,6 @@ function CheckNo32(cmd, isl)
 				return "nofooter";
 			}
 		}
-		else if (Place == 45 && isCharmedBy("Tracy", "Davy")) // Kitchen and Sister is Charmed by Davy
-		{
-			perT = findPerson("Tracy");
-			perT.unCharmThem();
-			//perT.other = 50; //Free her from Davy's Control
-			addComments('<p>You clasp the ring with your fist. It glows and, within moments, it absorbs the mana powering the <i>charm</i> over your sister.</p></td></tr></table>');
-			AddMana(5);
-			return "refresh";
-
-		}
 		else if ((Place == 108 || Place == 139) && wherePerson("Kate") == Place && isCharmedBy("Kate", "Davy")) //Kate @ Home
 		{
 			if (checkPersonFlag("Kate", 31)) gotoPlace(139, 'type=freed&before=true&plc=' + Place);
@@ -1863,16 +1856,6 @@ function CheckNo32(cmd, isl)
 		else if (Place == 142) {
 			ShotByAnita();
 			return "nofooter";
-		}
-		else if (Place == 156 && isCharmedBy("Tracy", "Davy")) // Laundry and Sister is Charmed by Davy
-		{
-			perT = findPerson("Tracy");
-			perT.unCharmThem();
-			//perT.other = 50; //Free her from Davy's Control
-			addComments('<p>You clasp the ring with your fist. It glows and, within moments, it absorbs the mana powering the <i>charm</i> over your sister.</p></td></tr></table>');
-			AddMana(5);
-			dispPlace(45, ''); //Move you to the empty kitchen
-			return;
 		}
 		else if (Place == 176 && isCharmedBy("MrsRobbins", "Davy"))
 		{
@@ -1966,7 +1949,7 @@ function CheckNo32(cmd, isl)
 			setPersonFlag("JohnAdams", 11);
 			if (Place == 230 && getPersonOther("JohnAdams") == 5) addComments('You place it on your finger and as do you hear “Stop that!” John has wrestled himself free from Tess and tries to pick himself off the ground. “I will call the police if you don\'t give that back!”');
 			else addComments('You place it on your finger.');
-			if (wherePerson("MsJones") == 242) movePerson("MsJones", isMurderPath() ? 0 : 145);
+			if (wherePerson("MsJones") == 72) movePerson("MsJones", isMurderPath() ? 0 : 145);
 		}
 		return "refresh";
 	}
@@ -2035,8 +2018,8 @@ function CheckNo35(cmd, isl)
 {
 	if (cmd == 1) {
 		addComments('<table><tr><td style="vertical-align:top;width:20%">');
-		if (isRunes()) addComments('<a draggable="false" href="#" onClick="Research(\'Spell\', \'NeoOne\');return false"><img draggable="false" src="Images/Items/gem1.jpg" style="width:95%" alt="Dragon Gem">');
-		else addComments('<a draggable="false" href="#" onClick="dispPlace(Place,\'type=learnshieldedcharm\');return false"><img draggable="false" src="Images/Items/gem1.jpg" style="width:95%" alt="Dragon Gem">');
+		if (isRunes()) addComments('<a draggable="false" href="#" onClick="Research(\'Spell\', \'NeoOne\');return false"><span><img draggable="false" src="' + gameState.getImagesFolder() + 'Items/gem1.jpg" style="width:95%" alt="Dragon Gem"></span>');
+		else addComments('<a draggable="false" href="#" onClick="dispPlace(Place,\'type=learnshieldedcharm\');return false"><span><img draggable="false" src="' + gameState.getImagesFolder() + 'Items/gem1.jpg" style="width:95%" alt="Dragon Gem"></span>');
 		addComments('</td><td><p>A dragon gem. It appears to have some tiny writing on its back.</p></td></tr></table>');
 		return "";
 	}
@@ -2072,10 +2055,10 @@ function CheckNo37(cmd, isl)
 			addComments('You tie the string onto the small magnet');
 			updateRightBar();
 			return "refresh";
-		}	else if (Place == 42 && perYou.getQuestRustyKey() == 9 && checkPlaceFlag("Alley", 2) && !isConspiracyPath()) {
+		}	else if (Place == 52 && perYou.getQuestRustyKey() == 9 && checkPlaceFlag("Alley", 2) && !isConspiracyPath()) {
 			perYou.setQuestRustyKey(1000);
 			perYourBody.DropItem(37, 1000); //Drop the Magnet/String, Remove Magnet/String from game
-			PlaceI(39, 42);
+			PlaceI(39, 52);
 			addComments('<p>You lower the magnet into the deep gutter drain with the string. After fishing a bit you carefully you pull up an rusty old key.</p><p>Oh no! You\'ve dropped the magnet down into the drain!</p>');
 			return "refresh";
 		} else if (Place == 86 && checkPersonFlag("Bambi", 5) && perYou.getQuestRustyKey() == 9) {
@@ -2385,11 +2368,11 @@ function UseHolyWater(ItemNum)
 
 function anointItem()
 {
-	var md = WritePlaceHeader(true);
+	var md = WritePlaceHeaderNIP(true);
 
 	md.write(
 		'<table style="padding:10px;border-collapse:collapse;border-spacing:0;border-width:0"><tr><td style="vertical-align:top"><td style="vertical-align:top" rowspan=10>' +
-		'<img src="Images/Items/holywater.jpg" style="float:left;margin:0px 5px" alt="Holy Water">' +
+		'<img src="Items/holywater.jpg" style="float:left;margin:0px 5px" alt="Holy Water">' +
 		'</td><td colspan="5" style="vertical-align:top">' +
 		'<p style="text-align:center;font-size:x-large"><b>Holy Water</b></p></td></tr><tr><td>&nbsp;</td>'
 	);
@@ -2413,7 +2396,7 @@ function anointItem()
 	//**********************************************************************
 	md.write('</tr><tr><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td colspan=4><p>Which item would you like to anoint with the holy water? (Click on it)</p>');
 	addLinkToPlace(md, "Never mind...", Place);
-	WritePlaceFooter(md, '', true, true);
+	WritePlaceFooter(md);
 }
 
 function CheckNo49(cmd, isl)

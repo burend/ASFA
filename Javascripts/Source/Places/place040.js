@@ -25,7 +25,7 @@ function ShowPlace40()
 	if (perTracy.place == 1 && sLast != perTracy.uid) ar.push(perTracy.uid);
 	if (perMiku.whereNow() == 408 && sLast != perMiku.uid) ar.push(perMiku.uid);
 	if ((perGhost.whereNow() == 408 || perGhost.place == -1 || perGhost.place == -64) && sLast != perGhost.uid) ar.push(perGhost.uid);
-	if (perElian.checkFlag(14) && sLast != perElian.uid) ar.push(perElian.uid);
+	if (perElian.checkFlag(14) && perElian.place < 1000 && sLast != perElian.uid) ar.push(perElian.uid);
 	
 	// Special case for Elian require it after the start of the challenges
 	if (perElian.checkFlag(14) && !perElian.checkFlag(25)) sWho = perElian.uid;

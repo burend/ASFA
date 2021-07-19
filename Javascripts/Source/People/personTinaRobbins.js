@@ -183,9 +183,7 @@ function initialiseTina()
 
 	per.isPlaceImageRight = function()
 	{
-		// First glimpse
-		if (Place == 43 && !this.checkFlag(4) && !isSpellKnown("Charm")) return true;
-		
+	
 		if (this.place == -1 && (sType === '' || sType.indexOf("gabbyhousestudy") != -1 || sType == "visitellie")) {
 			// With you
 			SetRightColumnSize("");
@@ -196,12 +194,6 @@ function initialiseTina()
 
 	per.showPlaceImageRight = function(md)
 	{
-		if (Place == 43 && !this.checkFlag(4) && !isSpellKnown("Charm")) {
-			// First glimpse
-			this.showPerson("tina-talk.jpg");
-			this.setFlag(4);	// Show once!
-			return;
-		}
 		this.showPerson("tina-talk.jpg", undefined, undefined, undefined, undefined, undefined, md);
 		
 		if (sType == "gabbyhousestudy10" || (sType.indexOf("gabbyhousestudy") == -1 && sType.indexOf("vamphelpgabby") == -1)) {
@@ -226,7 +218,7 @@ function initialiseTina()
 	// She is fed on
 	per.fedUponEvent = function(perV) {
 		// Vampyre feeds on her
-		var md = WritePlaceHeader(false, "", "black");
+		var md = WritePlaceHeaderNIP(false, "", "black");
 		this.dress = "Vampyre";		// She is turned!
 		this.showPerson("embrace1.jpg", "height:max");
 		this.setFlag(5);		// unconscious
@@ -242,7 +234,7 @@ function initialiseTina()
 		);
 		startQuestionsOnly(undefined, 'white', md);
 		addLinkToPlace(md, "check on Tina", Place, "type=embrace2");
-		WritePlaceFooter(md, '', true, true);
+		WritePlaceFooter(md);
 		return true;
 	};
 	
@@ -257,7 +249,7 @@ function initialiseTina()
 	// Event, called from showEvent but also in one case directly
 	per.feedOnEvent = function(ps)
 	{
-		var md = WritePlaceHeader(false, "", "black");
+		var md = WritePlaceHeaderNIP(false, "", "black");
 
 		var perF = findPerson(ps);
 		var herName = perF.getPersonName();
@@ -309,12 +301,23 @@ function initialiseTina()
 
 		addOptionLink(md, "enough of that", "setQueryParams('');DoReturn()", "bloodblock");
 
-		WritePlaceFooter(md, '', true, true);
+		WritePlaceFooter(md);
 	};	
 	
 	// Popup events for Tina
 	per.showEventPopup = function()
 	{
+		// First glimpse
+		if (Place == 43 && !this.checkFlag(4) && !isSpellKnown("Charm")) {
+			// First glimpse
+			this.setFlag(4);	// Show once!
+			showPopupWindow("Is That Tina?",
+				this.addPersonString("tina-talk.jpg", "height:max%", "right") +
+				'As you step out of the alley you notice an attractive young woman in the distance, you think it is Tina, Davy Robbins older sister. but you are not sure, you have only met her once.</p>' +
+				'<p>She is getting into a car, she must be getting a ride from a friend. Interesting, does this mean she lives near here, or is it her friend that does? She calls out to someone "...back soon..." and gets into the car and they drive off.'
+			);
+			return true;
+		}
 		if (sType !== "") return false;
 
 		// Ask about helping Jessica in the Cellar
@@ -468,7 +471,7 @@ function initialiseTina()
 	per.chatTina = function()
 	{
 		// Chat to her while she is your follower
-		var md = WritePlaceHeader();
+		var md = WritePlaceHeaderNIP();
 		this.showPerson("tina-talk.jpg");
 		addPlaceTitle(md, "Chatting with Tina");
 		md.write(
@@ -530,7 +533,7 @@ function initialiseTina()
 		);
 		
 		addLinkToPlace(md, 'continue on', Place, sPlaceParams);
-		WritePlaceFooter(md, '', true, true);
+		WritePlaceFooter(md);
 	};
 	
 	// Events for Tina
@@ -760,7 +763,7 @@ function initialiseTina()
 		// Sex with the Tina after feeding
 		if (sType == "tinavampfuck") {
 			w = sWho;  // Who else is here, ie just go fed on
-			md = WritePlaceHeader(false, perYou.isMaleSex() ? "" : "td-left-med", "black");
+			md = WritePlaceHeaderNIP(false, perYou.isMaleSex() ? "" : "td-left-med", "black");
 
 			if (perYou.isMaleSex()) this.showPerson("tina-sexba.jpg");
 			else this.showPersonRandomRorX("tina-sexg", isExplicit() ? 2 : 1);
@@ -777,14 +780,14 @@ function initialiseTina()
 			startQuestionsOnly(undefined, 'white', md);
 			addOptionLink(md, "enough of that", "setQueryParams('');DoReturn()", "bloodblock");
 
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
 		if (this.isHere()) {
 			if (sType == "embrace2") {
 				// Vampyre feeds on her, result
-				md = WritePlaceHeader(false, "", "black");
+				md = WritePlaceHeaderNIP(false, "", "black");
 				this.showPerson("embrace2.jpg", "height:max");
 
 				addPlaceTitle(md, "Hurt Tina", '', 0, false, 'white');
@@ -800,13 +803,13 @@ function initialiseTina()
 				);
 				startQuestionsOnly(undefined, 'white', md);
 				addLinkToPlace(md, "Lilith embraces Tina", Place, 'type=embrace3');
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 			
 			if (sType == "embrace3") {
 				// Vampyre feeds on her, result
-				md = WritePlaceHeader(false, "td-left-med", "black");
+				md = WritePlaceHeaderNIP(false, "td-left-med", "black");
 				this.showPerson("embrace3.jpg");
 				addPlaceTitle(md, "Embracing Tina", '', 0, false, 'white');
 
@@ -822,7 +825,7 @@ function initialiseTina()
 				movePerson("Vampyre", 247);
 				startQuestionsOnly(undefined, 'white', md);
 				addLinkToPlace(md, "leave her for now", 176);
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 		}
@@ -831,7 +834,7 @@ function initialiseTina()
 			findPerson("Vampyre");
 			if (per.isMonstersInSacredClearing()) {
 				// Guarding against monsters, and only Tina.
-				md = WritePlaceHeader(true, '', 'black');
+				md = WritePlaceHeaderNIP(true, '', 'black');
 				showPopupWindow("Tina and the <i>Too Thin</i> Sacred Clearing",
 					"<img src='Images/People/Tina/Vampyre/tina-attack1.jpg' class='imgpopup' alt='TimaVamp'>" +
 					"You see movement in the darkness, and Tina moves to position herself between you and whatever it is. She seems to do this instinctively, and as she does the movement hesitates.<br><br>" +
@@ -840,7 +843,7 @@ function initialiseTina()
 					'AddMana(5);dispPlace()', "left:5%;width:85%"
 				);
 				setPlaceFlag("SacredClearing", 2);
-				WritePlaceFooter(md, '', true, true);
+				WritePlaceFooter(md);
 				return true;
 			}
 		}
@@ -1200,13 +1203,6 @@ function initialiseTina()
 
 			md.write('</p>');
 		} 
-		// First glimpse
-		else if (Place == 43 && !this.checkFlag(4) && !isSpellKnown("Charm")) {
-			md.write(
-				'<p>As you step out of the alley you notice an attractive young woman in the distance, you think it is Tina, Davy Robbins older sister. but you are not sure, you have only met her once.</p>' +
-				'<p>She is getting into a car, she must be getting a ride from a friend. Interesting, does this mean she lives near here, or is it her friend that does? She calls out to someone "...back soon..." and gets into the car and they drive off.</p>'
-			);
-		}
 		// Her bedroom
 		else if (Place == 83 && this.isHere()) {
 			if (this.checkFlag(5) && !this.checkFlag(6)) md.write('<p>Tina is still recovering in her bed.</p>');

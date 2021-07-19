@@ -66,7 +66,7 @@ function RepliesPamela(nR)
 function initialisePamela()
 {
 	// Pamela
-	addPerson("Pamela", 326, "Pamela", '', false);
+	addPerson("Pamela", 326, "Pamela", 'Piper', false);
 	per.Replies = RepliesPamela;
 	per.getPersonName = function(full) {
 		if (full === true) return this.name;
@@ -122,6 +122,30 @@ function initialisePamela()
 			);			
 			return true;			
 		}
+		
+		if (sType == "pamelatransformbodypiper") {
+			CastTransform(1);
+			this.dress = "Lauren";	
+			showPopupWindow("Transformed",
+				this.addPersonString("transform.jpg", "height:max%", "right") +
+				'Pamela\'s body starts to subtly change, filling out and becoming rounder, and her breast growing. Her face completely changes as if a different person is standing in front of you.<p>' +
+				'<p>You tentatively as if she is alright and she replies and she is definitely still Pamela, still an attractive red-head and the same person she was before',
+				'dispPlace()'
+			);
+			return true;
+		}	
+		if (sType == "pamelatransformbodylauren") {
+			CastTransform(1);
+			this.dress = "Piper";
+			showPopupWindow("Transformed",
+				this.addPersonString("transform.jpg", "height:max%", "right") +
+				'Pamela\'s body starts to subtly change, her breasts shrinking, and her figure slimming down. Her face changes as if a different person is standing in front of you.<p>' +
+				'<p>You tentatively as if she is alright and she replies and she is definitely still Pamela, still an attractive red-head and the same person she was before',
+				'dispPlace()'
+			);
+			return true;
+		}
+
 		return false;
 	};
 	
@@ -418,7 +442,7 @@ function initialisePamela()
 		addPlaceTitle(md, "Pamela's Dance");
 		md.write(
 			'<p>Pamela arrives wearing some very skimpy lingerie, and gives an odd, almost animalistic performance. She is certainly not experienced but she is still very good!</p>' +
-			'<p>After she sits with you for a while quietly. She looks a little embarrassed but when you ask she confessess to enjoying the performance..</p>'
+			'<p>After she sits with you for a while quietly. She looks a little embarrassed but when you ask she confesses to enjoying the performance..</p>'
 		);
 		startQuestions();
 		addLinkToPlaceC(md, 'enjoy the club after her dance', Place);
@@ -495,6 +519,24 @@ function initialisePamela()
 				//Church Groundskeeper Pamela
 				CastCharmSpell("Pamela", Place, 1, 'type=charmpamela1');
 				return "handled";
+			}
+			return "";
+		}
+		
+		// Casting the transform spell
+		if (no == 18 && cmd == 2) {
+
+			if (this.isHere()) {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her.");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				ClearComments();
+				dispPlace(Place, 'type=pamelatransformbody' + this.dress.toLowerCase());
+				return "nofooter";
 			}
 		}
 		return "";		// do nothing

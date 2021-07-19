@@ -67,7 +67,7 @@ function ShowPlace63()
 			}
 		} else addLinkToPlace(md, "walk to the other pathway", 87);
 	}
-	if (isPlaceKnown("WildRanges")) addOptionLink(md, "enter the wild ranges", 'LeaveKate4(26)', 'moveblock');	// Do you know about the Wild Ranges?
+	if (isPlaceKnown("WildRanges")) addOptionLink(md, "enter the Wild Ranges", 'LeaveKate4(26)', 'moveblock');	// Do you know about the Wild Ranges?
 	addOptionLink(md, "walk to the park entrance", 'LeaveKate4(47)');
 
 	WritePlaceFooter(md);

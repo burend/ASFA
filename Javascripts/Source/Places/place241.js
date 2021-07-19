@@ -38,7 +38,7 @@ function ShowPlace241(stype)
 			// Choices
 			startQuestions();
 			addLinkToPlace(md, 'return to the main hall?', 239);
-			addLinkToPlace(md, 'explore the remainder of the museum?', 249);
+			addLinkToPlace(md, 'explore the remainder of the museum?', 242);
 
 
 		} else {
@@ -79,7 +79,7 @@ function ShowPlace241(stype)
 			perKate.charmedTime = nTime;
 		}
 		moveItem(29, 1001);  // Remove the Dragon Vase from the museum and put it in the "safe"
-		if (whereItem(34) === 0) PlaceI(34, 276); // Put the Lock of Hair @ the safe (dropped during the fight)
+		if (whereItem(34) === 0) PlaceI(34, 244); // Put the Lock of Hair @ the safe (dropped during the fight)
 		setPlaceFlag("Museum", 3);	// Set the safe as LOCKED
 		if (!isPlaceKnown("PoliceStation")) setPlaceKnown("PoliceStation");	//  Know the Police station if you don't already.
 

@@ -406,9 +406,9 @@ function initialiseKristin()
 				md = WritePlaceHeader(false, perYou.isMaleSex() ? 'td-left-med' : '');
 				if (perYou.isMaleSex()) {
 					if (isExplicit()) this.showPersonRandomX("!kristincarolb", 3);
-					else this.showPerson("kristinevent8ba.jpg");
+					else this.showPerson("!kristinevent8ba.jpg");
 				} else if (isExplicit()) this.showPersonX("kristincarolga.jpg");
-				else this.showPersonX("kristinevent8g.jpg");		// Not actually explicit
+				else this.showPersonX("!kristinevent8g.jpg");		// Not actually explicit
 				addPlaceTitle(md, "Joining Kristin and Carol");
 
 				md.write(
@@ -567,7 +567,7 @@ function initialiseKristin()
 				if (perYou.isMaleSex()) {
 					md.write(
 						'<p>You sit down on the bed and Pull Kristin on top of you, pressing her back against your chest and squeezing her breasts firmly in both hands while Karen takes your manhood and begins to rub the tip along Kristin\'s folds and clit.</p>' +
-						'<p>“P..please Master.” She breathes out, her mind lost in a haze as she desperatly grinds her hip against your cock until you finally give Karen the signal to guide it into her and she pushes down on you with a deep sigh of relive.</p>' +
+						'<p>“P..please Master.” She breathes out, her mind lost in a haze as she desperately grinds her hip against your cock until you finally give Karen the signal to guide it into her and she pushes down on you with a deep sigh of relive.</p>' +
 						'<p>Karen was not joking when she called Kristin a tigress. She rides you with a passion you would not have expected to be in her when you met at the bank. Her moans are unrestrained and lewd, filling the room while Karen\'s tongue flicks over her clit, and as she reaches her peak, she grabs her friends hair with both hands and pushes her lips against her widely spread labia.</p>'
 					);
 				} else {

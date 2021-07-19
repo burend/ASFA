@@ -20,7 +20,7 @@ function ShowPlace154(stype)
 	} else if (bGabbyHere) {
 		// Both Mom and Gabby
 		md = WritePlaceHeader();
-		perGabby.showPerson("gabby-mom5.jpg");
+		perMom.showPerson("gabby-mom5.jpg");
 		addPlaceTitle(md, "Mom and Gabby In the Bedroom");
 		
 		md.write(

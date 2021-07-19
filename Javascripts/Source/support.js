@@ -1,14 +1,15 @@
 // Support and help pages
 
+function addModelBase(md, nm, img, desc) {
+	if (desc === undefined) desc = img.split(".")[0].split(" - ")[1];
+	if (nm === '') nm = img.split(" - ")[0];
+	md.write('<tr><td style="border:solid 1px;margin-left:5px;padding-left:5px"><b>' + nm + '</b><br><img style="width:80%" src="' + (gameState.sMod !== '' ? 'Mods/' + gameState.sMod + '/' : '') + 'Credits/' + img +'" alt="' + img + '" title="' + nm + '"></td><td style="border: solid 1px;padding-left:5px"><p>' + desc + '</p></td></tr>');
+}
+function addModel(md, nm, img, desc) { addModelBase(md, nm, img, desc); }
+
 function helpCreditsPage()
 {
-	function addModel(md, nm, img, desc) {
-		if (desc === undefined) desc = img.split(".")[0].split(" - ")[1];
-		if (nm === '') nm = img.split(" - ")[0];
-		md.write('<tr><td style="border:solid 1px;margin-left:5px;padding-left:5px"><b>' + nm + '</b><br><img style="width:80%" src="Credits/' + img +'" alt="' + img + '" title="' + nm + '"></td><td style="border: solid 1px;padding-left:5px"><p>' + desc + '</p></td></tr>');
-	}
-
-	var md = WritePlaceHeader(true);
+	var md = WritePlaceHeaderNIP(true);
 
 	md.write(
 		'<table style="width:100%">' +
@@ -47,6 +48,8 @@ function helpCreditsPage()
 	addModel(md, '', 'Angela - Rebecca Linares.jpg');
 	if (!isMurderPath()) addModel(md, '', 'Angelica - August Taylor.jpg', 'August Taylor aka Angelica Taylor<br>Angelica is only available on the Apprentice/Conspiracy paths');
 	addModel(md, '', 'Anita - Wanda Clooney.jpg', 'Multiple Alternate names<br>Wanda Clooney, Valerie Rosen, Anita Vitus, Monica Vanda, Anita Vanoa, Monique Vanda, Anita V, Anita Lopez, Vanda Curtis, Vanda Vitus');
+	addModel(md, '', 'Ash - Ashley Fires.jpg');	
+	addModel(md, '', 'Betty - Angela White.jpg');	
 	addModel(md, '', 'Aunt Brandi - Brandi Love.jpg');
 	addModel(md, '', 'Bambi (Alt 1) - Kiki Vidis.jpg');
 	addModel(md, '', 'Bambi (Alt 2) - Jessica Robbin.jpg');
@@ -59,6 +62,7 @@ function helpCreditsPage()
 	addModel(md, '', 'Camryn - Katie Banks.jpg');
 	addModel(md, '', 'Carol - Carol Goldnerova.jpg');
 	addModel(md, '', 'Catherine Ross - Jayden Jaymes.jpg');
+	addModel(md, findPerson("Charley").getPersonNameShort(), "Charley - Charlee Chase.jpg", "model Charlee Chase. She is a different model to the latino Charley Chase, the model for Charlie");
 	addModel(md, '', 'Charlie (Female) - Charley Chase.jpg');	
 	addModel(md, '', 'Charlie (Male) - Logan McCree.jpg');		
 	addModel(md, '', 'Chief Batton (UK) - Katarina Nikita.jpg');
@@ -69,7 +73,7 @@ function helpCreditsPage()
 	addModel(md, 'Debra Kelly', 'Debra - Lana Lopez.jpg');
 	addModel(md, '', 'Didi - Sophie Dee.jpg');
 	addModel(md, '', 'Donna - Elle Alexandra.jpg');
-	addModel(md, '', 'Elian - IscariotElian.jpg', 'Most images are from the cosplayer IscariotElian https://iscariotelian.deviantart.com of the character Catherine from a game of the same name.<br>Others are of the cosplayers \'Sayla\', Stacy Dawn, MyGeekGoddess, Agos Ashford.<br>Note manyy are edited to slightly tweak faces to align appearance a little more ');	
+	addModel(md, '', 'Elian - IscariotElian.jpg', 'Some images are from the cosplayer IscariotElian https://iscariotelian.deviantart.com of the character Catherine from a game of the same name.<br>Others are of the cosplayers \'Sayla\', Stacy Dawn, MyGeekGoddess, Agos Ashford, Jyu-san, Underscore, Katyuska Moonfox, Koyuki.<br>Note many are edited to slightly tweak faces to align appearance a little more. Sex images are either posed images or fakes.<br>Some main images are based in a set/video starring Sylvia Saint.');
 	addModel(md, '', 'Ellie - Carla Onlycarla.jpg', 'Carla OnlyCarla aka Carla Brown');
 	addModel(md, '', 'Emily - Jasmine James.jpg');
 	addModel(md, 'Esmeralda<br>New Age Store Owner', 'Gypsy (New Age Shop) - Syren De Mer.jpg');
@@ -81,11 +85,13 @@ function helpCreditsPage()
 	addModel(md, '', 'Jade - Jade Tiger.jpg');
 	addModel(md, 'Janet Kelly', 'Janet - Brianna Lee.jpg');
 	addModel(md, '', 'Jenny - Briana Banks.jpg');
+	addModel(md, '', 'Jenny - Christie Stevens.jpg');
 	addModel(md, '', 'Jesse - Allison Angel.jpg');
 	addModel(md, 'Witch Jessica', 'Jessica(Witch) - Justine Joli.jpg');
 	addModel(md, 'John Adams (Male)', 'John (Male) - Logan Reed.jpg');
 	addModel(md, 'John Adams (Female 1)', 'John (Female 1) - Brandy Robbins.jpg');
 	addModel(md, 'John Adams (Female 2)', 'John (Female 2) - Megan Rain.jpg');
+	addModel(md, '', 'Karma - Karma Rx.jpg');
 	addModel(md, 'Kate Granger', 'Kate - Madison Ivy.jpg', 'Madison Ivy<br>Some scenes with Phoenic Marie/Mrs Granger are using edited image from a set with Carter Cruise and some other undermined models');
 	addModel(md, 'Doctor Kristina Kay', 'Doctor Kay - Tina Kay.jpg');	
 	addModel(md, '', 'Kristin - Austin Kinkaid.jpg', 'Austin Kinkaid<br>In one scene where Carol is charmed a model Jenny Badeau is used as a look-a-like model for Austin Kinkaid');
@@ -93,9 +99,13 @@ function helpCreditsPage()
 	addModel(md, '', 'Lauren - Shay Laren.jpg');
 	addModel(md, '', 'Leanne - Anna Tatu.jpg');
 	addModel(md, '', 'Louise - Monica Miller.jpg', 'Monica Miller aka Monica Hajkova');
+	addModel(md, '', 'Lola - Isis Love.jpg');
 	addModel(md, '', 'Madison - Maria Fowler.jpg');
-	addModel(md, 'Mayor Thomas', 'Mayor - Rachel Roxxx.jpg');
+	addModel(md, 'Mayor Thomas (Female)', 'Mayor (Female) - Rachel Roxxx.jpg');
+	addModel(md, 'Mayor Thomas (Male)', 'Mayor (Male) - Eddie Diaz.jpg');
+	addModel(md, 'Nurse Megan', 'Megan - Farrah.jpg', 'Farrah is a model active over 10 years ago for the Twisties site with 3 known image sets, no other name is know at this time, credited in one place as from Denmark');	
 	addModel(md, 'Nurse Megan', 'Megan - Sandra Shine.jpg', 'Sandra Shine<br>In the pool scene she appears with a model credited as simply \'Jo\'');
+	addModel(md, '', 'Melanie - London River.jpg');
 	addModel(md, '', 'Melissa - Christy Marks.jpg');
 	addModel(md, '', 'Mia - Mia Robinson.jpg', "Mia Robinson<br>Note: Kiki Vidis/Bambi's actual mother");
 	addModel(md, '', 'Miku - Miku Himeno.jpg', 'Miku Himeno<br>aka Mayura Serizawa');
@@ -114,6 +124,7 @@ function helpCreditsPage()
 	addModel(md, '', 'Officer Cheryl Khan (US) - Madison Parker.jpg');
 	addModel(md, '', 'Officer Ross (UK) - Adele Stephens.jpg');
 	addModel(md, '', 'Officer Ross (US) - Denise Milani.jpg', 'Denise Milani<br>All nude/erotic images are edits/fakes');
+	addModel(md, '', 'Pamela - Lauren Phillips.jpg');
 	addModel(md, '', 'Pamela - Piper Fawn.jpg', 'Piper Fawn aka Ariel');
 	addModel(md, 'Player Avatar - Female 1', 'Player - Female 1 - Eufrat.jpg', 'Eufrat');
 	addModel(md, 'Player Avatar - Female 2', 'Player - Female 2 - Teen Kasia.jpg', 'Teen Kasia');
@@ -135,9 +146,12 @@ function helpCreditsPage()
 	addModel(md, 'Nurse Sandra (UK)', 'Sandra (UK) - Shawna Lenee.jpg', 'Shawna Lenee');
 	addModel(md, 'Nurse Sandra (US)', 'Sandra (US) - Paige DDF.jpg', 'Paige Delight');
 	addModel(md, 'Sarah Gates', 'Sarah - Ashlynn Brooke.jpg');
+	addModel(md, '', "Savanna - Savannah Sixx.jpg");
+	addModel(md, '', "Sharon - Sharon Lee.jpg");
 	addModel(md, 'Sir Ronald Gates', 'Sir Ronald - Hill Thomas.jpg', 'Hill Thomas<br>Images mostly from his role as Coreander in \'The Neverending Story\'');
 	addModel(md, 'Sister Desiree', 'Sister - Jana Cova.jpg', 'Jana Cova<br>Some images edited from uncredited images of nuns');
 	if (isMurderPath()) addModel(md, '', 'Sofia - Missy Martinez.jpg', 'Missy Martinez<br>Sofia is only available on the Murder path');
+	addModel(md, '', 'Tammy - Tamara Russ.jpg');
 	addModel(md, 'Tess Adams', 'Tess - Sam Cooke.jpg', "Sam Cooke<br>Some hardcore images use the model Cherry Jul. Others are edits including all parings with other characters");
 	addModel(md, '', 'Thrall 1 - Sarah Peachez.jpg', 'Sarah Peachez, aka Real Peachez');
 	addModel(md, '', 'Thrall 2 - Lucie Lansen.jpg', 'Lucie Lansen<br>She goes by many alternate names including Zoey McDonald, Lucinda A, Zoey Fox, Adele and quite a few more');
@@ -147,6 +161,7 @@ function helpCreditsPage()
 	addModel(md, 'Your sister, Tracy', 'Tracy - Ariel Rebel.jpg');
 	addModel(md, '', 'Vampyre - Romi Rain (and various).jpg', 'Romi Rain for many images, and various models for the more extreme cases, mostly uncredited');
 	addModel(md, '', 'Victoria - Little Caprice.jpg', 'Caprice A. aka Little Caprice');
+	addModel(md, '', 'Zoey - Riley Reid.jpg');
 	addModel(md, '', 'Zoey - Zoe Smieszek.jpg', 'Zoe Smieszek aka Zoe OnlyTease');
 
 	md.write(
@@ -163,19 +178,20 @@ function helpCreditsPage()
 		'<tr><td style="border:solid 1px;padding-left:5px"><b>Dream of Ghosts in a Field</b></td><td style="border:solid 1px;padding-left:5px"><p>\'Day of the Dead\' photoshoot by Spencer Tunick</p></td></tr>' +
 		'<tr><td style="border:solid 1px;padding-left:5px"><b>Succubus Dreams</b></td><td style="border:solid 1px;padding-left:5px"><p>Created/edited by GeistSD from the now dead GOTFanArt site. The bath image was by <a href="https://www.imagefap.com/profile.php?user=Smut_Demon">Smut_Demon</a></p></td></tr>' +
 		'<tr><td style="border:solid 1px;padding-left:5px"><b>King in Yellow</b></td><td style="border:solid 1px;padding-left:5px"><p>Cosplay images from <a href="https://www.instagram.com/p/BUKiZCeAvcA/?taken-by=fellandfair">Fell and Far</a> conplay group</p></td></tr>' +
-		'<tr><td style="border:solid 1px;padding-left:5px"><b>Cthulhu Idols</b></td><td style="border:solid 1px;padding-left:5px"><p>From <a href="http://propnomicon.blogspot.com">Propnomicon</a>, and by <a href="https://www.instagram.com/p/BwnEOpMA3O1/">Tom Fournier</a></p></td></tr>'
+		'<tr><td style="border:solid 1px;padding-left:5px"><b>Cthulhu Idols</b></td><td style="border:solid 1px;padding-left:5px"><p>From <a href="http://propnomicon.blogspot.com">Propnomicon</a>, and by <a href="https://www.instagram.com/p/BwnEOpMA3O1/">Tom Fournier</a></p></td></tr>' +
+		'<tr><td style="border:solid 1px;padding-left:5px"><b>Nuns</b></td><td style="border:solid 1px;padding-left:5px"><p>1, 6, 7: from Sweetheart Films production "Confessions of a Sinful Nun"<br>2. Kayden Cross<br>3. Pristine Edge<br>4: Sarah Sloane<br>5: unsure Anne Marie maybe?<br>8: Attributed to "Hannah"<br>Some endgame movies from te movie "Non Ci Indurre In Tentazione"</p></td></tr>'
 	);
 
 	md.write('</table>');
 
 	addOptionLink(md, "return to the game", "DoReturn()");
 
-	WritePlaceFooter(md, '', true, true);
+	WritePlaceFooter(md);
 }
 
 function helpGamePlayPage()
 {
-	var md = WritePlaceHeader(true);
+	var md = WritePlaceHeaderNIP(true);
 
 	md.write(
 		'<table style="width:100%;padding:2px;border-collapse:collapse;border-spacing:0"><tr><td class="inventbar" style="text-align:center;width:100%;vertical-align:top"><p style="font-size:xx-large;margin-top:0px;margin-bottom:0px"><b>Game Play</b></p></td></tr></table>' +
@@ -273,7 +289,7 @@ function helpGamePlayPage()
 		'<b>The Demon</b> - a demon unleashed in the Seance is stalking you.<br>' +
 		'<b>Dragon Gem</b> - quest for a hidden spell and to get an item of magic power<br>' +
 		'<b>Davy and Kate</b> - Davy is obssessed with Kate and it can be a key to controlling him<br>' +
-		'<b>Vampyre</b> - there is a vampire in Glenvale, stalking the Gates family<br>' +
+		'<b>Vampyre</b> - there is a vampire in the town, stalking the Gates family<br>' +
 		'<b>A Witch Freed</b> - Jessica can be freed after the Seance, though many people just keep her as a slave<br>' +
 		'<b>Ross Sisters</b> - To control the three Ross sisters, incomplete as Amy cannot be controlled yet<br><br>' +
 		'These two arcs are interdependent and require <b>Dragon Gem</b> and <b>The Demon</b> to be completed<br>' +
@@ -329,15 +345,15 @@ function helpGamePlayPage()
 
 	addOptionLink(md, "return to the game", "DoReturn()");
 
-	WritePlaceFooter(md, '', true, true);
+	WritePlaceFooter(md);
 }
 
 function showWalkthrough()
 {
-	var md = WritePlaceHeader(true);
+	var md = WritePlaceHeaderNIP(true);
 	addOptionLink(md, "return to the game", "DoReturn()");
 	md.write('<br><iframe src="Help/walkthrough.html" style="width:100%;height:90%"></iframe>');
-	WritePlaceFooter(md, '', true, true);
+	WritePlaceFooter(md);
 }
 
 // Add credits to a page

@@ -24,12 +24,9 @@ function mainCache()
 	this.updateElement = function(el, s)
 	{
 		// Any global changes to the element contents
-		if (s.indexOf("Images/Mod/") != -1) {
-			if (gameState.sMod !== '') s = s.split("Images/Mod/").join("Mods/" + gameState.sMod + "/Images/");
-			else s = s.split("Images/Mod/").join("Images/");
-		} else if (gameState.sMod !== '') {
+		if (gameState.sMod !== '') {
 			if (s.indexOf("\"Images/") != -1) s = s.split("\"Images/").join("\"Mods/" + gameState.sMod + "/Images/");
-			else if (s.indexOf("'Images/") != -1) s = s.split("'Images/").join("'Mods/" + gameState.sMod + "/Images/");
+			if (s.indexOf("'Images/") != -1) s = s.split("'Images/").join("'Mods/" + gameState.sMod + "/Images/");
 		}
 		// Split out any javascript <script> blocks
 		var so = '';
@@ -55,7 +52,8 @@ function mainCache()
 			i = s.indexOf("<script");
 		}
 		if (s !== '') so += s;
-		el.innerHTML = so;
+		if (gameState.sMod !== "" && perMod !== undefined) el.innerHTML = perMod.replaceText(so);
+		else el.innerHTML = so;
 		if (scr !== "") setTimeout(function(){mdCache.addScript(el, scr);}, 100);
 	};
 
@@ -75,9 +73,49 @@ function mainCache()
 var mdCache = new mainCache();
 var md = mdCache;
 
+/* UNUSED
+// Include a script file
+function loadScript(url, callback)
+{
+    // Adding the script tag to the head
+    var head = document.head;
+    var script = document.createElement('script');
+    script.type = 'text/javascript';
+    script.src = url;
+
+    // Then bind the event to the callback function.
+    // There are several events for cross browser compatibility.
+    script.onreadystatechange = function() { callback(); };
+    script.onload = function() { callback(); };
+	 
+    // Fire the loading
+    head.appendChild(script);
+}
+
+function removejscssfile(filename, filetype) {
+    var targetelement = (filetype=="js") ? "script" : (filetype=="css")? "link" : "none" //determine element type to create nodelist from
+    var targetattr=(filetype=="js")? "src" : (filetype=="css")? "href" : "none" //determine corresponding attribute to test for
+    var allsuspects=document.getElementsByTagName(targetelement)
+    for (var i=allsuspects.length; i>=0; i--){ //search backwards within nodelist for matching elements to remove
+		 if (allsuspects[i] && allsuspects[i].getAttribute(targetattr)!=null && allsuspects[i].getAttribute(targetattr).indexOf(filename)!=-1) {
+			  allsuspects[i].parentNode.removeChild(allsuspects[i]) //remove element by calling parentNode.removeChild()
+		 }
+	 }
+}
+*/
+
 /***************** Game ******************************************************************************/
 
-function getVersion() { return "14.10.1"; }
+// Is this a mobile device
+function mobileTest(agent) {
+	// Simple check
+	return (/Mobi|Android/i.test(agent));
+	// More complex check
+	//return (/(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino|android|ipad|playbook|silk/i.test(a)||/1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i.test(agent.substr(0,4)));
+}
+var bMobile = mobileTest(navigator.userAgent||navigator.vendor||window.opera);
+ 
+function getVersion() { return "14.11"; }
 
 // Status of the current game in play
 function GameStatus()
@@ -85,6 +123,7 @@ function GameStatus()
 	// Document details
 	this.nWidth = 0;				// Width of the document
 	this.nHeight = 0;				// Height of the document
+	this.bMainEnded = false;	// Has the main colum ended
 	
 	// Conversation details
 	this.pclr = '';				// Colour of the current page text
@@ -100,9 +139,11 @@ function GameStatus()
 	this.sLeftColSize = '';
 	
 	// Right column
-	this.bRightCol = false;		// Are we building the eight column now
-	this.sRightColSize = '';	// What size is it to be, to override the default
-	this.bPeopleCol = false;	// Have people here details been added
+	this.bRightCol = false;			// Are we showing the right column
+	this.sRightColSize = '';		// What size is it to be, to override the default
+	this.bPeopleCol = false;		// Have people details been added
+	this.bNoItems = false;
+	this.bNoPeople = false;
 	
 	// Images
 	this.lFloat = '';
@@ -117,11 +158,14 @@ function GameStatus()
 	this.plcTitle = '';			// Title of the last shown page
 	this.nLastOut = 0;			// Last outside location
 	this.bLastOutVisible = true;	// Were you visible there
+	
+	this.sTown = '';				// Name of the town
 
 	this.startPlace = function()
 	{
 		this.nWidth = getWidth(document);
 		this.nHeight = getHeight(document);
+		this.bMainEnded = false;
 		this.plcTitle = '';
 		this.pclr = '';
 		this.nUId = 0;
@@ -143,11 +187,14 @@ function GameStatus()
 		this.rFloat = '';
 		this.bLastSex = this.bSex;
 		this.bSex = false;
+		this.bNoItems = false;
+		this.bNoPeople = false;
 	};
 
 	// SideBars
 	this.bSidebarsHidden = false;		// Are both sidebars hidden
 	this.bSidebarsHiddenLB = true;	// saved state when a lightbox is shown
+	
 	// Left bar states
 	// 1 - shown
 	// 2 - minimised
@@ -155,7 +202,7 @@ function GameStatus()
 
 	this.getLeftBarWidth = function() {
 		if (this.bSidebarsHidden) return "0px";
-		if (this.nLeftBarState == 2) return "25px";
+		if (this.nLeftBarState == 2) return "30px"; //"25px";
 		if (isScreenSmall()) return "30%"; //"90px";
 		return "8%";
 	};
@@ -170,7 +217,7 @@ function GameStatus()
 
 	this.getRightBarWidth = function() {
 		if (this.bSidebarsHidden || this.nRightBarState === 0) return "0px";
-		if (this.nRightBarState == 2) return "25px";
+		if (this.nRightBarState == 2) return "30px"; //"25px";
 		else if (this.nRightBarState == 1) {
 			if (isScreenSmall()) return "30%";
 			return "15%";
@@ -192,7 +239,13 @@ function GameStatus()
 	this.bAllowUndo = false;	// Can you undo bad ends
 	this.bCommentLL = false;
 	this.bUseIcons = true;		// Use icons in the inventory
+	
+	// Mods
 	this.sMod = '';				// Current Mod
+	this.getImagesFolder = function() {
+		if (!this.sMod) return 'Images/';
+		return 'Mods/' + this.sMod + '/Images/';
+	};
 	
 	// Saves
 	this.nCurrentQS = 0;			// Current Quick Save
@@ -213,7 +266,7 @@ function GameStatus()
 /***************** Theme *****************************************************************************/
 // 0 = white
 // 1 = black
-var nTheme = 0;
+var nTheme = 2;
 function getThemeFolder() { return 'UI/themes/theme' + nTheme + '/'; }
 function getThemeFolderI(nt) { return 'UI/themes/theme' + nt + '/'; }
 
@@ -273,7 +326,7 @@ function getDecodedImageOCnt(obj, img)
 	return getImageOCnt(obj, img);
 }
 
-function getImageO(imgbase, noi, baseno, per, alpha, ext)
+function getImageO(imgbase, noi, baseno, per, alpha, next)
 {
 	// imagebase
 	// can be
@@ -281,12 +334,23 @@ function getImageO(imgbase, noi, baseno, per, alpha, ext)
 	// "People/Anita/anita7b"
 	// "Player/Ariana/image1"
 	// "People/Bambi/Kiki/bambi5a"
-	var ar = imgbase.split("/");
+	// or the above with a .ext
+	var ar = imgbase.split('.');
+	var ext = ar[ar.length - 1];	// Extension of the image
+	if (ar.length == 1) {
+		imgbase = ext;
+		ext = next;
+	} else {
+		imgbase = ar[0];
+		ext = '.' + ext;
+	}
+	ar = imgbase.split("/");
 	var img = imgbase.trim();
 	var st = ar[0];
+	var bGeneric = st == "GenericSex";
 	var obj = oImages;
 	if (ar.length > 1) {
-		if (st == "GenericSex") obj = obj.GenericSex;
+		if (bGeneric) obj = obj.GenericSex;
 		else if (st == "Player") {
 			obj = obj.Player[ar[1]];
 			if (obj === undefined) obj = oImages;
@@ -318,16 +382,17 @@ function getImageO(imgbase, noi, baseno, per, alpha, ext)
 	
 	var no = 0;
 	if (bExplicit) {
-		if (obj.Explicit !== undefined) no = st == "GenericSex" ? getDecodedImageOCnt(obj.Explicit, img) : getImageOCnt(obj.Explicit, img);
+		if (obj.Explicit !== undefined) no = bGeneric ? getDecodedImageOCnt(obj.Explicit, img) : getImageOCnt(obj.Explicit, img);
 	}
-	if (no === 0) no = st == "GenericSex" ? getDecodedImageOCnt(obj, img) : getImageOCnt(obj, img);
+	if (no === 0) no = bGeneric ? getDecodedImageOCnt(obj, img) : getImageOCnt(obj, img);
 	if (no === 0) {
-		if (noi === 0) return imgbase + (ext === undefined ? '.jpg' : ext);
+		if (noi == -1) no = 1;
+		else if (noi === 0 || noi === undefined) return imgbase + (ext === undefined ? '.jpg' : ext);
 		no = noi; 
 	}
 	
 	// no is the count of images
-	return getImageRandom(imgbase, no, baseno, alpha, ext);
+	return getImageRandom(bGeneric ? imgbase + " " : imgbase, no, baseno, alpha, ext);
 }
 
 
@@ -338,12 +403,13 @@ function addImageString(img, widh, alg, imgbig, title, per, ph)
 	if (img.indexOf("UI/") == -1 && img.indexOf("Images/") == -1) img = "Images/" + img;
 	if (!imgbig) imgbig = img;
 	else if (imgbig.indexOf("UI/") == -1) imgbig = "Images/" + imgbig;
+	img = img.replace(".mp4", ".jpg");
 	
 	if (!ph) ph = "";
 	var algo = alg + '';
-	if (!alg) alg = gameState.sRightColSize !== '' ? "right;margin: 0px 0px 4px 4px" : "left;margin: 0px 4px 4px 0px";
-	else if (alg == "right") alg = "right;margin: 0px 0px 4px 4px";
-	else if (alg == "left") alg = "left;margin: 0px 4px 4px 0px";
+	if (!alg) alg = gameState.bRightCol ? "right;margin: 0px 0px 4px 4px" : "left;margin: 0px 4px 4px 0px";
+	else if (alg == "right" || alg == "rightpopup") alg = "right;margin: 0px 0px 4px 4px";
+	else if (alg == "left" || alg == "leftpopup") alg = "left;margin: 0px 4px 4px 0px";
 		
 	if (sCurrency === "\u00A3") {		// inlined isBritish()
 		img = img.split("Setting/").join("UK/");
@@ -359,18 +425,19 @@ function addImageString(img, widh, alg, imgbig, title, per, ph)
 			if (img.indexOf(".mp4") != -1) sAuto = ' onloadedmetadata="onloadVideo(this)"';
 			else sAuto = ' onload="onloadImage(this)"';	
 		}
-		widh = gameState.sRightColSize !== '' ? "width:100%" : "width:95%";
+		widh = gameState.bRightCol ? "width:100%" : "width:95%";
 	} else if (widh === "auto") {
 		if (gameState.bLeftCol) {
 			if (img.indexOf(".mp4") != -1) sAuto = ' onloadedmetadata="onloadVideo(this)"';
 			else sAuto = ' onload="onloadImage(this)"';
 		}
-		widh = gameState.sRightColSize !== '' ? "width:100%" : "width:95%";
+		widh = gameState.bRightCol ? "width:100%" : "width:95%";
 	} else if (widh.indexOf("height:") == -1) {
 		if (algo === "right") gameState.rFloat = widh;
 		else if (algo === "left") gameState.lFloat = widh;
 		widh = isScreenSmall() ? "width:100%" : "width:" + (widh == "50vw" ? "45vw" : widh);
 	} else if (widh === "height:max%") widh = widh = isScreenSmall() ? "width:100%" : "height:99%;max-width:50%;max-height:100%;width:auto";
+	else if (widh === "height:maxw%") widh = widh = isScreenSmall() ? "width:100%" : "height:99%;max-width:80%;max-height:100%;width:auto";
 	else if (widh === "height:max") widh = widh = isScreenSmall() ? "width:100%" : "height:95%;height:calc(100vh - 12px); height: -moz-calc(100vh - 12px); height: -webkit-calc(100vh - 12px)";
 	var widi = (widh.indexOf("height:") == -1) ? 'width:100%' : 'height:100%';
 
@@ -389,7 +456,7 @@ function addImageString(img, widh, alg, imgbig, title, per, ph)
 		tp = 24;
 	}
 	var psh = 0;
-	if (per !== undefined && per !== "") {
+	if (per !== undefined && per !== "" && ph !== "noinfo") {
 		if (typeof per == "string") per = findPerson(per);
 		per.visitThem();
 		if (!per.shown) {
@@ -485,8 +552,10 @@ function onerrorImage(el)
 {
 	// The image being loaded
 	var img = el.src;
+	if (img === undefined) return;
 	var ar = img.split('.');
-	var ext = ar[ar.length - 1];	// Extension of the image
+	var ext = ar[ar.length - 1].split('#')[0];	// Extension of the image
+	//if (ext === undefined) ext = "jpg";
 	if (el.getAttribute("data-ext") === null) el.setAttribute('data-ext', ext);
 	/*
 	if (ext == 'png' && img.indexOf("Mods/") != -1) {
@@ -496,11 +565,19 @@ function onerrorImage(el)
 	}
 	*/
 	if (ext == "jpg") ext = "gif";
+	else if (ext == "gif") ext = "png";
 	else ext = "jpg";
 	ar[ar.length -1] = ext;
 	img = ar.join('.');		// New image with new extension
 	el.src = img;
+	//console.log('..try image ' + img);
+	var ppn = el.parentNode;	// containing a
+	if (ppn.nodeType == Node.ELEMENT_NODE && ppn.tagName.toLowerCase() === "a") ppn.href = img;
 	el.onclick = function() { return onclickImage(this); };
+	if (ext != "jpg") {
+		el.onerror = function() { onerrorImage(this); }
+		return;
+	}
 	el.onerror = function() {
 		// Failed to load the replacement image, try as mp4 video instead
 		var imgv = this.src;
@@ -508,18 +585,28 @@ function onerrorImage(el)
 		arv[arv.length - 1] = "mp4";
 		imgv = arv.join('.');
 		var sAuto = '';
-		if (this.onload !== undefined) sAuto = ' onloadedmetadata="onloadVideo(this)"';
-		this.onerror = undefined;
-		this.onload = undefined;
+		if (this.onload !== null) sAuto = ' onloadedmetadata="onloadVideo(this)"';
+		//this.onerror = undefined;
+		//this.onload = undefined;
 		this.style.display='none';
 		var myVid = document.createElement("span");
-		myVid.innerHTML = '<video id="viderr" width="99%" autoplay muted loop style="margin:0px 0px"' + sAuto + '><source src="' + imgv + '" type="video/mp4" onerror="onerrorVideo(this)"></video>';
-		this.parentNode.removeAttribute("rel");	// Disable lightbox and open video in new tab
-		this.parentNode.target = '_blank';
-		this.parentNode.href = imgv;
+		myVid.style.width = "99%";
+		var wd = this.parentNode.style.width;
+		var ht =  this.parentNode.style.height;
+		if (wd === undefined || wd === '') wd = this.style.width;
+		if (ht === undefined || ht === '') ht = this.style.height;
+		var ml = this.parentNode.style.marginLeft;
+		if (ml === undefined || ml === '') ml = this.style.marginLeft;
+		//console.log('..try video ' + imgv);
+		myVid.innerHTML = '<video id="viderr" autoplay muted loop style="' + (wd != '' ? 'width:' + wd + ';' : '') + (ht != '' ? 'height:' + ht + ';' : '') + 'max-width:100%;margin:0px 0px' + (ml !== "" ? ';margin-left:' + ml : '') + '"' + sAuto + '><source src="' + imgv + '" type="video/mp4" onerror="onerrorVideo(this)"></video>';
+		if (this.parentNode.tagName.toLowerCase() === "a") {
+			this.parentNode.removeAttribute("rel");	// Disable lightbox and open video in new tab
+			this.parentNode.target = '_blank';
+			this.parentNode.href = imgv;
+			this.parentNode.onclick = function() { return onclickImage(this); };
+		}
 		//this.parentNode.replaceChild(myVid, this);
 		this.parentNode.appendChild(myVid);
-		this.parentNode.onclick = function() { return onclickImage(this); };
 	};
 }
 function onerrorVideo(el)
@@ -527,9 +614,9 @@ function onerrorVideo(el)
 	el.onerror = undefined;
 	var vidn = el.parentNode;
 	if (vidn.id === "viderr") {
-		var bAuto = false;
-		if (el.onloadedmetadata !== undefined) {
-			bAuto = true;
+		//var bAuto = false;
+		if (el.onloadedmetadata !== null) {
+			//bAuto = true;
 			el.onloadedmetadata = undefined;
 		}
 		var pn = vidn.parentNode;	// containing span
@@ -544,10 +631,13 @@ function onerrorVideo(el)
 					imgv = imgv.split("Mods/" + gameState.sMod + "/").join("");
 					var ext = curChild.getAttribute('data-ext');
 					if (ext === null) ext = "jpg";
-					curChild.src = imgv.split('.gif').join('.' + ext).split('.jpg').join('.' + ext)
+					curChild.src = imgv.split('.gif').join('.' + ext).split('.jpg').join('.' + ext);
+					//console.log('..video failed try image ' + imgv.split('.gif').join('.' + ext).split('.jpg').join('.' + ext));
+					ppn.href = curChild.src;
+					ppn.setAttribute("rel", "lightbox");	// enable lightbox
 					curChild.style.display = 'inline';
-					curChild.onerror = onerrorImage; //function() { onerrorImage(this); }
-					if (bAuto) currChild.onload = onloadImage;
+					curChild.onerror = function() { onerrorImage(this); }
+					//if (bAuto) curChild.onload = function() { onloadImage(this); }
 					return;
 				}	 
 			}
@@ -560,11 +650,22 @@ function onerrorVideo(el)
 	el.onerror = undefined;
 }
 
-// Generl error handler for <img> tags
+/*
+// Force the document to re-layout - unused now
+function resizeGame()
+{
+	var resizeEvent = window.document.createEvent('UIEvents'); 
+	resizeEvent.initUIEvent('resize', true, false, window, 0); 
+	window.dispatchEvent(resizeEvent);
+}
+*/
+
+// General error handler for <img> tags
 document.addEventListener('error', function (event) {
 	if (event.target.tagName.toLowerCase() !== 'img' || event.target.onerror !== null) return;		// Not an <img> or it has an onerror attribute, leave it to handle this
 	// An error for an <img> tag without an onerror attribute, use the standard handler above
-	setTimeout(function() { onerrorImage(event.target) }, 1);
+	var evt = event.target;
+	setTimeout(function() { onerrorImage(evt); }, 1);
 }, true);
 
 
@@ -584,6 +685,15 @@ function addImageRandomString(imgbase, no, wid, alg, imgbig, title, baseno, per,
 		}
 	}
 	return addImageString(img, wid, alg, imgbig, title, per, ph);
+}
+
+function getImagePicked(img, act)
+{
+	var pos = img.indexOf('/' + act);
+	if (pos == -1) return '';
+	var pos2 = img.indexOf('.', pos + 1);
+	if (pos2 == -1) pos2 = pos + act.length;
+	return img.substring(pos + 1, pos2);		// "poledancea" etc
 }
 
 function AddImageGM(img, widh, alg, imgbig, title, per, doc, ph)
@@ -666,13 +776,12 @@ function addBackgroundImage(img, alg, sty, doc)
 	return st;
 }
 
-function AddMana(no)
+function addBGSuffix(img)
 {
-	// Increases Mana by 'no' and update ui
-	
-	nMana = nMana + no;
-	if (nMana < 0 || isNaN(nMana)) nMana = 0;		// Sanity check, negative mana is not valid
-	updateLeftBar();
+	if (!img) return img;
+	var ar = img.split(".");
+	ar[0] += perYou.isMaleSex() ? "b" : "g";
+	return ar.join(".");
 }
 
 function toggleIcons() {
@@ -697,8 +806,9 @@ function addPopupWindow(md, title, txt, onclose, sty, blk, noclick, nocloseb)
 	var stxt = bWhite ? 'color:black;text-shadow:-1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white' : 'color:white;text-shadow:-1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black';
 	var st = '<div id="light' + id + '" class="white_content" style="text-align:left;' + (noclick !== true ? 'cursor:pointer;' : '') + (bWhite ? '' : 'background-color:black;') + stxt + sty + '"';
 	if (noclick !== true) st += ' onClick="closePopupWindowNow' + id + '()"';
-	st += "><div style='height:98%;height:calc(100% - 1.5em);width:100%;cursor:pointer;margin-bottom:-4px;font-size:1.1em;margin-top:1.5em'>" + txt + "</div>";
-	if (title !== "") st += "<p style='z-index:83;position:absolute;top:0.6em;left:2%;width:96%;text-align:center;" + (noclick !== true ? "cursor:pointer" : "") + ";margin-top:-12px;font-size:x-large'><b>" + capitalizeFirstLetter(title) + "</b></p>";
+	if (txt.indexOf("z-index:") == -1) st += "><div style='height:98%;height:calc(100% - 1.5em);width:100%;cursor:pointer;margin-bottom:-4px;font-size:1.1em;margin-top:1.5em'>" + txt + "</div>";
+	else st += ">" + txt + "</div>";
+	if (title !== "") st += "<p style='z-index:83;position:absolute;top:0.6em;left:2%;width:96%;text-align:center;" + (noclick !== true ? "cursor:pointer" : "") + ";margin-top:-12px;font-size:x-large'><b>" + capitalize(title) + "</b></p>";
 	if (nocloseb !== true && !isScreenSmall()) {
 		var stxtg = bWhite ? 'color:grey;text-shadow:-1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white' : 'color:grey;text-shadow:-1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black';
 		st += '<a style="z-index:83;position:absolute;top:5px;left:5px;line-height:10px;' + stxtg + '" href="#" onClick="closePopupWindowNow' + id + '();return false">' + (noclick !== true ? 'click anywhere to close' : 'close') + '</a>';
@@ -871,13 +981,13 @@ function getLeftBarContents()
 			(gameState.bAllowUndo ? '<br><a href="#" onclick="loadUnDo();return false"><img draggable="false" src="UI/' + (gameState.sUnDo === "" ? 'undo-grey' : 'undo') + '.png" style="width:99%" title="Undo" alt="Undo"></a>' : '') +
 			'<br><br><a href="#" onclick="helpCreditsPage();return false"><img draggable="false" src="' + getThemeFolder() + 'credits.png" style="width:99%" title="Credits" alt="Credits"></a><br>' +
 			'<a href="#" onclick="helpGamePlayPage();return false"><img draggable="false" src="UI/help.png" style="width:99%" title="Help" alt="Help"></a>' +
-			'<span class="zoom-icon" style="bottom:12px;left:0px;width:' + gameState.getLeftBarWidth() + '"><img draggable="false" style="cursor:pointer;width:100%" onclick="toggleLeftBar()" src="data:image/gif;base64,R0lGODlhKAAoAOMKAKioqKmpqaqqqqurq6ysrLm5ubq6uru7u/39/f7+/v///////////////////////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACH5BAEKAA8ALAAAAAAoACgAAAT+8Jkgqr046xzMO8JAbWR5BYMABqjpkuJothbLXuJrpqFc8zzdbOMTlooYpDFZQY2czaVrEGNRpcdaIKFQJG5R7OnU7fqUwmBvUFaI1OosJUCAvgXttcBZ3/tJMnEVeRlBaGE/eylUXF5XOTljOyGIbGWGFYs6KXMYKXlxnYKeI5ylFI0Jik0UPDQlIl5ts7RlXK87AbUKCF5cvbW4LrJdjcTGyAovQALJbQnGxbaU1LCITm1QYaOFpZSdeGVRrdTC3ThqhJlq5jiZJwBB6gMAPswbQa6R4V0/3u9ScuiCpmAONzEy1B1CWCEVIjE4fPhSlghiE0w1LOyz6AkgRw4jfs6E/JgRkI4WCy22QgGApIl431yCTFGgnUwRBSSk5NjhQQQAOw==" alt="Open" title="Show Details"></span>';
+			'<span class="zoom-icon" style="bottom:20px;left:0px;width:' + gameState.getLeftBarWidth() + '"><img draggable="false" style="cursor:pointer;width:100%" onclick="toggleLeftBar()" src="data:image/gif;base64,R0lGODlhKAAoAOMKAKioqKmpqaqqqqurq6ysrLm5ubq6uru7u/39/f7+/v///////////////////////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACH5BAEKAA8ALAAAAAAoACgAAAT+8Jkgqr046xzMO8JAbWR5BYMABqjpkuJothbLXuJrpqFc8zzdbOMTlooYpDFZQY2czaVrEGNRpcdaIKFQJG5R7OnU7fqUwmBvUFaI1OosJUCAvgXttcBZ3/tJMnEVeRlBaGE/eylUXF5XOTljOyGIbGWGFYs6KXMYKXlxnYKeI5ylFI0Jik0UPDQlIl5ts7RlXK87AbUKCF5cvbW4LrJdjcTGyAovQALJbQnGxbaU1LCITm1QYaOFpZSdeGVRrdTC3ThqhJlq5jiZJwBB6gMAPswbQa6R4V0/3u9ScuiCpmAONzEy1B1CWCEVIjE4fPhSlghiE0w1LOyz6AkgRw4jfs6E/JgRkI4WCy22QgGApIl431yCTFGgnUwRBSSk5NjhQQQAOw==" alt="Open" title="Show Details"></span>';
 	}
 
 	// Full size left bar
 
-	var s = '<span class="zoom-icon" style="z-index:41;position:absolute;bottom:2px;left:50px"><img draggable="false" src="UI/' + dn + '.png" width="42" height="42" alt="' + dn + '" title="' + getDay() + (dn == "day" ? "" : " " + dn) + ', ' + tm + '"><p style="font-size:xx-small;text-align:center;margin-top:-4px"><b>' + ts + '</b></p></span>' +
-		"<span class='zoom-icon' style='z-index:41;position:absolute;bottom:12px;left:0px'><img draggable='false' style='cursor:pointer;' onclick='toggleLeftBar()' src='" + getThemeFolder() + "collapse.png' width='24' height='24' alt='Close'  title='Hide Details'></span>" +
+	var s = '<span class="zoom-icon" style="z-index:41;position:absolute;bottom:12px;left:50px"><img draggable="false" src="UI/' + dn + '.png" width="42" height="42" alt="' + dn + '" title="' + getDay() + (dn == "day" ? "" : " " + dn) + ', ' + tm + '"><p style="font-size:xx-small;text-align:center;margin-top:-4px"><b>' + ts + '</b></p></span>' +
+		"<span class='zoom-icon' style='z-index:41;position:absolute;bottom:20px;left:0px'><img draggable='false' style='cursor:pointer;' onclick='toggleLeftBar()' src='" + getThemeFolder() + "collapse.png' width='24' height='24' alt='Close'  title='Hide Details'></span>" +
 		"<script type='text/javascript'>" +
 		"function swap(shw) {" +
 			"document.getElementById(shw).style.display = 'block';" +
@@ -922,6 +1032,7 @@ function getLeftBarContents()
 				"<a href='' onclick='toggleExplicit();updateLeftBar();return false' title='Explicit Images'>Explicit Scenes <b>" + (isExplicit(true) ? "Off" : "On") + "</b></a>" +
 				"<br><a href='' onclick='toggleLocale();return false' title='Where in the world'>Swap Locale</a>" +
 				"<br><a href='' onclick='if(!confirm(\"Warning: this can break your game?\")){return false;}else{togglePath();updateLeftBar();return false;}' title='Path'>" + getPathName() + "</a>" +
+				"<br><a href='' onclick='if(!confirm(\"Change to mod " + toggleModNew() + "\")){return false;}else{toggleMod();return false}' title='Mod'>" + (gameState.sMod === "" ? "Base Game" : gameState.sMod + ' Mod') + "</a>" +
 				"<br><a href='' onclick='WaitHere(6);return false'>pass 1 hr</a>" +
 				"<br><a href='' onclick='WaitHere(-6);return false'>go back 1 hr</a>" +
 				"<br><a href='' onclick='WaitHere(138);return false'>pass 1 day</a>" +
@@ -991,6 +1102,8 @@ function updateMain(s)
 
 function endMain(doc)
 {
+	if (gameState.bMainEnded) return;
+	gameState.bMainEnded = true;
 	if (!doc) doc = mdCache;
 	
 	if (gameState.sInvisibleChoices != '') {
@@ -1076,9 +1189,15 @@ function toggleLocale() {
 	sCurrency = isBritish() ? "$" : "\u00A3";
 	updateLocale();
 	dispPlace();		// to refresh left bar
-	alert("Glenvale is now in the " + (isBritish() ? "UK" : "US"));
+	alert(gameState.sTown + " is now in the " + (isBritish() ? "UK" : "US"));
 }
-function updateLocale() { getBaseItemObj(22).image = isBritish() ? "moneyuk.png" : "moneyus.png"; }
+function updateLocaleBase() {
+	getBaseItemObj(22).image = isBritish() ? "moneyuk.png" : "moneyus.png";
+}
+function updateLocale() {
+	updateLocaleBase();		// Common across all games/mods
+	gameState.sTown = findPerson("Glenvale").name;
+}
 
 // Paths
 function isMurderPath(bSoft) {
@@ -1161,7 +1280,7 @@ function isMainStoryComplete(stage)
 
 /****************** Staring the Game *******************************************************************/
 
-function DoRestart(nm, fldr)
+function DoRestart(nm, fldr, init)
 {
 	if (sGender === "") {
 		DoNewGame();
@@ -1177,18 +1296,49 @@ function DoRestart(nm, fldr)
 		'<script type="text/javascript" src="Javascripts/Visions/visions.js"></script>' +
 		'<script type="text/javascript" src="Javascripts/Visions/Explicit/visions.js"></script>' +
 		'<script type="text/javascript" src="Javascripts/images.js"></script>' +		
-		(gameState.sMod !== "" ? '<script type="text/javascript" src="Mods/' + gameState.sMod + '/Javascripts/compiled.js"></script><script type="text/javascript" src="Mods/' + gameState.sMod + '/Javascripts/details.js"></script>' : '') +
+		(gameState.sMod !== "" ? '<script type="text/javascript" src="Mods/' + gameState.sMod + '/Javascripts/compiled.js"></script>' : '') +
+		'<script type="text/javascript" src="Mods/details.js"></script>' +
 		'<script type="text/javascript" src="Javascripts/config.js"></script>' +
 		'</head>' +
 		'<body style="overflow-x:hidden" onload="StartThis()">' +
 		'<script type="text/javascript">' +
 			'function StartThis() {' +
-				'initialiseGame();' +
+				(gameState.sMod !== "" ? 'initialiseGame("' + gameState.sMod + '");' : 'initialiseGame();') +
 				'perYou.name="' + nm + '";sGender="' + sGender + '";setExplicit(' + isExplicit(true) + ');perYou.folder="' + fldr + '";' +
 				'sCurrency="' + sCurrency + '";bCheating=' + bCheating + ';setRunes(' + isRunes() + ');setPuzzles(' + isPuzzles() + ');' +
 				'gameState.nRightBarState=' + gameState.nRightBarState + ';gameState.nLeftBarState=' + gameState.nLeftBarState + ';nTheme=' + nTheme + ';gameState.bUseIcons=' + gameState.bUseIcons + ';' +
-				'gameState.bAllPlaces=' + gameState.bAllPlaces + ';gameState.bAllowUndo=' + gameState.bAllowUndo + ';gameState.sMod="' + gameState.sMod + '"' +
+				'gameState.bAllPlaces=' + gameState.bAllPlaces + ';gameState.bAllowUndo=' + gameState.bAllowUndo + ';gameState.sMod="' + gameState.sMod + '";gameState.nMaxPhotos=' + gameState.nMaxPhotos + 
+				(init !== undefined && init !== '' ? '' + init : '') +
 				';startGame();' +
+			'}' +
+		'</script>' +
+		'</body>' +
+		'</html>'
+	);
+	document.close();
+}
+
+function DoRestartAndLoad(slot, s)
+{
+	document.write(
+		mdCache.getDocHead() + '<title>Mind Control Adventures - A Spell For All</title>' +
+		'<link rel="stylesheet" type="text/css" href="' + getThemeFolder() + 'game.css">' +
+		'<script type="text/javascript" src="Javascripts/compiled.js"></script>' +		
+		'<script type="text/javascript" src="Javascripts/Visions/visions.js"></script>' +
+		'<script type="text/javascript" src="Javascripts/Visions/Explicit/visions.js"></script>' +
+		'<script type="text/javascript" src="Javascripts/images.js"></script>' +		
+		(gameState.sMod !== "" ? '<script type="text/javascript" src="Mods/' + gameState.sMod + '/Javascripts/compiled.js"></script>' : '') +
+		'<script type="text/javascript" src="Mods/details.js">' +
+		'<script type="text/javascript" src="Javascripts/config.js"></script>' +
+		'</head>' +
+		'<body style="overflow-x:hidden" onload="setTimeout(function(){loadGlobalSettings(StartThis);},100)">' +
+		'<script type="text/javascript">' +
+			'function StartThis() {' +
+				//'initialiseGame();' +
+				'arPeople=[];perMod=undefined;' +
+				'gameState=new GameStatus();' +
+				'gameState.sMod="' + gameState.sMod + '";' +
+				(slot !== '' && slot != undefined ? 'Load("' + slot + '");' : 'loadGameString("' + s + '");' ) +
 			'}' +
 		'</script>' +
 		'</body>' +
@@ -1443,11 +1593,22 @@ function getHeight(bd)
    var g = bd.getElementsByTagName('body')[0];
    return win.innerHeight || e.clientHeight || g.clientHeight;
 }
-
-function isScreenSmall() { return gameState.nWidth < (gameState.nHeight * 1.1); }
+ 
+function isScreenSmall() { return gameState.nWidth < 770; } //return bMobile && (gameState.nWidth < (gameState.nHeight * 1.1)); }
 
 function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
-function capitalizeFirstLetter(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+function replaceBulk(str, findArray, replaceArray)
+{
+	var regex = [];
+	var map = {}; 
+	for (var i = 0; i < findArray.length; i++) { 
+		regex.push(findArray[i].replace(/([-[\]{}()*+?.\\^$|#,])/g,'\\$1'));
+		map[findArray[i]] = replaceArray[i];
+	}
+	regex = regex.join('|');
+	return str.replace(new RegExp(regex, 'g'), function(matched) { return map[matched]; });
+}
 
 /*
 function getOS()
@@ -1585,12 +1746,13 @@ var gameState;
 var sType;		// Convenience variable for place's - 'type' attribute/parameter
 var sWho;		// Convenience variable for events  - 'who' attribute
 
-function initialiseGame()
+function initialiseGame(mod)
 {
 	gameState = new GameStatus();
 
 	sType = '';
 	sWho = '';
+	perMod = undefined;
 
 	initialiseTime();	
 	initialisePeople();
@@ -1598,6 +1760,7 @@ function initialiseGame()
 	initialiseItems();	
 	initialisePhone();
 	setConfig();
-	setupMods();
+	setupMods(mod);
+	updateLocale();
 	updatePath();
 }

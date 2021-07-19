@@ -10,7 +10,7 @@ function ShowPlace9()
 
 	if (wherePerson("Kurndorf") == 4) movePerson("Kurndorf", 5);  // advance the Ghost
 
-	addPlaceTitle(md, "Glenvale Secondary School");
+	addPlaceTitle(md, gameState.sTown + " Secondary School");
 	md.write('<p>Glenvale Secondary School, famous for its high academic achievers and its teachers\' poor sense of humour, is the pride of the county.<br><p>');
 	if (perYou.getExperience() === 0)
 	{

@@ -254,7 +254,8 @@ function ShowPlace184(stype)
 			perDavy.showPersonFace();
 			addPlaceTitle(md, "Take Davy Out");
 		} else {
-			perYou.showPerson("charmedbydavy-start.jpg");
+			if (perYou.folder.indexOf("Nobody") != -1) perKate.showPerson("kate17b.jpg");
+			else perYou.showPerson("charmedbydavy-start.jpg");
 			addPlaceTitle(md, "Kate\'s Slave");
 		}
 

@@ -266,7 +266,7 @@ function initialiseNurseSandra()
 	per.callThem = function() {
 		if (Place == 269) {
 			gotoPlace(Place, 'type=sandrapool');
-			receiveCall('', 'You call Sandra to invite her to join you at the pool for a swim if she can take a break. She answers that she\'ll be there soon she can get another nurse to conver for her for a while.');
+			receiveCall('', 'You call Sandra to invite her to join you at the pool for a swim if she can take a break. She answers that she\'ll be there soon she can get another nurse to cover for her for a while.');
 			WriteCommentsFooter(bChat, bChatLeft);
 		}
 	};

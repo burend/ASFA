@@ -98,9 +98,9 @@ function initialiseCatherineRoss()
 			return true;
 		}
 
-		if (sType == "catherinebusy" || (!this.checkFlag(9) && (Place == 10 || Place == 242) && nFromPlace != Place && nTime > 288 && Math.random() < 0.25)) {
+		if (sType == "catherinebusy" || (!this.checkFlag(9) && (Place == 10 || Place == 72) && nFromPlace != Place && nTime > 288 && Math.random() < 0.25)) {
 			if (!checkPersonFlag("MrBeasley", 3)) {
-				if ((Place == 10 && wherePerson("Monique") != 10) || (Place == 242 && wherePerson("MrsTanika") != 242)) {
+				if ((Place == 10 && wherePerson("Monique") != 10) || (Place == 72 && wherePerson("MrsTanika") != 72)) {
 					// Catherine's quickie
 					setQueryParams("type=catherinebusy");
 					this.setFlag(9);

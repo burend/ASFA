@@ -8,7 +8,7 @@ function ShowPlace415()
 	var perGabby = findPerson("Gabby");
 	var bBothCharmed = perMom.isCharmedBy() && perGabby.isCharmedBy();
 
-	if (bBothCharmed) perGabby.showPerson("gabby-mom3.jpg");
+	if (bBothCharmed) perMom.showPerson("gabby-mom3.jpg");
 	else perMom.showPersonRandom("mom5", 2);
 	addPlaceTitle(md, "Mom at Work");
 
@@ -59,7 +59,7 @@ function ShowPlace415()
 		if (perMom.getCharmedLevel() > 1) addLinkToPlace(md, 'tell Mom you need help in releasing some pent-up desire', Place, 'type=momdesireoffice');
 		if (perGabby.getCharmedLevel() == 1) {
 			addPopupLink(md, 'tell them to not mind you and proceed', "Mom and Gabby",
-				perGabby.addPersonString("gabby-mom9.jpg", "height:max%", "right") +
+				perMom.addPersonString("gabby-mom9.jpg", "height:max%", "right") +
 				'You know by now how your presence affects those under the Dai-Chu, and even though Mom and Gabby are both hesitant to give in to their needs, it only takes a small push to convince them they\'d work way more efficiently when they make sure to release all that pent-up lust distracting them, and Mom is the first to take action, silencing her assistant\'s protest with a deep kiss that\'s leaving her breathless.',
 				true, "dispPlace(Place,'type=momgabbyoffice2')"
 			);

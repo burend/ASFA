@@ -291,19 +291,19 @@ function initialiseJesse()
 
 	per.getPossessionFace = function() {
 		if (isDemonInTown()) return "jesse-dface";
-		if (perJesse.getDemonPath() >= 500 && perJesse.getDemonPath() < 600) return "jesse-sickface";
+		if (this.getDemonPath() >= 500 && this.getDemonPath() < 600) return "jesse-sickface";
 		return "jesse1b";
 	};
 	
 	per.passTimeDay = function() {
-		var dp = perJesse.getDemonPath();
-		if (dp > 500 && dp < 505) perJesse.setDemonPath(dp + 1);
-		else if (dp == 505) perJesse.setDemonPath(600);		// Recovered!
+		var dp = this.getDemonPath();
+		if (dp > 500 && dp < 505) this.setDemonPath(dp + 1);
+		else if (dp == 505) this.setDemonPath(600);		// Recovered!
 		return '';
 	};
 	
 	per.isPlaceImageRight = function() {
-		if (Place == 375 && this.isHere() && sType === "" && perJesse.getDemonPath() >= 500 && perJesse.getDemonPath() < 600) return true;
+		if (Place == 375 && this.isHere() && sType === "" && this.getDemonPath() >= 500 && this.getDemonPath() < 600) return true;
 		return false;
 	};
 	
@@ -361,6 +361,77 @@ function initialiseJesse()
 			return true;
 		}
 		
+		if (Place == 374 && this.place == 6) {
+			// Event: Jesse visiting to bargain for the relic
+			md = WritePlaceHeader(false, this.checkFlag(3) ? "" : "td-left-large");
+
+			var myName = perYou.getPersonName();
+			
+			if (wherePerson("Miku") == 408) setPersonFlag("Miku", 24);
+
+			// PICTURE REFERENCES
+			if (this.checkFlag(3)) this.showPerson('jesse9.jpg');
+			else this.showPerson("jesse8.jpg");
+
+			/* TITLE LINE */
+			addPlaceTitle(md, "Your Visitor in the Living Room");
+
+			/* Description */
+			md.write('<p>When you enter your living room you know who is there before you even lay eyes on her.  Her <i>scent</i> gives her away.  You steel yourself against her influence as best you can as you enter.</p>');
+
+			if (this.getDemonPath() == 60) // Just walked in on her
+			{
+				this.setDemonPath(61); //Advance Path
+				md.write('<p>"Hello there, ' + myName + '.  May we speak for a moment?" she asks, her voice not quite as sultry as you seem to recall it usually was when she was trying to seduce you.</p>');
+			}
+			if (this.checkFlag(3) && this.getDemonPath() < 65)
+			{
+				md.write('<p>"Concerned for my little thrall\'s safety, ' + myName + '?" she asks.  "Why?  Have you changed your mind about me?  Do you want me?" she asks, as her strength of her scent almost triples in intensity, making your head swoon.  "Would you like to... Kiss me?" she asks, wetting her lips.</p>');
+			}
+			else if (this.getDemonPath() == 70)
+			{
+				md.write(
+					'<p>"I am here to declare a truce," she says.  "That is why I resisted the urge to enthrall your oh-so-tasty mother.  Her... <i>innocence</i> smells so sweet.  Not an easy thing to pass up."</p>' +
+					'<p>The look on your face at her thinly veiled threat must have given her pause.  "I give you my word," she says in the most honest tone you have heard the creature use.  "As long as our truce lasts, I shall do no harm to your family.  I am a creature of habit,' + myName + ', and my word is binding."</p>'
+				);
+			}
+			else if (this.getDemonPath() == 75)
+			{
+				md.write(
+					'<p>"There is a special...  locket.  That We need.  But it is guarded in a place that we can not go.  We need this locket.  Get it for Us and we will leave you and your town to its own devices."</p>' +
+					'<p>"And in return, We will give you this," she says, brandishing a small old stone in her hand that looks very familiar.  "We know you want this...  Your type always wants this..." she says, instinctually lacing her voice with a hint of lust.</p>'
+				);
+			}
+
+			/* Dialogue Options */
+			//**********************************************************************
+			startQuestions();
+
+			if (!this.checkFlag(3) && !this.checkFlag(4) && this.getDemonPath() < 65) addQuestionC(md, '"What happened to your pet?"', "Jesse", 1843);
+			else if (!this.checkFlag(4))
+			{
+				addLinkToPlace(md, 'Give in to temptation and <i>kiss</i> her', 995);
+				addQuestionC(md, '"Shove off, <i>Legion</i>.  I will not fall for that trick."', "Jesse", 1844);
+			}
+
+			if (!this.checkFlag(5) && this.getDemonPath() < 65) {
+				addQuestionC(md, '"What did you do to my Mother?"', "Jesse", 1845);
+			}
+
+			if (this.getDemonPath() == 65) addQuestionC(md, '"Why are you here, <i>Legion</i>?"', "Jesse", 14465);
+			else if (this.getDemonPath() == 70) addQuestionC(md, '"Fine then.  What do you want for this truce?"', "Jesse", 14470);
+
+			if (this.checkFlag(8)) {
+				// She wants to give you the stone
+				addQuestionCO(md, 'Take the stone from her hand', "Jesse", 1848);
+			}
+		
+			addLinkToPlace(md, 'walk to the kitchen', 45);
+			addLinkToPlace(md, 'leave your house', 44);
+			WritePlaceFooter(md);
+			return true;
+		}
+		
 		if (sType == "threatenlegion1") {
 			md = WritePlaceHeader();
 
@@ -411,7 +482,7 @@ function initialiseJesse()
 
 		if (sType == "jessepark") {
 			// Event: Meet Demon Jesse at the Park
-			md = WritePlaceHeader(false, !perJesse.checkFlag(1) ? "td-left-large" : "");
+			md = WritePlaceHeader(false, !this.checkFlag(1) ? "td-left-large" : "");
 
 			var myName = perYou.getPersonName();
 			perSera = findPerson("Seraphina");
@@ -599,7 +670,7 @@ function initialiseJesse()
 			// Hotel Room 113
 			if (Place == 375) {
 				// Jesse + Thrall
-				if (perJesse.getDemonPath() < 500) {
+				if (this.getDemonPath() < 500) {
 					// Demon + Thrall is here
 					addComments('You attempt to cast the spell, but if fails to take effect... Evidently the spell is not powerful enough to affect a demon.');
 				} else addComments('You attempt to cast the spell, but if fails to take effect Jesse is still affected by the aftermath of her possession.</p><p>The thrall, has no will or apparently a soul and the spell is not needed, and also does not work.');

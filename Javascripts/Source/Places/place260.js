@@ -59,7 +59,7 @@ function ShowPlace260()
 
 	if (perYou.isArrested()) {
 		// Under arrest
-		if (perDA.getQuestArrested() > 0 && perDA.getQuestArrested() < 50) addLinkToPlace(md, "wait for your trial?", 285);
+		if (perDA.getQuestArrested() > 0 && perDA.getQuestArrested() < 50) addLinkToPlace(md, "wait for your trial?", 950);
 		else addLinkToPlace(md, "give up the game?", 999);
 
 		if (clv > 0 && perS.place == 261) {
@@ -71,7 +71,7 @@ function ShowPlace260()
 	
 	
 	if (perDA.other == 50 || perMG.place == 261 || perCharlie.place == 261) {
-		AddRightColumnLarge(md);
+		AddPeopleColumnLarge(md);
 		if (perDA.other == 50) perDA.showPerson("diane8.jpg");
 		if (perMG.place == 261) perMG.showPerson("!granger-jail1.jpg");
 		if (perCharlie.place == 261) perCharlie.showPerson("break-jail2.jpg");

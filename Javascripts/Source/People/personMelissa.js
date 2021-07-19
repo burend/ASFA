@@ -32,8 +32,8 @@ function initialiseMelissa()
 	per.whereNow = function() { 
 		if (isDay()) return this.place;
 		var day = (Math.floor(nTime / 288) % 7 + 1) % 3;
-		if (day === 0 || day == 1) return 369;
-		return 370;
+		if (day === 0 || day == 1) return 361;
+		return 362;
 	};
 	
 	per.passTimeDay = function() {

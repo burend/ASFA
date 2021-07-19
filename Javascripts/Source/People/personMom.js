@@ -104,7 +104,8 @@ function addMomsArousal(no, evt)
 function initialiseMom()
 {
 	// Mom
-	addPerson("Mom", 0, "Mom", '', false);
+	addPerson("Mom", 0, "Mom", 'Natural', false);
+	
 	per.Replies = RepliesMom;
 
 	per.getPersonName = function(full) { return full === true ? "Mom" : "Your Mother"; };
@@ -130,6 +131,7 @@ function initialiseMom()
 
 	per.passTimeDay = function() {
 		if (this.checkFlag(26)) this.setFlag(20);
+		if (this.checkFlag(17)) this.setFlag(44);
 		this.setFlag(16, false);
 		if (Math.floor(this.hoursCharmed("skip") / 24) >= 6 && this.checkFlag(19) && !this.checkFlag(32)) {
 			if (!isCharmedBy("Gabby")) {
@@ -137,6 +139,17 @@ function initialiseMom()
 				// Too late!
 				this.moveThem(998);
 				movePerson("Gabby", 998);
+			}
+		}
+		if (this.place == 400 || this.place == 899) {
+			this.place = 154;
+			movePerson("Brandi", 400);
+		}
+		if (this.checkFlag(44) && !this.checkFlag(43) && isWeekDay()) {
+			if (this.checkFlag(41) || (getDay(true) != "Mon" && isPlaceKnown("AuntsHouse"))) {
+				// Mom went out with Aunt Brandi, clear to go out another weekend
+				this.setFlag(41, false);
+				this.setFlag(43, false);
 			}
 		}
 		return '';
@@ -186,10 +199,10 @@ function initialiseMom()
 			}
 		}
 
-		if (sType === "" && Place == 45 && !this.checkFlag(15) && getHour() >= 6 && getHour() < 8 && this.isCharmedBy() && isCharmedBy("Tracy")) {
+		if (sType === "" && Place == 45 && !this.checkFlag(15) && getHour() >= 6 && getHour() < 8 && this.isCharmedBy() && isCharmedBy("Tracy") && !(this.checkFlag(43) && !this.checkFlag(41))) {
 			showPopupWindow("Mom's Breakfast",
 				this.addPersonString("mom29.jpg", "height:max%", "right") +
-				'<p>“Good Morning, hun!” Mom is up early and greets you wearing little more than a happy smile and some see-through lingery as you enter the kitchen.</p>' +
+				'<p>“Good Morning, hun!” Mom is up early and greets you wearing little more than a happy smile and some see-through lingerie as you enter the kitchen.</p>' +
 				'<p>“You\'ve been working so hard off late, Ive felt the least I could do is make sure you\'ll get a hearty breakfast each morning, so just sit down and let your Mother pamper you a little.”</p>' +
 				'<p>She gives you a playful wink and turns around, leaning forward just enough to invitingly present her ass to you...</p>' +
 				'<p>There are moments you just love being a ' + perYou.getWitch(true),
@@ -201,7 +214,7 @@ function initialiseMom()
 		
 		if (sType == "momgabbyoffice2") {
 			showPopupWindow("Mom and Gabby",
-				findPerson("Gabby").addPersonString("gabby-mom10.jpg", "height:max%", "right") +
+				this.addPersonString("gabby-mom10.jpg", "height:max%", "right") +
 				'“' + perYou.getPersonName() + ' is right.” She states with a husky voice and begins to undress. “I\'m so horny I can barely work.”</p>' +
 				'<p>“B... but...” Gabby stammers, taken aback by Mom\'s boldness.</p>' +
 				'<p>“No buts!” Gabby\'s bra lands on the floor next to you. “The sooner we make each other cum the sooner we can get back to work.”',
@@ -211,7 +224,7 @@ function initialiseMom()
 		}
 		if (sType == "momgabbyoffice3") {
 			showPopupWindow("Mom and Gabby",
-				findPerson("Gabby").addPersonString("gabby-mom11.jpg", "height:max%", "right") +
+				this.addPersonString("gabby-mom11.jpg", "height:max%", "right") +
 				'“Mom presses Gabby\'s head against her breasts before she is able to say anything else, and after a moment of hesitation, the smaller woman\'s tongue begins to play with her nipples.</p>' +
 				'<p>“Your... ' + (perYou.isBornMale() ? 'Son' : 'Daughter') + ' is still watching us, Alex...” She whispers in-between licks, her body starting to tremble under Mom\'s firm touch.</p>' +
 				'<p>“And it turns you on that ' + perYou.getHeShe() + ' does.”</p>' +
@@ -222,7 +235,7 @@ function initialiseMom()
 		}
 		if (sType == "momgabbyoffice4") {
 			showPopupWindow("Mom and Gabby",
-				findPerson("Gabby").addPersonString("gabby-mom12.jpg", "height:max%", "right") +
+				this.addPersonString("gabby-mom12.jpg", "height:max%", "right") +
 				'What little cloth still remained quickly flies into various corners of the room, and while Gabby refused to comment on Mom\'s last words, her silence probably says it all.</p>' +
 				'<p>When Mom finally goes down on her, your presence seems almost forgotten safe for occasional glances into your direction.</p>' +
 				'<p>Gabby spreads her legs widely to make sure you have a good view, and as Mom begins to playfully flick her tongue over her assistance\'s little nub you realize: she is good at this...</p>' +
@@ -241,6 +254,29 @@ function initialiseMom()
 				'<p>“And she\'s, like, making a huge fuss out of some people seeing ghosts, you know?”</p>' +
 				'<p>“Yes! As if crazy people believing magic and ghosts and stuff is real are all that unusual in Glenvale... And now she\'s having the whole station in a buzz, keeping people on the field all day and...',
 				'dispPlace(371,"type=byesuitcase2")'
+			);
+			return true;
+		}
+		
+		if (sType == "momtransformagenatural") {
+			CastTransform(1);
+			this.dress = "Younger";	
+			showPopupWindow("Rejunenated!",
+				this.addPersonString("mom23.jpg", "height:max%", "right") +
+				'Mom\'s appearance shifts but it is only subtle, and after a minute you realise she is looking younger. Nothing else is changed but she looks 10 years younger!</p>' +
+				'<p>You ask how she is feeling and she replies she is feeling fit and energetic!',
+				'dispPlace()'
+			);
+			return true;
+		}	
+		if (sType == "momtransformageyounger") {
+			CastTransform(1);
+			this.dress = "Natural";
+			showPopupWindow("Restored!",
+				this.addPersonString("mom23.jpg", "height:max%", "right") +
+				'Mom\'s appearance shifts but it is only subtle, and after a minute you realise she is looking older, returning back to how she was before you cast the transform spell on her before, back to her natural age!</p>' +
+				'<p>You ask how she is feeling and she replies she is feeling fine, maybe a little tired',
+				'dispPlace()'
 			);
 			return true;
 		}
@@ -276,11 +312,12 @@ function initialiseMom()
 			if (!this.checkFlag(10)) {
 				this.setFlag(10);
 				showPopupWindow("Mom",
-					this.addPersonString((isDay() ? "mom1a-day" : "mom1a-night") + ".jpg", "height:max%", "right") +
+					this.addPersonString((isDay() ? "intro-day" : "intro-night") + ".jpg", "height:max%", "right") +
 					'Your mother Alexandra, Alex to her friends and Mom to you, is one of the most precious thing in your life, next to Tracy. They have always been the closest ones to you, not just because they’re family, but they were always there for you and support you in anything.</p>' +
 					'<p>Mom is especially a real sweetheart, she even slapped another mom on the face because she called you  "a weirdo who creeps out the other kids" at the playground years ago.</p>' +
 					//'You can\'t really imagine what she would react if you would tell her that you can control other’s minds and emotions. One day you will have to do something about it, because you will rule this town and everyone in it and everyone will be your slave! Maybe that day isn’t really that far away? You do want to share the experience and joy with her, tough. You want her to relax and have fun after she’s  been working hard for 25 years, she deserves some rest. Maybe you could give her a couple of slaves to look after her needs, but first you have to make her believe what you are doing is right.' :
-					'You can\'t really imagine what she would react if told her about your quest for the spells in the Book. You do want to share the experience and joy with her, tough. You want her to relax and have fun after she’s been working hard for 25 years, she deserves some rest.'
+					'You can\'t really imagine what she would react if told her about your quest for the spells in the Book. You do want to share the experience and joy with her, tough. You want her to relax and have fun after she’s been working hard for 25 years, she deserves some rest.</p>' +
+					'<p>Mom is getting dressed as you enter her room, and as always she does not care a bit, she has little modesty, and Tracy takes after her that way. It is certainly not she is teasing you..at least Mom does not..it is just you are family. Still, it does at times make you a little...uneasy.'
 				);
 				return true;
 			}
@@ -331,14 +368,19 @@ function initialiseMom()
 
 		// Delivery for Mom to show Zoey and reference Mom's job
 		if (!this.checkFlag(9) && isDay() && nFromPlace == 44) {
-			showPopupWindow("A Delivery for Mom",
-				findPerson("Zoey").addPersonString("zoey0b.jpg", "height:max%", "right") +
-				'<p>As you approach your front door, you see a cute delivery girl knocking on the door' + (checkPersonFlag("Madison", 8) ? ', the same girl from before' : '') + '. You ask her what she wants and she turns,<br><br>' +
-				'"Hello, I have a document package from the TV Station", your mother often gets some papers delivered to your home. For some reason the TV Station refuses to embrace the online world. The delivery girl asks you to sign for the package and hands it to you.<br><br>' +
-				(isSpellKnown("Charm") ? 'Unfortunately the girl did not give her name and she is not wearing a name badge, so you cannot even consider trying to cast a spell on her, even if it was not quite so public here.<br><br>' : '') +
-				'With her business done she leaves you, riding off on a small scooter towards the shopping center. You take the package inside to drop it off in your mother\'s room.',
-				"setPersonFlag('Mom',9);dispPlace()"
-			);
+			findPerson("Zoey");
+			if (per.dress === "") {
+				per.pickModel('As you approach your front door, you see a cute delivery girl knocking on the door.', '');
+			} else {
+				showPopupWindow("A Delivery for Mom",
+					findPerson("Zoey").addPersonString("zoey0b.jpg", "height:max%", "right") +
+					'<p>As you approach your front door, you see a cute delivery girl knocking on the door' + (checkPersonFlag("Madison", 8) ? ', the same girl from before' : '') + '. You ask her what she wants and she turns,<br><br>' +
+					'"Hello, I have a document package from the TV Station", your mother often gets some papers delivered to your home. For some reason the TV Station refuses to embrace the online world. The delivery girl asks you to sign for the package and hands it to you.<br><br>' +
+					(isSpellKnown("Charm") ? 'Unfortunately the girl did not give her name and she is not wearing a name badge, so you cannot even consider trying to cast a spell on her, even if it was not quite so public here.<br><br>' : '') +
+					'With her business done she leaves you, riding off on a small scooter towards the shopping center. You take the package inside to drop it off in your mother\'s room.',
+					"setPersonFlag('Mom',9);dispPlace()"
+				);
+			}
 			return true;
 		}
 
@@ -376,7 +418,7 @@ function initialiseMom()
 			// Tanika here
 			var clvT = perTanika.getCharmedLevel();
 			// Commom part
-			var s = perTanika.addPersonString((this.isCharmedBy() ? 'meetmomc' : 'meetmomu') + '.jpg', "height:max%", "right") + '<p>' +
+			var s = this.addPersonString(perTanika.getImgS(this.isCharmedBy() ? 'meetmomc' : 'meetmomu') + '.jpg', "height:max%", "right") + '<p>' +
 				(bTracyHere ? 'When you enter the lounge room Tracy greets you, "You are in trouble little ' + (perYou.isBornMale() ? 'Bro' : 'Sis') + ', one of your teachers is here! It is Mrs. Ice Queen, she is in Mom\'s bedroom with her". She used a nickname she used for Mrs. Tanika back when she attended your school.' :
 								  'You enter the lounge room and no one is there. You realise the noise is coming from your mothers\'s bedroom.') +
 			  '</p><p>You step towards the bedroom and you hear your Mom say something angrily but before you get there the door opens and Mrs. Tanika and your mother step out. Mom looks annoyed but when she sees you she looks a little embarrassed,</p>' +
@@ -479,6 +521,8 @@ function initialiseMom()
 			// Freeing Mom
 			md = WritePlaceHeader();
 			this.setFlag(32);
+			this.setFlag(40, false);
+			this.setFlag(41, false);
 			this.showPerson("mom16.jpg");
 			addPlaceTitle(md, "Freeing Mom");
 			md.write(
@@ -957,7 +1001,7 @@ function initialiseMom()
 			} else {
 				md.write(
 					'<p>Mom is a good lover: Attentive, caring and far more sensual than you have ever imagined it.</p>' +
-					'<p>Her fingers caress your legs as she spreads them apart and aligns her hip with yours, and a soft gasp leaves your lip as her warm folds press against your own and you feel your most sensetive spots touch.</p>' +
+					'<p>Her fingers caress your legs as she spreads them apart and aligns her hip with yours, and a soft gasp leaves your lip as her warm folds press against your own and you feel your most sensitive spots touch.</p>' +
 					'<p>The experience is as hot as it is surreal. She moves slowly at first, carefully, but as you both adjust to each others movements, lust and passion take over. For a few precious minutes you allow yourself to get lost within the moment, enjoying her warmth, her smell, and the feel of every motion bringing you closer to the peak.</p>' +
 					'<p>As you finally climax, she pulls you into a kiss and comes to rest on top of you, gasping for air, not daring to speak.</p>'
 				);	
@@ -991,6 +1035,9 @@ function initialiseMom()
 	
 	per.showEvent = function()
 	{
+		if (Place == 154) return this.showEventBedroom();
+		if (Place == 452 && this.isHere()) return this.showEventGabbysHome();
+		
 		var md, d, stage;
 		
 		if (Place == 40) {
@@ -1053,9 +1100,11 @@ function initialiseMom()
 				return true;			
 			}
 			if (sType == "showermomjoin") {
-				md = WritePlaceHeader(false, 'td-left-med');
-				if (perYou.isMaleSex()) this.showPersonRorX("mom-shower3m.jpg");
-				else this.showPerson("mom-shower3f.jpg");
+				md = WritePlaceHeader();
+				if (perYou.isMaleSex()) {
+					if (isExplicit()) this.showPersonX("mom-shower3m", 2);
+					else this.showPerson("mom-shower3m.jpg");
+				} else this.showPerson("mom-shower3f.jpg");
 				addPlaceTitle(md, "Sharing the Shower with Mom");
 				md.write(
 					'<p>“Taking a shower together?” Mom thinks for a moment. “Well, it would save water, and maybe you would like help with... something else?”</p>' +
@@ -1181,13 +1230,12 @@ function initialiseMom()
 
 		}
 		
-		if (Place == 452 && this.isHere()) return this.showEventGabbysHome();
-		
-		if (sType === "" && Place == 45 && this.checkFlag(15) && !this.checkFlag(16) && getHour() >= 6 && getHour() < 8) setQueryParams('event=mombreakfast');
+		if (sType === "" && Place == 45 && this.checkFlag(15) && !this.checkFlag(16) && getHour() >= 6 && getHour() < 8 && !(this.checkFlag(43) && !this.checkFlag(41))) setQueryParams('event=mombreakfast');
 		
 		if (sType == "breakfastfun") {
 			md = WritePlaceHeader();
-			this.showPerson("mom31.jpg");
+			if (isExplicit() && perYou.isMaleSex()) this.showPersonX("mom31.jpg");
+			else this.showPerson("mom31.jpg");
 			this.setFlag(16);
 			addPlaceTitle(md, "Mom for Breakfast");
 			if (perYou.isMaleSex()) {
@@ -1214,17 +1262,82 @@ function initialiseMom()
 			WritePlaceFooter(md);
 			return true;				
 		}
-
 		
-		if (Place != 154) return false;
+		return false;
+	};
+
+	per.showEventBedroom = function()
+	{
+		var md;
 		
 		var perTracy = findPerson("Tracy");
 		var clvT = perTracy.getCharmedLevel();
 		var perGabby = findPerson("Gabby");
-		var clvG = perGabby.getCharmedLevel();
+		var bGabbyHere = perGabby.isHere();
+		
+		if (this.checkFlag(44) && !this.checkFlag(43) && this.isHere() && isEvening() && !isWeekDay()) {
+			// Mom going out with Aunt Brandi (repeatable)
+			md = WritePlaceHeader();
+			this.setFlag(43);
+			this.place = 899;
+			movePerson("Brandi",899);
+			this.showPerson("visitbrandi1" + (this.isCharmedBy() ? "c" : "u") + ".jpg");
+			addPlaceTitle(md, "Mom Going Out");
+			md.write(
+				'<p>You see Mom is getting ready to go out somewhere, and has done her hair a bit differently'
+			)
+			if (bGabbyHere) md.write(', maybe Gabby styled it for her?');
+			else md.write('.');
+			md.write(' You conpliment her dress and hair and she does a little spin to show off, and explains,</p>');
+			if (isPlaceKnown("AuntsHouse")) md.write('<p>"I have arranged to meet Brandi, that is your Aunt Brandi, tonight for some drinks. it seems this is going to be a regular thing!"</p>');				
+			else {
+				md.write(
+					'<p>"I have arranged to meet Brandi, that is your Aunt Brandi, tonight for some drinks. I am really looking forward to it, we have not really done this for years."</p>' +
+					'<p>You ask if she will be able to bring up your visiting Kylie and her home and Mom says, "Yes, when I called her to discuss that she suggested going out for the evening"</p>'
+				);
+			}
+			md.write('<p>She picks up her bag and tells you "Don\'t wait up!" and you walk with her to the front door...</p>');
+
+			startQuestionsOnly();
+			addLinkToPlace(md, 'see her out and wish her a good time', 45);
+			if (bGabbyHere) {
+				AddPeopleColumn();
+				perGabby.showPerson("gabby22.jpg");
+			}
+			WritePlaceFooter(md);
+			return true;
+		}
+		
+		if (this.checkFlag(43) && !this.checkFlag(41) && this.isHere()) {
+			// Day after going out
+			// ? Gabby
+			md = WritePlaceHeader();
+			this.setFlag(41);
+			if (this.isCharmedBy()) this.showPerson("mom33.jpg");
+			else this.showPersonDN("mom10.jpg");
+			addPlaceTitle(md, "Mom Recovering");
+			if (isPlaceKnown("AuntsHouse")) {
+				md.write(
+					'<p>You see Mom is back in her room, while she looks mostly the same you can hear in her voice she is tired and probably a little hung-over. You ask her how her evening with Aunt Brandi went. She brightens up a bit and replies,</p>' +
+					'<p>"Great, it was really fun, almost like the old times when we were young"</p>'
+				)
+			} else {
+				md.write(
+					'<p>You see Mom is back in her room, while she looks mostly the same you can hear in her voice she is tired and probably a little hung-over. You ask her how her evening with Aunt Brandi went. She brightens up a bit and replies,</p>' +
+					'<p>"Great, it was really fun, almost like the old times when we were young". She can see you are waiting on what she sorted out, and continues,</p>' +
+					'<p>"Yes, yes, she is a bit suspicious of you for some reason, but she has always been overly protective. You are welcome to visit them in the evening after Kylie has finished her study. Be on your best manners!"</p>' +
+					'<p>You thank her for sorting this out and as you leave she mentions she will probably be going out with Brandi more often.</p>'
+				);
+				setPlaceKnown("AuntsHouse");
+			}
+			startQuestionsOnly();
+			addLinkToPlace(md, 'leave her for now', 45);
+			WritePlaceFooter(md);
+			return true;
+		}		
 		
 		if (sType == "searchclothes") {
-			// Pack Mom=s suitcase for work
+			// Pack Mom's suitcase for work
 			md = WritePlaceHeader();
 			AddImage("mom-underwear.jpg");
 			this.setFlag(21);
@@ -1420,13 +1533,10 @@ function initialiseMom()
 		
 		if (sType == "momfuck") {
 			// Fuck her
-			var chc = Math.floor(Math.random() * 2);
-			md = WritePlaceHeader(false, (!perYou.isMaleSex() || (chc === 0 && isExplicit() && perYou.isMaleSex())) ? 'td-left-large' : '');
-			if (isExplicit()) {
-				if (perYou.isMaleSex()) this.showPersonX(chc === 0 ? "mom11ba.jpg" : "mom11bb.jpg");
-				else this.showPersonRandomX("mom11g", 2);
-			} else if (perYou.isMaleSex()) this.showPersonRandom("mom11b", 2);
-			else this.showPerson("mom11ga.jpg");
+			md = WritePlaceHeader();
+			if (isExplicit() && perYou.isMaleSex()) this.showPersonRandomX("mom11b", 6);
+			else if (perYou.isMaleSex()) this.showPersonRandom("mom11b", 2);
+			else this.showPersonRandom("mom11g", 3);
 
 			addPlaceTitle(md, "Alone time with Mom");
 
@@ -1459,8 +1569,8 @@ function initialiseMom()
 		
 		if (sType == "mombj") {
 			// Oral
-			md = WritePlaceHeader(false, !perYou.isMaleSex() && isExplicit() ? 'td-left-large' : '');
-			if (isExplicit()) this.showPersonRandomX(perYou.isMaleSex() ? "mom12b" : "mom12g", 2);
+			md = WritePlaceHeader();
+			if (isExplicit()) this.showPersonRandomX(perYou.isMaleSex() ? "mom12b" : "mom12g", perYou.isMaleSex() ? 4 : 5);
 			else this.showPerson(perYou.isMaleSex() ? "mom12b.jpg" : "mom12g.jpg");
 
 			addPlaceTitle(md, "Alone time with Mom");
@@ -1517,7 +1627,7 @@ function initialiseMom()
 		if (sType == "momgabbywatch") {
 			// Watch Mom and Gabby
 			md = WritePlaceHeader();
-			perGabby.showPerson("gabby-mom1.jpg");
+			this.showPerson("gabby-mom1.jpg");
 
 			addPlaceTitle(md, "Watching Mom and Gabby");
 
@@ -1538,7 +1648,8 @@ function initialiseMom()
 		if (sType == "momgabbyjoin") {
 			// Join Mom and Gabby
 			md = WritePlaceHeader();
-			perGabby.showPerson("gabby-mom6.jpg");
+			if (perYou.isMaleSex() && isExplicit()) this.showPersonX("gabby-mom6.jpg");
+			else this.showPerson("gabby-mom6.jpg");
 
 			addPlaceTitle(md, "Joining Mom and Gabby");
 
@@ -1568,7 +1679,7 @@ function initialiseMom()
 			// Post Jesse Masturbation scene, key event for all following events
 			md = WritePlaceHeader();
 			// Images
-			if (isExplicit()) this.showPersonRandomX("mom3", 3);
+			if (isExplicit()) this.showPersonRandomX("mom3", 4);
 			else this.showPerson("mom3.jpg");
 			this.setFlag(1, false);
 			this.setFlag(3);
@@ -1578,7 +1689,7 @@ function initialiseMom()
 			md.write(
 				'<p>After your meeting with the demon you are worried about your mother and open the door to check she is alright. You stifle an exclamation as you look in and see your mother has removed her clothes and is frantically masturbating and softly talking to herself,</p>' +
 				'<p>"why have I been feeling so strange since that girl visited...oh yes, ' + perYou.getPersonName() + (perYou.isBornMale() ? " must have fucked her" : " must have licked her") + ', oh it\'s so bad of me to think about it...I can\'t stop...don\'t want to stop"</p>' +
-				'<p>She cries out, but quickly covers her mouth as her hips thrust as she has a massive orgasm, copious fuilds squirting out her passion. She collpases in the aftermath of her impressive orgasm.</p>'
+				'<p>She cries out, but quickly covers her mouth as her hips thrust as she has a massive orgasm, copious fluids squirting out her passion. She collapses in the aftermath of her impressive orgasm.</p>'
 			);
 
 			// Choices
@@ -1728,16 +1839,31 @@ function initialiseMom()
 					"Family",
 					"setPersonFlag(\\'Mom\\',18)"
 				);
-			} else if (checkPersonFlag("Kylie", 7) && !this.checkFlag(17)) {
-				addQuestionR(md, '"Can you arrange for me to visit Aunt Brandi\'s"',
-					'You mention to Mom about meeting Kylie, not anything more, and about how Kylie would not let you visit her home. It seems Aunt Brandi does not allow Kylie to have many visitors. Mom reples,</p>' +
-					'<p>"Brandi has alway been over-protective of Kylie, and any family members. It\'s a bit silly try to restrict a girl of Kylie\'s age from seeing people, Brandi cannot control Kylie all the time"</p>'  +
-					'<p>Considering your encounter at the fields and street you have to agree with Mom, but refrain from saying anything other than a general agreement.</p>' +
-					'<p>Mom continues, &quot;Ok, I\'ll speak to Brandi and arrange something, not sure how soon." <i>more not implemented</i>',
-					"Mom and Kylie",
-					"setPersonFlag(\\'Mom\\',17)"
-				);
+			} else if (checkPersonFlag("Kylie", 7) && checkPersonFlag("Brandi", 4) && !this.checkFlag(17)) {
+				if (Place == 154 || this.isCharmedBy() || this.checkFlag(32)) {
+					addQuestionR(md, '"Can you arrange for me to visit Aunt Brandi\'s"',
+						'You mention to Mom about meeting Kylie, and about meeting Aunt Brandi at the Gym, but not anything more, and about how Kylie would not let you visit her home. It seems Aunt Brandi does not allow Kylie to have many visitors. Mom reples,</p>' +
+						'<p>"Brandi has alway been over-protective of Kylie, and any family members. It\'s a bit silly try to restrict a girl of Kylie\'s age from seeing people, Brandi cannot control Kylie all the time"</p>'  +
+						'<p>Considering your encounter at the fields and street you have to agree with Mom, but refrain from saying anything other than a general agreement.</p>' +
+						'<p>Mom continues, &quot;Ok, I\'ll speak to Brandi and arrange something, not sure how soon, maybe this weekend."' +
+						(checkPersonFlag("Brandi", 7) ? '</p><p>You wonder how to ask Mom about being unable to charm Aunt Brandi, and try asking any old family jewlery but Mom says there is nothing she has or anyone else. You then try asking about the occult. Mom laughs,</p>' +
+																  '<p>"Do not ask Brandi about that, anything she cannot see or touch is rubbish as far as she is concerned. She is so stubborn at times, she must get her own way or else! Still she is quite tender and loving at other times."</p>' +
+																  '<p>You are unsure what to make of this, it seems unlikely she has any protective charms or magical skills to protect her. She must be <b>very</b> controlled and stubborn, the spell failing somehow to take hold, or at best subtly affecting her.' : ''),
+						"Mom and Kylie",
+						"setPersonFlag(\\'Mom\\',17);if(checkPersonFlag(\\'Brandi\\',7)){setPersonFlag(\\'Mom\\',40)};"
+					);
+				} else {
+					addQuestionR(md, '"Can you arrange for me to visit Aunt Brandi\'s"',
+						'You mention to Mom about meeting Kylie, and about meeting Aunt Brandi at the Gym, but she interrupts,</p>' +
+						'<p>"Not here, let\'s talk about this at home sometime" and she refuses to further discuss it',
+						"Mom and Kylie",
+						"setPersonFlag(\\'Mom\\',42)"
+					);
+				}
 			}
+			if (checkPersonFlag("Kylie", 14) && !this.checkFlag(45)) addLinkToPlace(md, 'ask more about Aunt Brandi', Place, 'type=askbrandidecider');
+
+			
 		}
 		
 		if (Place == 372 && !isDay() && this.whereNow() == 415) {
@@ -1820,10 +1946,10 @@ function initialiseMom()
 		}
 
 		if (perGabby.isHere() && this.isCharmedBy()) {
-			addSleepLink(md, "ask to share the bed this night", "Sleeping with Mom and Gabby",
+			this.addSleepLink(md, "ask to share the bed this night", "Sleeping with Mom and Gabby",
 				'<p style="position:absolute;left:25%;top:85%;cursor:pointer;font-size:1.1em;width:70%">' +
 				'You sleep tightly, snuggled between your hot Mom and her equally hot lover with lots of lewd dreams.',
-				'People/Gabby/gabby-mom7.jpg'
+				'gabby-mom7.jpg'
 			);			
 		} else if (this.getCharmedLevel() > 1) {
 			this.addSleepLink(md, "ask Mom to spend the night", "Sleeping with Mom",
@@ -1838,7 +1964,7 @@ function initialiseMom()
 	
 	per.showEventSleep = function(wt)
 	{
-		if ((Place !== 46 && Place !== 170) && !perYou.checkFlag(14) && this.whereNow() == 154) {
+		if (Place !== 46 && !perYou.checkFlag(14) && this.whereNow() == 154) {
 			// First time spending the night away from home
 			perYou.setFlag(14);
 		}
@@ -1894,6 +2020,24 @@ function initialiseMom()
 				return 'handled';
 			}
 		}
+		
+		// Casting the transform spell
+		else if (no == 18 && cmd == 2) {
+
+			// At home and charmed
+			if (Place == 154 && this.isHere() && sType === "") {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				//ClearComments();
+				dispPlace(Place, 'type=momtransformage' + this.dress.toLowerCase());
+				return "handled";
+			}
+		}
 		return "";		// do nothing
 	};
 	
@@ -1922,7 +2066,7 @@ function initialiseMom()
 				} else {
 					this.setFlag(36);
 					receiveCall('', 
-						'You realise you are a bit stuck and cannot quite work out how to get back to town, not enough money for the taxi ' + (isSpellKnown("Teleport") ? 'or mana to teleport somewhere else' : '') + '. You decide to call Mom for help. When she answers you avoid directly asking but Mom reaslises something is up and gets you to explain. She tells you,</p>' +
+						'You realise you are a bit stuck and cannot quite work out how to get back to town, not enough money for the taxi ' + (isSpellKnown("Teleport") ? 'or mana to teleport somewhere else' : '') + '. You decide to call Mom for help. When she answers you avoid directly asking but Mom realises something is up and gets you to explain. She tells you,</p>' +
 						'<p>"' + perYou.getPersonName() + ' you know money is tight, it would be difficult for me to pay for a taxi for you. Is there anyone else there who can help you out? Please check and I will see if I can afford to pay for a taxi for you. Call me back if you cannot work out anything."'
 					);
 				}

@@ -11,7 +11,7 @@ function ShowPlace345(stype)
 	var perLeanne = findPerson("Leanne");
 	var perVamp = findPerson("Vampyre");
 
-	var md = WritePlaceHeader();
+	var md = WritePlaceHeaderNI();
 
 	perGypsy.showPerson("gypsy1.jpg");
 	addPlaceTitle(md, "New Age " + getShopStore(true));
@@ -39,12 +39,12 @@ function ShowPlace345(stype)
 		addQuestionC(md, 'pay ' + sCurrency + '20 for some beeswax candles', "Gypsy", 54, 'travelblock');
 		if (whereItem(60) == 345) addQuestionC(md, 'pay ' + sCurrency + '100 for a book on Hypnosis', "Gypsy", 51, 'travelblock');
 		if (perYourBody.FindItem(49) === 0) addQuestionC(md, 'pay ' + sCurrency + '20 for some holy water from the church', "Gypsy", 49, 'travelblock');		//do not already have the holy water
-		md.write('<br>');
 	}
 
 	// Choices
 	bQuestionsShown = false;
-	startQuestions();
+	startQuestions(undefined, 'br');
+	//startQuestions();
 
 	if (!perGypsy.checkFlag(9)) addQuestionC(md, '"Uh, how did you know my name?"', "Gypsy", 15701);
 
@@ -73,5 +73,5 @@ function ShowPlace345(stype)
 
 	addLinkToPlace(md, 'leave the ' + getShopStore(), 344);
 
-	WritePlaceFooter(md, '', true);
+	WritePlaceFooter(md);
 }

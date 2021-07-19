@@ -80,7 +80,7 @@ function ShowPlace261()
 	}
 
 	if (perDA.other == 50 || perMG.place == 261 || (perDA.place == 261 && !perDA.isCharmedBy()) || perCharlie.place == 261) {
-		AddRightColumnLarge(md);
+		AddPeopleColumnLarge(md);
 		if (perDA.other == 50 || perDA.place == 261) perDA.showPerson("diane8.jpg");
 		if (perMG.place == 261) perMG.showPerson("!granger-jail1.jpg");
 		if (perCharlie.place == 261) perCharlie.showPerson("break-jail2.jpg");

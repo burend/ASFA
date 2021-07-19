@@ -555,7 +555,7 @@ function initialiseMiku()
 			if (sType == "mikusass") {
 				// After Lunch with Tracy and Miku (Miku's Ass)
 				md = WritePlaceHeader();
-				this.showPerson("mikulunch5.jpg");
+				this.showPersonRorX("mikulunch5.jpg");
 				addPlaceTitle(md, "Miku\'s Ass");
 				md.write(
 					'<p>“Miku!” You announce your decision by firmly slapping both hands on her ass, and using your thumbs to spread her buttocks.</p>' +
@@ -1095,7 +1095,7 @@ function initialiseMiku()
 				addQuestionR(md, 'ask her more about her abilities',
 					'“It is likely hereditary, but does not manifest in every generation, at least my parents pretend to not know what I\'m talking about when I ask about it.” Miku pulls an annoyed face.</p>' +
 					'<p>I have done a lot of digging online about magic and the history of witchcraft, joined a few message boards where people claim to have been affected by spells, and finally decided to make the move to Glenvale, a town with one of the most colorful magical histories in the country.”</p>' +
-					'<p>“It turned out to be a good decision, by the way. This is probably the only place where a schoolteacher holds an entire lesson about Mana and how to acquire it.” she chuckles. “Mr Beasley is a good source of information if you do it right, but when I tried to use one of these...” She holds up a rustic stone. “...in the wild ranges, the mana generated just... well, faded.”</p>' +
+					'<p>“It turned out to be a good decision, by the way. This is probably the only place where a schoolteacher holds an entire lesson about Mana and how to acquire it.” she chuckles. “Mr Beasley is a good source of information if you do it right, but when I tried to use one of these...” She holds up a rustic stone. “...in the Wild Ranges, the mana generated just... well, faded.”</p>' +
 					'<p>She offers the stone to you. “You can have it, by the way, it should make up for the Mana you lost when you tried to control my mind and have sex with me.” Miku smiles sweetly. ”You pervert.”',
 					"Miku",
 					"setPersonOther(\\'Miku\\',6)"
@@ -1400,7 +1400,7 @@ function initialiseMiku()
 		if (sType ==="" && this.other == -2 && (Place == 17 || Place == 192) && !this.checkFlag(15)) {
 			if (isCharmedPath() && Place == 17) {
 				addQuestionR(md, 'ask ' + perGates.getPersonNameShort() + ' for information about special bloodlines',
-					'My ' + capitalizeFirstLetter(perYou.getSex()) + ', you are having interesting adventures it seems, It reminds me of my youth.” Sir Gates muses.</p>' +
+					'My ' + capitalize(perYou.getSex()) + ', you are having interesting adventures it seems, It reminds me of my youth.” Sir Gates muses.</p>' +
 					'<p>“There are few records of the various magical bloodlines, but my Family has fought the machinations of Kurndorfs followers, and their attempts to bring him back for a long time.” He puffs on his pipe, slowly rises to his feet and heads towards a bookshelf. “They have kept many records, and quite a few of these pertain the abilities of those among them possessing special bloodlines. I do believe I remember... ah here it is.”</p>' +
 					'<p>“He takes out an old, but very well maintained, book and carefully flips the pages until he finally finds what he was looking for.',
 					"SirRonald",
@@ -1447,7 +1447,7 @@ function initialiseMiku()
 
 	per.showEventSleep = function(wt)
 	{
-		if ((Place == 46 || Place == 170) && this.place == 408 && this.other < 0 && this.other > -20 && !this.checkFlag(23) && wt > 24) {
+		if (Place == 46 && this.place == 408 && this.other < 0 && this.other > -20 && !this.checkFlag(23) && wt > 24) {
 			// Night encounter
 			passTime(true);
 			passTime(true);

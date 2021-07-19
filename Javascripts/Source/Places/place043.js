@@ -67,14 +67,17 @@ function ShowPlace43()
 		addPlaceImage(md, "house3.jpg", "20%");
 		md.write('</p>');
 	}
+	md.write('<p style="clear:both">' + addPlaceImage("string", "massage.jpg", "15%", '', '', undefined, true) + 'The local massage parlor is here and it is ' + (isShopOpen(2, 0, true) ? 'open' : 'closed') + ', opening times listed as 8am to 8pm.</p><p style="clear:both"> </p>');
+
 	
 	startQuestions(undefined, "clear");
 	if (isPlaceKnown("GrangerHouse")) addLinkToPlace(md, "enter the Granger\'s residence", 177);	// Does the player have Kate's address?
 	if (isPlaceKnown("RobbinsHouse")) addLinkToPlace(md, "enter the Robbins residence", 176);		// Does the player have Mrs Robbins address
+	if (isShopOpen(2, 0, true)) addLinkToPlace(md, "visit the massage parlor", 48);
 	if (checkPlaceFlag("Park", 4)) addLinkToPlace(md, "check the construction access road", 43, 'type=gate');
 	if (isPlaceKnown("DervishRd")) addLinkToPlace(md, "walk to Dervish Rd", 5);
 	
-	addLinkToPlace(md, "walk to the alley", 42);
+	addLinkToPlace(md, "walk to the alley", 52);
 
 	WritePlaceFooter(md);
 }

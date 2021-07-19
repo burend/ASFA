@@ -36,7 +36,7 @@ function LeaveMinJenny()
 function initialiseJenny()
 {
 	// Jenny
-	addPerson("Jenny", 196, "Jenny", "", false);
+	addPerson("Jenny", 196, "Jenny", "Briana", false);
 	
 	per.getPersonName = function(full) {
 		if (full === true) return this.name;
@@ -85,7 +85,7 @@ function initialiseJenny()
 					'<p>“Lecker...” She greedily scoops up more from her face and even laps up the remaining drops from your tip.</p>';
 			if (!this.isFuta()) s += '<p>“You taste amazing! Are... are you able to give a cock like this to... other girls as well, ' + perYou.getMaster() + '? Just curious.”';
 			showPopupWindow("Jenny\'s Reaction to Your Changes",
-				this.addPersonString("jenny8b.jpg", "height:max%", "right") +
+				this.addPersonString("jenny8ba.jpg", "height:max%", "right") +
 				'<p>Jenny\'s eyes widen in surprise when you reveal the newest “addition” to your body to her. She is apprehensive of your cock at first, but clearly curious.</p>' + s
 			);				
 			return true;	
@@ -104,7 +104,7 @@ function initialiseJenny()
 			addPlaceTitle(md, "Swimming with Jenny");
 			md.write(
 				'<p>Jenny arrives, dressed in a black bikini, you think it is made of leather, an unexpected side of her.</p>' +
-				(this.checkFlag(4) ? "<p>You notice she tends to cover the bulge in her crothch from others, she seems embarrassed to show <i>others</i> her new cock.</p>" : "")
+				(this.checkFlag(4) ? "<p>You notice she tends to cover the bulge in her crotch from others, she seems embarrassed to show <i>others</i> her new cock.</p>" : "")
 			);
 			startQuestions();
 			addLinkToPlaceC(md, 'it is fairly private here...', Place, 'type=jennypoolsex');
@@ -117,7 +117,7 @@ function initialiseJenny()
 			this.showPerson("jenny-pool-sex" + (this.checkFlag(4) ? "-futa" : "") + ".jpg");
 			addPlaceTitle(md, "Being Discrete and Private with Jenny");
 			md.write(
-				'<p>You ask your lovely watressy, and she seductively removes most of her swimsuit and lies back waiting for you.' +
+				'<p>You ask your lovely waitress, and she seductively removes most of her swimsuit and lies back waiting for you.' +
 				(this.checkFlag(4) ? " her cock stiffening as she uncovers it." : "") +
 				'</p>'
 			);
@@ -237,7 +237,7 @@ function initialiseJenny()
 			}	
 			if (sType == "charmjenny6") {
 				// Charm Jenny 6
-				md = WritePlaceHeader(false, 'td-left-med');
+				md = WritePlaceHeader();
 				this.showPerson("jenny5.jpg");
 
 				addPlaceTitle(md, "Jenny Charmed");
@@ -265,7 +265,7 @@ function initialiseJenny()
 				md.write(
 					'<p>obviously enjoys making a big show of it, and she is left visibly exhausted, breathing in heavily and spitting out multilingual expletives as she basks in the afterglow.</p>' +
 					'<p>It takes her a moment to recover before her eyes return to you, now full of love and devotion with a soft pink glow showing your hold over her mind.</p>' +
-					'<p>“Finally ready to mine?” You ask her, and Jenny nods with a dreamy smile.</p>' +
+					'<p>“Finally ready to be mine?” You ask her, and Jenny nods with a dreamy smile.</p>' +
 					'<p>“Wann du willst, wo du willst und wie du willst.” She looks at you with glassy eyes, then chuckles in embarrassment upon remembering you don\'t understand her. “Sorry.” She straightens herself to kneel before you. “Yes, ' + perYou.getMaster() + '. I should have seen that you are so much more than the others hitting on me. Bitte bitte lass mich deine Sklavin sein... Please allow me to be yours.”</p>'
 				);
 
@@ -278,8 +278,8 @@ function initialiseJenny()
 				
 		if (Place == 467) {
 			if (sType == "jennyfuck") {
-				// Sex scenes at her home
-				md = WritePlaceHeader(false, 'td-left-med');
+				// Sex scenes at her home - fuck
+				md = WritePlaceHeader();
 				if (perYou.isMaleSex()) this.showPersonRandomRorX("home-sex-fuckb", isExplicit() ? 2 : 1);
 				else this.showPerson("home-sex-fuckga.jpg");
 				addPlaceTitle(md, "Jenny");
@@ -292,9 +292,23 @@ function initialiseJenny()
 				WritePlaceFooter(md);
 				return true;
 			}
+			if (sType == "jennyfuckstrap") {
+				// Sex scenes at her home - fuck with strapon
+				md = WritePlaceHeader();
+				this.showPersonRandomX("home-sex-fuckg", 2);
+				addPlaceTitle(md, "Jenny");
+				md.write(
+					'<p>You enjoy yourself with Jenny and your strap-onJenny - Christie Stevens</p>'
+				);
+				startQuestions();
+				addLinkToPlaceC(md, 'talk more with Jenny', Place);
+				addLinkToPlace(md, 'exit the apartment', 456);
+				WritePlaceFooter(md);
+				return true;
+			}			
 			if (sType == "jennybj") {
 				// Sex scenes at her home
-				md = WritePlaceHeader(false, isExplicit() && !perYou.isMaleSex() ? 'td-left-med' : '');
+				md = WritePlaceHeader();
 				if (isExplicit()) this.showPersonRandomX("home-sex-bj" + (perYou.isMaleSex() ? "b" : "g"), perYou.isMaleSex() ? 3 : 2);
 				else this.showPerson("home-sex-bj.jpg");
 				addPlaceTitle(md, "Jenny");
@@ -328,8 +342,8 @@ function initialiseJenny()
 		// Sex scenes at the Restaurant with Jenny
 		if (sType == "jennybj") {
 			// Blowjob/lick
-			md = WritePlaceHeader(false, 'td-left-med');
-			if (perYou.isMaleSex()) this.showPersonRorX("jenny8b.jpg", isExplicit() ? "" : "height:max");
+			md = WritePlaceHeader();
+			if (perYou.isMaleSex()) this.showPersonRandomRorX("jenny8b", isExplicit() ? 2 : 1);
 			else this.showPersonRorX("jenny8g.jpg");
 			addPlaceTitle(md, "Bavaria Hut");
 			md.write(
@@ -347,7 +361,7 @@ function initialiseJenny()
 			// Anal
 			md = WritePlaceHeader(false, perYou.isMaleSex() && isExplicit() && this.getPersonGender() == "futa" ? '' : 'td-left-med');
 			if (perYou.isMaleSex()) this.showPersonRorX("jenny7b" + (this.getPersonGender() == "futa" ? "-futa" : "") + ".jpg");
-			else AddImageRandom("GenericSex/Explicit/sex-ff anal strapon ", 2);
+			else AddImageRandom("GenericSex/Explicit/sex-ff anal strapon", 2);
 			addPlaceTitle(md, "Bavaria Hut");
 			md.write(
 				'<p>“Oh, yes please! Ich liebe es, wenn du meinen Arsch fickst, ' + (perYou.isMan() ? 'Meister' : (perYou.getPersonGender() == "woman" ? 'Herrin' : 'Herrin')) + '.”</p>' +
@@ -366,8 +380,9 @@ function initialiseJenny()
 
 		} else if (sType == "titsfuck") {
 			// Tits Fuck (Male only)
-			md = WritePlaceHeader(false, 'td-left-med');
-			this.showPersonRorX(this.getPersonGender() == "futa" && !isExplicit() ? "jenny9b-futa.jpg" : "jenny9b.jpg", "height:max");
+			md = WritePlaceHeader();
+			if (this.getPersonGender() == "futa") this.showPerson("jenny9b-futa.jpg", "height:max");
+			else this.showPersonRandomRorX("jenny9b", isExplicit() ? 2 : 1, "height:max");
 			addPlaceTitle(md, "Bavaria Hut");
 			md.write(
 				'<p>You instead ask Jenny to use her breasts to pleasure you. This seems to be something she is quite familiar with and she uses her ample bosom to please you until you release all over her breasts and face.</p>'
@@ -379,7 +394,7 @@ function initialiseJenny()
 		} else if (sType == "transformcock") {
 			// Futa transformation
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(4)) {
 				this.setFlag(4);
 				showPopupWindow("Transformation",
@@ -392,13 +407,29 @@ function initialiseJenny()
 				this.setFlag(4, false);
 				showPopupWindow("Transformation",
 					'<img src="Images/GenericSex/xf-futa-blonde.jpg" style="width:35%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="futa">' +
-					"<p>You cast the spell and Jenny cries out something inarticulate in German and pulls away what little clothing she has on. You see a large cock dissapearing from her groin above where her pussy is.</p>" +
+					"<p>You cast the spell and Jenny cries out something inarticulate in German and pulls away what little clothing she has on. You see a large cock disapearing from her groin above where her pussy is.</p>" +
 					"<p>As she groans you can distinctly hear someone laughing but it is drowned out as Jenny cries out in ecstasy as her pussy spasms in her female ejaculation.</p>" +
 					"<p>Jenny seems remarkably pleased with her pussy but you cannot help but wonder if it was a good thing, but then again as you watch her fingering her pussy you put these worries out of your mind."
 				);
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
+			return true;
+		} else if (sType == "transformbody") {
+			// Body transformation
+			CastTransform(1);
+			md = WritePlaceHeaderNIP(true, '', 'black');
+			if (this.dress == "Briana") this.dress = "Christie";
+			else this.dress = "Briana";
+			showPopupWindow("Transformation",
+				this.addPersonString("jenny2.jpg", "height:max%", "rightpopup") +
+				'You cast the spell and Jenny cries out something inarticulate in German and you see her figure shifting and her face distorting. After a few minutes the changes settle down and she looks back at you smiling again, almost as it nothing happened.</p>' +
+				'<p>She looks like a completely different person, even her clothing is different. You ask her if she is feeling good and she answers something in German, but then immediately "Why ' + perYou.getMaster() + ' is there something wrong?".</p>' +
+				'<p>She certainly seems to be the same Jenny she was before despite her different appearance.',
+				'dispPlace()', '', false
+			);
+			setQueryParams("");
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -498,12 +529,13 @@ function initialiseJenny()
 		if (Place == 467 && this.isHere() && sType === "") {
 			// Jenny's apartment
 			addLinkToPlaceO(md, 'accept the offer of her body', Place, 'type=jennyfuck');
+			if (perYourBody.FindItem(45) > 0 && !perYou.isMaleSex()) addLinkToPlaceO(md, 'take out your strap-on and accept the offer of her body', Place, 'type=jennyfuckstrap');
 			addLinkToPlaceO(md, 'accept but ask her to serve you with her mouth', Place, 'type=jennybj');			
 			if (perYou.isMaleSex()) addLinkToPlaceO(md, 'accept and ask for her breasts', Place, 'type=jennytitsfuck');
 
 			this.addDancingLink(md, 'talk to Jenny about dancing in the club',
 				'You ask Jenny to dance for you at the Avernus club and she answers,</p>' +
-				'<p>&quot;Yes of cournse ' + this.getYourNameFor() + ', whatever you want!&quot; and with that you call Jade to arrange a dance for Jenny.',
+				'<p>&quot;Yes of course ' + this.getYourNameFor() + ', whatever you want!&quot; and with that you call Jade to arrange a dance for Jenny.',
 				false
 			);	
 			this.addSleepLink(md, "go to bed with Jenny", "Sleeping with Jenny",
@@ -596,9 +628,15 @@ function initialiseJenny()
 				}
 				if (!CastTransform(1, true)) return "handled";
 
-				ClearComments();
-				dispPlace(Place, 'type=transformcock');
-				return "nofooter";
+				// It can be cast
+				setCommentsNoClick(
+					'<div class="conversebubble" style="cursor:default">' +
+					'<table><tr><td width="80%"><p>You decide to try the transformation spell on Jenny and tell her to prepare herself. As you start to recite the spell she falls into a sort of trance, her uniform falling down. As it does your attention is drawn to...</p>'
+				);
+				addOptionLink("comments", 'her face', "ClearComments();dispPlace(" + Place + ",'type=transformbody')");
+				addOptionLink("comments", this.checkFlag(5) ? 'her cock' : 'her groin', "ClearComments();dispPlace(" + Place + ",'type=transformcock')");
+				addComments('</td><td width="20%">' + this.addPersonString("jenny1c.jpg") + '</td></tr></table>');
+				return "handled";
 			}
 		}
 		return "";		// do nothing
@@ -616,10 +654,10 @@ function initialiseJenny()
 	per.callThem = function() {
 		if (Place == 440) gotoPlace(Place, 'type=missloganbreeder&who=' + this.uid, 'You tell Ms. Logan that you have someone in mind to help impregnate her, and after placing the call the two of you wait for their arival.');
 		else if (Place == 269) {
-			if (this.whereNow() !== 0) WriteComments("You call Jenny to invite her to join you at the pool for a swim, but she replies, but someone else picks up and says Alison is busy serving customers and for you to call back later.");
+			if (this.whereNow() == 196) WriteComments("You call Jenny to invite her to join you at the pool for a swim, but she replies, but someone else picks up and says Jenny is busy serving customers and for you to call back later.");
 			else {
 				gotoPlace(Place, 'type=jennypool');
-				receiveCall('', 'You call Jenny to invite her to join you at the pool for a swim, and she answers pleasantly, "Certaintly!" and promises to join you soon.');
+				receiveCall('', 'You call Jenny to invite her to join you at the pool for a swim, and she answers pleasantly, "Certainly!" and promises to join you soon.');
 				WriteCommentsFooter(bChat, bChatLeft);
 			}
 		}

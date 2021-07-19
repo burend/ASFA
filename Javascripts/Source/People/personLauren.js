@@ -97,8 +97,100 @@ function initialiseLauren()
 	{
 		var md, chc;
 		
+		if (Place == 269) {
+			// Hotel Pool
+			var perDonna = findPerson("Donna");
+
+			if (sType == "lauren1") {
+
+				md = WritePlaceHeader();
+				this.place = 0;		// Leave the hotel after this scene
+				movePerson("Sarah", 1);
+				movePerson("AdeleRoss", 16);	// Set Gates Estate as Blocked (to protect Sarah)
+				setPersonFlag("AdeleRoss", 1);
+				setPersonFlag("Mom", 8);
+				perYou.startQuest(6);	// Start quest to visit Sarah
+
+				this.showPerson("lauren11b.jpg");
+				addPlaceTitle(md, "Hotel Pool with Lauren");
+
+				if (!isDay()) md.write('<p>The pool area is brightly lit by lighting scattered around, and ');
+				else if (perDonna.place != 269) md.write('<p>The pool area ');
+				else md.write('<p>');
+
+				if (isDay() && perDonna.place == 269) md.write('Lauren gestures to follow her to a more discrete place away from anyone else. You find an isolated area partly shielded by some plants and Lauren kneels down in front of you.');
+				else md.write('is fairly empty now but you both move to a more discrete place. You find an isolated area partly shielded by some plants and Lauren kneels down in front of you.');
+				md.write(
+					'<p> She is wearing a very revealing bikini, little more than fishnets, almost completely exposing her breasts and privates. Lauren sees you looking at her swimsuit and deeply blushes, but you also observe her nipples stiffen a little. She hesitantly speaks,</p>' +
+					'<p>"My Mistr...My Lady told me to wear this, as an appropriate attire for her servant and as a gift to you. Please can we not dwell on it....", she hesitates before taking a deep breath and continuing,</p>' +
+					'<p>"My Lady has asked me to warn you that it is very dangerous trying to summon the dead. Her family has extensive history dealing with the Veil and the creatures who try to cross into this world...very extensive...very..She says that without powerful wards it would be impossible to safely deal with the more powerful spirits like the ghost of a witch or warlock."</p>' +
+					'<p>She pauses, and you think she is troubled by what she just talked about, maybe she has had personal experience with the dead in some way. She looks at you and moves her arms to modestly cover her breasts but the gesture just accentuates her breasts, drawing your attention to them.</p>' +
+					'<p>"My Lady believes it is time for you to meet her, but it is a delicate thing to do this, you will not be able to openly visit in the daytime and <i>all</i> doors of the <b>mansion</b> are closed at night. My Lady tells me that umm...Serphoni...will be needed, but it will only work during the midnight hour, when the shroud protecting the mansion is thinnest. You must also use the side entrance from the Sacred Clearing'
+				);
+				if (!isPlaceKnown("SacredClearing")) {
+					md.write(
+						'"</p><p>You interrupt and ask where the Sacred Clearing is, you have heard of it but do not know exactly where it is. Lauren explains,</p>' +
+						'<p>"It is an ancient ritual area to the west of the mansion" and she gives some brief directions before continuing, "I am surprised, My Lady seemed to assume you knew of that place but I digress... '
+					);
+					setPlaceKnown("SacredClearing");
+				}
+
+				md.write(
+					'My Lady asks that you visit so you may trade things you have learned and so she can offer a ward against the dead."</p>' +
+					'<p>You heard her say <b>mansion</b> and you ask if she means the Gate\'s Mansion, does her Lady live there? You were not aware anyone else lived there other than ' + perGates.getPersonName() + '. Maybe your mother has heard something?</p>' +
+					'<p>She just nods her head, "Yes, and My Lady asks one thing of you, a gift in return for what she has given you...and..and..me. You must bring her a bottle of the finest wine. Please bring it with you when you visit....", she trails off, ' +
+					'and does not say anything as she looks at you. She is hesitating, unable or unwilling to say anything more.'
+				);
+
+				startQuestions();
+				addLinkToPlaceC(md, '"Is there anything more?"', Place, 'type=lauren2');
+				WritePlaceFooter(md);
+				return true;
+
+			} else if (sType == "lauren2") {
+
+				md = WritePlaceHeader();
+				this.showPerson("lauren11c.jpg");
+				addPlaceTitle(md, "Hotel Pool with Lauren");
+
+				md.write(
+					'<p>She blushes and adjusts her bikini top or at least the collection of strings that she is wearing and exposes her breasts completely. She stretches and says nervously,</p>' +
+					'<p>"My..my..Lady has ordered...asked...me to tell you that I am to offer you any service you desire now I have delivered my message, <i>any desire</i>.."</p>' +
+					'<p>She is clearly aroused but also very nervous, expecting and possibly wanting you to take her up on her offer of <i>any desire</i>, but also reluctant and uncertain.</p>'
+				);
+				startQuestions("Will you accept her offer?");
+				addLinkToPlace(md, "certainly!", Place, 'type=lauren3');
+				addLinkToPlace(md, "refuse and go to the Hotel Bar", 124, '', 'An odd mixture of expressions pass over Lauren&rsquo;s face as you refuse and start to leave, relief and disappointment. She softly says &quot;Thanks...I think&quot;');
+				WritePlaceFooter(md);
+				return true;
+
+			} else if (sType == "lauren3") {
+
+				md = WritePlaceHeader();
+				this.setFlag(11);
+				perYou.addCorruption(1);
+				this.showPerson(perYou.isMaleSex() ? "lauren11db.jpg" : "lauren11dg.jpg");
+				addPlaceTitle(md, "Lauren\'s Service");
+
+				md.write(
+					'<p>It would seem rude to refuse your ally and Lauren seems aroused and wants this too, she is just nervous. You tell her that you desire her, that this has nothing to do with her Lady, it is just your desire for her. You do not think she really believes you, but accepts your words.</p>' +
+					'<p>She removes more of her \'swimsuit\' and makes a little bit of a show for you. She is clearly nervous still and is a little awkward as she displays herself.</p>' +
+					'<p>You take her, she is passionate if awkward and uncertain at times. She is no virgin but a little inexperienced and despite her nerves orgasms quite strongly.</p>' +
+					'<p>After, as she redresses in more normal clothes, you remember that at times her skin felt odd, and you swear you saw a faint glow when she orgasmed. As you are looking at her she blushes again, curtseys,</p>' +
+					'<p>"' + perYou.getLord() + ' I must return to My Lady now", and she leaves the pool area.</p>'
+				);
+
+				startQuestions();
+				addLinkToPlace(md, "go to the Hotel Bar", 124);
+				WritePlaceFooter(md);
+				return true;
+			}			
+			return false;
+		}
+		
 		if (Place != 290) return false;
 
+		// Guest Room at the mansion
 		if (sType == "charmlauren1") {
 			// Charm Lauren
 			md = WritePlaceHeader();
@@ -206,15 +298,14 @@ function initialiseLauren()
 		if (sType == "laurenplay") {
 			// Repeat sex scene
 			chc = Math.floor(Math.random() * 3);
-			md = WritePlaceHeader(false, chc !== 0 && !perYou.isMaleSex() ? "td-left-med" : "");
+			md = WritePlaceHeader();
 			if (chc === 0) {
 				if (isMurderPath()) this.showPerson("lauren5-day.jpg", "height:max");
 				else this.showPersonDN("lauren5.jpg", "height:max");
-			} else if (perYou.isMaleSex()) this.showPersonRandom("lauren9b", 2, "height:max");
-			else this.showPerson("lauren9g.jpg");
+			} else if (perYou.isMaleSex()) this.showPersonRandomRorX("lauren9b", isExplicit() ? 3 : 2);
+			else this.showPersonRorX("lauren9g.jpg");
 
 			addPlaceTitle(md, "Guest Room");
-
 			md.write(
 				'<p>"I am so proud to service you," claims the maid. She breathes faster as you take her in your arms. Without pause her lips meet yours to plunge her tongue into your mouth.</p>'
 			);
@@ -226,14 +317,46 @@ function initialiseLauren()
 			return true;
 		}
 		
+		if (sType == "laurentfplay") {
+			// Repeat tf sex scene
+			md = WritePlaceHeader();
+			this.showPerson("sex-tfa.jpg");
+
+			addPlaceTitle(md, "Service with her Breasts");
+			md.write(
+				'<p>"I am so proud to service you," claims the maid. She breathes faster as you take her in your arms. Without pause her lips meet yours to plunge her tongue into your mouth and then your cock between her breasts.</p>'
+			);
+
+			// Questions
+			startQuestions();
+			addLinkToPlaceC(md, "talk to Lauren", 290);
+			WritePlaceFooter(md);
+			return true;
+		}		
+		
 		return false;
+	};
+	
+	per.showDancing = function()
+	{
+		var md = WritePlaceHeader();
+		this.showPersonRandom("poledance", 4);
+		addPlaceTitle(md, "Lauren's Dance");
+		md.write(
+			'<p>Lauren takes the stage dressed in a version of exotic dancing wear, not that she keeps it on for long!</p>' +
+			'<p>Lauren is a surprisingly experienced dancer and her large breasts and agile moves greatly appeal to the audience. Lauren seems to like the audience approval but in an awkwards way, she is a lot more focused on you than the general audience!</p>' +
+			'<p>After she collects her tips and offers them to you, but you know Jade has a performance fee for you, and Lauren deserves her tips.</p>'
+		);
+		startQuestions();
+		addLinkToPlaceC(md, 'enjoy the club after her dance', Place);
+		WritePlaceFooter(md);
 	};
 	
 	// She is tried to be fed on
 	per.fedUponEvent = function(perV) {
 		if (perV.uid == "tina") return false;
 		// Vampyre tries to feed on her
-		var md = WritePlaceHeader(false, "", "black");
+		var md = WritePlaceHeaderNIP(false, "", "black");
 		this.setFlag(13);
 		showPopupWindow("Feeding on Lauren",
 			this.addPersonString("feedon.jpg", "height:max%", "right") +
@@ -242,8 +365,27 @@ function initialiseLauren()
 								 : '"No! Never by that bitch, never!" and you call Lilith back. Lauren looks somewhat disgusted but still a little aroused. She was unusually forceful in her refusal!') +
 			'</p><p>You decide it would be best to not try to have Lilith feed on her again'
 		);
-		WritePlaceFooter(md, '', true, true);
+		WritePlaceFooter(md);
 		return true;
+	};
+	
+	// Can you chat with Lauren
+	per.showPersonChat = function(bGeneral, md)
+	{
+		if (Place == 269 && this.place == 269) addLinkToPlace(md, 'speak to Lauren', Place, 'type=lauren1');
+		
+		if (Place != 290 || !this.isHere() || sType !== "") return;
+		
+		if (!this.isCharmedBy()) return;
+		
+		addLinkToPlaceC(md, "ask Lauren for service", 290, 'type=laurenplay');
+		if (perYou.isMaleSex()) addLinkToPlaceC(md, "ask Lauren for service with her breasts", 290, 'type=laurentfplay');
+
+		this.addSleepLink(md, "go to bed for the night", "Sleeping with some Service",
+			'<p style="position:absolute;left:25%;top:15%;cursor:pointer;font-size:1.1em;width:50%">' +
+			'You start to prepare for bed and as you do you see the maid Lauren silently start to remove her clothing and their lies on the bed awaiting you, ready to serve you however you wish.', 
+			Math.random() < 0.5 ? "lauren-bed1.jpg" : "lauren-bed2.jpg", true
+		);
 	};
 
 	// Cast a spell on them or use an item
@@ -252,7 +394,7 @@ function initialiseLauren()
 		// Casting the charm spell
 		if (no == 14 && cmd == 2) {
 			// Pool
-			if ((Place == 269 || Place == 258) && this.place == Place) {
+			if (Place == 269 && this.place == Place) {
 				addComments('You attempt to cast the spell on Lauren, but it does nothing as if Lauren cannot be affected by the spell.');
 				return 'handled';
 			}

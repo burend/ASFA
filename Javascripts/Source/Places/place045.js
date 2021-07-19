@@ -19,18 +19,20 @@ function ShowPlace45(stype)
 	if (perYou.getQuestRustyKey() == 8 && whereItem(38) == 0) moveItem(38, 45);   // Didn't pick up magnet from Madison yet, then put it in the kitchen instead
 	else if (perYou.getQuestRustyKey() == 900 && perYou.getExperience() > 12) PlaceI(38, 45); // Got the message wrong, game reasonably advanced, place Magnet in Kitchen
 
+	var bImg = false;
 	if (getQueryParam("event") == "") {
 		if (perTracy.place == 1) // Sister Path Active
 		{
 			if (perTracy.whereNow() != 45) {
 				// Sister in Laundry/Lounge
-				addPlaceImage(md, "kitchen1.jpg", "", "", "Kitchen");
-				md.write('<br>');
+				//addPlaceImage(md, "kitchen1.jpg", "", "", "Kitchen");
+				//md.write('<br>');
 			} else {
 				if (perTracy.isCharmedBy("You") > 0) perTracy.showPersonRandomDN("tracy5", isDay() ? 1 : 2);
 				else perTracy.showPersonRandomDN("tracy1", 2);
+				bImg = true;
 			}
-		} else addPlaceImage(md, "kitchen1.jpg", "", "", "Kitchen");
+		} //else addPlaceImage(md, "kitchen1.jpg", "", "", "Kitchen");
 	}
 
 	var loanCompany = 0;
@@ -43,7 +45,7 @@ function ShowPlace45(stype)
 
 	//  *********************************** Description ****************************
 
-	addPlaceTitle(md, "26 Kollam Street Kitchen");
+	addPlaceTitle(md, "26 Kollam Street Kitchen", !bImg ? "kitchen1.jpg" : "");
 	md.write('<p>At home. Coming into your house always means passing through the kitchen.</p><p>');
 
 	if (whereItem(31) === 0 && perYou.isShot()) {
@@ -128,8 +130,11 @@ function ShowPlace45(stype)
 	}
 	else if (isDay() && perYou.getQuestRustyKey() == 1) addLinkToPlaceC(md, 'answer the home telephone', 287);
 
-	addLinkToPlace(md, 'go to your bedroom', 46, '', '', '', "Leave45()");
-	if (perMom.place == 154 || perMom.other > 0) addLinkToPlace(md, 'go to Mom\'s bedroom', 154, '', '', '', "Leave45()");
+	if (perMom.place == 154 || perMom.other > 0) {
+		if (getQueryParam("event") == "mombreakfast") addLinkToPlace(md, 'go to Mom\'s bedroom', 45, '', 'Mom is making breakfast so no need to visit her room now');
+		else if (perMom.place == 899) addLinkToPlace(md, 'go to Mom\'s bedroom', 45, '', 'Mom is still out with Aunt Brandi so no need to visit her room now');
+		else addLinkToPlace(md, 'go to Mom\'s bedroom', 154, '', '', '', "Leave45()");
+	}
 
 	addLinkToPlace(md, 'look in the attic', 408);
 	if (perJesse.whereNow() !== 6) addLinkToPlace(md, 'go to the living room', 374, '', '', '', "Leave45()");

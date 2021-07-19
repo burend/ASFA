@@ -123,7 +123,7 @@ function ShowPlace8(stype)
 
 			// Description of Monique
 			if (perMonique.other < 1) {
-				md.write('<p>An attractive girl is sitting at one of the computer terminals. She\'s familiar to you; one of the staff. As you approach she startles and, too quickly, spins around to face you. Nervously you approach the girl.</p>');
+				md.write('<p>An attractive woman is sitting at one of the computer terminals. She\'s familiar to you; one of the staff. As you approach she startles and, too quickly, spins around to face you. Nervously you approach the woman.</p>');
 			}	else if (perMonique.isCharmedBy()) {
 				// Monique is charmed
 				if (clv > 1) md.write('<p>Monique, ever your faithful slave' + addVisible(', stands at attention -', 'is always') + ' ready to serve you in any way you desire.</p>');
@@ -131,6 +131,7 @@ function ShowPlace8(stype)
 			} else {
 				md.write('<p>Monique, the database administrator, ' + addVisible('spins around to face you', 'starts and glances in your direction but turns back to her computer') + '.</p>');
 			}
+			if (perMonique.other == 2 && perYourBody.FindItem(1) > 0) md.write('<p>Maybe you could <b>give</b> Monique the paper written by Mr. Beasley?</p>');
 		}
 	}
 
@@ -142,14 +143,14 @@ function ShowPlace8(stype)
 			// Introduce yourself
 			s = "<p>" + perMonique.addPersonString("monique2.jpg", "20%", "right") +
 				"You approach the nervous looking staff member, you have seen her a number of times before but you do not think you have spoken to her before. You introduce yourself and she looks calmer, her nervousness has passed. She replies,</p>";
-			if (!perMonique.isCharmedBy()) s += '"Hello, my name is Monique," says the girl. "How may I help you?"';
+			if (!perMonique.isCharmedBy()) s += '"Hello, my name is Monique," says the woman. "How may I help you?"';
 			else s += '"Hello ' + perMonique.getYourNameFor() + ', how may I be of service?"';
 			s += "<p>You apologise if you startled her, and she smiles,</p>" +
 				'<p>"Sorry I was just reading a little on this town\'s history and Tess had recently told me some creepy stories about magic and I was a little...umm...on edge. She likes to tease me about things I am a little afraid of, things I am interested in but..well..anxious about."</p>' +
 				'<p>She seems like a nice lady, but her always anxious and nervous behaviour can be irritating after a while, but her vast knowledge and interest in the history of the town makes her a pivotal person in your journey, you know that for sure.';
-			addPopupLinkC(md, 'introduce yourself to the girl', "Reference Area Staff", s, false, "setPersonOther('Monique',1);dispPlace();");
+			addPopupLinkC(md, 'introduce yourself to the woman', "Reference Area Staff", s, false, "setPersonOther('Monique',1);dispPlace();");
 
-		}	else if (perMonique.other == 1) {
+		} else if (perMonique.other == 1) {
 			// Ask about the Kurndorf Book
 			addQuestionC(md, 'ask where you could find the Kurndorf book', "Monique", 61);
 		}
@@ -230,7 +231,7 @@ function ShowPlace8(stype)
 				addPopupLinkC(md, "ask Monique if she has found anything else", "Researching",
 					"<p><img src='UI/books/kingbook.jpg' style='width:20%;float:right;margin-left:5px;margin-bottom:1em' alt='King Book'>" +
 					"You check with Monique if she has found anything else useful or magical, and she slides over a book to you,<br><br>" +
-					'"I recently found this book, it is originally a fictional story of macarbe events and madness, this is an odd edition. It must be a very early edition and it is quite unlike any others I can find on record!"</p>' +
+					'"I recently found this book, it is originally a fictional story of macabre events and madness, this is an odd edition. It must be a very early edition and it is quite unlike any others I can find on record!"</p>' +
 					'<p>She pauses, "Sorry I could not fully read it...it was just too spooky, I could not take it and I have been having nightmares about what I did read", she shudders. You know she is nervous about the occult but this book has really creeped her out.</p>' +
 					'<p>Well it is just a work of fiction and not very long, so you sit down with her and read it....She was not kidding, it is one disturbing work of eldritch horror and madness centered around an otherworldy being, the King in Yellow living on a far dead world, spreading corruption and death at mere speaking of his name "Hastur". You put the book away, resolving to not read it <i>ever</i> again.',
 					true, "setPersonFlag('Catherine',13);if(!per.checkFlag(12))perYou.addExperience(1);dispPlace();"

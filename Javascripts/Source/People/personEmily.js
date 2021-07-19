@@ -100,10 +100,11 @@ function initialiseEmily()
 		}
 		
 		if (Place == 461) {
+			// Emily's apartment
 			if (sType == "emilyhomefuck") {
 				// Fuck her at home
-				md = WritePlaceHeader(false, "td-left-med");
-				if (perYou.isMaleSex() && Math.random() < 0.5 && isExplicit()) this.showPersonX("!home-sexa.jpg");
+				md = WritePlaceHeader();
+				if (perYou.isMaleSex()) this.showPersonRandomRorX("!home-sex", isExplicit() ? 3 : 2);
 				else this.showPersonRandom("!home-sex", 2);
 
 				addPlaceTitle(md, "Home with Emily");
@@ -127,6 +128,33 @@ function initialiseEmily()
 				WritePlaceFooter(md);
 				return true;
 			} 	
+			if (sType == "emilyhomebj") {
+				// Fuck her at home
+				md = WritePlaceHeader();
+				if (perYou.isMaleSex()) this.showPersonRandomRorX("!home-bjb", isExplicit() ? 3 : 1);
+				else this.showPersonRandomRorX("!emily-bj-female1", isExplicit() ? 1 : 2);
+
+				addPlaceTitle(md, "Home with Emily");
+
+				if (perYou.isMaleSex()) {
+					md.write(
+						'<p>“Yes ' + perYou.getMaster() + '!” Emily says with glee</p>' +
+						'<p>She immediately kneels down before you and takes your cock into her mouth.</p>'
+					);
+				} else {
+					md.write(
+						'<p>“Yes ' + perYou.getMaster() + '!” Emily says with glee</p>' +
+						'<p>She immediately kneels down before you and enthusiastically licks and sucks on your pussy</p>'
+					);
+				}
+				
+				// Questions
+				startQuestions();
+				addLinkToPlaceC(md, '“I want more from you”', Place);
+				addLinkToPlace(md, 'leave the apartment', 456);
+				WritePlaceFooter(md);
+				return true;
+			} 				
 		}
 		
 		if (Place != 99 && Place != 199) return false;
@@ -207,7 +235,7 @@ function initialiseEmily()
 		}
 		if (sType == "charmemily3") {
 			// Charm Emily 3
-			md = WritePlaceHeader(false, (!perYou.isMaleSex()) || isExplicit() ? "td-left-med" : "");
+			md = WritePlaceHeader();
 			if (perYou.isMaleSex()) this.showPersonRandomRorX("emily-bj-male1", isExplicit() ? 2 : 1);
 			else this.showPersonRandomRorX("!emily-bj-female1", isExplicit() ? 1 : 2);
 			addPlaceTitle(md, "Emily Under a Charm Spell");
@@ -237,7 +265,7 @@ function initialiseEmily()
 		}	
 		if (sType == "charmemily4") {
 			// Charm Emily 4
-			md = WritePlaceHeader(false, perYou.isMaleSex() && !isExplicit() ? "" : "td-left-med");
+			md = WritePlaceHeader();
 			if (perYou.isMaleSex()) this.showPersonRandomRorX("emily-sex-male1", 2);
 			else this.showPerson("!emily-sex-female1a.jpg");
 			addPlaceTitle(md, "Emily Under a Charm Spell");
@@ -266,7 +294,7 @@ function initialiseEmily()
 		
 		if (sType == "emilyfuck") {
 			// Fuck her
-			md = WritePlaceHeader(false, (!perYou.isMaleSex()) || isExplicit() ? "td-left-med" : "");
+			md = WritePlaceHeader();
 			if (perYou.isMaleSex()) this.showPersonRandomRorX("emily-sex-male1", 2);
 			else this.showPerson("!emily-sex-female1a.jpg");
 
@@ -294,8 +322,8 @@ function initialiseEmily()
 		
 		if (sType == "emilybj") {
 			// Blowjob/Lick
-			md = WritePlaceHeader(false, (!perYou.isMaleSex()) || isExplicit() ? "td-left-med" : "");
-			if (perYou.isMaleSex()) this.showPersonRandomRorX("emily-bj-male1", isExplicit() ? 2 : 1);
+			md = WritePlaceHeader();
+			if (perYou.isMaleSex()) this.showPersonRandomRorX("emily-bj-male1", isExplicit() ? 3 : 1);
 			else this.showPersonRandomRorX("!emily-bj-female1", isExplicit() ? 1 : 2);
 			addPlaceTitle(md, "Emily");
 
@@ -318,21 +346,67 @@ function initialiseEmily()
 			WritePlaceFooter(md);
 			return true;
 		}
+		
+		if (sType == "emilytitfuck") {
+			// Blowjob/Lick
+			md = WritePlaceHeader();
+			this.showPersonRorX("emily-tfa.jpg");
+			addPlaceTitle(md, "Emily\'s Breasts");
+
+			md.write(
+				'<p>“Yes, of course ' + perYou.getMaster() + '!”</p>' +					
+				'<p>Emily kneels down on the floor and takes your cock between her large breasts.</p>'
+			);
+
+			// Questions
+			startQuestions();
+			addLinkToPlaceC(md, '“I have more for you”', 99);
+			addLinkToPlace(md, 'leave the office', 95);
+			WritePlaceFooter(md);
+			return true;
+		}
+		
+		if (sType == "emilyangelathreesome") {
+			// Threesome with Angela
+			md = WritePlaceHeader();
+			if (perYou.isMaleSex()) this.showPersonRandomRorX("!emilyangelab", isExplicit() ? 2 : 1);
+			else this.showPersonRandom("!emilyangelag", 2);
+			addPlaceTitle(md, "Emily and Angela");
+
+			md.write(
+				'<p>“Yes, of course ' + perYou.getMaster() + '!” and she calls Angela. A couple of minute later Angela steps into the office looking uncertain, but she seems Emily removing her clothing and you gesturing for her to come in. With that she understands what Emily wanted or to be more accurate what you wanted.</p>' +
+				'<p>Emily embraces Angela and whispers "I have always wanted to do this with you" and starts to seductively remove Angela\'s clothing ready for you to receive their devotion and passion.</p>'
+			);
+
+			// Questions
+			startQuestions();
+			addLinkToPlaceC(md, '“I have more for you”', 99);
+			addLinkToPlace(md, 'leave the office', 95);
+			WritePlaceFooter(md);
+			return true;
+		}
 		return false;
 	};
 	
 	per.showPersonChat = function(bGeneral, md)
 	{
-		if ((Place == 110 || Place == 176) && this.place === 0 && checkPersonFlag("Angela", 12) && isPersonHere("Mayor")) addQuestionC(md, 'ask Mayor Thomas about her news', "Mayor", 9900);
-		else if (Place == 110 && wherePerson("Emily") == 99 && !isPlaceKnown("EmilyOffice")) addLinkToPlaceC(md, "tell Mayor Thomas to setup a meeting with Emily", 99, 'type=meetemily1');
+		if ((Place == 110 || Place == 176) && this.place === 0 && checkPersonFlag("Angela", 12) && sType === "" && isPersonHere("Mayor")) addQuestionC(md, 'ask Mayor Thomas about ' + per.getHisHer() + ' news', "Mayor", 9900);
+		else if (Place == 110 && wherePerson("Emily") == 99 && !isPlaceKnown("EmilyOffice") && sType === "") addLinkToPlaceC(md, "tell Mayor Thomas to setup a meeting with Emily", 99, 'type=meetemily1');
 		else if (this.isHere() && Place == 99 && this.isCharmedBy() && sType === "") {
-			if (perYou.isMaleSex()) {
-				addLinkToPlaceC(md, '“Fuck me”', Place, 'type=emilyfuck');
-				addLinkToPlaceC(md, '"Suck my Cock"', Place, 'type=emilybj');
-			} else {
-				addLinkToPlace(md, '"Lick me"', Place, 'type=emilybj');
-				addLinkToPlace(md, '“Fuck me”', Place, 'type=emilyfuck');
+			// Emily's Office
+			if (this.checkFlag(4) && !isPlaceKnown("TammyOffice")) {
+				if (wherePerson("Tammy") == 999) addLinkToPlaceC(md, 'ask about the attorney', 101, 'type=meettammy');
+				else addLinkToPlaceC(md, 'ask about the attorney', Place, '', '"Sorry ' + perYou.getMaster() + ' she is due here Friday afternoon, she just visits for a time and lives in another city"', "Emily");
 			}
+			if (perYou.isMaleSex()) {
+				addLinkToPlaceC(md, '“Let\'s Fuck”', Place, 'type=emilyfuck');
+				addLinkToPlaceC(md, '"Suck my Cock"', Place, 'type=emilybj');
+				addLinkToPlaceC(md, '“Titfuck me”', Place, 'type=emilytitfuck');
+			} else {
+				addLinkToPlaceC(md, '"Lick me"', Place, 'type=emilybj');
+				addLinkToPlaceC(md, '“Let\'s Fuck”', Place, 'type=emilyfuck');
+			}
+			if (isCharmedBy("Angela") && wherePerson("Angela") == 95) addLinkToPlace(md, '"Call Angela to join us"', Place, 'type=emilyangelathreesome');
 			this.addDancingLink(md, 'talk to Emily about dancing in the club',
 				'You ask Emily about the Avernus club and being a good little slave and dancing there for you,</p>' +
 				'<p>&quot;Of course ' + perYou.getMaster() + ' I will do anything you ask!&quot; and with that you call Jade to arrange a dance for Emily.'
@@ -344,9 +418,13 @@ function initialiseEmily()
 					"setPlaceKnown(\\'EmilysApartment\\')"
 				);
 			}
+			if (this.hoursCharmed() > 48 && !checkPersonFlag("Savanna", 2)) addLinkToPlace(md, 'Emily suggests hiring an intern', Place, 'type=internsav');
+			
 		} else if (Place == 461 && this.isHere() && sType === "") {
 			// Emily's apartment
 			addLinkToPlaceC(md, '"I want you!"', Place, 'type=emilyhomefuck');
+			if (perYou.isMaleSex()) addLinkToPlaceC(md, '"I want you to suck my cock!"', Place, 'type=emilyhomebj');
+			else addLinkToPlaceC(md, '"I want you to lick me!"', Place, 'type=emilyhomebj');
 			this.addDancingLink(md, 'talk to Emily about dancing in the club',
 				'You ask Emily about the Avernus club and being a good little slave and dancing there for you,</p>' +
 				'<p>&quot;Of course ' + perYou.getMaster() + ' I will do anything you ask!&quot; and with that you call Jade to arrange a dance for Emily.'
@@ -364,7 +442,7 @@ function initialiseEmily()
 		// Casting the charm spell
 		if (no == 14 && cmd == 2) {
 			// Emily's Office
-			if (Place == 99 && this.isHere())  {
+			if (Place == 99 && this.isHere()) {
 				CastCharmSpell("Emily", Place, 4, 'type=charmemily1');
 				return "handled";
 			}
@@ -402,6 +480,21 @@ function initialiseEmily()
 			return false;
 			
 		}
+		if (!this.isHere() && !this.checkFlag(4) && this.hoursCharmed() > 12 && getDay(true) == "Fri" && isMorning()) {
+			// Phone call about Tammy
+			if (makeCall(false, "",
+					'The call is from Emily at the Town Hall! You answer the call and she tells you,<br><br>' +
+					'<b>Emily</b><br>' +
+					'"' + perYou.getMaster() + ' the city has an attorney who visits to consult with the Mayor and other on legal matters. We do not have a lot of these so she only visits every friday and often only in the afternoon!<br><br>' +
+					'I have just been asked to assign her an office for this afternoon. So come and see me and I will introduce you to her?"<br><br>' +
+					'With that she has little more to say and with your permission she hangs up.'))
+			{
+				this.setFlag(4);
+				addSMS(333);
+				setTimeout("usePhone('sms')",10);
+				return true;
+			}
+		}
 		var hr = getHour();
 		var no;
 		if (this.hoursCharmed() > 72 && hr < 9) {
@@ -414,6 +507,8 @@ function initialiseEmily()
 				// second morning after charm, SMS
 				if (makeCall(true, 331)) this.setFlag(3);
 			}			
+		} else if (getDay(true) == "Sat" && isMorning() && Place != 461 && !this.checkFlag(5) && getCharmedLevel("Tammy") == 2) {
+			if (makeCall(true, 335)) this.setFlag(5);
 		}
 		return false;
 	};
@@ -421,11 +516,13 @@ function initialiseEmily()
 	per.getPersonSMS = function(id) {
 		switch(id) {
 			case 330:
-				return receiveSMS('Emily', 'Good morning ' + perYou.getMaster() + '!', 'sms1.mp4');
+				return receiveSMS('Emily', 'Good morning ' + perYou.getMaster() + '!', 'sms1.jpg');
 			case 331:
-				return receiveSMS('Emily', 'Good night ' + perYou.getMaster() + '!', 'sms2.mp4');
+				return receiveSMS('Emily', 'Good night ' + perYou.getMaster() + '!', 'sms2.jpg');
 			case 332:
-				return receiveSMS('Angela', 'Emily just texted, her washing machine broke and she is use the laundromat in town in the evenings. You could talk to her there!') + receiveSMS('Angela', 'This is the image she sent with her text.', 'sms3.jpg');
+				return receiveSMS('Angela', 'Emily just texted, her washing machine broke and she is using the laundromat in town in the evenings. You could talk to her there!') + receiveSMS('Angela', 'This is the image she sent with her text.', 'sms3.jpg');
+			case 335:
+				return receiveSMS('Emily', perYou.getMaster() + ' I had Tammy over for a sleep-over last night!', 'sms4.jpg');
 		}
 		return '';
 	};

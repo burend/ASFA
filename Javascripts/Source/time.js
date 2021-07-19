@@ -28,7 +28,7 @@ function getTimeOfDay()
 	if (!isDay()) return "evening";
 	var hr = Math.ceil((nTime % 288 + 1) / 12 - 1);
 	if (hr < 12) return "morning";
-	if (hr < 16) return "day";
+	if (hr < 18) return "day";
 	return "afternoon";
 }	
 
@@ -225,7 +225,7 @@ function WaitHere(no)
 	dispPlace();
 }
 
-function addSleepLink(md, lnk, title, body, img, white, plc, params, txt, sty)
+function addSleepLink(md, lnk, title, body, img, white, plc, params, txt, sty, cnt)
 {
 	if (isDay() || isInvisible()) return '';
 			
@@ -233,26 +233,21 @@ function addSleepLink(md, lnk, title, body, img, white, plc, params, txt, sty)
 		addTextForQuestions(md, "Then again, night is falling...");
 		gameState.bSleepLink = true;
 	}
-	if (sty === undefined) sty = '';
-	else sty = ";" + sty;
+	if (sty === undefined) sty = ';overflow-y:hidden';
+	else sty = ";overflow-y:hidden;" + sty;
 	if (img !== undefined && img !== "") {
 		if (isBritish()) img = img.split("Setting/").join("UK/");
 		else img = img.split("Setting/").join("US/");
-		var altimg1, altimg2;
-		if (img.indexOf('.jpg') != -1) {
-			altimg1 = img.split('.jpg').join('.gif');
-			altimg2 = img.split('.jpg').join('.mp4');
-		} else if (img.indexOf('.gif') != -1) {
-			altimg1 = img.split('.gif').join('.jpg');
-			altimg2 = img.split('.gif').join('.mp4');
-		} else {
-			altimg1 = img.split('.mp4').join('.jpg');
-			altimg2 = img.split('.mp4').join('.gif');
-		}
-		sty += ';background-image:url(Images/' + img + '),url(Images/' + altimg1 + '),url(Images/' + altimg2 + ');background-size:100%;background-repeat:no-repeat;background-position:left bottom';
+		body += '<div style="position:absolute;bottom:0;right:0;width:100%;z-index:-1">';
+		if (cnt !== undefined) body += addImageRandomString(img, cnt, "100%", "rightpopup");
+		else body += addImageString(img, "100%", "rightpopup");
+		body += "</div><div style='height:98%;height:calc(100% - 1.5em);width:100%;cursor:pointer;margin-bottom:-4px;font-size:1.1em;margin-top:1.5em'>";
 	}
-	// '<p style="position:absolute;cursor:pointer;font-size:1.1em;left:2%;top:2em;width:66%">As you prepare to go to bed for the night, Tess lies down on the bed looking beautiful as always. She looks at you with desire and you can see you will not be sleeping for a while...',
-	return addPopupLinkC(md, lnk, title, body, true, "setQueryParams();sleepForNight(" + (plc !== undefined && plc !== "" ? plc : "") + (txt !== undefined && txt !== "" ? ",'" + txt + "'" : params !== undefined && params !== "" ? "''," : "") + (params !== undefined && params !== "" ? "," + params : "") + ");", false, "top:5vh;left:5%;width:85%;height:85vh;padding:0" + (white === true ? ";background-color:white;color:black;text-shadow:-1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white" : "") + sty);
+
+	var bTxt = txt !== undefined && txt !== "";
+	var bParams = params !== undefined && params !== "";
+	var js = "setQueryParams();sleepForNight(" + (plc !== undefined && plc !== "" ? plc : (bTxt || bParams ? "''" : "")) + (bTxt ? ",'" + txt + "'" : bParams ? ",''" : "") + (bParams ? ",'" + params + "'" : "") + ");";
+	return addPopupLinkC(md, lnk, title, body, true, js, false, "top:5vh;left:5%;width:85%;height:85vh;padding:0" + (white === true ? ";background-color:white;color:black;text-shadow:-1px 0px white, 0px 1px white, 1px 0px white, 0px -1px white" : "") + sty);
 }
 
 function sleepForNight(plc, s, param)
@@ -332,6 +327,7 @@ function removeTimedEvent(evt)
 	}
 }
 
+function movePersonfterTime(ps, plc, cnt) { startTimedEvent("movePerson('" + ps + "'," + plc + ")", cnt); }
 function setPersonFlagAfterTime(ps, flg, val, cnt) { startTimedEvent("setPF('" + ps + "'," + flg + (val === undefined ? "" : "," + val) + ")", cnt); }
 function setPlaceFlagAfterTime(ps, flg, val, cnt) { startTimedEvent("setPlaceFlag('" + ps + "'," + flg + (val === undefined ? "" : "," + val) + ")", cnt); }
 

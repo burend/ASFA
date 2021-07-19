@@ -18,13 +18,13 @@ function ShowPlace94()
 	if (perAngela.isCharmedBy() && perMayor.isCharmedBy("You")) {
 		md.write(
 			'<p>Glenvale’s town hall proudly stands as a symbol of your power and authority. Not from the outside, as it still looks the same fifty-four years old building as always. ' +
-			'Instead, what’s inside of it changed that matters. Mayor Beatrice Thomas has had a change of heart recently and decided to become your slave. ' +
-			'Her secretary, Angela, also joined her. The town hall is officially one of your strongholds, with your slaves working for you tirelessly inside it.</p>'
+			'Instead, what’s inside of it changed that matters. Mayor ' + perMayor.getPersonNameShort() + ' Thomas has had a change of heart recently and decided to become your slave and ' +
+			perMayor.getHisHer() + ' secretary, Angela, also joined ' + perMayor.getHimHer() + '. The Town Hall is officially one of your strongholds, with your slaves working for you tirelessly inside it.</p>'
 		);
 	} else {
 		md.write(
 			'<p>Glenvale\'s town hall proudly stands as a symbol of unity in the community. Only fifty-four years old, the building has been occupied ' +
-			'by many of the finest council management officials, including the current Mayor Beatrice Thomas. Just passing by the town ' +
+			'by many of the finest council management officials, including the current Mayor ' + perMayor.getPersonNameShort() + ' Thomas. Just passing by the town ' +
 			'center gives you a comfortable feeling of security and reliability.</p>'
 		);
 	}

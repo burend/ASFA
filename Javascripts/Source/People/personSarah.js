@@ -46,9 +46,9 @@ function RepliesSarahGates(nR)
 	{
 		addComments(
 			'"' + myName + ' I do not consort with demons, I have studied them a little but they are too difficult to deal with. While some can work out bargains with them it is always at a terrible cost."</p>' +
-			'<p>She heitates, "There was a <i>woman</i> who once met with Uncle Ronnie". You can hear the comtempt in her voice. "She was a skilled demonologist, and was not yet a demon-slave. She knew much of them and wanted to trade with Uncle Ronnie. He refused, I am not sure why, he seemed embarrassed."</p>' +
+			'<p>She hesitates, "There was a <i>woman</i> who once met with Uncle Ronnie". You can hear the contempt in her voice. "She was a skilled demonologist, and was not yet a demon-slave. She knew much of them and wanted to trade with Uncle Ronnie. He refused, I am not sure why, he seemed embarrassed."</p>' +
 			'<p>You ask more about this woman, and he answers,</p>' +
-			'<p>"She called herself Mistress Jade, apparently she is based out of a \'gentlemens club\' in town. I have no idea where that place is, I did not know there was one here in Glenvale, try asking someone else where it is."</p>' +
+			'<p>"She called herself Mistress Jade, apparently she is based out of a \'gentlemans club\' in town. I have no idea where that place is, I did not know there was one here in Glenvale, try asking someone else where it is."</p>' +
 			'<p>Strange, you have never hear of such a club in town either, it must be very private!</p>'
 		);
 		perGates.setFlag(6);
@@ -180,6 +180,12 @@ function RepliesSarahGates(nR)
 		addComments('<p>"Oh yes, ' + myName + '!  Follow me."</p>');
 		Place = 191; //Take you to the Safe room
 	}
+	else if (nR == 960)
+	{
+		if (isMurderPath()) addComments('<p>Sarah nods, "Whatever I have is yours ' + myName + '"</p>');
+		else addComments('<p>Sarah nods, "Uncle Ronny allows me to use his limo sometimes, I can arrange it for the weekend, you are welcome, we just cannot do this too often!"</p>');
+		setPersonFlag("Brandi", 20);
+	}	
 	else if (nR == 5904) //Blue bottle path
 	{
 		if (!bCharm) {
@@ -251,7 +257,7 @@ function initialiseSarah()
 			this.setFlag(7);
 			showPopupWindow("Sarah Gates",
 				this.addPersonString("sarah0.jpg", "height:max%", "right") +
-				"<p>You enter the Gates' Massion to see an elegant young lady, sitting on the floor. You recognise her from her face from the paper. It is Sarah Gates, the richest lady in Glenvale.</p>" +
+				"<p>You enter the Gates' Mansion to see an elegant young lady, sitting on the floor. You recognise her from her face from the paper. It is Sarah Gates, the richest lady in Glenvale.</p>" +
 				"<p>Her eyes are still watery, it is obvious she’s still crying about the death of Sir Ronald. Here’s a woman all to herself, without protection which is already strange. She doesn’t have bodyguards around her or guards at all in the house. This makes her an easy and quick conquest to your charms, " +
 				(isMurderPath(true) ? "but if she is playing tricks on you and thinks that you were the one who killed Sir Gates?" : "but if she is playing tricks on you and realized that you were the one who killed Sir Gates?") +
 				"</p><p>You have to think carefully and plan everything around, there is a high chance that she is dangerous. However the wealth and influence she now possess over the town after the of her uncle makes her a key player to your road to full domination.</p>" +
@@ -263,20 +269,25 @@ function initialiseSarah()
 		// Initial delivery on the conspiracy path
 		if (Place == 45) {
 			if (perGates.other == 499) {
-				showPopupWindow("A Delivery",
-					findPerson("Zoey").addPersonString("zoey0b.jpg", "height:max%", "right") +
-					'As you approach your front door, you see a cute delivery girl knocking on the door. You ask her what she wants and she turns,<br><br>' +
-					'"Hello, are you ' + perYou.getPersonName() + '...", and she confirms your identity. She asks you to sign for a package and hands it to you,<br><br>' +
-					'With her business done she leaves you, riding off on a small motor-scooter. Inside the house you check the package, it is the <b>Book!!!</b> There are also an envelope with a little money in bills and a simple note,<br><br>' +
-					'"<i>Well ' + (perYou.isBornMale() ? 'Mr' : 'Miss') + ' Not Apprentice, he will not miss this for a time, learn what you can and we will talk more later. Take care as we are now allies and co-conspirators!</i>"<br><br>' +
-					'You consider that you could return the book, or hand it in to the police, it would be safer....<b>no way</b>!! You will not give up the book!'
-				);
-				perGates.other = 700;
-				perYou.startQuest(1);
-				movePerson('Kurndorf', 0);
-				AddCash(50);
-				moveItem(4);  // places book in the room
-				if (!isPlaceKnown("ShoppingCenter")) setPlaceKnown("ShoppingCenter");	// Know the Shops to turn in the Letter of Credit
+				findPerson("Zoey");
+				if (per.dress === "") {
+					per.pickModel('As you approach your front door, you see a cute delivery girl knocking on the door.', '');
+				} else {
+					showPopupWindow("A Delivery",
+						per.addPersonString("zoey0b.jpg", "height:max%", "right") +
+						'As you approach your front door, you see a cute delivery girl knocking on the door. You ask her what she wants and she turns,<br><br>' +
+						'"Hello, are you ' + perYou.getPersonName() + '...", and she confirms your identity. She asks you to sign for a package and hands it to you,<br><br>' +
+						'With her business done she leaves you, riding off on a small motor-scooter. Inside the house you check the package, it is the <b>Book!!!</b> There are also an envelope with a little money in bills and a simple note,<br><br>' +
+						'"<i>Well ' + (perYou.isBornMale() ? 'Mr' : 'Miss') + ' Not Apprentice, he will not miss this for a time, learn what you can and we will talk more later. Take care as we are now allies and co-conspirators!</i>"<br><br>' +
+						'You consider that you could return the book, or hand it in to the police, it would be safer....<b>no way</b>!! You will not give up the book!'
+					);
+					perGates.other = 700;
+					perYou.startQuest(1);
+					movePerson('Kurndorf', 0);
+					AddCash(50);
+					moveItem(4);  // places book in the room
+					if (!isPlaceKnown("ShoppingCenter")) setPlaceKnown("ShoppingCenter");	// Know the Shops to turn in the Letter of Credit
+				}
 				return true;
 			}
 			if (this.checkFlag(4) && whereItem(60) == 1000 && isDay()) {
@@ -308,7 +319,7 @@ function initialiseSarah()
 			perLauren = findPerson("Lauren");
 			this.setFlag(11);
 			this.showPersonDN("sarah12.jpg");
-			addPlaceTitle(md, "Yout Noble Ally, Sarah Gates");
+			addPlaceTitle(md, "Your Noble Ally, Sarah Gates");
 			perYou.setQuestAftane(1);
 			this.setFlag(1);
 			perYourBody.RemoveItem(40);  // remove the wine from the game.
@@ -340,7 +351,7 @@ function initialiseSarah()
 			md = WritePlaceHeader();
 			perLauren = findPerson("Lauren");
 			this.showPersonDN("sarah12.jpg");
-			addPlaceTitle(md, "Yout Noble Ally, Sarah Gates");
+			addPlaceTitle(md, "Your Noble Ally, Sarah Gates");
 			
 			if (sType == "magic") {
 				perYou.addCorruption(-5);
@@ -390,7 +401,7 @@ function initialiseSarah()
 			this.setFlag(10);
 			this.setFlag(11);
 			var bPreviousSarah = this.checkFlag(6);
-			md = WritePlaceHeader();			
+			md = WritePlaceHeaderNIP();			
 			showPopupWindow("Returning to Sarah with Lilith",
 				perLilith.addPersonString("youslave.jpg", "height:max%", "right") +
 				'You enter the room with Sarah, Lilith the vampyre following silently and they look at each other intensely.' +
@@ -398,14 +409,14 @@ function initialiseSarah()
 									 : 'Sarah says, "So this is the vampyre, she is more...appealing...than when we last met. She is your now..." and unusually Lilith interrupts "Heart and Soul, kill anyone or anything for my ' + perYou.getMaster() + '" and she looks pointedly at Sarah') +
 				'</p><p>Lilith is silent and Sarah just laughs off her words but there is some tension in the room. You can think of nothing to do, they will just have to get used to each other'
 			);
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;		
 		}
 		
 		// Sarah having problems with her vampyre
 		if ((sType === "" && perLilith.isCharmedBy("Sarah") && !this.checkFlag(11) && !this.checkFlag(8) && !this.checkFlag(2) && perLilith.hoursCharmed("Sarah") > 60 && !isDay()) || sType === "vamptroubles") {
 			// Initial meeting/Start
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 			sWait = getQueryParam("wait");
 			perLilith.showPerson("sarahslave2.jpg");
 
@@ -420,13 +431,13 @@ function initialiseSarah()
 				);
 			} else {
 				this.setFlag(2);
-				if (sWait == "true") md.write('<p>You are sitting talking to Sarah and the Vampyre walks into the room, ignoring you completly and quietly stands next to Sarah. Sarah looks at you and smiles, she stands and starts to remove her clothing, but she turns her back to you and orders the vampyre, "Lilith, show our visitor your obedience and devotion, lick me and make me cum". Still ignoring you the Vampyre kneels behind Sarah, and starts licking her delightful rear end. You can see the vampyre has a curious mixture of lust and hunger in her expression, then she bites Sarah\'s ass, drawing a small trickle of blood and she starts to lick the blood. Sarah calls out in pain, she tells the vampyre,</p>');
+				if (sWait == "true") md.write('<p>You are sitting talking to Sarah and the Vampyre walks into the room, ignoring you completely and quietly stands next to Sarah. Sarah looks at you and smiles, she stands and starts to remove her clothing, but she turns her back to you and orders the vampyre, "Lilith, show our visitor your obedience and devotion, lick me and make me cum". Still ignoring you the Vampyre kneels behind Sarah, and starts licking her delightful rear end. You can see the vampyre has a curious mixture of lust and hunger in her expression, then she bites Sarah\'s ass, drawing a small trickle of blood and she starts to lick the blood. Sarah calls out in pain, she tells the vampyre,</p>');
 				else md.write('<p>You hear Sarah yell out something, she sounds annoyed! You step into her room and see she is naked and the Vampyre is kneeling behind her, licking her delightful rear end. You can see the vampyre has a curious mixture of lust and hunger in her expression and you see a slight trace of blood. Sarah looks at you and she looks a little embarrassed, she tells the vampyre,</p>');
 				md.write(
 					'<p>"Enough Lilith!" and the speaks to you, "She will not act right, she says she loves me and will obey me, but she refuses to do some things. She will not submit to me, no matter how reluctantly, unlike someone I could name. My maid hates her and will not touch her, no matter how I order her to or punish her."</p>' +
 					'<p>Sarah starts to redress, and the vampyre says to her,</p>' +
 					'<p>"I am no slave, I am a predator and have my own will. You command my heart and soul, but you cannot control my nature."</p>' +
-					'<p>Sarah looks annoyed, "See what I mean? Look, do you want her? Maybe we can work out how you could enspell her instead of me. We would have to free her of the Unlife-enspelled and then you could bind her. We would have to make sure she did not kill us inbetween, I do not feel confident any protective items would work again. Could we just tie her up? I do not have any experience with that sort of stuff, do you?"</p>'
+					'<p>Sarah looks annoyed, "See what I mean? Look, do you want her? Maybe we can work out how you could enspell her instead of me. We would have to free her of the Unlife-enspelled and then you could bind her. We would have to make sure she did not kill us in between, I do not feel confident any protective items would work again. Could we just tie her up? I do not have any experience with that sort of stuff, do you?"</p>'
 				);
 			}
 			if (!isSpellKnown("MirDaru") || perYourBody.FindItem(32) === 0) {
@@ -442,7 +453,7 @@ function initialiseSarah()
 			addLinkToPlaceC(md, "not yet", 192, '', 'You tell Sarah to cope for now, you will deal with the vampyre later');
 			if (perYourBody.FindItem(32) > 0 && isSpellKnown("MirDaru")) addLinkToPlaceC(md, '"I can free and bind her so we can do this"', 192, isCharmedBy("Bambi") ? 'type=vampbound' : 'type=vampnotbound');
 			else addLinkToPlaceC(md, "there is nothing you can do", 192, '', 'You tell Sarah that there is nothing you can do, you have no means to free the Vampyre');
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
@@ -540,7 +551,7 @@ function initialiseSarah()
 			var idx = Math.floor((this.other - 114) / 3);
 			this.other = this.other + 0.1;
 			
-			md = WritePlaceHeader(false, isExplicit() && idx != 1 ? "td-left-large" : "");
+			md = WritePlaceHeader();
 
 			if (isExplicit()) this.showPersonX("sarah13" + String.fromCharCode(idx + 97) + ".jpg");
 
@@ -605,7 +616,7 @@ function initialiseSarah()
 			// Blowjob/lick
 			md = WritePlaceHeader();
 			if (perYou.isMaleSex()) {
-				this.showPersonRandomRorX("sarah11b", isExplicit() ? 5 : 1);
+				this.showPersonRandomRorX("sarah11b", isExplicit() ? 6 : 1);
 				addPlaceTitle(md, "Sarah Gates Serving You");
 				md.write('<p>You tell ' + herName + ' to serve you by using her mouth to pleasure you. She is no expert and she takes your length into her mouth. She does her best and after a pleasurable time you release into her mouth. She swallows and smiles and says, "Thank you ' + myName + '".</p>');
 			} else {
@@ -621,9 +632,9 @@ function initialiseSarah()
 		}
 		
 		if (sType == "sarahtf") {
-			// Blowjob/lick
+			// Tit-fuck
 			md = WritePlaceHeader();
-			this.showPersonRandomRorX("sex-tf", 1);
+			this.showPersonRandomRorX("sex-tf", isExplicit() ? 4 : 1);
 			addPlaceTitle(md, "Sarah Gates Serving With Her Breasts");
 			md.write('<p>You tell ' + herName + ' to serve you by using her breasts to pleasure you. She is no expert and while her breasts are ample they are not as large as some. She takes your length between her tits as she does her best and after a pleasurable time you release over her breasts. She smiles and says, "Thank you ' + myName + '".</p>');
 			startQuestions();
@@ -636,7 +647,7 @@ function initialiseSarah()
 			// fuck her
 			md = WritePlaceHeader();
 			if (perYou.isMaleSex()) {
-				this.showPersonRandomRorX("sarah10b", 4);
+				this.showPersonRandomRorX("sarah10b", isExplicit() ? 6 : 2);
 				addPlaceTitle(md, "Sarah Gates Serving You");
 				md.write('<p>You order her to serve you with her body, and you take her and you sink you manhood into her delightful pussy, ramming into her over and over. You feel her shudder in her release and that is the final straw and you pour your passion into her depths.</p>');
 			} else {
@@ -659,7 +670,7 @@ function initialiseSarah()
 	per.fedUponEvent = function(perV) {
 		if (perV.uid == "tina") return false;
 		// Vampyre tries to feed on her
-		var md = WritePlaceHeader(false, "", "black");
+		var md = WritePlaceHeaderNIP(false, "", "black");
 		this.setFlag(12);
 		showPopupWindow("Feeding on Sarah?",
 			this.addPersonString("feedon" + (this.isCharmedBy() ? "c" : "u") + ".jpg", "height:max%", "right") +
@@ -668,10 +679,10 @@ function initialiseSarah()
 			'<p>Sarah smiles, "' + (this.isCharmedBy() ? perYou.getMaster() + ' perhaps we can instead do something else, not quite feeding but some ' + (perYou.isMaleSex() ? 'swallowing' : 'licking') + ' would be involved?' :
 			                                             'I am tempted by instead trying some other things with her, not feeding as such, but for her comfort and my safety you would have to be involved. You would have to be a buffer of sorts between us...or put another way, the meat in the sandwich keeping the bread separated?') + '"</p>' +
 			(this.isCharmedBy() ? '' : '<p>It seems Sarah is willing now to do a little more with you at least under the pretext of enjoying a hot vampyre!</p>') +
-			(isPersonHere("Lauren") ? '<p>You glance at the maid Lauren, and as you do ' + (isMurderPath() ? 'Sarah says "No" she hesitates and contines' : 'simultaneously Sarah and Lilith say "No". Sarah looks at Lilith but continues') + ' "Lauren is my maid and not to be shared with others"' + (this.isCharmedBy() ? '. Despite the charm she is under Sarah is surprisingly defiant.' : '') + '. It seems you will restrict your desires <i>here</i> to Sarah and Lilith.</p>' : '') +
+			(isPersonHere("Lauren") ? '<p>You glance at the maid Lauren, and as you do ' + (isMurderPath() ? 'Sarah says "No" she hesitates and continues' : 'simultaneously Sarah and Lilith say "No". Sarah looks at Lilith but continues') + ' "Lauren is my maid and not to be shared with others"' + (this.isCharmedBy() ? '. Despite the charm she is under Sarah is surprisingly defiant.' : '') + '. It seems you will restrict your desires <i>here</i> to Sarah and Lilith.</p>' : '') +
 			'<p>If you wish to do this, you can ask Lilith to feed with Sarah but it will not be \'feeding\' as such. You doubt Sarah will be willing to do this often though.</p>'
 		);
-		WritePlaceFooter(md, '', true, true);
+		WritePlaceFooter(md);
 		return true;
 	};
 	
@@ -743,8 +754,6 @@ function initialiseSarah()
 				return receiveSMS('Sarah', perYou.getPersonName() + ', it is rather hot here, I love an open fire. I will have to ask Lauren to join me. Imagine two hot women in front of the fire...', 'sarahsms2.jpg');
 			case 91: 
 				return receiveSMS('noble ally', 'That man is such a slime, ' + perYou.getPersonName() + ', sorry I was "watching" just then. There is a book on hypnosis here, I will have it sent over to your house, enjoy');
-			case 92: 
-				return receiveSMS('noble ally', 'A painting $%@$ time of the cults, $@$@$ the witch Jessica', 'jessica0.jpg');
 		}
 		return '';
 	};

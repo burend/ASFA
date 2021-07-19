@@ -19,20 +19,19 @@
 		@media screen and (orientation:landscape) {
 		 .contentdivleft { float:left;max-width:25%;padding:5px; }
 		 .contentdivright { float:left;max-width:70%;padding:15px; }
-		 .startdivleft { float:left;max-width:70%;padding:5px;vertical-align:top; }
-		 .startdivright { float:left;max-width:27%;padding-right:10px;vertical-align:top; }
+		 .startdivleft { float:left;width:70%;max-width:75%;padding:5px;vertical-align:top; }
+		 .startdivright { float:right;max-width:22%;padding-right:10px;vertical-align:top; }
 		}
-		.mrMultipleText { width:90%; float:left; }
-		
+		.mrMultipleText { width:90%; float:left; }	
 		.spoilerbutton {display:block;margin:5px 0;}
 		.spoiler {overflow:hidden;background: #f5f5f5;}
 		.spoiler {overflow:hidden;background: #f5f5f5;}
 	   .spoiler > div {-webkit-transition: all 0.2s ease;-moz-transition: margin 0.2s ease;-o-transition: all 0.2s ease;transition: margin 0.2s ease;}
-		.spoilerbutton[value="Show Old History"] + .spoiler > div {margin-top:-500%;}
+		.spoilerbutton[value="Show Old History"] + .spoiler > div {margin-top:-3000%;}
 		.spoilerbutton[value="Hide Old History"] + .spoiler {padding:0px;} 
-		.spoilerbutton[value="Show"] + .spoiler > div {margin-top:-500%;}
-		.spoilerbutton[value="Hide"] + .spoiler {padding:0px;} 		
-
+		.spoilerbutton[value="Show"] + .spoiler > div {margin-top:-3000%;}
+		.spoilerbutton[value="Hide"] + .spoiler {padding:0px;}
+		.info { width:11%;vertical-align:top;font-weight:bold; }
 	</style>
 </head>
 
@@ -47,7 +46,10 @@
 	}
 	function ShowAvatarImage() {
 		var fldr = "Player/" + perYou.folder;
-		document.getElementById("imageHolder").innerHTML = '<img src="Images/' + fldr + '/face1.jpg" style="width:75%;float:right" alt="Avatar">';
+		var ofldr = fldr;
+		if (gameState.sMod !== "") fldr = "Mods/" + gameState.sMod + "/Images/" + fldr;
+		else fldr = "Images/" + fldr;
+		document.getElementById("imageHolder").innerHTML = '<img src="' + fldr + '/face1.jpg" style="width:75%;float:right" onerror="this.src=\'Images/' + ofldr + '/face1.jpg\'" alt="Avatar">';
 	}
 	function SetAvatars(x) {
 		var av = document.getElementById("avatars");
@@ -83,12 +85,24 @@
 	}
 	function ChangeScenario()
 	{
-		gameState.sMod = document.getElementById("scenario").value;
+		gameState.sMod = document.getElementById("scenario").value.split(" ").join("");
+		var det = document.getElementById("scenariodetails");
+		det.innerHTML = "default game";
+		var modlist = Object.getOwnPropertyNames(oModsDetails);
+		var itm;			
+		for (var i = 0, ie = modlist.length; i < ie; i++) {	
+			itm = oModsDetails[modlist[i]];
+			if (gameState.sMod == itm.name.split(" ").join("")) {
+				det.innerHTML = itm.description;
+				break;
+			}
+		}
+		ShowAvatarImage();
 	}
 
 	function saveChar() {
 		var Data = document.getElementsByName("FormChar")[0];
-		setExplicit(false);
+		setExplicit(true);
 		if (Data.Explicit != undefined) setExplicit(Data.Explicit.checked === true);
 		sCurrency = "";
 		if (Data.BritishSetting != undefined) sCurrency = Data.BritishSetting.checked ? "\u00A3" : "$";
@@ -101,15 +115,21 @@
 		gameState.bAllPlaces = false;
 		if (Data.Explorer != undefined) gameState.bAllPlaces = Data.Explorer.checked === true;
 		if (Data.UnDo != undefined) gameState.bAllowUndo = Data.UnDo.checked === true;
-
 		perYou.folder = Data.avatars.value;
 		saveGlobalSettings();
-		DoRestart(Data.charName.value, Data.avatars.value);
+		
+		// Other initial settings for the game
+		var init = '';
+		if (Data.MaleMayor != undefined && Data.MaleMayor.checked === true) init += ';findPerson("Mayor").dress="Eddie";per.setFlag(8)';
+		if (Data.NoNonHumans != undefined && Data.NoNonHumans.checked === true) init += ';findPerson("Vampyre").other=-1';
+
+		// Start the game
+		DoRestart(Data.charName.value, Data.avatars.value, init);
 	}
 
 	function loadGame() {
 		gameState = new GameStatus();
-		setExplicit(false);
+		setExplicit(true);
 		sCurrency = "$";
 		bCheating = false;
 		setRunes(true);
@@ -123,7 +143,7 @@
 		initialiseYou();
 		setConfig();
 		sGender = "man";
-		setExplicit(false);
+		setExplicit(true);
 		sCurrency = "$";
 		bCheating = false;
 		setRunes(true);
@@ -171,40 +191,43 @@
 	<p><b>General Game Settings</b></p>
 	<p>These setting affect how the game plays out, and many can be changed during the course of the game. Open your phone and use the 'Apps' icon and here you can toggle on or off most of these settings unless otherwise noted.</p>
 	<p><b>Explicit Content:</b> Unless selected images in the game are limited to R rated images with nudity and non-explicit sex scenes. If selected the full hardcore images are also shown</p>
-	<p><b>Glenvale in the UK:</b> The game is either set in the United Kingdoms or in the United States. Some different images and some characters use completely different models between the settings. Terms like currency, legal terminology and age of consent for drinking differs in these settings. All major elements of gameplay are otherwise unaffected. <b>Cannot be changed after the start of game.</b></p>
+	<p><b>Game is based in the UK:</b> The game is either set in the United Kingdoms or in the United States. Some different images and some characters use completely different models between the settings. Terms like currency, legal terminology and age of consent for drinking differs in these settings. All major elements of gameplay are otherwise unaffected. <b>Cannot be changed after the start of game.</b></p>
 	<p><b>Riddles:</b> At times in the game you will be asked to solve some riddles, passwords or similar. If you choose you do not like them then you will never be asked these, your character will automatically solve them.</p>
 	<p><b>Rune Matching:</b> When you learn spells a system to compare runic symbols/text will be used. Otherwise a search and type system will be used.</p>
-	<p><b>Know Glenvale:</b> The default is the town will be explored in game play, and areas opened up as you need to visit them. If you know the town well then you will at the start know all public/non-secret locations in the town. Gameplay is otherwise unaffected. <b>Cannot be changed after the start of game.</b></p>
+	<p><b>Know the town:</b> The default is the town will be explored in game play, and areas opened up as you need to visit them. If you know the town well then you will at the start know all public/non-secret locations in the town. Gameplay is otherwise unaffected. <b>Cannot be changed after the start of game.</b></p>
 	<p><b>Easier Mode:</b> If selected you will gain mana faster to power spells and you will have the ability to undo some dire actions that would end the game without loading an earlier save game. <b>Cannot be changed after the start of game.</b></p>
 	<p class="gblock optionblock" onClick="document.getElementById('starthelp').style.display='none';document.getElementById('lightstart').style.display='block'">finished with this help</p>
 </div>
-<div id="lightstart" class="white_content" style="background-color:black;color:white">
+<div id="lightstart" class="white_content" style="background-color:black;color:white;width:91%;left:3%;line-height:1.2">
 	<span class="zoom-icon" style="position:absolute;top:0px;right:0px"><img draggable="false" style="cursor:pointer;" onclick="document.getElementById('starthelp').style.display='block';document.getElementById('lightstart').style.display='none'" src="UI/help.png" width="36" alt="Help" title="Help"></span>
 	<form method="GET" name="FormChar" action="index.html">
 		<img src="UI/logo.png" style="position:absolute;top:0px;left:5%;width:85%" alt="logo">
 		<p style='font-size:xx-large'><b>A New Adventure</b></p>
-		<p style="margin-top:-20px">What are the details for your character</p>
+		<p style="margin-top:-20px">What are the details for your character. Note: the ones marked (hard) increase the difficulty for a beginner player.</p>
 
 		<div class="startdivleft" style="margin-top:-10px">
 			<b>What is your name?</b><br>
-			<input type="text" id="charName" value="Bob" style="width:90%"><br><br>
+			<input type="text" id="charName" value="Bob" style="width:90%;margin-bottom:0.5em"><br>
 			<select name="scenario" id="scenario" size="1" onchange="ChangeScenario()"></select>
-			<label for="scenario" style="cursor:pointer" title="A scenario for the game"><span style="width:50%;float:left;font-weight:bold">Scenario</span></label><br><br>
+			<label for="scenario" style="cursor:pointer" title="A scenario for the game"><span style="width:30%;float:left;font-weight:bold">Scenario</span></label><br>
+			<span style="width:70%;float:right;font-weight:normal;font-size:small" id="scenariodetails">default game</span><br>
 			<b>General Game Options</b><br>
 			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="sexstuff" id="Explicit" checked><label for="Explicit" style="cursor:pointer"><span class="mrMultipleText">Enable <b>explicit</b> (X Rated) images</span></label><br>
-			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="britishsetting" id="BritishSetting"><label for="BritishSetting" style="cursor:pointer" title="If not the town is in the US"><span class="mrMultipleText">Glenvale is in the <b>United Kingdoms</b></span></label><br>
-			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="puzzles" id="Puzzles"><label for="Puzzles" style="cursor:pointer" title="No puzzles will be in the game"><span class="mrMultipleText">I do not like riddles</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="britishsetting" id="BritishSetting"><label for="BritishSetting" style="cursor:pointer" title="If not the town is in the US"><span class="mrMultipleText">Game is in the <b>United Kingdoms</b></span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="puzzles" id="Puzzles"><label for="Puzzles" style="cursor:pointer" title="No puzzles will be in the game"><span class="mrMultipleText">I do not like riddles (hard when not selected)</span></label><br>
 			<p style="margin-top:-0.75em;margin-bottom:0">&nbsp;</p>
 			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="cheatmode" id="CheatMode"><label for="CheatMode" style="cursor:pointer"><span class="mrMultipleText">Enable <b>cheat</b> options in the game</span></label><br>
 			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="runematching" id="RuneMatching" checked><label for="RuneMatching" style="cursor:pointer" title="Use a rune matching process to learn spells"><span class="mrMultipleText">Use <b>Rune Matching</b> to learn spells</span></label><br>
-			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="explorer" id="Explorer"><label for="Explorer" style="cursor:pointer" title="You know all public places in Glenvale at the start of the game"><span class="mrMultipleText">You know the town of Glenvale well</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="explorer" id="Explorer"><label for="Explorer" style="cursor:pointer" title="You know all public places in town at the start of the game"><span class="mrMultipleText">You know the town well (hard)</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="malemayor" id="MaleMayor"><label for="MaleMayor" style="cursor:pointer" title="The town Mayor is male named Bertie"><span class="mrMultipleText">The town's Mayor is a man</span></label><br>
+			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="nononhumans" id="NoNonHumans"><label for="NoNonHumans" style="cursor:pointer" title="There are no nonhuman beings like vampires, ghosts or monsters. But there are demons and Kurdorf..."><span class="mrMultipleText">There are no non-human beings (except demons and Kurndorf)</span></label><br>
 			<input style="clear:both;cursor:pointer;float:left" type="checkbox" name="undo" id="UnDo"><label for="UnDo" style="cursor:pointer" title="Things are a little easier, more mana and time for some things"><span class="mrMultipleText">Things are a little easier and you can undo some dire actions</span></label><br>
 			<br><select style="margin-top:0.3em" name="Themes" id="Themes" size="1" onchange="ChangeTheme()">
 				<option value="0">White</option>
 				<option value="1">Black</option>
-				<option value="2">Dark Grey</option>
+				<option value="2" selected>Dark Grey</option>
 			</select>
-			<label for="Themes" style="cursor:pointer" title="Theme for the game"><span style="width:50%; float:left;margin-top:0.2em">Theme for the game</span></label>
+			<label for="Themes" style="cursor:pointer" title="Theme for the game"><span style="width:30%; float:left;margin-top:0.2em">Theme for the game</span></label>
 		</div>
 		<div class="startdivright">
 			<b style="text-align:right">Are you a man or a woman?&nbsp;&nbsp;</b><br>
@@ -263,8 +286,60 @@
 	<p style="font-family:Arial Black;margin-bottom:-0.1em">What's New:</p>
 	<b>Release version <script>document.write(getVersion())</script></b><br>
 	<input class="spoilerbutton" type="button" value="Show" onclick="this.value=this.value=='Show'?'Hide':'Show';">
+	<div class="spoiler"><div><table cellspacing="0" cellpadding="0" style="width:100%;border-collapse:collapse">
+		<tr><td class="info">Tutorial</td>	 	<td>- Add additional tips/hints in the early game of using items, around Beasley's Paper and some general notes</td></tr>
+		<tr><td class="info">Consistency</td>	<td>- you can use the Silver Ring to free Tracy at the Robbins house. <b>Many, many</b> spelling errors fixed.</td></tr>
+		<tr><td class="info">Sir Ronald</td>	<td>- speaking to him about the charm spell now has alternatives. In future it will be a path selection event.</td></tr>
+		<tr><td class="info">Transform</td>	 	<td>- All alternate models for characters can be swapped using the Transform spell, including Jenny and Pamela merged in from Severn Valley</td></tr>
+		<tr><td class="info">Model Choice</td>	<td>- Zoey has a new alternate model, Riley Reid, mostly imported from images in the Bologna44 mod. Selected on first meeting Zoey. Transform spell can switch models as above.</td></tr>
+		<tr><td class="info">Model Choice</td>	<td>- Nurse Megan has a new alternate model, an old-school model Farrah, submitted by a fan. Selected on first meeting Nurse Megan at the hospital or pool. Transform spell can switch models as above.</td></tr>
+		<tr><td class="info">Transform</td>	 	<td>- Mayor Thomas can be transformed to a male and visa versa. Can also select to start the game as male. Sex events can be bypassed now to allow for some requests to avoid this for male characters</td></tr>
+		<tr><td class="info">Transform</td>	 	<td>- Using images processed by 'thepledge' forum member, Mom can be transformed to a younger version of herself or visa versa. Currently this is essentially an image only change, no other reactions aside from the transform itself.</td></tr>				
+		<tr><td class="info">Transform</td>	 	<td>- Using images processed by 'thepledge' forum member, Mia can be transformed to a younger version of herself or visa versa. Currently this is essentially an image only change, no other reactions aside from the transform itself. Currently events with Bambi are unaffected but few are distinct for her age. In her younger form she can become pregnant in the end game.</td></tr>
+		<tr><td class="info">Transform</td>	 	<td>- Using images processed by 'thepledge' forum member, Mrs Granger can be transformed to a younger version of herself or visa versa. Currently this is essentially an image only change, no other reactions aside from the transform itself.</td></tr>
+		<tr><td class="info">Transform</td>	 	<td>- Using images processed by 'thepledge' forum member, Miss Logan can be transformed to a younger version of herself but not back again. Currently this is essentially an image only change, no other reactions aside from the transform itself.</td></tr>
+		<tr><td class="info">New People</td> 	<td>- Sharon and Charley/Karly merged in from the Salons mod/Bologna44 mod. The Salons mod is removed. Note: Charley has a girlfriend charm and her pregnant endgame is ONLY for this charm state.</td></tr>
+		<tr><td class="info">New People</td> 	<td>- Ash is merged in from the Bologna44 mod v2. She is semi-hidden and accessed slightly differently to the mod. Also has a 'friends with benefits' charm as well as the existing slave charm. She has a pregnant endgame ONLY for the 'friends with benefits' charm state.</td></tr>
+		<tr><td class="info">New People</td> 	<td>- Karma is merged in from the Bologna44 mod v2, and she is semi-hidden and accessed slightly differently to the mod. She also has a new girlfriend charm.</td></tr>
+		<tr><td class="info">New People</td> 	<td>- Lola is merged in from the Bologna44 mod v2. She has a new girlfriend charm and in this version she can do dominant bondage scenes on Gina. The slave charm has her do submissive bondage scenes.</td></tr>
+		<tr><td class="info">New People</td> 	<td>- Savanna is merged in from the Bologna44 mod v2. She has a new girlfriend charm with different sex scene in that case and charm scene. The version of her charm process from the bologna mod is still present and can be selected in the first meeting to 'interview'. Updated to support a female player.</td></tr>
+		<tr><td class="info">New People</td> 	<td>- Melanie is merged in from the Bologna44 mod v2, accessed after meeting Kylie a couple of times outside. She also has a new girlfriend charm. Note: due to her extreme slave charm you cannot recharm her.</td></tr>
+		<tr><td class="info">New People</td> 	<td>- Betty is merged in from the Bologna44 mod v2, accessed after an event with Victoria and after meeting Mrs Tanika. She has an alternate girlfriend charm. Note: the hucow farm is not ported</td></tr>
+		<tr><td class="info">Elian</td>		 	<td>- resolution to the pact and after events. Three pacts possible, love-slave, demon bride, servant.</td></tr>
+		<tr><td class="info">Tracy/Lilith</td>	<td>- After Elian arrives there are a number of events with Tracy and Lilith in the lounge room, a periodic one, some movies and a poledancing scene.</td></tr>		
+		<tr><td class="info">Mayor Event</td> 	<td>- New law change after the passing of the nudism changes, public sex, with multiple new images around town</td></tr>
+		<tr><td class="info">Town Events</td> 	<td>- More images for random townpeople</td></tr>
+		<tr><td class="info">Campers</td>		<td>- Campers are now a 'person' with some new images</td></tr>
+		<tr><td class="info">Amy Event</td>	 	<td>- Amy can dye her hair at Charley's salon</td></tr>
+		<tr><td class="info">Charley Event</td><td>- Charley can be recharmed between her slave/lover charm states</td></tr>
+		<tr><td class="info">Pool Events</td>	<td>- If you invite Mrs Granger swimming at night then you can share a room at the hotel for the night. Kylie has a new option at the pool after you receive her bondage SMS. Kylie's other pool scenes have more image variations.</td></tr>
+		<tr><td class="info">Places</td>		 	<td>- an abandoned cabin that cannot be found by normal means. Associated with Karma now.</td></tr>
+		<tr><td class="info">Places</td>		 	<td>- the Lake has been moved from the Severn Valley Mod to the main game, with different name/flavour, not a recreational place.</td></tr>
+		<tr><td class="info">Places</td>		 	<td>- the Hotel now has tennis courts, linked to Aunt Brandi's events.</td></tr>
+		<tr><td class="info">Creatures</td>	 	<td>- Non-human beings can be disabled, except demons and the ghost of Kurndorf. It will remove Lilith and Keana from the game but not Elian.</td></tr>
+		<tr><td class="info">Layout</td>		 	<td>- Some general layout changes to address better mobile support. All items lying in areas are moved into the main area, not the right column. Item popups also altered a bit.</td></tr>
+		<tr><td class="info">Player</td>			<td>- Added a generic shilouette avatar option for the player character</td></tr>
+		<tr><td class="info">Pregnancies</td>	<td>- Added pregnant images for Louise, Ash, Karma, Lola, Melanie, Savanna, Sister Desiree, Betty, Nurse Megan and some of the nuns at the church if the cult is in progress. Note: some of these are only available for their 'girlfriend' charm. Mia as noted above once transformed gets a pregnant scene.</td></tr>
+		<tr><td class="info">Aunt Brandi</td>	<td>- Visit and charm your Aunt. This version resets any existing save games to restart any events related to her.</td></tr>
+		<tr><td class="info">Church Cult</td>	<td>- Scenes recruiting for Mother Superior's cult. Currently 12 nuns but not fully characters, charm scenes and encounters in the main area of the church. Additional end game images and also a pregnant scene all using generic models, some from the movie "Non Ci Indurre In Tentazione"</td></tr>
+		<tr><td class="info">SisterDesiree</td><td>- Expanded images for Sister Desiree and also for scenes with Mother Superior. Largely just additional image variations.</td></tr>
+		<tr><td class="info">Sounds</td>			<td>- Some minor sound effects added, mainly around phone calls and SMS messages</td></tr>		
+		<tr><td class="info">Walkthrough</td>	<td>- Updated with notable new events</td></tr>	
+	</table></div></div>
+		
+	<p style="font-family:Arial Black;margin-bottom:-0.25em">Previously New:</p>
+	<input class="spoilerbutton" type="button" value="Show Old History" onclick="this.value=this.value=='Show Old History'?'Hide Old History':'Show Old History';">
 	<div class="spoiler"><div>
 	<ul>
+		<li><b>Version 14.10.x</b></li>
+		<li>more bug fixes from last release</li>
+		<li>assorted hardcore fake images by wasser, mostly for male player, commonly anal scenes. Amongst others for Mia, Zoey, Madison, Nina, Keana</li>
+		<li>end game pregnant scenes for Victoria and Nella (Victoria image by wasser)</li>
+		<li>additional image variations for Mom, including new introduction image. Most new images are for hardcore scenes, male and female, some by wasser</li>
+		<li>some new image variants for Tracy including her initial introduction, TV images and harcore images for sex scenes. New 'cleaning' scene for Tracy</li>
+		<li>new images for John/Joan Adams some fakes by wasser for Brandy Robbins model. You can now meet him/her at work in the Town Hall post charm for a simple encounter.</li>
+		<li>additional sex-scene image variations, some for Alison and a lot more for Anita, and added for Anita titfuck, strap-on and anal scenes.</li>
+		<li>initial meeting with Aunt Brandi at the Gym a couple of days after seeing her with Kylie, and some dreams of her afterwards</li>
 		<li>Assorted bug fixes and small continuity fixes. Notably some issues for Angelica. Fixed some incorrect hyperlinks in the game.</li>
 		<li>Add Memory option to phone apps, primarily for Android users, to allow altering the number of saves or photos in your phone</li>		
 		<li>Schedule tab in phone notes for when some people are available. A work in progress</li>
@@ -277,13 +352,6 @@
 		<li>Partially updated the walkthough in the game, and removed all except the version created by Capacitor. Altered the display to be in an iFrame to try to address a display issue for an Android device. Can still be opened externally of the game</li>
 		<li>Altered some of the text around the start of the Elian events to encourage hydromancy and made learning hydromancy easier. Added an additional vision AFTER Elians related to Jesse/Legion</li>
 		<li>Replaced an image for Kate that showed inappropriate bondage for the scene</li>
-	</ul>
-	</div></div>
-	<p style="font-family:Arial Black;margin-bottom:-0.25em">Previously New:</p>
-	<input class="spoilerbutton" type="button" value="Show Old History" onclick="this.value=this.value=='Show Old History'?'Hide Old History':'Show Old History';">
-	<div class="spoiler"><div>
-	<ul>
-		<li><b>Version 14.10</b></li>
 		<li>Optional alternate model for Mrs. Tanika, chosen at first meeting or via cheat menu. Also add a titfuck scene. As part of this also altered how your bedroom is displayed with the different combinations of visitors</li>
 		<li>Optional alternate model for Gina, chosen at first encounter or via cheat menu.</li>		
 		<li>Miss Logan's Neurology assignment now is an alternate charm path. Will include some changes for Ms Jones (an alternate outfit)</li>
@@ -444,10 +512,10 @@
 	</div></div>
 	<p style="font-family:Arial Black;margin-bottom:-0.5em">What <b>cannot</b> be done as of this release</p>
 	<ul>
+		<li>Enter the Barn</li>
 		<li>Charm the reporter Julie</li>
 		<li>Charm the Campers</li>
 		<li>Charm Jade</li>
-		<li>Charm Elian</li>
 		<li>Charm Sarah on the Conspiracy or Apprentice Paths</li>
 		<li>Charm Lauren on the Conspiracy Path</li>
 		<li>Further events for Seriphina/Lucy, ie the two thralls</li>
@@ -456,7 +524,6 @@
 		<li>Charm Esmeralda</li>
 		<li>You cannot learn how to defend yourself with magic from the Book, someone can teach you after you charm them</li>
 		<li>Charm Sir Ronald on the Conspiracy/Apprentice path</li>
-		<li>Aunt Brandi is not available yet</li>
 		<li>Mr. Tanika is not available yet</li>
 	</ul>
 	<p style="font-family:Arial Black;margin-bottom:-0.5em">Links</p>

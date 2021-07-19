@@ -21,6 +21,7 @@ function initialiseAmyRoss()
 	
 	per.passTimeDay = function() {
 		this.setFlag(13, false);
+		this.setFlag(14, false);
 		return '';
 	};
 	
@@ -138,6 +139,26 @@ function initialiseAmyRoss()
 				return true;				
 			}
 			return false;
+		}
+		if (Place == 427 && sType == "amydyehair") {
+			// Dye her hair
+			WaitHereOnly(6);		// 1 hr
+			this.setFlag(14);
+			if (this.dress == "Blonde") this.dress = "Brunette";
+			else this.dress = "Blonde";
+			md = WritePlaceHeader();
+			AddImage("dye-female.jpg");
+			addPlaceTitle(md, "Dyeing Amy's Hair");
+			var nmc = findPerson("Charley").getPersonNameShort();
+			md.write(
+				'<p>You talk to Amy about cute in the past she looked with ' + (this.isBlonde() ? "blonde" : "brunette") + ' hair and suggest visiting ' + nmc + "'s salon.</p>" +
+				'<p>Amy agrees and you both head over to the Salon and Charley has a free spot to fit Amy in and dye her hair.</p>' +
+				'<p>Some time later you return with Amy, her hair now ' + (this.isBlonde() ? "blonde" : "brunette") + '!</p>'
+			);					
+			startQuestions();
+			addLinkToPlaceC(md, 'you return home with Amy', nFromPlace);
+			WritePlaceFooter(md);
+			return true;	
 		}
 		if (Place == 435) {
 			if (sType == "meetamygym") {
@@ -453,10 +474,10 @@ function initialiseAmyRoss()
 				if (perYou.isMaleSex()) {
 					if (isExplicit()) this.showPersonRandomX("Setting/amyadeleyou-b", isBritish() ? 3 : 2);
 					else if (Math.random() < 0.5) this.showPerson("threesomea.jpg");
-					else AddImage("GenericSex/threesome1.jpg");					
+					else AddImage("GenericSex/threesome any a.jpg");					
 				} else if (!isExplicit() && !isBritish()) this.showPersonRandomX("Setting/amyadeleyou-g", 2);
 				else if (Math.random() < 0.5) this.showPerson("threesomea.jpg");
-				else AddImage("GenericSex/threesome1.jpg");
+				else AddImage("GenericSex/threesome any a.jpg");
 			} else {
 				// UK
 				// non-ex - amyadeleyou-ba
@@ -468,7 +489,7 @@ function initialiseAmyRoss()
 					if (!isExplicit()) this.showPerson("Setting/amyadeleyou-ba.jpg");
 					else this.showPersonRandomX("Setting/amyadeleyou-b", isBritish() ? 4 : 3);
 				} else if (Math.random() < 0.5) this.showPerson("threesomea.jpg");
-				else AddImage("GenericSex/threesome1.jpg");				
+				else AddImage("GenericSex/threesome any a.jpg");				
 			}
 			addPlaceTitle(md, "Amy, Adele and You");
 			md.write(
@@ -737,6 +758,12 @@ function initialiseAmyRoss()
 				// Uncharmed Girlfriend options
 				if (isDay()) addLinkToPlaceC(md, 'go out with your girlfriend Amy', Place, 'type=amyplaydate');
 				else if (!this.checkFlag(13)) addLinkToPlaceC(md, 'take Amy out on a date', Place, 'type=amydate');
+			}
+			if (checkPersonFlag("Charley", 1)) {
+				if (!this.checkFlag(14)) {
+					if (isShopOpen(2, 0, true)) addLinkToPlaceC(md, 'ask Amy to dye her hair ' + (this.isBlonde() ? "brunette" : "blonde"), 427, 'type=amydyehair');
+					else addLinkToPlace(md, 'ask Amy to dye her hair ' + (this.isBlonde() ? "brunette" : "blonde"), Place, '', 'The hair salon is not open at the moment, you should discuss this another time');
+				} else addLinkToPlace(md, 'ask Amy to dye her hair ' + (this.isBlonde() ? "brunette" : "blonde"), Place, '', 'Amy has already dted her hair once today, ask again another day');
 			}
 			if (perYou.isMaleSex()) {
 				addLinkToPlace(md, sSfx == "s" ? 'fuck your slave' : 'make love to Amy', Place, 'type=amyhomefuck');

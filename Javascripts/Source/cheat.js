@@ -72,6 +72,11 @@ function GenderToggle(uid)
 		else per.setFlag(4);
 		alert('Jenny is now ' + per.getPersonGender());
 		break;
+	case "mayor":
+		if (per.dress == "Rachel") per.dress = "Eddie";
+		else per.dress = "Rachel";
+		alert('Mayor Thomas is now a ' + per.getManWoman());
+		break;
 	}
 	ChangePersonLst(document);
 }
@@ -83,6 +88,106 @@ function ChangeAvatar()
 	ChangePersonLst(document);
 }
 
+function cheatCharmGabby(lvl)
+{
+	var perGabby = findPerson("Gabby");
+	switch (lvl) {
+		case 0:
+			perGabby.moveThem(415);
+			perGabby.unCharmThem();
+			PlaceI(67, 0);
+			break;
+		case 1:
+			break;
+		case 2:
+			break;
+		case 4:
+			break;
+		case 8:
+			perGabby.charmThem(8, "Vampyre");
+			perGabby.moveThem(247);
+			break;
+	}
+	if (lvl != 0) {
+		if (lvl != 8) {
+			perGabby.charmThem(lvl);
+			perGabby.moveThem(452);
+		}
+		if (whereItem(67) === 0) PlaceI(67, 452);
+	}
+}
+function cheatCharmMom(lvl)
+{
+	var perMom = findPerson("Mom");
+	switch (lvl) {
+		case 0:
+			perMom.moveThem(154);
+			perMom.unCharmThem();
+			cheatCharmGabby(0);
+			return;
+		case 1:
+			break;
+		case 4:
+			break;
+		case -1:
+			perMom.moveThem(154);
+			perMom.unCharmThem();
+			perMom.setFlag(13, false);
+			perMom.setFlag(14, false);
+			perMom.setFlag(15, false);
+			perMom.setFlag(16, false);
+			perMom.setFlag(19, false);
+			perMom.setFlag(20, false);
+			perMom.setFlag(21, false);	
+			perMom.setFlag(22, false);
+			perMom.setFlag(23, false);
+			perMom.setFlag(24, false);
+			perMom.setFlag(25, false);
+			perMom.setFlag(26, false);
+			perMom.setFlag(31, false);
+			perMom.setFlag(32, false);
+			perMom.setFlag(33, false);
+			perMom.setFlag(34, false);
+			perMom.setFlag(35, false);
+			perMom.setFlag(36, false);
+			perMom.setFlag(37, false);
+			perMom.setFlag(38, false);
+			perMom.charmedTime = 0;
+			setPersonFlag("Tracy",11);
+			cheatCharmGabby(0);
+			var perGabby = findPerson("Gabby");
+			perGabby.flags[0] = 0;
+			return;
+	}
+	perMom.charmThem(lvl);
+	perMom.moveThem(isDay() ? 415 : 154);
+}
+function cheatResetVampyre()
+{
+	perLilith.unCharmThem();
+	perLilith.other = 39;
+	perLilith.flags[0] = 0;
+	perLilith.place = 0;
+	setPersonFlag("MrsGranger", 19, false);
+	setPersonFlag("MrsGranger", 20, false);	
+	setPersonFlag("Alison", 7, false);
+	setPersonFlag("Alison", 8, false);
+	setPersonFlag("Jessica", 28, false);
+	setPersonFlag("Lauren", 12, false);	
+	setPersonFlag("Lauren", 13, false);
+	setPersonFlag("Miku", 26, false);
+	setPersonFlag("Miku", 27, false);
+	setPersonFlag("Miku", 28, false);
+	setPersonFlag("MsJones", 3, false);
+	setPersonFlag("MsJones", 4, false);	
+	setPersonFlag("MsLogan", 14, false);		
+	setPersonFlag("MsLogan", 15, false);
+	setPersonFlag("Sarah", 10, false);	
+	setPersonFlag("Sarah", 12, false);	
+	setPersonFlag("Sarah", 13, false);		
+}
+	
+
 function ChangePersonLst(md)
 {
 	var i;
@@ -92,9 +197,19 @@ function ChangePersonLst(md)
 	if (s == "you") per = perYou;
 	else if (findPerson(s) === null) return;
 	md.getElementById("pimg").innerHTML = per.addPersonFace(false, "50%");
-	md.getElementById("pname").innerHTML = per.getPersonName() + (per.uid == "you" ? " <a class='black' href='' onclick='var na=prompt(\"Name?\",perYou.getPersonName());if(na)perYou.name=na;updateLeftBar();ChangePersonLst(document);return false'>Rename</a>" : '');
+	s = per.getPersonName();
+	if (per.uid == "you") {
+		s += " <a class='black' href='' onclick='var na=prompt(\"Name?\",perYou.getPersonName());if(na)perYou.name=na;updateLeftBar();ChangePersonLst(document);return false'>Rename</a>";
+	} else if (per.uid == "johnadams") {
+		s += ' <a class="black" href="javascript:findPerson(\'JohnAdams\').setFlag(5,false);ChangePersonLst(document)">John</a> or ' +
+				'<a class="black" href="javascript:findPerson(\'JohnAdams\').setFlag(5);ChangePersonLst(document)">Joan</a>';
+	} else if (per.uid == "charley") {
+		s += ' <a class="black" href="javascript:findPerson(\'Charley\').setFlag(3,false);ChangePersonLst(document)">Charley</a> or ' +
+				'<a class="black" href="javascript:findPerson(\'Charley\').setFlag(3);ChangePersonLst(document)">Karley</a>';
+	}
+	md.getElementById("pname").innerHTML = s;
 	md.getElementById("uid").innerHTML = per.uid;
-	md.getElementById("pgender").innerHTML = per.getPersonGender() + (per.uid == "you" && isPossess() ? ' (now ' + perYourBody.getPersonGender() + ')' : '') + (per.uid == "you" || per.uid == "charlie" || per.uid == "mrbeasley" || per.uid == "johnadams" || per.uid == "davy" || per.uid == "daria" || per.uid == "louise" || per.uid == "jenny" ? " <a class='black' href='' onclick='GenderToggle(\"" + per.uid + "\");return false'>Change</a>" : '');
+	md.getElementById("pgender").innerHTML = per.getPersonGender() + (per.uid == "you" && isPossess() ? ' (now ' + perYourBody.getPersonGender() + ')' : '') + (per.uid == "you" || per.uid == "charlie" || per.uid == "mrbeasley" || per.uid == "johnadams" || per.uid == "davy" || per.uid == "daria" || per.uid == "louise" || per.uid == "jenny"|| per.uid == "mayor" ? " <a class='black' href='' onclick='GenderToggle(\"" + per.uid + "\");return false'>Change</a>" : '');
 	if (per.uid == "you") {
 		s = "Change Avatar: <select name='pavatar' id='pavatar' size='1' onchange='ChangeAvatar()'>";
 		var lst = perYou.sMaleFolderList.split(",");
@@ -104,7 +219,9 @@ function ChangePersonLst(md)
 		s += '</select>';
 	} else s = per.folder;
 	md.getElementById("pfolder").innerHTML = s;
-	md.getElementById("pdress").innerHTML = per.getDress();
+	s = (per.getNextDress() !== '' ? " <a class='black' href='' onclick='findPerson(\"" + per.uid + "\");var nxt=per.getNextDress(per.dress);if(nxt !== \"\"){per.dress=nxt;};ChangePersonLst(document);return false'>Change</a>" : '');
+	var drb = per.getDressBase();
+	md.getElementById("pdress").innerHTML = drb + per.dress + s;
 	md.getElementById("pplace").innerHTML = (per.uid == "you" ? (Place + (isPossess() ? ' (body ' + per.place + ')' : '')) : per.whereNow() + '(' + per.place + ')') + '';
 	s = (per.sCharmedBy === '' ? 'No-one' : per.sCharmedBy) + ' (' + per.charmed + ')';
 	if (per.uid == "amyross") {
@@ -129,8 +246,61 @@ function ChangePersonLst(md)
 				  '<a class="black" href="javascript:findPerson(\'MrsGranger\').charmThem(2);per.dress=per.getNextDress();ChangePersonLst(document)">Lover</a> or ' +
 				  '<a class="black" href="javascript:findPerson(\'MrsGranger\').charmThem(3);per.dress=per.getNextDress();ChangePersonLst(document)">Slut</a> or ' +
 				  '<a class="black" href="javascript:findPerson(\'MrsGranger\').charmThem(4);per.dress=per.getNextDress();ChangePersonLst(document)">Slave</a>';
-	}
-	
+	} else if (per.uid == "gabby") {
+		s += ' : <a class="black" href="javascript:cheatCharmGabby(0);ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:cheatCharmGabby(1);ChangePersonLst(document)">Mom\'s Lover</a> or ' +
+				  '<a class="black" href="javascript:cheatCharmGabby(2);ChangePersonLst(document)">Love/Hate</a> or ' +
+				  '<a class="black" href="javascript:cheatCharmGabby(4);ChangePersonLst(document)">Masochist</a> or ' +
+				  '<a class="black" href="javascript:cheatCharmGabby(8);ChangePersonLst(document)">Ghoul</a>';
+	} else if (per.uid == "mom") {
+		s += ' : <a class="black" href="javascript:cheatCharmMom(0);ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:cheatCharmMom(1);ChangePersonLst(document)">Minimal</a> or ' +
+				  '<a class="black" href="javascript:cheatCharmMom(4);ChangePersonLst(document)">Charmed</a> or ' +
+				  '<a class="black" href="javascript:cheatCharmMom(-1);ChangePersonLst(document)">About go to Work</a>';
+	} else if (per.uid == "vampyre") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Vampyre\').unCharmThem();ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Vampyre\').charmThem(1,\'Sarah\');ChangePersonLst(document)">Charmed By Sarah</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Vampyre\').charmThem(1,\'You\');ChangePersonLst(document)">Charmed by You</a> or ' +
+				  '<a class="black" href="javascript:cheatResetVampyre();ChangePersonLst(document)">Reset to start of events</a>';
+	} else if (per.uid == "tammy") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Tammy\').unCharmThem();ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Tammy\').charmThem(2);ChangePersonLst(document)">Slutty Girlfriend</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'Tammy\').charmThem(4);ChangePersonLst(document)">Slave</a>';
+	} else if (per.uid == "charley") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Charley\').unCharmThem();ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Charley\').charmThem(1);ChangePersonLst(document)">Slave</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'Charley\').charmThem(3);ChangePersonLst(document)">Lover</a>';
+	} else if (per.uid == "elian") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Elian\').unCharmThem();ChangePersonLst(document)">no pact</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Elian\').unCharmThem();per.place=9999;ChangePersonLst(document)">banished</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Elian\').charmThem(4);ChangePersonLst(document)">servant</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Elian\').charmThem(2);ChangePersonLst(document)">love-slave</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Elian\').charmThem(3);ChangePersonLst(document)">demon bride</a>';				  
+	} else if (per.uid == "mstitus") {
+		s += ' : <a class="black" href="javascript:findPerson(\'MsTitus\').unCharmThem();per.setFlag(8,false);ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'MsTitus\').charmThem(1);ChangePersonLst(document)">Slave</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'MsTitus\')..unCharmThem();per.setFlag(8);ChangePersonLst(document)">Free Slave</a>';
+	} else if (per.uid == "betty") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Betty\').unCharmThem();ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Betty\').charmThem(4);ChangePersonLst(document)">Slave</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'Betty\').charmThem(3);ChangePersonLst(document)">Lover</a>';	  
+	} else if (per.uid == "ash") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Ash\').unCharmThem();ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Ash\').charmThem(4);ChangePersonLst(document)">Slave</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'Ash\').charmThem(3);ChangePersonLst(document)">Lover</a>';
+	} else if (per.uid == "lola") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Lola\').unCharmThem();ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Lola\').charmThem(4);ChangePersonLst(document)">Slave</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'Lola\').charmThem(3);ChangePersonLst(document)">Lover</a>';
+	} else if (per.uid == "melanie") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Melanie\').unCharmThem();ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Melanie\').charmThem(4);ChangePersonLst(document)">Slave</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'Melanie\').charmThem(3);ChangePersonLst(document)">Lover</a>';
+	} else if (per.uid == "brandi") {
+		s += ' : <a class="black" href="javascript:findPerson(\'Brandi\').unCharmThem();per.setFlagRange(16,21,false);ChangePersonLst(document)">Uncharmed</a> or ' +
+				  '<a class="black" href="javascript:findPerson(\'Brandi\').charmThem(4);per.setFlagRange(15,17);per.setFlag(19);per.setFlag(20);per.setFlag(18,false);ChangePersonLst(document)">Slave-Aunt</a> or ' +
+ 		  		  '<a class="black" href="javascript:findPerson(\'Brandi\').charmThem(1);per.setFlagRange(15,17);per.setFlag(18);per.setFlag(20);per.setFlag(19,false);ChangePersonLst(document)">Slut-Aunt</a>';
+	}				  
 	md.getElementById("pcharm").innerHTML = s;
 	md.getElementById("pcharmtime").innerHTML = per.charmedTime + ' (for ' + per.hoursCharmed(per.sCharmedBy) + 'hrs)';
 	s = '';
@@ -210,9 +380,11 @@ function ChangePersonLst(md)
 					'<a class="black" href="javascript:findPerson(\'MrsTanika\').dress=\'Diana\';ChangePersonLst(document)">Diana Doll</a> or ' +
 					'<a class="black" href="javascript:findPerson(\'MrsTanika\').dress=\'Katarina\';ChangePersonLst(document)">Katarina Hartlova</a></td>';
 	} else if (per.uid == "misslogan") {
-		s = '<td style="width:33%"><b>Assignment: ' + (per.isNeuro() ? 'Neurology' : per.checkFlag(8) ? 'Reproduction' : '') + '</b></td><td style="width:66%"> ' +
+		s = '<td style="width:33%"><b>Assignment: ' + (per.isNeuro() ? 'Neurology' : per.checkFlag(8) ? 'Reproduction' : '') + '</b><br><b>Age: ' + per.dress + '</b></td><td style="width:66%"> ' +
 					'<a class="black" href="javascript:findPerson(\'MissLogan\').setFlag(8);per.setFlag(9,false);ChangePersonLst(document)">Reproduction Assignment</a> or ' +
-				   '<a class="black" href="javascript:findPerson(\'MissLogan\').setFlag(9);per.setFlag(8,false);ChangePersonLst(document)">Neurology Assignment</a></td>';
+				   '<a class="black" href="javascript:findPerson(\'MissLogan\').setFlag(9);per.setFlag(8,false);ChangePersonLst(document)">Neurology Assignment</a><br>' +
+					'<a class="black" href="javascript:findPerson(\'MissLogan\').dress=\'Natural\';ChangePersonLst(document)">Original Age</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'MissLogan\').dress=\'Younger\';ChangePersonLst(document)">Younger</a></td>';
 	} else if (per.uid == "msjones") {
 		s = '<td style="width:33%"><b>Dress: ' + per.dress + '</b></td><td style="width:66%"> ' +
 					'<a class="black" href="javascript:findPerson(\'MsJones\').dress=\'Black\';ChangePersonLst(document)">Black</a> or ' +
@@ -225,6 +397,43 @@ function ChangePersonLst(md)
 		s = '<td style="width:33%"><b>Dress: ' + per.dress + '</b></td><td style="width:66%"> ' +
 					'<a class="black" href="javascript:findPerson(\'Angela\').dress=\'Large\';ChangePersonLst(document)">Large</a> or ' +
 					'<a class="black" href="javascript:findPerson(\'Angela\').dress=\'Small\';ChangePersonLst(document)">Small</a></td>';
+	} else if (per.uid == "charley") {
+		s = '<td style="width:33%"><b>Hair: ' + (per.checkFlag(2) ? "brunette" : "blonde") + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'Charley\').setFlag(2);ChangePersonLst(document)">Brunette</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'Charley\').setFlag(2,false);ChangePersonLst(document)">Blonde</a></td>';
+	} else if (per.uid == "pamela") {
+		s = '<td style="width:33%"><b>Model: ' + per.dress + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'Pamela\').dress=\'Piper\';ChangePersonLst(document)">Piper Fawn</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'Pamela\').dress=\'Lauren\';ChangePersonLst(document)">Lauren Phillips</a></td>';
+	} else if (per.uid == "jenny") {
+		s = '<td style="width:33%"><b>Model: ' + per.dress + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'Jenny\').dress=\'Briana\';ChangePersonLst(document)">Briana Banks</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'Jenny\').dress=\'Christie\';ChangePersonLst(document)">Christie Stevens</a></td>';
+	} else if (per.uid == "zoey") {
+		s = '<td style="width:33%"><b>Model: ' + per.dress + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'Zoey\').dress=\'Zoe\';ChangePersonLst(document)">Zoe Smieszek</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'Zoey\').dress=\'Riley\';ChangePersonLst(document)">Riley Reid</a></td>';
+	} else if (per.uid == "mayor") {
+		s = '<td style="width:33%"><b>Model: ' + per.dress + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'Mayor\').dress=\'Rachel\';ChangePersonLst(document)">Rachel Roxx</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'Mayor\').dress=\'Eddie\';ChangePersonLst(document)">Eddie Diaz</a></td>';
+	} else if (per.uid == "nursemegan") {
+		s = '<td style="width:33%"><b>Model: ' + per.dress + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'NurseMegan\').dress=\'\';ChangePersonLst(document)">Not Met</a>, ' +
+					'<a class="black" href="javascript:findPerson(\'NurseMegan\').dress=\'Sandra\';ChangePersonLst(document)">Sandra Shine</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'NurseMegan\').dress=\'Farrah\';ChangePersonLst(document)">Farrah</a></td>';
+	} else if (per.uid == "mom") {
+		s = '<td style="width:33%"><b>Age: ' + per.dress + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'Mom\').dress=\'Natural\';ChangePersonLst(document)">Original Age</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'Mom\').dress=\'Younger\';ChangePersonLst(document)">Younger</a></td>';					
+	} else if (per.uid == "mia") {
+		s = '<td style="width:33%"><b>Age: ' + per.dress + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'Mia\').dress=\'Natural\';ChangePersonLst(document)">Original Age</a> or ' +
+					'<a class="black" href="javascript:findPerson(\'Mia\').dress=\'Younger\';ChangePersonLst(document)">Younger</a></td>';					
+	} else if (per.uid == "mrsgranger") {
+		s = '<td style="width:33%"><b>Age: ' + drb.split("/").join("") + '</b></td><td style="width:66%"> ' +
+					'<a class="black" href="javascript:findPerson(\'MrsGranger\').setFlag(35,false);ChangePersonLst(document)">Original Age</a> or ' +
+  		 		   '<a class="black" href="javascript:findPerson(\'MrsGranger\').setFlag(35);ChangePersonLst(document)">Younger</a></td>';
 	}
 
 	md.getElementById("pspecial").innerHTML = s;
@@ -253,7 +462,7 @@ function writePersonDetails()
 	par.push('<option value="You">You</option>');
 	for (i = 0; i < arPeople.length; i++) {
 		p = arPeople[i];
-		var s = '<option label="' + p.getPersonNameShort() + '" value="' + p.uid + '"';
+		var s = '<option label="' + p.name + '" value="' + p.uid + '"';
 		if (p.uid == "you") continue;
 		if (p.isHere() && !bSel) {
 			s += ' selected>' + p.name + '</option>';
@@ -307,7 +516,7 @@ function writePersonDetails()
 			"var ar = by.split(',');" +
 			"var wby = ar[0];" +
 			"var clv = 4;" +
-			"if (ar.length > 0) clv = parseInt(ar[1], 10);" +
+			"if (ar.length > 1) clv = parseInt(ar[1], 10);" +
 			"var ps = document.getElementById('uid').innerHTML;" +
 			"var per = findPerson(ps);" +
 			"if (per === null) return;" +
@@ -467,7 +676,7 @@ function writePlaceDetails()
 			md.write(
 				'<tr><td style="width:35%;vertical-align:top"><b>' + nm + '</b> ' + (isPlaceKnown(nm) ? '(known)' : "(unknown)") + '</td>' +
 				'<td style="width:35%;vertical-align:top"><b>Flags:</b> ' + s + '</td>' +
-				'<td style="width:30%"><input type="text" id="placeNo' + i + '" size="10" value=""> <a class="black" href="" onclick="SetFlag(\'' + nm.split(" ").join("").split("Glenvale").join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim() + '\',' + i + ');return false">set flag</a></td>' +
+				'<td style="width:30%"><input type="text" id="placeNo' + i + '" size="10" value=""> <a class="black" href="" onclick="SetFlag(\'' + nm.split(" ").join("").split(gameState.sTown).join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim() + '\',' + i + ');return false">set flag</a></td>' +
 				'</tr>'
 			);
 		}

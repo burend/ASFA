@@ -288,7 +288,7 @@ function initialiseEllie()
 				addPopupLinkToPlaceC(md, '"Sorry babe, I don’t have the time..."', 110, '', 'Ellie', 'you tell her &quot;Sorry babe, I don’t have the time… I’m busy. Now be a good girl and wait here while I talk with your boss.&quot;<br><br>Ellie, almost bursting out in tears holds her hands together and bows at your order. She is definitely sad that you have turned her offer down, but she is just a slave, a nobody to you and you really don&rsquo;t have the time or mood to be in her company. You barge into the Mayor&rsquo;s round, elegant office with haste.');
 				addLinkToPlaceC(md, '"You are right Ellie..."', 95, 'type=ellie2');
 				AddPeopleColumn(md);
-				perAngela.showPerson("angela1d.jpg");
+				perAngela.showPerson("Small|angela1d.jpg");
 				WritePlaceFooter(md);
 				return true;
 			}

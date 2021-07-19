@@ -20,7 +20,7 @@ function RepliesAngela(nR)
 	}
 	else if (nR == 101)
 	{
-		addComments('You ask Angela for John Adam\'s home address, and she quickly looks it up and shows you the address one her computer screen "2121 Rathdown Rd, Glenvale"');
+		addComments('You ask Angela for John Adam\'s home address, and she quickly looks it up and shows you the address one her computer screen "' + findPerson("JohnAdams").getPersonAddress() + '"');
 		setPlaceKnown("AdamsHouse");
 	}
 	else if (nR == 702) // Angela CHARMED Path
@@ -144,7 +144,7 @@ function initialiseAngela()
 
 	per.whereNow = function() {
 		if (!isShopOpen(0)) return 460;
-		if (Place == 97) return true;
+		if (Place == 97 && this.place == 95) return Place;
 		return this.place;
 	};
 
@@ -169,14 +169,14 @@ function initialiseAngela()
 
 	per.addPlaceImageLeft = function(lit)
 	{
-		if (Place == 97 && isShopOpen(0) && sType === "") return this.showPersonRandom("!angela11", 4, '', '', '', '', 0, false, "string");
+		if (Place == 97 && this.isHere() && sType === "") return this.showPersonRandom("!angela11", 4, '', '', '', '', 0, false, "string");
 		if (Place == 460 && this.isHere() && sType === "") return this.showPerson("angela-home1.jpg", '', '', '', '', false, "string");
 		return '';
 	};
 
 	per.showPersonTextHere = function(md)
 	{
-		if (Place == 97 && isShopOpen(0) && sType === "") md.write('<p>Angela joins you and gets a cup of coffee for herself.</p>');
+		if (Place == 97 && this.isHere() && sType === "") md.write('<p>Angela joins you and gets a cup of coffee for herself.</p>');
 		else if (Place == 460 && this.isHere()) {
 			if (isVisible()) md.write('<p>Angela greets you, and invites you in for a drink, or something else, or someone else.</p>');
 			else md.write('<p>Angela is relaxing in her apartment.</p>'	);
@@ -225,7 +225,7 @@ function initialiseAngela()
 		} else if (this.checkFlag(2) && !this.checkFlag(3) && this.isCharmedBy()) {
 			// Post charm conversation, happens when you re-visit the town hall after charming Angela
 			showPopupWindow(this.getPersonName(),
-				this.addPersonString("angela1c.jpg", "height:max%", "right") +
+				this.addPersonString("Small!angela1c.jpg", "height:max%", "right") +
 				'"So, tell me, how do you like working for the Mayor?", you ask your slave while you hop down in one of the chairs in the office.<br><br>' +
 				'"It is a frustrating job, ' + perYou.getMaster() + '. Mayor Thomas is a pain in the neck. She\'s constantly barking to anyone who doesn\'t do one hundred percent on their work. She says her biggest achievement will be when her office will be filled with workaholics like her not with lazy assholes as she likes to call us. So we all are afraid of her and try our best.", Angela answers obediently. Then suddenly she walks in front of the chair where you sit and gently grabs your hand and motions it between her tits.<br><br>' +
 				'"I would be the happiest girl in the world if I could be <b>your</b> personal secretary and servant than that harlot’s underpaid worker. If I could be with you all day, follow you around everywhere you go, make you happy….", she says in husky voice while she slowly starts to unbutton her blouse.<br><br>' +
@@ -326,12 +326,12 @@ function initialiseAngela()
 		if (this.isHere() && sType == "transformbreasts") {
 			// BE Transformation
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(11)) {
 				this.setFlag(11);
 				this.dress = "Large";
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/be c.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/be c.jpg', "50%") +
 					'<p>You cast the spell and Angela groans, "Ah ' + perYou.getLord() + ' what is this?" and pulls apart her top. You see her breasts swelling, growing larger and larger, her modest sized breasts growing to quite large.</p>' +
 					'<p>As she groans you thought you heard some laughing, ' + (Place == 95 ? 'the Mayor' : 'a neighbour') + '? Angela sighs as her breasts stop growing, and she says, panting a little,<p>' +
 					'<p>"' + this.getYourNameFor() + ', these will have to take some getting used to...maybe you would like to help me?"</p>'
@@ -340,14 +340,14 @@ function initialiseAngela()
 				this.setFlag(11, false);
 				this.dress = "Small";
             showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/bs d.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/be d.jpg', "50%") +
 					'<p>You cast the spell and Angela groans, "Ah ' + perYou.getLord() + ' what is this?" and pulls apart her top. You see her breasts diminishing, becoming smaller and smaller, her huge sized breasts growing to a modest size.</p>' +
 					"<p>As she groans you thought you heard some laughing, " + (Place ==	95 ? "the Mayor" : "a neighbour") +
 					"? Angela sighs as her breasts stop diminishing, and she says, panting a little,<p>" + '<p>"' + this.getYourNameFor() + ', these will be quite easy to get used to...maybe you would like to help me?"</p>'
 				);
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -505,14 +505,70 @@ function initialiseAngela()
 
 	per.showPersonChat = function(bGeneral, md)
 	{
+		var clv;
 		if (Place == 460 && this.isHere() && sType === "") {
 			// Angela's apartment
+			clv = this.getCharmedLevel();
 			addLinkToPlaceC(md, 'ask for "someone"', Place, 'type=angelafuck');
 			this.addSleepLink(md, "bed Angela", "Sleeping with Angela",
 				'<p style="position:absolute;left:10%;top:10%;cursor:pointer;font-size:1.1em;width:40%"><b>You take Angela to bed for the night.</b>',
 				'angela-bed1.jpg', true, '', '', '', "overflow-y:hidden"
 			);
+			return;
 		}
+		if (Place != 95 || !this.isHere() || sType !== "") return;
+		
+		// Town Hall (open and she is there)
+		clv = this.getCharmedLevel();
+		
+		switch (this.other)
+		{
+			case 0:
+				addQuestionC(md, 'tell Angela your name, and that you\'re interested in the Town Hall', "Angela", 800);
+				break;
+			case 1:
+				addQuestionC(md, 'ask Angela what she does around here', "Angela", 801);
+				break;
+			case 2:
+				if (perYou.isQuestStarted(1)) addQuestionC(md, 'ask Angela whom you should tell about the strange things you\'ve seen', "Angela", 802);
+				break;
+		}
+
+		if (checkPlaceFlag("Hotel", 8) && !checkPlaceFlag("Hotel", 4)) {
+			if (!checkPlaceFlag("Hotel", 2))	addQuestionC(md, 'ask Angela whether she has any records on the Broken Inn Hotel', "Angela", 4201);
+			else {
+				if (!checkPlaceFlag("Hotel", 3)) {
+					if (clv === 0) addQuestionC(md, 'ask Angela why the plans cost so much', "Angela", 4202);
+				}
+				if (clv > 0) {
+					addQuestionC(md, 'tell your <i>Slave</i> that you will not <i>pay</i> for the plans', "Angela", 4202);
+					addQuestionC(md, 'ask your <i>lover</i> to give you the plans as a gift', "Angela", 4203);
+				}
+				addQuestionCO(md, 'pay Angela ' + sCurrency + '30 for the plans', "Angela", 4230);
+			}
+		}
+
+		if (getPersonOther("Mayor") === 0) addQuestionC(md, 'tell Angela you would like to see the mayor', "Angela", 1600);
+
+		if (whereItem(23) == 999)  // HOTEL MAP LOST WHEN SHOT
+		{
+			addQuestionC(md, 'pay Angela ' + sCurrency + '30 for the hotel plans again', "Angela", 4230);
+			if (clv === 0) addQuestionC(md, 'demand another copy of the Hotel plans', "Angela", 999);
+			else {
+				if (clv != 4) addQuestionC(md, 'ask your <i>lover</i> to give you another copy of the plans', "Angela", 999);
+				else addQuestionC(md, 'demand another copy of the Hotel plans', "Angela", 999);
+			}
+		}
+
+		if (this.checkFlag(8) && !this.checkFlag(9)) addQuestionC(md, 'ask Angela to look for magic places', "Angela", 702);
+		if (clv > 0)  // Angela is CHARMED
+		{
+			if (!isPlaceKnown("AngelasApartment")) addQuestionC(md, 'ask Angela where she lives', "Angela", 2600);
+			if (clv == 4) addLinkToPlaceC(md, 'tell Angela to lay back and give you some more', Place, 'type=angelamore');
+			else addLinkToPlaceC(md, 'ask Angela for some more', Place, 'type=angelamore');
+			if (!isPlaceKnown("BreakRoom")) addLinkToPlaceC(md, 'ask Angela for a cup of coffee', 97, 'type=coffee');
+		}
+
 	};
 
 	// Items

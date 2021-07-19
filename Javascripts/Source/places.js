@@ -28,7 +28,7 @@ function getPlaceName(plc)
 		case 38: return "Amaranth Place";
 		case 37: return "Cherise Road";
 		case 5: 	return "Dervish Road";
-		case 42: return "Alley";
+		case 52: return "Alley";
 		case 87: return "Park Walkway";
 		case 455: return "Celeste Road";
 	}
@@ -38,7 +38,7 @@ function getPlaceName(plc)
 function getPlaceIdx(ps)
 {
 	ps = ps + '';
-	switch (ps.split(" ").join("").split("Glenvale").join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim()) {
+	switch (ps.split(" ").join("").split(gameState.sTown).join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim()) {
 		case "GinasHouse":
 			return 1;
 		case 'TownHall':
@@ -152,7 +152,7 @@ function getPlaceNameIdx(idx)
 }
 
 
-function isPlaceKnown(ps)
+function isPlaceKnownBase(ps)
 {
 	var idx = getPlaceIdx(ps);
 	if (idx == 30) return true;
@@ -161,20 +161,22 @@ function isPlaceKnown(ps)
 	if (typeof ps == 'number') {
 		ps = getPlaceName(ps);
 		if (ps === '') return false;
-		return isPlaceKnown(ps);
+		return isPlaceKnownBase(ps);
 	}
-	ps = ps.split(" ").join("").split("Glenvale").join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim();
+	ps = ps.split(" ").join("").split(gameState.sTown).join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim();
 	if (ps == (perGates.getPersonName().split(" ").join("") + "House")) ps = "Mansion";
 
 	switch (ps) {
 		case "YoolarooDr":
-			return isPlaceKnown("GrangerHouse") || isPlaceKnown("RobbinsHouse") || isPlaceKnown("TanikasHouse");
+			return isPlaceKnownBase("GrangerHouse") || isPlaceKnownBase("RobbinsHouse") || isPlaceKnownBase("TanikasHouse");
 		case "SirRonaldGatesHouse":
 		case "SirRonaldGateshouse":
 		case "Mansion":
-			return perYou.getExperience() > 0; // || (isPlaceKnown("SacredClearing") && isPlaceKnown("Tunnel"))
+			return perYou.getExperience() > 0; // || (isPlaceKnownBase("SacredClearing") && isPlaceKnownBase("Tunnel"))
 		case "DuckPond":
 			return checkPlaceFlag("Park", 2);
+		case "Barn":
+			return checkPlaceFlag("Park", 9);			
 		case "CatacombTunnel":
 		case "ChurchTunnel":
 			return checkPlaceFlag("Graveyard", 5);
@@ -188,6 +190,8 @@ function isPlaceKnown(ps)
 			return checkPlaceFlag("Alley", 7);
 		case "HotelCellar":
 			return checkPlaceFlag("Hotel", 10);
+		case "TennisCourts":
+			return checkPlaceFlag("Hotel", 13);			
 		case "ChurchSecretDoor":
 			return checkPlaceFlag("Church", 6);
 		case "ChurchCourtyard":
@@ -220,7 +224,9 @@ function isPlaceKnown(ps)
 		case "BreakRoom":
 			return checkPlaceFlag("TownHall", 3);
 		case "EmilyOffice":
-			return checkPlaceFlag("TownHall", 4);			
+			return checkPlaceFlag("TownHall", 4);	
+		case "TammyOffice":
+			return checkPlaceFlag("TownHall", 5);				
 		case "HospitalICU":
 			return checkPlaceFlag("Hospital", 5);
 		case "DoctorKaysOffice":
@@ -234,6 +240,8 @@ function isPlaceKnown(ps)
 			return checkPlaceFlag("CheriseRd", 7);
 		case "CharliesHouse":
 			return checkPlaceFlag("CheriseRd", 8);
+		case "MelaniesHouse":
+			return checkPlaceFlag("CheriseRd", 10);			
 		case 'PoliceInterrogationRoom':
 			return checkPlaceFlag("PoliceStation", 2);
 		case "JailCell":
@@ -290,40 +298,49 @@ function isPlaceKnown(ps)
 		case "GabbyHouse":
 		case "HalliwayHouse":
 			return checkPlaceFlag("AmaranthPl", 2);	
+		case "LolasHouse":
+			return checkPlaceFlag("AmaranthPl", 3);				
 		case "AvernusClub":
 			return checkPlaceFlag("ShoppingCenter", 5);
 		case "MayorsApartment":
 		case "MayorApartment":
 			return checkPlaceFlag("ShoppingCenter", 6);
-		case "Campsite":
-			return checkPersonFlag("Glenvale", 34);
+		case "Cabin":
+			return checkPersonFlag("Karma", 1);			
 		case "EsmeraldasHouse":
 		case "EsmeraldaHouse":			
-			return checkPlaceFlag("NewAgeStore", 2);			
+			return checkPlaceFlag("NewAgeStore", 2);		
 			
 	}
 	return true;
 }
+function isPlaceKnown(ps)
+{
+	return isPlaceKnownBase(ps);
+}
 
 
-function setPlaceKnown(ps)
+function setPlaceKnownBase(ps)
 {
 	var idx = getPlaceIdx(ps);
 	if (idx !== 0) {
 		arPlaces[idx] = arPlaces[idx] | 1;
 
 		// Related locations
-		if (idx == 58) setPlaceKnown("Hotel");		// Graveyard 58
-		else if (idx == 42) setPlaceKnown("TownHall");		// Hotel 42
+		if (idx == 29) setPlaceKnown("Hotel");		// Graveyard 29
+		else if (idx == 13) setPlaceKnown("TownHall");		// Hotel 13
 		return;
 	}
 
 	if (typeof ps == 'number') ps = getPlaceName(ps);
 
-	switch (ps.split(" ").join("").split("Glenvale").join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim()) {
+	switch (ps.split(" ").join("").split(gameState.sTown).join("").split("Place").join("Pl").split("Drive").join("Dr").split("Road").join("Rd").split("Home").join("House").split(".").join("").split("'").join("").split("&rsquo;").join("").trim()) {
 		case "DuckPond":
 			setPlaceFlag("Park", 2);
 			return;
+		case "Barn":
+			setPlaceFlag("Park", 9);
+			return;			
 		case "CatacombTunnel":
 		case "ChurchTunnel":
 			setPlaceFlag("Graveyard", 5);
@@ -358,6 +375,9 @@ function setPlaceKnown(ps)
 		case "DonnasRoom":
 			setPlaceFlag("Hotel", 7);
 			return;
+		case "TennisCourts":
+			setPlaceFlag("Hotel", 13);
+			return;
 		case "SchoolField":
 			setPlaceFlag("HistoryClassroom", 4);
 			return;
@@ -377,6 +397,9 @@ function setPlaceKnown(ps)
 		case "EmilyOffice":
 			setPlaceFlag("TownHall", 4);
 			return;
+		case "TammyOffice":
+			setPlaceFlag("TownHall", 5);
+			return;			
 		case "AdamsHouse":
 			setPlaceFlag("RathdownRd", 2);
 			setPlaceFlag("RathdownRd", 1);		// Also know Rathdown Rd
@@ -399,7 +422,10 @@ function setPlaceKnown(ps)
 			return;
 		case "CharliesHouse":
 			setPlaceFlag("CheriseRd", 8);
-			return;			
+			return;	
+		case "MelaniesHouse":
+			setPlaceFlag("CheriseRd", 10);
+			return;
 		case 'PoliceInterrogationRoom':
 			setPlaceFlag("PoliceStation", 2);
 			return;
@@ -488,6 +514,9 @@ function setPlaceKnown(ps)
 		case "HalliwayHouse":
 			setPlaceFlag("AmaranthPl", 2);
 			return;
+		case "LolasHouse":
+			setPlaceFlag("AmaranthPl", 3);
+			return;
 		case "AvernusClub":
 			setPlaceFlag("ShoppingCenter", 5);
 			return;
@@ -504,6 +533,10 @@ function setPlaceKnown(ps)
 			setPlaceFlag("NewAgeStore", 2);
 			return;
 	}
+}
+function setPlaceKnown(ps)
+{
+	setPlaceKnownBase(ps);
 }
 
 function isPlaceBreakIn(ps) { return checkPlaceFlag(ps, 31); }
@@ -529,7 +562,10 @@ function dispPlace(plc, params, txt, ps, click)
 	else sPlaceParams = params;
 
 	if (plc !== undefined && !isNaN(plc)) {
-		if (nFromPlace != Place) nFromPlace = Place;
+		if (nFromPlace != Place) {
+			if (nFromPlace == 900) showRightBar(2);
+			nFromPlace = Place;
+		}
 		Place = plc;
 	}
 	// Reset general page state variables
@@ -571,13 +607,15 @@ function dispPlace(plc, params, txt, ps, click)
 	}
 	// No person specific special events, any core game ones?
 	if (!bEvt && sType == "hydromancy") bEvt = CastingHydromancy();
-	if (!bEvt && sType == "generalevent") bEvt = GeneralEvent();
+	else if (!bEvt && sType == "generalevent") bEvt = GeneralEvent();
 	
 	if (!bEvt) {
 		// No special events, show the place normally
 		try {
 			if (sType.indexOf("dream") != -1 && txt !== undefined) sComment = txt;
-			eval("ShowPlace" + plc +"('" + sType + "')");
+			if (typeof window["ShowPlace" + plc] == 'function') { 
+				eval("ShowPlace" + plc +"('" + sType + "')");
+			}
 		} catch(e) {
 			console.log("Error in place " + Place);
 			console.log(e);
@@ -685,18 +723,24 @@ function Leave(noev)
 // Images
 
 // Outside locations
-var arOutside = [481,480,470,455,421,406,360,359,344,325,324,320,319,281,238,229,216,215,194,167,144,141,123,94,87,86,63,47,44,43,42,38,37,26,25,16,15,9,5,2];
+var arOutside = [481,480,470,455,421,406,360,359,344,325,324,320,319,281,238,229,216,215,194,167,144,141,125,123,94,87,86,63,60,52,47,44,43,38,37,26,25,24,23,16,15,9,5,2];
 function isOutside(plc, foy) {
 	if (plc === undefined) plc = Place;
-	// Hardcoded values length 40 and first value < 150 at index 20 (mid point-ish)
+	// Hardcoded values length 44 and first value < 150 at index 20 (mid point-ish)
 	//var lenOut = arOutside.length;
 	var op;
-	for (var i = plc < 150 ? 20 : 0; i < 40; i++) {
+	for (var i = plc < 150 ? 20 : 0; i < 44; i++) {
 		op = arOutside[i];
 		if (op <= plc) return op == plc;
 	}
 	if (foy === true) return Place == 456 || Place == 471;
 	return false;
+}
+// Add a new outdoor location
+function addOutsidePlace(plc)
+{
+	arOutside.push(plc);
+	arOutside.sort(function(a, b){return b - a});
 }
 
 function addPlaceImage(doc, img, wid, alg, title, lit, nopeople)
@@ -746,7 +790,6 @@ function addPlaceTitle(doc, tit, img, taxichance, notable, clr, lit, wid)
 	gameState.plcTitle = tit;
 	gameState.lFloat = '';
 	gameState.rFloat = '';
-	gameState.bLeftCol = false;
 
 	// Add any images for people, replacing standard place image
 	var p;
@@ -763,6 +806,8 @@ function addPlaceTitle(doc, tit, img, taxichance, notable, clr, lit, wid)
 
 	if (img !== undefined && img !== '' && !bAnyImg) addPlaceImage(doc, img, wid, "", gameState.plcTitle, lit);
 	if (taxichance !== undefined && taxichance > 0) showTaxi(doc, (Math.random() * 100) > taxichance);
+	
+	gameState.bLeftCol = false;
 
 	if (clr !== undefined && clr !== "") gameState.pclr = clr;
 	if (notable === undefined || notable === false) {
@@ -771,10 +816,29 @@ function addPlaceTitle(doc, tit, img, taxichance, notable, clr, lit, wid)
 	}
 	if (gameState.pclr !== '') doc.write('<p style="text-align:center;font-size:x-large;color:' + gameState.pclr + ';margin-bottom:-1px;margin-top:0px"><b>' + gameState.plcTitle + '</b></p><div style="color:' + gameState.pclr + '">');
 	else doc.write('<p style="text-align:center;font-size:x-large;margin-bottom:-1px;margin-top:0px"><b>' + gameState.plcTitle + '</b></p>');
+	
+	ShowItems();
 }
 
-function WritePlaceHeader(nt, alg, clr, ss, bgimg)
+function WritePlaceHeaderNI(nt, alg, clr, ss, bgimg)
 {
+	return WritePlaceHeader(nt, alg, clr, ss, bgimg, true);
+}
+function WritePlaceHeaderNP(nt, alg, clr, ss, bgimg)
+{
+	return WritePlaceHeader(nt, alg, clr, ss, bgimg, false, true);
+}
+function WritePlaceHeaderNIP(nt, alg, clr, ss, bgimg)
+{
+	return WritePlaceHeader(nt, alg, clr, ss, bgimg, true, true);
+}
+
+function WritePlaceHeader(nt, alg, clr, ss, bgimg, noitems, nopeople)
+{
+	if (gameState.nLastOut == -1) noitems = true;
+	if (noitems === true) gameState.bNoItems = true;
+	if (nopeople === true) gameState.bNoPeople = true;
+	
 	// Any custom css?
 	if (ss !== undefined && ss !== '') ss = '<style>' + ss + '</style>';
 	else ss = '';
@@ -804,7 +868,7 @@ function WritePlaceHeader(nt, alg, clr, ss, bgimg)
 	var lm = gameState.getLeftBarWidth();
 
 	mdCache.write(ss +
-		'<script type="text/javascript">initLightbox();document.onkeypress = stopRKey;</script>' +
+		'<script type="text/javascript">initLightbox();document.onkeypress = stopRKey;window.scrollTo(0,0);</script>' +
 		//"<div id='leftbar' class='sidebarleft' style='float:left;vertical-align:top;z-index:45;background-image:url(" + getThemeFolder() + "background.jpg);width:" + lm + "'>" +
 		"<div id='leftbar' class='sidebarleft' style='position:fixed;left:0;top:0;vertical-align:top;z-index:45;background-image:url(" + getThemeFolder() + "background.jpg);width:" + lm + "'>" +
 		getLeftBarContents() +
@@ -833,9 +897,8 @@ function WritePlaceHeader(nt, alg, clr, ss, bgimg)
 	return mdCache;
 }
 
-function WritePlaceFooter(doc, credits, noitems, nopeople)
+function WritePlaceFooter(doc, credits)
 {
-	if (gameState.nLastOut == -1) noitems = true;
 	gameState.lFloat = '';
 	gameState.rFloat = '';
 	
@@ -843,11 +906,11 @@ function WritePlaceFooter(doc, credits, noitems, nopeople)
 	endMain(doc);
 
 	// Add people/items
-	if (nopeople !== true) {
+	if (!gameState.bNoPeople) {
 		ShowPeople();
 		ShowPopupEvents();
 	}
-	if (noitems !== true) ShowItems();
+	
 	// add credits
 	addCredits(doc, credits);
 	if (gameState.pclr !== '') doc.write('</div>');
@@ -881,6 +944,7 @@ function initialisePlaces()
 	sPlaceParams = "";
 
 	setPlaceKnown("Cherise Road");
+	setPlaceKnown("DuckPond");
 	setPlaceEnscribed(144);
 	setPlaceEnscribed(123);
 	setPlaceEnscribed(325);

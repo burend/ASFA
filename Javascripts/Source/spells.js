@@ -1,4 +1,17 @@
-/***************** Specific Spells ******************************************************************************/
+/***************** Magic *********************************/
+
+function AddMana(no)
+{
+	// Increases Mana by 'no' and update ui
+	if (no === "charm") {
+		no = perYou.checkFlag(17) ? -9 : -10;
+	}
+	nMana = nMana + no;
+	if (nMana < 0 || isNaN(nMana)) nMana = 0;		// Sanity check, negative mana is not valid
+	updateLeftBar();
+}
+
+/***************** Learning Spells ******************************************************************************/
 function isRunes() { return gameState.bUseRuneMatching; }
 
 function setRunes(val)
@@ -35,7 +48,7 @@ var Spells = {
 					movePerson("Kate", 1000);
 					charmPerson("Kate", 1, "Davy");
 				}
-				movePerson("MsJones", 242);
+				movePerson("MsJones", 72);
 				if (getPersonOther("Kate") < 5) setPersonOther("Kate", 999);
 				movePerson("MrBeasley", 1000);
 				perYou.MaxItems++;

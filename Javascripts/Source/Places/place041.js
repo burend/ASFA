@@ -4,7 +4,7 @@ function ShowPlace41(stype)
 {
 	var md;
 	if (stype == "look") {
-		md = WritePlaceHeader();
+		md = WritePlaceHeaderNIP();
 		var id = getQueryParam("id");
 		var iSoft = oImages.fixed.magazines_soft;
 		var iHard = oImages.fixed.magazines_hard;
@@ -39,11 +39,11 @@ function ShowPlace41(stype)
 
 		addLinkToPlace(md, "put them back in the chest", 41);
 
-		WritePlaceFooter(md, '', true, true);
+		WritePlaceFooter(md);
 		return;
 	}
 
-	md = WritePlaceHeader(false, 'td-none');
+	md = WritePlaceHeaderNIP(false, 'td-none');
 
 	addPlaceTitle(md, "Stored Items");
 
@@ -62,7 +62,7 @@ function ShowPlace41(stype)
 			if (iCol == 1) md.write('<tr>');
 			md.write(
 				'<td style="width:20%;max-width:20vw"><b>Your Porn Magazines</b><br>' +
-				'<a href=\"javascript:dispPlace(41,\'type=look&id=1\')\"><img style="float:right;margin-right:10%;max-width:80%;max-height: 80" src="Images/Items/Magazines/' + (isExplicit(true) ? 'magazine-hard1.jpg' : 'magazine-soft1.jpg') + '" height="100" alt="Porn"/>Look</a>' +
+				'<a href=\"javascript:dispPlace(41,\'type=look&id=1\')\"><span><img style="float:right;margin-right:10%;max-width:80%;max-height: 80" src="' + gameState.getImagesFolder() + 'Items/Magazines/' + (isExplicit(true) ? 'magazine-hard1.jpg' : 'magazine-soft1.jpg') + '" height="100" alt="Porn" onerror="onerrorImage(this)"/></span>Look</a>' +
 				'</td>'
 			);
 
@@ -88,5 +88,5 @@ function ShowPlace41(stype)
 	startQuestions();
 	addLinkToPlace(md, "close the chest", 46);
 
-	WritePlaceFooter(md, '', true, true);
+	WritePlaceFooter(md);
 }

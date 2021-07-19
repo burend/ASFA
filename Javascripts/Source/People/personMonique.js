@@ -63,7 +63,10 @@ function RepliesMonique(nR)
 	else if (nR == 61)
 	{
 		per.other = 2;
-		addComments('"Mmm," murmurs Monique. "Do you know the author\'s name or the title? Or do you have any detailed <b>references</b> to the book to <b>give</b> me?"');
+		addComments(
+		'"Mmm," murmurs Monique. "Do you know the author\'s name or the title? Or do you have any detailed <b>references or papers</b> on the book to <b>give</b> me?"</p>' +
+		'<p><i>Reminder you pick up items, use or give them to another person using the inventory on the right</i></p>'
+		);
 		// Hint to give the paper
 		if (gameState.nRightBarState != 1) showRightBar(1);
 	}
@@ -342,7 +345,7 @@ function initialiseMonique()
 			if (!this.checkFlag(19)) {
 				// First time at the shop
 				md.write(
-					'<p>Hannah seems to be talking to a friend, and only after they turn around to face you, you actually recognize the other girl as Monique, whose new outfit is the complete opposite of everything you have seen her in so far.</p>' +
+					'<p>Hannah seems to be talking to a friend, and only after they turn around to face you, you actually recognize the other person as Monique, whose new outfit is the complete opposite of everything you have seen her in so far.</p>' +
 					'<p>“' + perYou.getPersonName() + '!” Monique jumps as she sees you, fidgeting nervously for a moment while her eyes dart between Hannah and you, before she places both hands on her hips and tries to assume a confident posture.</p>' +
 					'<p>“I... bought these a while back but never really had the courage to wear it... or show it to someone... how do I look?”</p>' +
 					'<p>“Like you\'re ready to ' + (perYou.isMan() ? 'suck his cock' : 'lick her pussy') + '.” Hannah chimes in before you are able to answer, and Monique\'s head turns into a deep shade of red. “Hannah!”</p>' +
@@ -384,7 +387,7 @@ function initialiseMonique()
 		if (this.whereNow() == 279 && Place == 279 && sType === "") {
 			if (!isSpellKnown("Shielded Charm")) addOptionLinkC(md, "ask Monique to teach you the spell", isRunes() ? "Research('Spell', 'NeoOne')" : "dispPlace(Place,'type=learnshieldedcharm&who=monique')");
 			addPopupLinkC(md, "ask Monique to return to the library", "Monique Leaves",
-				"<p>" + this.addPersonString("monique12b.jpg", "height:max%", "right") +
+				"<p>" + this.addPersonString("monique12b.jpg", "height:max%", "rightpopup") +
 				"You casually tell Monique to return back to the library, and you see she quickly pulls off her top,</p>" +
 				'<p>"I will have to change, but when you next visit the Library I hope you will take me for a ride!"</p>' +
 				'<p>Hannah comments "You go girl!"</p>',
@@ -399,6 +402,7 @@ function initialiseMonique()
 				"setPersonFlag(\\'Monique\\',20);setPersonFlagAfterTime(\\'Hannah\\',6,true,35)"
 			);
 		}
+
 		if (Place == 10 && isShopOpen(2) && this.isHere()) {
 			// History Classroom
 			if (this.getQuest() == 3) addQuestionC(md, 'ask Monique if she has found anything', "Monique", 53);
@@ -601,7 +605,7 @@ function initialiseMonique()
 
 				addPlaceTitle(md, "Monique Under A Spell");
 				md.write(
-					'<p>You tell the entranced girl, &quot;You are feeling very sexually aroused, Monique. You are feeling so sexy ' +
+					'<p>You tell the entranced woman, &quot;You are feeling very sexually aroused, Monique. You are feeling so sexy ' +
 					'that you want to take your clothes off and screw me,&quot;</p>' +
 					'<p>Monique fights your orders. &quot;No,&quot; she claims. &quot; I... I shouldn\'t... I don\'t...&quot; But ' +
 					'even as she speaks her body betrays her and her legs begin to part.</p>' +
@@ -642,7 +646,7 @@ function initialiseMonique()
 					'<p>You increase Monique\'s arousal to a new level.</p><p>"You can\'t do this to me "' +
 					perYou.getPersonName() + '" the librarian says, but her passion is already destroying her last inhibitions.'
 				);
-				if (!bHome) md.write(' The girl is so caught up in desire that she no longer cares if people see her or that her job is on the line.');
+				if (!bHome) md.write(' The woman is so caught up in desire that she no longer cares if people see her or that her job is on the line.');
 				md.write('</p>');
 
 				startQuestions();
@@ -658,7 +662,7 @@ function initialiseMonique()
 				
 				addPlaceTitle(md, "Monique Under A Spell");
 				md.write(
-					'<p>"Remove your panties," you command the girl.</p>' +
+					'<p>"Remove your panties," you command the woman.</p>' +
 					'<p>Monique obeys, all resistance gone from her mind. A servant to your orders, she pulls the thin cloth down until it drops to her feet, then waits expectantly for your next command.</p>'
 				);
 				startQuestions();
@@ -680,7 +684,7 @@ function initialiseMonique()
 					'She sways ' + (bHome ? 'in place' : 'in her chair') + ', trying to prevent the telepathic control, ' +
 					'but the spell is overwhelming and her movements gradually slow.</p>' +
 					'<p>&quot;Can you hear me?&quot; you ask, cautious of the spell\'s effect.</p>' +
-					'<p>You tell the entranced girl, &quot;You are feeling very sexually aroused, Monique. You are feeling so sexy ' +
+					'<p>You tell the entranced woman, &quot;You are feeling very sexually aroused, Monique. You are feeling so sexy ' +
 					'that you want to take your clothes off and screw me,&quot;</p>' +
 					'<p>Monique fights your orders. &quot;No,&quot; she claims. &quot; I... I shouldn\'t... I don\'t...&quot; But ' +
 					'even as she speaks her body betrays her and her legs begin to part.</p>' +
@@ -934,7 +938,7 @@ function initialiseMonique()
 								  replyToSMS("It\'s lovely. :)") +
 								  receiveSMS('Monique', 'Thank you, ' + this.getYourNameFor() + ' And Hannah was right, this is exciting!');
 		}
-		if (id == 191) return receiveSMS('Monique', 'Do you like strawberries. I do', 'moniquesms2' + (this.getCharmedLevel() == 1 ? 'm' : 'c') + '.jpg') + (this.getCharmedLevel() == 1 ? '' : receiveSMS('Monique', 'Sorry, I do not know why I sent that, it was naughty'));
+		if (id == 191) return receiveSMS('Monique', 'Do you like cupcakes and strawberries. I do', 'moniquesms2' + (this.getCharmedLevel() == 1 ? 'm' : 'c') + '.jpg') + (this.getCharmedLevel() == 1 ? '' : receiveSMS('Monique', 'Sorry, I do not know why I sent that, it was naughty'));
 		if (id == 192) return receiveSMS('Monique', 'I usually ride my bike to work in the morning', 'moniquesms3' + (this.getCharmedLevel() == 1 ? 'm' : 'c') + '.jpg') + (this.getCharmedLevel() == 1 ? '' : receiveSMS('Monique', 'Sorry, I forgot I was still getting dressed'));
 		return '';
 	};

@@ -2,16 +2,15 @@
 
 function ShowPlace96()
 {
+	var md = WritePlaceHeader();
 	var perJohn = findPerson("JohnAdams");
 	var perTess = findPerson("Tess");
-	var bTessHere = perTess.place == 96;
-	var md = WritePlaceHeader(false, bTessHere ? "td-left-med" : "");
+	var nm = perJohn.getPersonNameShort();
 
-	if (!bTessHere) {
-		
+	if (!perJohn.isHere()) {	
 		// Empty office
-		addPlaceTitle(md, "John Adams Office", "office1.jpg");
-		md.write('<p>A simple and tidy office used by John Adams.</p>');
+		addPlaceTitle(md, nm + " Adams Office", "office1.jpg");
+		md.write('<p>A simple and tidy office used by ' + nm + ' Adams.</p>');
 		if (!perJohn.checkFlag(3)) {
 			md.write('<p>You notice sitting on a shelf a familiar stone being used as a paper-weight</p>');
 			PlaceI(5);
@@ -22,19 +21,25 @@ function ShowPlace96()
 		addLinkToPlace(md, "go to the reception area.", 95);
 		
 	} else {
-		
-		perTess.showPerson("tess1a.jpg");
+		// John is here working
+		var clv = perJohn.getCharmedLevel();
+		perJohn.showPersonRorX("office1.jpg");
 
-		addPlaceTitle(md, "Tess Adams Hiding?");
+		addPlaceTitle(md, nm + " Adams Office");
 
 		md.write(
-			'<p>You see Mrs. Adams sitting on a chair in the office, looking very nervous, she looks up "John...." but her voice trails away as she sees you.</p>' +
-			'<p>"Oh ' + perYou.getPersonName() + '...sorry I ran out on you, I really had to see my husband, but he is not here, but I called he will be soon...I should go and wait for him...."'
+			'<p>You see ' + nm + ' is here and ' + perJohn.getHeShe() + ' is happy to see you and starts to remove ' + perJohn.getHisHer() + ' clothing for your pleasure!</p>'
 		);
-
-		startQuestions("You have to hurry..");
-		addLinkToPlace(md, "order Tess to stay", Place, 'type=charmtess2');
-	
+		if (clv == 1) md.write('<p>' + capitalize(perJohn.getHeShe()) + ' does know that there is nothing more you wish of ' + perJohn.getHimHer() + ' but the arousal of the charm spell compels ' + perJohn.getHimHer() + ' to be ready just in case you change your mind.</p>');
+		md.write('<p>' + nm + ' asks how ' + perJohn.getHeShe() + ' can help you?');
+		if (clv == 1) md.write(' You just tell ' + perJohn.getHimHer() + ' you are just visiting');
+		md.write('</p>');
+		
+		startQuestions();
+		if (clv != 1) {
+			addLinkToPlace(md, '"Here to Fuck"', Place, 'type=johnofficesex');
+		} 
+		addLinkToPlace(md, "go to the reception area.", 95);
 	}
 
 	WritePlaceFooter(md);

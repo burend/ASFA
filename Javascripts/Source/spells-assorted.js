@@ -82,6 +82,7 @@ function CastTransform(amt, test)
 		addComments('You have a crystal, but it is not soul-bound');
 		return false;
 	}
+	ClearComments();
 	if (test !== undefined && test === true) return true;
 	// Keana or Kurdnorf
 	if (perYourBody.FindItem(52) > 0 && perKurndorf.getQuestRitual() < 200) {

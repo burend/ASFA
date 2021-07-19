@@ -33,12 +33,13 @@ function ShowPlace141(stype)
 
 	var perVamp = findPerson("Vampyre");
 	var perLauren = findPerson("Lauren");
+	var perElian = findPerson("Elian");
 
 	var bMonster = perVamp.isMonstersInSacredClearing() && !checkPlaceFlag("SacredClearing", 2);
 
 	var md = WritePlaceHeader();
 
-	if (bMonster && !bPopupShown) {
+	if (bMonster && !bPopupShown && !perElian.isHere()) {
 		// A monster attacks, game over!!
 		setQueryParams("type=monster");		// To disable teleport spell and for saving
 		AddImageRandom("monster", oImages.fixed.monsters, "height:max");
@@ -83,7 +84,8 @@ function ShowPlace141(stype)
 	} else {
 		md.write('<p>Between the groves of ' + perGates.getPersonNameShort() + '\'s estate you see a clearing. Stones circle the clearing and, from the markings on one of the stones, you believe that it is a sacred site of druids or witches, and said to be the home of the fairy-folk.</p>');
 		if (!isDay()) {
-			md.write('<p>It is quite eerie here at night, the shadows seem to move in what light is available, once you were sure you saw a figure crouched on top of one of the stones, but it must have been your imagination, nothing was there when you looked again.</p>');
+			if (bMonster && perElian.isHere()) md.write('<p>It is quite eerie here at night, the shadows seem to move in what light is available, but it is very quiet. Elian holds on to your arm and whispers "Nothing is going to bother us here, I will not let them"</p>');
+			else md.write('<p>It is quite eerie here at night, the shadows seem to move in what light is available, once you were sure you saw a figure crouched on top of one of the stones, but it must have been your imagination, nothing was there when you looked again.</p>');
 		}
 
 		if (getPersonOther("OfficerKhan") == 11) {

@@ -40,7 +40,7 @@ function ShowPlace177()
 		} else {
 			// Charmed
 			if (perVamp.isHere()) md.write('Mrs. Granger greets you with a kiss but is interrupted as Lilith starts to remove her clothing. She says to Lilith, "Just a moment Dear, we can play in a moment"' + (bKateHere ? ' Kate joins them stripping all of her clothing.' : '') + '</p>');
-			else if (perMG.other == 23) md.write('Mrs. Granger greets you with a kiss.<br><br>"I did as you asked, dear, and I have found something at the wild ranges."</p>');
+			else if (perMG.other == 23) md.write('Mrs. Granger greets you with a kiss.<br><br>"I did as you asked, dear, and I have found something at the Wild Ranges."</p>');
 			else if (perMG.other == 24 || getPersonOther("Tess") == 27) md.write('Mrs. Granger greets you with a kiss.<br><br>"What else can I do for you my dear?" she asks, her eyes imploring you.</p>');
 			else if (perMG.other == 21 || clv == 3) md.write('Mrs. Granger greets you as you enter. She beckons you over; you can see what she has on her mind.</p>');
 			else if (clv == 3) {

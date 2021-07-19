@@ -104,7 +104,7 @@ function ShowPlace213()
 
 	if (perKhan.place == 213) // Officer Khan is HERE
 	{
-		AddRightColumnLarge(md);
+		AddPeopleColumnLarge(md);
 		perKhan.showPerson("pol12.jpg", "", "right");
 	}
 

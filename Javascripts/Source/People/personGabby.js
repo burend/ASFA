@@ -192,16 +192,17 @@ function initialiseGabby()
 		}
 		
 		if (sType == "conferencemayor") {
+			var perMaypr = findPerson("Mayor");
 			if (getQueryParam("stage") == "stage3") {
 				showPopupWindow("Other Help",
-					'<img src="Images/People/Mayor/' + (perYou.isMaleSex() && isExplicit() ? 'Explicit/' : '') + 'mayor18.jpg" style="width:' + (perYou.isMaleSex() && isExplicit() ? '50%' : '25%') + ';float:left;margin-right:5px" alt="Mayor">' +
-					'It\'s quick and dirty. No foreplay, no long-winded buildup. You just throw her on the desk and go at it, trading kisses, rolling around on the bed and feeling each others skin. You are ' + (perYou.isMaleSex() ? 'inside her' : 'grinding against her') + ' sex within seconds and roughly take the woman with forceful motions.',
+					(perMayor.isMan() ? perMayor.addPersonString("mayor17.jpg", "height:max%", "right") : perMayor.addPersonStringRorX("mayor18.jpg", perYou.isMaleSex() && isExplicit() ? '50%' : '25%')) +
+					'It\'s quick and dirty. No foreplay, no long-winded buildup. You just throw ' + perMayor.getHimHer() + ' on the desk and go at it, trading kisses, rolling around on the bed and feeling each others skin. You are ' + (perYou.isMaleSex() ? 'inside her' : 'grinding against her') + ' sex within seconds and roughly take the ' + perMayor.getManWoman() + ' with forceful motions.',
 					'dispPlace(Place, "type=conferencemayor&stage=stage4")'
 				);
 				return true;
 			} else if (getQueryParam("stage") == "stage4") {
 				showPopupWindow("Other Help",
-					'<img src="Images/People/Mayor/' + (perYou.isMaleSex() && isExplicit() ? 'Explicit/' : '') + 'mayor19.jpg" style="width:' + (perYou.isMaleSex() && isExplicit() ? '50%' : '25%') + ';float:left;margin-right:5px" alt="Mayor">' +
+					(perMayor.isMan() ? perMayor.addPersonString("mayor17.jpg", "height:max%", "right") : perMayor.addPersonStringRorX("mayor19.jpg", perYou.isMaleSex() && isExplicit() ? '50%' : '25%')) +
 					'Both of you climax not even 5 minutes in, taking a brief moment to bask in the afterglow before you part with a final kiss. There\'s work to be done, but this surely was a pleasant distraction.',
 					'dispPlace(Place, "type=conferencemayor&stage=stage5")'
 				);
@@ -341,28 +342,28 @@ function initialiseGabby()
 				case "":
 					addQuestionR(md, 'approach the Mayor',
 						(bSarah ? (perMayor.isCharmedBy() ?
-										'“' + perYou.getPersonName() + '?” The Mayor is surprised when she notices you. “I had no idea you wanted to be here I...” She looks around briefly to make sure no one is listening in and lowers her voice. “I could have made sure you gain VIP access, please don\'t tell me you went to someone else for help.”</p>' +
+										'“' + perYou.getPersonName() + '?” The Mayor is surprised when ' + perMayor.getHeShe() + ' notices you. “I had no idea you wanted to be here I...” ' + perMayor.getHeShe(true) + ' looks around briefly to make sure no one is listening in and lowers ' + perMayor.getHisHer() + ' voice. “I could have made sure you gain VIP access, please don\'t tell me you went to someone else for help.”</p>' +
 										'<p>You tell her about Sarah, and after a short look over to her, in which you are sure Beatrice created an extensive profile based on a million tiny details about how much of a threat Sarah might be to her, she turns back to you.</p>' +
-										'<p>“She is not even one of, well, yours.” She casts another nervous look to Sarah. “Are you really sure it is wise to involve outsiders and not use the resources available? Like me?”</p>' +
-										'<p>You assure her that you intent to use her many times, but for this one, Sarah seemed like the better choice, which seems to cause her no small amount of discomfort.</p>' +
+										'<p>“She is not even one of, well, yours.” ' + perMayor.getHeShe(true) + ' casts another nervous look to Sarah. “Are you really sure it is wise to involve outsiders and not use the resources available? Like me?”</p>' +
+										'<p>You assure ' + perMayor.getHimHer() + ' that you intent to use ' + perMayor.getHimHer() + ' many times, but for this one, Sarah seemed like the better choice, which seems to cause ' + perMayor.getHimHer() + ' no small amount of discomfort.</p>' +
 										'<p>“Of course, but if there is anything I can do to assist you, please don\'t hesitate to ask!”'
 									 : '“Please, I am very busy making sure that everything is perfect. So, unless you have an appointment for a personal interview you will have plenty of time to ask questions during the conference.”</p>' +
-										'<p>You ponder for a moment to insist on talking to her, but the way she looks over to the security personal makes you think better of it.'
+										'<p>You ponder for a moment to insist on talking to ' + perMayor.getHimHer() + ', but the way ' + perMayor.getHeShe() + ' looks over to the security personal makes you think better of it.'
 									 )
-								  : 'Mayor Thomas turns to you with a conspiratorial smile. “Everything is going just as planned, ' + perYou.getPersonName() + '. Miss Halliway will be alone in one of the rooms to conduct an interview, and I made sure that the person she is set to meet will be sufficiently delayed, to give you all the time you need.“ Miss Thomas is positively exhilarated.</p>' +
+								  : 'Mayor Thomas turns to you with a conspiratorial smile. “Everything is going just as planned, ' + perYou.getPersonName() + '. Miss Halliway will be alone in one of the rooms to conduct an interview, and I made sure that the person she is set to meet will be sufficiently delayed, to give you all the time you need.“ Mayor Thomas is positively exhilarated.</p>' +
 									 '<p>“Thank you so much, again, ' + perYou.getPersonName() + ', this little event was close to become a disaster, but if I am able to help you expand your harem, all will be worth it.”'),
 						"Mayor",
 						"setQueryParams(\\'type=" + sType + '&stage=' + (perMayor.isCharmedBy() ? "stage2" : 'stage5') + "\\')"
 					);
 					break;
 				case "stage2":
-					addPopupLink(md, 'maybe she can help you in some “other” ways',  "Other Help",
+					addPopupLink(md, 'maybe ' + perMayor.getHeShe() + ' can help you in some “other” ways',  "Other Help",
 						perMayor.addPersonString("mayor17.jpg", "height:max%", "right") +
-						'Mayor Thomas looks uncertain whether she should really leave the crowd alone, even for a while, but of course her desire wins over.</p>' +
-						'<p>She tells you to meet her in 5 minutes inside one of the empty rooms to avoid suspicion, and when you follow her, she is already nearly undressed and ready for you.',
+						'Mayor Thomas looks uncertain whether ' + perMayor.getHeShe() + ' should really leave the crowd alone, even for a while, but of course ' + perMayor.getHisHer() + ' desire wins over.</p>' +
+						'<p>' + perMayor.getHeShe(true) + ' tells you to meet ' + perMayor.getHimHer() + ' in 5 minutes inside one of the empty rooms to avoid suspicion, and when you follow ' + perMayor.getHimHer() + ', ' + perMayor.getHeShe() + ' is already nearly undressed and ready for you.',
 						false, "dispPlace(Place,'type=conferencemayor&stage=stage3')"
 					);
-					addLinkToPlaceC(md, 'leave her for now', Place, 'type=startconference');
+					addLinkToPlaceC(md, 'leave ' + perMayor.getHimHer() + ' for now', Place, 'type=startconference');
 					break;
 				case "stage5":
 					addLinkToPlaceC(md, 'check out the rest of the conference', Place, 'type=startconference');
@@ -486,7 +487,7 @@ function initialiseGabby()
 			);
 			if (bSarah) md.write('<p>Sarah is sitting next to her, waiting for you to make your move.</p>');
 			startQuestions();
-			addLinkToPlaceC(md, 'leave the room', 94, '', 'Well... what did you expect to happen? The moment you leave the room, Gabby rushes out, almost running you over and out of sight with surprising speed, most likely to get Mom and run. That could have gone better...', '', "movePerson('Gabby',998);movePerson('Mom',998)");
+			addLinkToPlaceC(md, 'leave the room', 94, '', 'Well... what did you expect to happen? The moment you leave the room, Gabby rushes out, almost running you over and out of sight with surprising speed, most likely to get Mom and run. That could have gone better...', '', "movePerson('Gabby',998);movePerson('Mom',998);setPersonFlag('Gabby',13)");
 			if (bSarah) {
 				AddPeopleColumn(md);
 				perSarah.showPerson("sarah15.jpg");
@@ -1204,7 +1205,7 @@ function initialiseGabby()
 				'<p>“Damn you...” Gabby\'s eyes are filled with spite, but her hands are moving by themselves, tearing off her shirt and pushing down her dress. “Please... stop.... this...”</p>'
 			);
 			startQuestions();
-			addLinkToPlaceC(md, '"You couldnt stop it if you wanted to, now. And you don\'t want to"', Place, 'type=studycharmlover2');
+			addLinkToPlaceC(md, '"You couldn\'t stop it if you wanted to, now. And you don\'t want to"', Place, 'type=studycharmlover2');
 			WritePlaceFooter(md);
 			return true;		
 		}
@@ -1371,8 +1372,8 @@ function initialiseGabby()
 				'<p>“Gabby opens her mouth to protest, but you cut her off with a sudden rush of arousal.”</p>' +
 				'<p>“Repeat: I like it when ' + perYou.getPersonName() + ' uses ' + perYou.getHisHer() + ' Magic on other women.”</p>' +
 				'<p>“I... ahhh...” She moans heavily. “I like it when ' + perYou.getPersonName() + ' uses ' + perYou.getHisHer() + ' Magic on other women.”</p>' +
-				'<p>“' + capitalizeFirstLetter(perYou.getHeShe()) + ' should be able to use his gift however ' + capitalizeFirstLetter(perYou.getHeShe()) + ' wants.”</p>' +
-				'<p>“' + capitalizeFirstLetter(perYou.getHeShe()) + ' should... should be able to use his gift how... however ' + capitalizeFirstLetter(perYou.getHeShe()) + ' wants.”</p>' +
+				'<p>“' + capitalize(perYou.getHeShe()) + ' should be able to use his gift however ' + capitalize(perYou.getHeShe()) + ' wants.”</p>' +
+				'<p>“' + capitalize(perYou.getHeShe()) + ' should... should be able to use his gift how... however ' + capitalize(perYou.getHeShe()) + ' wants.”</p>' +
 				'<p>“I will support ' + perYou.getHimHer() + ' and ' + perYou.getHisHer() + ' mother in all things, I will work hard to serve Alex”</p>' +
 				'<p>“I will support ' + perYou.getHimHer() + ' and ' + perYou.getHisHer() + ' mother in all things.” She breathes the words out hastily. “I will work hard to serve A... Alex... Ahhhhhh...”</p>' +
 				'<p>You push her arousal as much as you can to make her climax, hopefully imprinting those words on her mind in the process, leaving her heavily gasping for air.</p>' +
@@ -1556,7 +1557,8 @@ function initialiseGabby()
 			if (sType == "momdesireoffice") {
 				// Use Mom in the OFfice
 				md = WritePlaceHeader();
-				this.showPerson("gabby-mom8.jpg");
+				if (perYou.isMaleSex() && isExplicit()) this.showPersonX("gabby-mom8.jpg");
+				else this.showPerson("gabby-mom8.jpg");
 				addPlaceTitle(md, "Mom\'s Help");
 				md.write(
 					'<p>Mom never refuses a chance to help you unwind, and since both women have been horny pretty much since the moment you entered the room, they happily undress for you.</p>' +
@@ -1823,7 +1825,7 @@ function initialiseGabby()
 					'<p>"What did you call me?"</p>'+
 					"<p>You cringe, as much from her glare as from the mistake. For some reason, it's far harder than normal to stand up to your mom's assistant, and before long you have confessed to spying on them at night. Your mother is horrified, but Gabby takes on a curious expression.</p>"+
 					'<p>"You must have a lot of questions for me," she finally says. "Come back tonight and I\'ll answer all your questions then. For now, we have <i>actual</i> work that needs our attention more than a nosy brat."</p>'+
-					'<p>Burning with embarassment, you hurry and flee the room.</p>'
+					'<p>Burning with embarrassment, you hurry and flee the room.</p>'
 				);
 				startQuestions();
 				addLinkToPlace(md,'leave',372);
@@ -1889,7 +1891,7 @@ function initialiseGabby()
 				this.showPerson("gabby-badend1.jpg");
 				addPlaceTitle(md, "Good Girls Get Taught");
 				md.write(
-					'<p>You are aware without actual awareness. Understanding without thought. Mistress Halliway is explaining things to you, and all you can do is repeat them back. She is beautiful, sensuous. The utter pinacle of womanhood. Someone to emulate, to admire, to love and serve all at the same time. With each line that you speak, your fingers move in and out of your naked slit, deepening your arousal and submission with each thrust. You know this, because Mistress Halliway has told you so.</p>'+
+					'<p>You are aware without actual awareness. Understanding without thought. Mistress Halliway is explaining things to you, and all you can do is repeat them back. She is beautiful, sensuous. The utter pinnacle of womanhood. Someone to emulate, to admire, to love and serve all at the same time. With each line that you speak, your fingers move in and out of your naked slit, deepening your arousal and submission with each thrust. You know this, because Mistress Halliway has told you so.</p>'+
 					'<p>"I want to be a good girl," you speak the Truths you have been given. Slowly working them through your slit and your brain.</p>'+
 					'<p>"Good girls need to be taught."</p>'+
 					'<p>"I will become a good girl."</p>'+
@@ -2072,8 +2074,8 @@ function initialiseGabby()
 				'<p>“Gabby opens her mouth to protest, but you cut her off with a sudden rush of arousal.”</p>' +
 				'<p>“Repeat: I like it when ' + perYou.getPersonName() + ' uses ' + perYou.getHisHer() + ' Magic on other women.”</p>' +
 				'<p>“I... ahhh...” She moans heavily. “I like it when ' + perYou.getPersonName() + ' uses ' + perYou.getHisHer() + ' Magic on other women.”</p>' +
-				'<p>“' + capitalizeFirstLetter(perYou.getHeShe()) + ' should be able to use ' + perYou.getHisHer() + ' gift however ' + perYou.getHeShe() + ' wants.”</p>' +
-				'<p>“' + capitalizeFirstLetter(perYou.getHeShe()) + ' should... should be able to use ' + perYou.getHisHer() + ' gift how... however ' + perYou.getHeShe() + ' wants.”</p>' +
+				'<p>“' + capitalize(perYou.getHeShe()) + ' should be able to use ' + perYou.getHisHer() + ' gift however ' + perYou.getHeShe() + ' wants.”</p>' +
+				'<p>“' + capitalize(perYou.getHeShe()) + ' should... should be able to use ' + perYou.getHisHer() + ' gift how... however ' + perYou.getHeShe() + ' wants.”</p>' +
 				'<p>“I will support ' + perYou.getHimHer() + ' and ' + perYou.getHisHer() + ' mother in all things, I will work hard to serve Alex”</p>' +
 				'<p>“I will support ' + perYou.getHimHer() + ' and ' + perYou.getHisHer() + ' mother in all things.” She breathes the words out hastily. “I will work hard to serve A... Alex... Ahhhhhh...”</p>' +
 				'<p>You push her arousal as much as you can to make her climax, imprinting those words on her mind in the process and leaving her heavily gasping for air.</p>' +
@@ -2538,19 +2540,20 @@ function initialiseGabby()
 			} else if (!isMurderPath() && this.checkFlag(7) && !this.checkFlag(13)) {
 			// Apprentice/Conspiracy paths only
 			if (isPersonHere("Mayor") && isCharmedBy("Mayor")) {
+				var perM = findPerson("Mayor");
 				if (sType === "" && !this.checkFlag(10)) {
 					addLinkToPlace(md, 'ask Mayor Thomas about the press gathering', Place, 'type=askmayorconference2',
-						'“Oh yes, the press gathering.” Beatrice answers dispassionately, and you get the feeling she is a little disappointed that you are not here for sex. “I was supposed to promote a project of mine in the city outskirts, but I fear questions regarding the recent influx of strange events will steal most of the attention away from it, and...” She stops halfway, her eyes going wide!”</p>' +
-						'<p>“You wish to attend, right, ' + perYou.getMaster() + '?” Her interest perks up quickly, realizing she might have a chance to please you. “For the most part, we have only invited journalists from various publications. It\'s far from the event I intent to present you with, but there are a few socialites scheduled to attend to raise public interest, as well.” She is literally pushing her chest out now and giving you the bedroom eyes. “There\'s no one nearly as influential and useful to you as I am, of course, but if you have your eye on anyone just say the word!”',
+						'“Oh yes, the press gathering.” ' + perM.getPersonNameShort() + ' answers dispassionately, and you get the feeling ' + perM.getHeShe() + ' is a little disappointed that you are not here for sex. “I was supposed to promote a project of mine in the city outskirts, but I fear questions regarding the recent influx of strange events will steal most of the attention away from it, and...” ' + perM.getHeShe(true) + ' + stops halfway, ' + perM.perHisHer() + ' eyes going wide!”</p>' +
+						'<p>“You wish to attend, right, ' + perYou.getMaster() + '?” her interest perks up quickly, realizing ' + perM.getHeShe() + ' might have a chance to please you. “For the most part, we have only invited journalists from various publications. It\'s far from the event I intent to present you with, but there are a few socialites scheduled to attend to raise public interest, as well.” ' + perM.getHeShe(true) + ' is literally pushing ' + perM.getHisHer() + ' chest out now and giving you the bedroom eyes. “There\'s no one nearly as influential and useful to you as I am, of course, but if you have your eye on anyone just say the word!”',
 						"Mayor"
 					);
 				} else if (sType == "askmayorconference2") {
-					addLinkToPlace(md, 'tell her about Gabby', Place, 'type=askmayorconference3',
-						'“The representative of MC channel 4? Consider it done.” The Mayor doesn\'t even ask why you would want to charm her, and you don\'t feel the need to tell her the whole story anyway.</p>' +
-						'<p>“I will find a way to isolate her from the rest of the attendees and make sure that you receive a VIP pass with full access to the entire facility.” She is practically brimming with enthusiasm. “Just make sure to be here before <b>6:00 PM ' + (this.checkFlag(23) ? 'today' : 'tomorrow') + '</b> and I will also ensure that you look the part.”</p>' +
+					addLinkToPlace(md, 'tell ' + perM.getHimHer() + ' about Gabby', Place, 'type=askmayorconference3',
+						'“The representative of MC channel 4? Consider it done.” The Mayor doesn\'t even ask why you would want to charm her, and you don\'t feel the need to tell ' + perM.getHimHer() + ' the whole story anyway.</p>' +
+						'<p>“I will find a way to isolate her from the rest of the attendees and make sure that you receive a VIP pass with full access to the entire facility.” ' + perM.getHeShe(true) + ' is practically brimming with enthusiasm. “Just make sure to be here before <b>6:00 PM ' + (this.checkFlag(23) ? 'today' : 'tomorrow') + '</b> and I will also ensure that you look the part.”</p>' +
 						'<p>“Look the part?” You ask, and the Mayor nods.</p>' +
 						'<p>“It is still an upper class event, but with your natural radiance, my influence and the right attire, no one will question your right to be there, I promise, ' + perYou.getMaster() + '!”</p>' +
-						'<p>Well you didn\'t even consider that you shouldn\'t just walk in there with your casual attire, but it seems mayor Thomas has thought of that. Now only one question remains, <b>are you ready to deal with Gabby and the Necklace?</b>',
+						'<p>Well you didn\'t even consider that you shouldn\'t just walk in there with your casual attire, but it seems Mayor Thomas has thought of that. Now only one question remains, <b>are you ready to deal with Gabby and the Necklace?</b>',
 						"Mayor",
 						"setPersonFlag('Gabby',10)"
 					);
@@ -2565,9 +2568,13 @@ function initialiseGabby()
 				}
 				if (this.checkFlag(23) && Place == 110) {
 					if (sType === "" || sType == "askmayorconference3") {
-						addPopupLinkToPlaceC(md, 'wait at the Town hall till 6:00 pm and get ready for the event', 110, 'type=waitconfmayor2', "Waiting for the Conference",
-							'<img src="Images/Items/' + (perYou.isBornMale() ? 'suit' : 'dress') + '.jpg" style="width:25%;float:left;margin-right:5px" alt="Dress">' +
-							'You spend the rest of the day getting ready for the event, forming a plan with Mayor Thomas, picking out a nice ' + (perYou.isBornMale() ? 'suit' : 'dress') + ' to wear and of course having a shower...'
+						addPopupLinkC(md, 'wait at the Town hall till 6:00 pm and get ready for the event', "Getting Ready",
+							'<img src="Images/Items/' + (perYou.isBornMale() ? 'suit' : 'dress') + '.jpg" class="imgpopup" alt="Dress">' +
+							'You spend the rest of the day getting ready for the event, forming a plan with Mayor Thomas, picking out a nice ' + (perYou.isBornMale() ? 'suit' : 'dress') + ' to wear and of course having a shower...</p>' +
+							'<p>You hear ' + perM.getPersonNameShort() + ' knock and ask to join you...' +
+							addLinkToPlace("string", '"Of course!"', Place, "type=waitconfmayor2", "", "", "", "chatblock", "width:30%;margin-left:10%") +
+							addLinkToPlace("string", 'decline for now', Place, "type=waitconfmayor3", "", "", "", "chatblock", "width:30%;margin-left:10%"),
+							true, '', true
 						);
 						if (sType == "askmayorconference3") endAlternatives(md);
 					}			

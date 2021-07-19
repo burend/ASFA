@@ -61,11 +61,16 @@ function Person(nm, plc, fldrin, drs, dance)
 		// following are inlined checkBitFlag calls
 		if ((this.charmed & 8) !== 0) return 4;		// Slave
 		if ((this.charmed & 1) !== 0) return 1;		// Minimal
-		if ((this.charmed & 2) !== 0) return 2;		// Servant/Lover
-		if ((this.charmed & 4) !== 0) return 3;		// Not specified (character specific)
+		if ((this.charmed & 2) !== 0) return 2;		// Servant/friends with benefits
+		if ((this.charmed & 4) !== 0) return 3;		// Not specified (character specific, commonly lover/girlfriend)
 		if ((this.charmed & 16) !== 0) return 5;		// Other (generally cat/puppy)
 		return this.charmed;
 	};
+	this.isSlave = function() {
+		//return (this.sCharmedBy != "You") ? false : (this.charmed & 8) !== 0;		// getCharmedLevel() == 4
+		return (this.charmed & 8) !== 0;		// getCharmedLevel() == 4
+	};
+	
 	// Basic charm them (use rarely), mainly used to set a flag against their this.charmed variable
 	this.charmThemF = function(no) {
 		this.charmedTime = nTime;
@@ -114,6 +119,19 @@ function Person(nm, plc, fldrin, drs, dance)
 			for (var i = this.flags.length; i <= idx; i++) this.flags.push(0);
 		}
 		this.flags[idx] = setBitFlag(this.flags[idx], no - (idx * 32), nVal);
+	};
+	
+	this.setFlagRange = function(no1, no2, nVal) {
+		if (no2 < no1) {
+			var i = no1;
+			no1 = no2;
+			np2 = t;
+		}
+		var idx2 = Math.floor((no2 - 1) / 32);
+		if (idx2 > this.flags.length) {
+			for (i = this.flags.length; i <= idx2; i++) this.flags.push(0);
+		}
+		for (i = no1; i <= no2; i++) this.setFlag(i, nVal);
 	};
 
 	// Are any of the flags between nof and not set?
@@ -345,15 +363,16 @@ function Person(nm, plc, fldrin, drs, dance)
 	this.loadPerson = function(s, type)
 	{
 		// uid loaded in game.js (well sort of)
-		this.place = GetNo(s);
 		var el, i;
+		i = GetNo(s);
+		if (i !== 0) this.place = i;
 		el = GetNoShort(s);
 		for (i = 0; i < el; i++) {
 			if (i === 0) this.flags[i] = GetNo(s);
 			else this.flags.push(GetNo(s));
 		}
 		var drs = GetStr(s);
-		if (drs != "") this.dress = drs;
+		if (drs !== "") this.dress = drs;
 		this.charmed = GetNo(s);
 		this.charmedTime = GetNo(s);
 		this.sCharmedBy = GetStr(s);
@@ -377,9 +396,27 @@ function Person(nm, plc, fldrin, drs, dance)
 	};
 
 	// Show Images for the person
-	this.getImg = function(img, dn, tdress) {
+	this.getImageOCntRorX = function(img) {
+		var obj = oImages.People[this.uid];
+		if (obj === undefined) return 0;
+		var cnt = 0;
+		if (isExplicit()) {
+			if (obj.Explicit !== undefined) cnt = getImageOCnt(obj.Explicit, img);
+		}
+		return cnt > 0 ? cnt : getImageOCnt(obj, img);
+	};
+	this.getImageOCntX = function(img) {
+		var obj = oImages.People[this.uid];
+		if (obj === undefined) return 0;
+		return getImageOCnt(obj.Explicit, img);
+	};
+	this.getImageOCnt = function(img) {
+		return getImageOCnt(oImages.People[this.uid], img);
+	};
+	
+	this.getImg = function(img, dn, tdress, np) {
 		if (!img) return img;
-		if (img.indexOf("GenericSex/") != -1) return img;		// Show really using AddImage, but just in case we used showPerson() etc
+		if (img.indexOf("GenericSex/") != -1 || img.indexOf("Items/") != -1 || img.indexOf("Player/") != -1) return img;		// Show really using AddImage, but just in case we used showPerson() etc
 		
 		s = '';
 		if (img.substr(0, 9) == "Explicit/") {
@@ -398,20 +435,25 @@ function Person(nm, plc, fldrin, drs, dance)
 		}
 		if (dn === true) {
 			var ar = img.split(".");
-			img = ar[0] + (isDay() ? '-day' : '-night') + '.' + ar[1];
+			img = ar[0] + (isDay() ? '-day' : '-night') + (ar.length > 1 ? '.' + ar[1] : '');
 		}
-		if (this.folder !== '') s = (this == perYou ? "Player/" : "People/") + this.folder + "/" + s;
+		if (this.folder !== '') {
+			if (np !== true) s = (this == perYou ? "Player/" : "People/") + this.folder + "/" + s;
+			else s = this.folder + "/" + s;
+		}
+		//if (this.folder !== '') s = (this == perYou ? "Player/" : "People/") + this.folder + "/" + s;
 		if (tdress !== undefined) {
-			if (tdress !== '') return s + tdress + "/" + img;
-		} else if (this.getDress() !== '') return s + this.getDress() + "/" + img;
-		return s + img;
+			if (tdress !== '') return s + this.getDressBase() + tdress + "/" + img;
+		} else if (this.getDress() !== '') return s + this.getDressBase() + this.getDress() + "/" + img;
+		return s + this.getDressBase() + img;
 	};
+	this.getImgS = function(img, dn, tdress) { return this.getImg(img, dn, tdress, true); };
 	//this.getImgX = function(img, dn, tdress) { return "Explicit/" + this.getImg(img, dn, tdress); };
 	//this.getImgRorX = function(img, dn, tdress) { return (isExplicit() ? "Explicit/" : "") + this.getImg(img, dn, tdress); };
 	this.showPerson = function(img, widh, alg, imgbig, title, dn, doc) { return AddImage(this.getImg(img, dn), widh, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, this, doc); };
-	this.showPersonAnon = function(img, widh, alg, imgbig, title, dn, doc) { return AddImage(this.getImg(img, dn), widh, alg, this.getImg(imgbig, dn), title, undefined, doc); };
+	this.showPersonAnon = function(img, widh, alg, imgbig, title, dn, doc) { this.shown = true; return AddImage(this.getImg(img, dn), widh, alg, this.getImg(imgbig, dn), title, undefined, doc); };
 	this.showPersonRandom = function(imgbase, no, wid, alg, imgbig, title, baseno, dn, doc) { return AddImageRandom(this.getImg(imgbase, dn), no, wid, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, doc); };
-	this.showPersonRandomAnon = function(imgbase, no, wid, alg, imgbig, title, baseno, dn, doc) { return AddImageRandom(this.getImg(imgbase, dn), no, wid, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, doc); };	
+	this.showPersonRandomAnon = function(imgbase, no, wid, alg, imgbig, title, baseno, dn, doc) { this.shown = true; return AddImageRandom(this.getImg(imgbase, dn), no, wid, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, doc); };	
 	this.showPersonX = function(img, wid, alg, imgbig, title, dn, doc) {	return AddImage(this.getImg("Explicit/" + img, dn), wid, alg, this.getImg(imgbig, dn), title, undefined, doc); };
 	this.showPersonRandomX = function(imgbase, no, wid, alg, imgbig, title, baseno, dn, doc) { return AddImageRandom(this.getImg("Explicit/" + imgbase, dn), no, wid, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, doc); };
 	this.showPersonRorX = function(img, wid, alg, imgbig, title, dn, doc) { return AddImage(this.getImg((isExplicit() ? "Explicit/" : "") + img, dn), wid, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, this, doc); };
@@ -428,26 +470,34 @@ function Person(nm, plc, fldrin, drs, dance)
 	this.addPersonStringX = function(img, widh, alg, imgbig, title, dn) { return addImageString(this.getImg("Explicit/" + img, dn), widh, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, this, "noinfo"); };	
 	this.addPersonRandomStringX = function(imgbase, no, widh, alg, imgbig, title, baseno, dn) { return addImageRandomString(this.getImg((isExplicit() ? "Explicit/" : "") + imgbase, dn), no, widh, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, "noinfo"); };
 	this.addPersonStringRorX = function(img, widh, alg, imgbig, title, dn) { return addImageString(this.getImg((isExplicit() ? "Explicit/" : "") + img, dn), widh, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, this, "noinfo"); };
-	this.addPersonRandomStringRorX = function(imgbase, no, widh, alg, imgbig, title, baseno, dn) { return addImageRandomString(this.getImg(imgbase, dn), no, widh, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, "noinfo"); };	
+	this.addPersonRandomStringRorX = function(imgbase, no, widh, alg, imgbig, title, baseno, dn) { return addImageRandomString(this.getImg((isExplicit() ? "Explicit/" : "") + imgbase, dn), no, widh, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, "noinfo"); };	
 	this.showPersonArray = function(choices, widh, alg, imgbig, title, dn, doc) { return AddImageArray(choices, widh, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, this, doc); };
 	this.showPersonArrayX = function(choices, wid, alg, imgbig, title, dn, doc) {
 		if (choices.length === 0) return '';
 		var img = choices[Math.floor(choices.length*Math.random())];
 		return AddImage(this.getImg("Explicit/" + img), wid, alg, imgbig, title, this, doc);
 	};
+	this.showPersonBG = function(img, widh, alg, imgbig, title, dn, doc) { return AddImage(this.getImg(addBGSuffix(img), dn), widh, alg, this.getImg(addBGSuffix(imgbig), dn), !title ? this.getPersonName() : title, this, doc); };
+	this.showPersonRorXBG = function(img, wid, alg, imgbig, title, dn, doc) { return AddImage(this.getImg((isExplicit() ? "Explicit/" : "") + addBGSuffix(img), dn), wid, alg, this.getImg(addBGSuffix(imgbig), dn), !title ? this.getPersonName() : title, this, doc); };
+	this.showPersonRandomRorXBG = function(imgbase, no, wid, alg, imgbig, title, baseno, dn, doc) { return AddImageRandom(this.getImg((isExplicit() ? "Explicit/" : "") + addBGSuffix(imgbase), dn), no, wid, alg, this.getImg(imgbig, dn), !title ? this.getPersonName() : title, baseno, this, doc); };
+	this.addPersonStringBG = function(img, widh, alg, imgbig, title, dn) { return addImageString(this.getImg(addBGSuffix(img), dn), widh, alg, this.getImg(addBGSuffix(imgbig), dn), !title ? this.getPersonName() : title, this, "noinfo"); };
+	this.addPersonStringXBG = function(img, widh, alg, imgbig, title, dn) { return addImageString(this.getImg("Explicit/" + addBGSuffix(img), dn), widh, alg, this.getImg(addBGSuffix(imgbig), dn), !title ? this.getPersonName() : title, this, "noinfo"); };	
+	this.addPersonStringRorXBG = function(img, widh, alg, imgbig, title, dn) { return addImageString(this.getImg((isExplicit() ? "Explicit/" : "") + addBGSuffix(img), dn), widh, alg, this.getImg(addBGSuffix(imgbig), dn), !title ? this.getPersonName() : title, this, "noinfo"); };
+
 
 	this.addPersonFace = function(esc, wid) {
 		var img = this.getImg(this.getPossessionFace());
 		if (sCurrency === "\u00A3") img = img.split("Setting/").join("UK/");
 		else img = img.split("Setting/").join("US/");
 		if (!wid) wid = "20%";
-		if (esc === true) return '<img src=\\\'Images/' + img + '.jpg\\\' style=\\\'float:left;width:' + wid + ';margin:0 10px 1em 0\\\' alt=\\\'' + this.uid + '\\\' title=\\\'' + this.getPersonName() + '\\\'>';
-		return '<img src="Images/' + img + '.jpg" style="float:left;width:' + wid + ';margin:0 10px 1em 0" alt="' + this.uid + '" title="' + this.getPersonName() + '">';
+		if (esc === true) return '<img src=\\\'' + (gameState.sMod != '' ? 'Mods/' + gameState.sMod + '/' : '') + 'Images/' + img + '.jpg\\\' style=\\\'float:left;width:' + wid + ';margin:0 10px 1em 0\\\' alt=\\\'' + this.uid + '\\\' title=\\\'' + this.getPersonName() + '\\\'>';
+		return '<img src="' + (gameState.sMod != '' ? 'Mods/' + gameState.sMod + '/' : '') + 'Images/' + img + '.jpg" style="float:left;width:' + wid + ';margin:0 10px 1em 0" alt="' + this.uid + '" title="' + this.getPersonName() + '">';
 	};
 	this.showPersonFace = function(wid, alg, imgbig, title, doc) { this.showPerson(this.getPossessionFace() + '.jpg', wid, alg, imgbig, title, doc); };
 
 	// Dress
 	this.getDress = function() { return this.dress; };
+	this.getDressBase = function() { return ""; };
 	this.getNextDress = function(drs) { return ''; };
 	
 	// Information when clicking on their info icon, or used for an introduction
@@ -463,12 +513,24 @@ function Person(nm, plc, fldrin, drs, dance)
 	this.addQuestionC = function(doc, lnk, chc, pclass) {
 		if (pclass === undefined) pclass = "chatblock";
 		addOptionLink(doc, lnk, "Converse('" + this.uid + "'," + chc + ")", pclass);
-	};
+	};	
 	this.addQuestionCO = function(doc, lnk, chc) { this.addQuestionC(doc, lnk, chc, 'optionblock'); };
 	
 	this.addQuestionR = function(doc, lnk, txt, js, par, rf, pclass) { addQuestionR(doc, lnk, txt, this.uid, js, par, rf, pclass); };
-
+	this.addQuestionRF = function(doc, flag, lnk, txt, js, par, rf, pclass) {
+		if (!this.checkFlag(flag)) addQuestionR(doc, lnk, txt, this.uid, (js !== undefined ? js + ';' : '') + 'setPersonFlag(\\\'' + this.uid + '\\\',' + flag + ')', par, rf, pclass);
+	};
+	this.addLinkToPlaceF = function(md, flag, desc, plc, param, txt, js, pclass, psty) {
+		if (!this.checkFlag(flag)) addLinkToPlace(md, desc, plc, param, txt, this.uid,  (js !== undefined ? js + ';' : '') + 'setPersonFlag(\'' + this.uid + '\',' + flag + ')', pclass, psty);
+	}
+	
 	// Overloadable functions (Well any can be but these are intended)
+
+	// Mod related overrides
+	this.replaceText = function(s) { return s; };		// Only called for mods to change text globally
+	this.addMapLocations = function(map) { };				// Add map locations, strrets/buildings
+	
+	this.checkEndGamePregnancy = function() { return ''; };		// Do we show end game pregnancy? Return the event id to show for the pregnancy or '' for no pregnancy
 
 	// Visiting
 	// You have just visited them
@@ -488,12 +550,14 @@ function Person(nm, plc, fldrin, drs, dance)
 	this.isBornMale = function() { return this.getPersonGender() == "man"; };	// Generally override this if it can change
 
 	this.getManWoman = function() { return this.getPersonGender() == "man" ? "man" : "woman"; };
-	this.getHeShe = function() { return this.getPersonGender() != 'man'? "she" : "he"; };
+	this.getHeShe = function(upr) { return this.getPersonGender() != 'man'? upr === true ? "She" : "she" : upr === true ? "He" : "he"; };
 	this.getHimHer = function() {	return this.getPersonGender() != 'man' ? "her" : "him"; };
 	this.getHisHer = function() { return this.getPersonGender() != 'man' ? "her" : "his"; };
 	this.getSex = function() { return this.getPersonGender() != 'man' ? "girl" : "boy"; };
 	this.getMaster = function() { return this.getPersonGender() != 'man' ? "Mistress" : "Master"; };
+	this.getSir = function() { return this.getPersonGender() == "man" ? "Sir" : "Ma'am"; };
 	this.getLord = function() { return this.getPersonGender() == 'man' ? "My Lord" : "My Lady"; };
+	this.getMiss = function() { return this.getPersonGender() == 'man' ? "Mr" : "Miss"; };
 	this.getWitch = function(upr, slav) {
 		if (slav === true) {
 			if (upr === undefined || upr === false) return this.getPersonGender() == "man" ? "volkhov" : "vedma";
@@ -611,7 +675,7 @@ function Person(nm, plc, fldrin, drs, dance)
 	//   wt is the time until you wake up in 5 minute units
 	this.showEventSleep = function(wt, plc, s, param) { return false; };
 	
-	this.addSleepLink = function(md, lnk, title, body, img, white, plc, params, txt, sty) {
+	this.addSleepLink = function(md, lnk, title, body, img, white, plc, params, txt, sty, cnt) {
 		if (this.bDanceDefault) {
 			this.addDancingLink(md, 'talk to ' + this.getPersonName() + ' about dancing in the club',
 				'You ask ' + this.getPersonName() + ' about the Avernus club and about dancing there for you,</p>' +
@@ -619,8 +683,11 @@ function Person(nm, plc, fldrin, drs, dance)
 			);
 		}
 		if (gameState.bSleepLink) return;
-		addSleepLink(md, lnk, title, body, this.getImg(img), white, plc, params, txt, sty);
+		addSleepLink(md, lnk, title, body, this.getImg(img), white, plc, params === undefined || params === '' ? "who=" + this.uid : params + "&who=" + this.uid, txt, sty, cnt);
 	};	
+	this.addSleepLinkRandom = function(md, lnk, title, body, img, cnt, white, plc, params, txt, sty) {
+		this.addSleepLink(md, lnk, title, body, img, white, plc, params, txt, sty, cnt);
+	};
 	
 	// Any text to add for the current location?
 	this.showPersonTextHere = function(doc) { };		// 'virtual' to be overloaded for any people who use this to add questions/actions for an area
@@ -798,6 +865,7 @@ function EnterChurch(plc, nogo)
 
 function ShowPeople(so, txt)
 {
+	if (gameState.bNoPeople) return;
 	var b = false;
 	var p;
 
@@ -812,7 +880,7 @@ function ShowPeople(so, txt)
 	if (!b) return;
 
 	var md = mdCache;
-	if (gameState.sRightColSize === '') AddPeopleColumnMed(md, txt);
+	if (!gameState.bRightCol) AddPeopleColumnMed(md, txt);
 	else {
 		b = gameState.bPeopleCol;
 		AddPeopleColumn(md, gameState.sRightColSize, txt);
@@ -839,11 +907,14 @@ function ShowPopupEvents()
 	for (var i = 0, ie = arPeople.length; i < ie; i++) {
 		p = arPeople[i];
 		//console.log('popup: ' + p.uid);
-		if (p.showEventPopup()) return;
+		if (p.showEventPopup()) {
+			console.log('event for ' + p.uid);
+			return;
+		}
 	}
 
 	//console.log("phone calls");
-	if (sPlaceParams !== '' || bPopupShown || perYourBody.FindItem(2) === 0 || isCommentsShown()) return;
+	if (bPopupShown || perYourBody.FindItem(2) === 0 || isCommentsShown()) return;	// sPlaceParams !== '' || 
 
 	// Any phone calls?
 	for (i = 0, ie = arPeople.length - 2; i < ie; i++) {
@@ -856,7 +927,13 @@ function ShowPopupEvents()
 			}
 		}
 	}
-	if (bNewSMS && !checkPersonFlag('Glenvale',36)) newSMS();
+	if (bNewSMS) {
+		if (!checkPersonFlag('Glenvale',36)) newSMS();
+		else {
+			var audio = new Audio('Sound/sms.mp3');
+			audio.play();
+		}
+	}
 	//console.log("calls done");
 }
 
@@ -912,6 +989,11 @@ function initialisePeople()
 	initialiseAdeleRoss();
 	initialiseAmyRoss();
 	initialiseCatherineRoss();
+	
+	// Aunt Brandi
+	// Kylie
+	initialiseKylie();
+	initialiseAuntBrandi();
 
 	// Anita
 	initialiseAnita();
@@ -936,8 +1018,9 @@ function initialisePeople()
 	// Didi
 	initialiseDidi();
 	
-	// Emily
+	// Emily (and her recruits)
 	initialiseEmily();
+	initialiseTammy();
 
 	// Gina
 	initialiseGina();
@@ -961,10 +1044,6 @@ function initialisePeople()
 
 	// Kristin
 	initialiseKristin();
-
-	// Aunt Brandi
-	// Kylie
-	initialiseKylie();
 
 	// Leanne
 	// Louise
@@ -1051,30 +1130,40 @@ function initialisePeople()
 	// Robbins Family
 	initialiseMrsRobbins();
 	initialiseTina();
+	
+	// Ported from bologna44's mod
+	initialiseAsh();
+	initialiseBetty();
+	initialiseKarley();
+	initialiseKarma();
+	initialiseLola();
+	initialiseMelanie();
+	initialiseSharon();
+	initialiseSavanna();
 
 	// Vampyre
 	// Must be after any person who can be fed upon
 	initialiseVampyre();
 
-	// After this point people CANNOT currently be charmed
-	// length - 14
+	// After this point people CANNOT currently be charmed, or use a very different mechanism (Elian notably)
+	// length - 12
+	
+	// Campers
+	initialiseCampers();
 
 	// Elian
 	initialiseElian();
 	
 	// Tony
 	initialiseMrTanika();
-
-	// Aunt
-	initialiseAuntBrandi();
+	
+	// Davy
+	initialiseDavyRobbins();
 
 	// Jesse and Legion and the thralls
 	initialiseJesse();
 	initialiseLucy();
 	initialiseSeraphina();
-
-	// Davy
-	initialiseDavyRobbins();
 	
 	// Jessica the Witch
 	// New Age Store Owner
@@ -1094,4 +1183,5 @@ function initialisePeople()
 	// You
 	// Note: must be last!
 	initialiseYou();
+
 }

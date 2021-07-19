@@ -1,0 +1,1 @@
+addDetails("Severn Valley", "A rich town with a dark 'Mythos' past.", "1.0");

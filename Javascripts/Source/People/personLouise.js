@@ -150,12 +150,29 @@ function initialiseLouise()
 			return true;
 		}
 		
+		if (sType == "endgame1louise") {
+			// End Game - Louise
+			md = WritePlaceHeader();
+			this.showPerson("pregnant.jpg");			
+			addPlaceTitle(md, "A Very Contagious Lesson for Shops?");
+
+			md.write(
+				'<p>One day you go out with Louise for a picnic and swim and as she stands there in the water you see she has been learning from Miss. Logan!</p>'
+			);
+			
+			startQuestions();	
+			// Add pregnancies/other
+			addEndGamePregnancies(md);		
+			WritePlaceFooter(md);
+			return true;				
+		}
+		
 		if (Place != 195 || this.place != 195) return false;
 
 		if (sType == "riskjob") {
 			// Play/repeat sex
 			bRnd = Math.random() < 0.5 && !perYou.isMaleSex();
-			md = WritePlaceHeader(false, !bRnd ? '' : 'td-left-med');
+			md = WritePlaceHeaderNI(false, !bRnd ? '' : 'td-left-med');
 			this.showPerson(perYou.isMaleSex() ? "louise12b.jpg" : bRnd ? "louise12ga.jpg" : "louise12gb.jpg");
 
 			addPlaceTitle(md, "Risking your Slave\'s Job");
@@ -175,7 +192,7 @@ function initialiseLouise()
 			if (!this.checkFlag(6)) addQuestionCO(md, 'grab the stone from the bin', "Leanne", -416);	//havent' taken the stone yet.
 			addLinkToPlace(md, 'leave your slave to clean up', 194);
 
-			WritePlaceFooter(md, "Script by Tilde", true);
+			WritePlaceFooter(md, "Script by Tilde");
 			return true;
 
 		} 
@@ -183,7 +200,7 @@ function initialiseLouise()
 		if (sType == "transformcock") {
 			// Futa transformation
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(5)) {
 				this.setFlag(5);
 				showPopupWindow("Transformation",
@@ -203,7 +220,7 @@ function initialiseLouise()
 
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 
 		}
@@ -211,29 +228,30 @@ function initialiseLouise()
 		if (sType == "transformbreasts") {
 			// BE Transformation
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(4)) {
 				this.setFlag(4);
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/be c.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/be c.jpg', "50%") +
 					'<p>You cast the spell and Louise cries out, "God, what is this" and pulls apart her uniform. You see her breasts swelling, growing larger and larger.</p>' +
 					'<p>As she groans you can distinctly hear someone laughing but it is drowned out as Louise cries out in ecstasy as her breasts stop growing.'
 				);
 			} else {
 				this.setFlag(4, false);
-            showPopupWindow("Transformation", '<img src="Images/GenericSex/bs d.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+            showPopupWindow("Transformation",
+					addImageString('GenericSex/bs d.jpg', "50%") +
                '<p>You cast the spell and Louise cries out, "God, what is this" and pulls apart her uniform. You see her breasts diminishing, becoming smaller and smaller.</p>' +
 					"<p>As she groans you can distinctly hear someone laughing but it is drowned out as Louise cries out in ecstasy as her breasts stop diminishing.</p>"
 				);
 			}				
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		
 		if (sType == "charmlouise1") {
 			// Charm 1
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNI();
 			this.showPerson("louise2.jpg");
 			addPlaceTitle(md, "Louise Under a Spell");
 
@@ -254,13 +272,13 @@ function initialiseLouise()
 
 			startQuestions();
 			addLinkToPlaceC(md, 'tell her "You can trust <i>me</i>."', Place, 'type=charmlouise2');
-			WritePlaceFooter(md, "Script by Tilde", true);
+			WritePlaceFooter(md, "Script by Tilde");
 			return true;
 		}
 		
 		if (sType == "charmlouise2") {
 			// Charm 2
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNI();
 			this.showPerson("louise3.jpg");
 			addPlaceTitle(md, "Louise Under a Spell");
 
@@ -283,13 +301,13 @@ function initialiseLouise()
 
 			startQuestions();
 			addLinkToPlaceC(md, '"Show me more..."', Place, 'type=charmlouise3');
-			WritePlaceFooter(md, "Script by Tilde", true);
+			WritePlaceFooter(md, "Script by Tilde");
 			return true;
 		}
 		
 		if (sType == "charmlouise3") {
 			// Charm 3
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNI();
 			this.showPerson("louise4.jpg");
 			addPlaceTitle(md, "Louise Under a Spell");
 
@@ -308,13 +326,13 @@ function initialiseLouise()
 
 			startQuestions();
 			addLinkToPlaceC(md, 'ask "Do you want to know the <i>honest truth</i>?"', Place, 'type=charmlouise4');
-			WritePlaceFooter(md, "Script by Tilde", true);
+			WritePlaceFooter(md, "Script by Tilde");
 			return true;
 		}
 		
 		if (sType == "charmlouise4") {
 			// Charm 4
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNI();
 			this.showPerson("louise5.jpg");
 			addPlaceTitle(md, "Louise Under a Spell");
 
@@ -333,13 +351,13 @@ function initialiseLouise()
 
 			startQuestions();
 			addLinkToPlaceC(md, '"Prove your worth to me then"', Place, 'type=charmlouise5');
-			WritePlaceFooter(md, "Script by Tilde", true);
+			WritePlaceFooter(md, "Script by Tilde");
 			return true;
 		}
 		
 		if (sType == "charmlouise5") {
 			// Charm 2
-			md = md = WritePlaceHeader(false, 'td-any');
+			md = md = WritePlaceHeaderNI(false, 'td-any');
 
 			this.showPersonRandom("louise6", 2, "height:max");
 			addPlaceTitle(md, "Louise Under a Spell");
@@ -353,7 +371,7 @@ function initialiseLouise()
 
 			startQuestions();
 			addLinkToPlace(md, 'leave the ' + getShopStore(), 194);
-			WritePlaceFooter(md, "Script by Tilde", true);
+			WritePlaceFooter(md, "Script by Tilde");
 			return true;
 		}
 		
@@ -363,7 +381,7 @@ function initialiseLouise()
 	per.showDancing = function()
 	{
 		var md = WritePlaceHeader();
-		this.showPerson(this.checkFlag(4) && this.checkFlag(5) ? "poledancebefuta.jpg" :this.checkFlag(4) ? "poledancebe.jpg" : this.checkFlag(5) ? "poledancefuta.jpg" : "poledance.jpg");
+		this.showPerson(this.checkFlag(4) && this.checkFlag(5) ? "poledancebefuta.jpg" : (this.checkFlag(4) ? "poledancebe.jpg" : (this.checkFlag(5) ? "poledancefuta.jpg" : "poledance.jpg")));
 		addPlaceTitle(md, "Louise\'s Dance");
 		md.write(
 			'<p>Louise takes the stage dressed in some black lingerie, looking a bit uncertian, this is obviously something she is not experienced in.</p>' +
@@ -453,6 +471,11 @@ function initialiseLouise()
 			}
 		}
 		return "";		// do nothing
+	};
+	
+	per.checkEndGamePregnancy = function()
+	{
+		return this.isCharmedBy() ? "endgame1louise" : "";
 	};
 	
 	// Phone calls

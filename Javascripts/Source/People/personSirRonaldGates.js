@@ -11,33 +11,6 @@ function RepliesSirRonald(nR)
 	if (perGates.other > 0) myName = perYou.getSex();
 	var ret = true;
 
-	if (nR == 14) {
-		perGates.setFlag(7);
-		var nSlaves = 0;
-		var p;
-		for (var i = 0; i < arPeople.length - 3; i++) {
-			p = arPeople[i];
-			if (p.isCharmedBy()) nSlaves++;
-		}
-		if (nSlaves > 0) {
-			// Already cast it!
-			addComments(
-				'You start to ask ' + perGates.getPersonNameShort() + ' about the Charm spell but hesitate, remembering it was forbidden, and you have crossed the line and actually used it.<p>' +
-				'<p>' + perGates.getPersonNameShort() + ' says, "Oh that spell, the worst of the excesses of the warlock Kurdorf were owed to that foul spell. Fortunately it is a lost spell, though there are still some limited defences around for it. Now let us not talk about this distasteful subject"</p>' +
-				'<p>You realise you can never talk about knowing the spell or using it with him!'
-			);
-		} else {
-			// Never cast it
-			addComments(
-				'You confess to ' + perGates.getPersonNameShort() + ' about learning the spell you found, the forbidden Charm spell,</p>' +
-				'<p>' + perGates.getPersonNameShort() + ' shakes his head, "The worst of the excesses of the warlock Kurdorf were owed to that foul spell. I had hoped it was a lost spell but it seems there was a copy hidden away. my ' + myName + ' you must resits temptation, never, never cast it!"</p>' +
-				'<p>You hope you can be a <b>good apprentice</b> and avoid using the spell, but only time will tell!</p>' +
-				'<p><i>new path for the game but not implemented yet<i></p>'
-			);
-			perGates.setFlag(8);		// Good Path
-			// Now set people as charmed by Davy
-		}
-	}
 	if (nR == 30)  //  Have the option of demanding the book until you accept the apprenticeship.
 	{
 		addComments('"Well then, nice to meet you ' + myName + '," he says as he regards you for a moment.  "Such a polite youngster. You just might be exactly what I have been looking for."<br>');
@@ -236,6 +209,11 @@ function RepliesSirRonald(nR)
 		addComments('<p>"He spoke of a skull in his ritual as well as a <i>personal</i> item.  Perhaps, if you could find <i>his</i> skull, you may be able to use it against him!"</p>');
 		perYou.setQuestAftane(60);
 	}
+	else if (nR == 960)
+	{
+		addComments('<p>' + perGates.getPersonNameShort() + ' nods, "I only sometimes use it on the weekends, you are welcome, just do not make a habit of it"</p>');
+		setPersonFlag("Brandi", 20);
+	}	
 	else if (nR == 3000)
 	{
 		//<ask about moving the ghost>
@@ -341,6 +319,63 @@ function initialiseGates()
 	per.showEvent = function()
 	{
 		var md;
+		
+		if (sType == "askcharm") {
+			md = WritePlaceHeader();
+			this.setFlag(7);
+			var nSlaves = 0;
+			var p;
+			for (var i = 0; i < arPeople.length - 3; i++) {
+				p = arPeople[i];
+				if (p.isCharmedBy()) nSlaves++;
+			}
+
+			this.showPerson("charm.jpg");
+			addPlaceTitle(md, "The Forbidden Charm Spell");
+			md.write(
+				'<p>You confess to ' + this.getPersonNameShort() + ' about learning the spell you found, the forbidden Charm spell,</p>' +
+				'<p>' + this.getPersonNameShort() + ' shakes his head, "The worst of the excesses of the warlock Kurdorf were owed to that foul spell. I had hoped it was a lost spell but it seems there was a copy hidden away. my ' + perYou.getSex() + ' you must resist temptation, never, never cast it!"</p>'
+			);
+			if (nSlaves > 0) md.write('<p>You hesitate, remembering it was forbidden, and you have crossed the line and actually used it.<p>');
+			
+			startQuestions();
+			startAlternatives(md);
+			addLinkToPlace(md, 'promise to never cast the spell', Place, 'type=askcharmtruth');
+			addLinkToPlace(md, 'promise to never cast the spell knowing you are lying', Place, 'type=askcharmlie');
+			endAlternatives(md);
+			WritePlaceFooter(md);
+			return true;
+		}
+		if (sType == "askcharmtruth") {
+			md = WritePlaceHeader();
+			this.showPerson("gates6.jpg");
+			addPlaceTitle(md, "Your Promise");
+			md.write(
+				'<p>You promise to never cast the spell, fully intending to avoid the excesses of Kurndorf. You hope you can avoid the temptation!!</p>' +
+				'<p>' + this.getPersonNameShort() + ' looks pleased and changes the topic of the conversation to something inconsequential.</p>'
+			);
+			this.setFlag(8);		// Good Path
+			// Now set people as charmed by Davy
+
+			startQuestions();
+			addLinkToPlace(md, 'talk of something else', Place);
+			WritePlaceFooter(md);
+			return true;		
+		}
+		if (sType == "askcharmlie") {
+			md = WritePlaceHeader();
+			this.showPerson("gates7.jpg");
+			addPlaceTitle(md, "Your Hollow Promise");
+			md.write(
+				'<p>You realise you can never talk about the spell or using it with him! You promise to never cast the spell, fully realising you will to achieve your goals!</p>' +
+				'<p>' + perGates.getPersonNameShort() + ' looks pleased and changes the topic of the conversation to something inconsequential.</p>'
+			);
+
+			startQuestions();
+			addLinkToPlace(md, 'guiltily talk of something else...', Place);
+			WritePlaceFooter(md);
+			return true;
+		}
 		
 		if (sType == "learnclairvoyance") {
 			// Learn Clairvoyance

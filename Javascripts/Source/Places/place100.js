@@ -3,12 +3,7 @@
 
 function ShowPlace100(stype)
 {
-	var td = '';
-	if (stype.substr(0, 5) == "event") {
-		if (((stype == "eventk" || stype == "eventl" || stype == "eventm") && !isExplicit()) || stype == "eventn" || stype == "eventd") td = 'td-left-large';
-	}
-
-	var md = WritePlaceHeader(false, td);
+	var md = WritePlaceHeader();
 
 	var perAngela = findPerson("Angela");
 	var clvA = perAngela.getCharmedLevel();
@@ -30,14 +25,14 @@ function ShowPlace100(stype)
 		perMayor.setFlag(4);
 		addPlaceTitle(md, "Town Hall Meeting");
 		md.write(
-			'<p>You quickly run trough the halls and floors up to the mayor’s office. You smile briefly at Angela’s salute and you enter the finely decorated office. Behind the desk sits Mayor Thomas as usual, but in front of her is none other than Kristin, the bank manager. She’s dressed in a completely different outfit she usually wears. It’s a simple butter colored garment with black stockings. Elegant yet free and natural, typical of Kristin! They were in a middle of a conversation when you barged in.</p>' +
+			'<p>You quickly run through the halls and floors up to the mayor’s office. You smile briefly at Angela’s wave and you enter the finely decorated office. Behind the desk sits Mayor Thomas as usual, but in front of ' + perMayor.getHisHer() + ' is none other than Kristin, the bank manager. She’s dressed in a completely different outfit she usually wears. It’s a simple butter colored garment with black stockings. Elegant yet free and natural, typical of Kristin! They were in a middle of a conversation when you barged in.</p>' +
 			'<p>They both stand up and greet you in unison,</p>' +
-			'<p>"Welcome, ' + myName + '! I’ve been waiting for you!", says Mayor Thomas excitedly as she removes a pair of glasses. You have never seen her wearing glasses before..<p>'
+			'<p>"Welcome, ' + myName + '! I’ve been waiting for you!", says Mayor Thomas excitedly' + (perMayor.isMan() ? '' : ' as ' + perMayor.getHeShe() + ' removes a pair of glasses. You have never seen ' + perMayor.getHimHer() + ' wearing glasses before') + '.<p>'
 		);
 
 		startQuestions();
 		addLinkToPlaceC(md, '"Kristin! What is going here? Some kind of meeting I don’t know about?"', Place, 'type=eventc');
-		addLinkToPlaceC(md, '"Beatrice what is it with the glasses?"', Place, 'type=eventb');
+		if (!perMayor.isMan()) addLinkToPlaceC(md, '"' + perMayor.getPersonNameShort() + ' what is it with the glasses?"', Place, 'type=eventb');
 		break;
 
 	case "eventb":
@@ -46,9 +41,9 @@ function ShowPlace100(stype)
 		perKristin.showPerson("!kristinevent1.jpg");
 		addPlaceTitle(md, "The Mayors Glasses");
 		md.write(
-			'<p>You ask Mayor Thomas about her glasses, and she smiles at you,</p>' +
+			'<p>You ask Mayor Thomas about ' + perMayor.getHisHer() + ' glasses, and ' + perMayor.getHeShe() + ' smiles at you,</p>' +
 			'<p>"I normally wear contacts ' + myName + ', but I lost one recently. Angela is arranging a replacement set for me, but for now I have to wear my glasses."</p>' +
-			'<p>She leans over and softly says "Is that it..." and seems to look on the floor for her lost contact for a brief moment. As she does her short skit rides up and she adjusts her panties to completely expose herself to you. You realise she is just putting on a show for you, competing for your attention with Kristin.<p>'
+			(perMayor.isMan() ? '' : '<p>She leans over and softly says "Is that it..." and seems to look on the floor for her lost contact for a brief moment. As she does her short skit rides up and she adjusts her panties to completely expose herself to you. You realise she is just putting on a show for you, competing for your attention with Kristin.<p>')
 		);
 
 		startQuestions();
@@ -62,11 +57,11 @@ function ShowPlace100(stype)
 		addPlaceTitle(md, "Town Hall Meeting");
 		md.write(
 			'<p>You ask your slaves cockily what is happening, and Mayor Thomas responds,</p>' +
-			'<p>"Don’t worry, ' + myName + '! We just talked about the future of the town now that you have brought Kristin under your control too!", the Mayor tries to soften you up, she still doesn’t know you are just acting.</p>' +
-			'<p>You reply, "All right, share your thoughts with me! Kristin, with each new information the lovely Mayor gives me, you get rid of a single portion of your dress and orgasm each time."</p>' +
+			'<p>"Don’t worry, ' + myName + '! We just talked about the future of the town now that you have brought Kristin under your control too!", the Mayor tries to soften you up, ' + perMayor.getHeShe() + ' still doesn’t know you are just acting.</p>' +
+			'<p>You reply, "All right, share your thoughts with me! Kristin, with each new information the ' + (perMayor.isMan() ? 'handsome' : 'lovely') + ' Mayor gives me, you get rid of a single portion of your dress and orgasm each time."</p>' +
 			'<p>Kristin replies, "Of course, my dear ' + myName + '!", she looks at the mayor, who’s a little bit confused.</p>' +
 			'<p>You order Mayor Thomas, "Go ahead!"</p>' +
-			'<p>She immediately resumes, "' + myName + ', Kristin and I have discussed that money won’t be a problem to you anymore. We will have a close relationship with each other and will monitor your financial things. Kristin has transferred some money into your account as a start.", pleads Beatrice, as if she’s in trouble. Well, she still thinks she has offended you by not telling you about her meeting with Kristin.</p>'
+			'<p>' + perMayor.getHeShe(true) + ' immediately resumes, "' + myName + ', Kristin and I have discussed that money won’t be a problem to you anymore. We will have a close relationship with each other and will monitor your financial things. Kristin has transferred some money into your account as a start.", pleads ' + perMayor.getPersonNameShort() + ', as if ' + perMayor.getHeShe() + '’s in trouble. Well, ' + perMayor.getHeShe() + ' still thinks ' + perMayor.getHeShe() + ' has offended you by not telling you about her meeting with Kristin.</p>'
 		);
 
 		startQuestions();
@@ -107,8 +102,8 @@ function ShowPlace100(stype)
 		perKristin.showPerson("!kristinevent4.jpg");
 		addPlaceTitle(md, "Town Hall Meeting");
 		md.write(
-			'<p>Miss Thomas flushes and timidly looks at you. Meanwhile Kristin is already on the floor, masturbating furiously and begging you to take her..</p>' +
-			'<p>Mayor Thomas continues, "We tried our best and our main goal is to make you feel safe in this town and also help you any way we can with the town’s management. We want take off some of the weight from your shoulders, we understand how hard it is to rule over your kingdom.", Mayor Thomas is at a loss of words, she is still overwhelmed by your previous compliment.</p>'
+			'<p>Mayor Thomas flushes and timidly looks at you. Meanwhile Kristin is already on the floor, masturbating furiously and begging you to take her..</p>' +
+			'<p>Mayor Thomas continues, "We tried our best and our main goal is to make you feel safe in this town and also help you any way we can with the town’s management. We want take off some of the weight from your shoulders, we understand how hard it is to rule over your kingdom.", Mayor Thomas is at a loss of words, ' + perMayor.getHeShe() + ' is still overwhelmed by your previous compliment.</p>'
 		);
 
 		startQuestions("You ask Mayor Thomas");
@@ -136,27 +131,33 @@ function ShowPlace100(stype)
 		addPlaceTitle(md, "Town Hall Meeting");
 		md.write(
 			'<p>Kristin interrupts the Mayor, "Or at least the women will be!", she says, winking at you, still in feeling the pleasures of orgasms, she steadidly fingers her pussy.</p>' +
-			'<p>Mayor Thomas answers, "This town will be your flock, your herd of slaves who will live the rest of their lives by your command. We thought you are going to need some help organizing them.", your mayor tries to impress you with her soothing yet cool voice."</p>' +
+			'<p>Mayor Thomas answers, "This town will be your flock, your herd of slaves who will live the rest of their lives by your command. We thought you are going to need some help organizing them.", your mayor tries to impress you with ' + perMayor.getHisHer() + ' soothing yet cool voice."</p>' +
 			'<p>You reply, "Yes, you are right my dear and those ideas that you have told me are good!", you step closer to Kristin and cup her breasts. She’s still visibly quivers from those three consecutive orgasms she had. ' +
 			'She kisses your finger and wipes the sweat from her face with one hand. Now, you got what you wanted, they told you all the things that interest you. It is time to resume your quest and let your slaves return to their work.</p>' +
-			'<p>You tell them, "Alright, you two get to work already! I ain’t keeping you around to have sex with you all the time!", you laugh at your own joke. Both of them stand up, Kristin puts her clothes on while Miss Thomas waits, standing next to her, she fixes her hair and waits for your further commands. Kristin, still sweating, rapidly puts back her dress, her nylon stockings however has split during her sexual journey, and now there’s hole on her left side of the stockings After your two slaves stand in attention, ready for your next instructions, you give both of them a kiss on the cheek and...</p>'
+			'<p>You tell them, "Alright, you two get to work already! I ain’t keeping you around to have sex with you all the time!", you laugh at your own joke. Both of them stand up, Kristin puts her clothes on while Mayor Thomas waits, standing next to her as she fixes her hair and waits for your further commands. Kristin, still sweating, rapidly puts back her dress, her nylon stockings however has split during her sexual journey, and now there’s hole on her left side of the stockings After your two slaves stand in attention, ready for your next instructions, you give both of them a kiss on the cheek and...</p>'
 		);
 
 		startQuestions();
-		addLinkToPlace(md, 'well, while the two are here...', Place, 'type=eventj');
+		if (perMayor.isMan()) addLinkToPlace(md, 'well, while you two are here...', Place, 'type=evento');
+		else addLinkToPlace(md, 'well, while you two are here...', Place, 'type=eventj');
 		addLinkToPlace(md, 'call in Angela for a full meeting', Place, 'type=eventi');
 		break;
 
 	case "eventi":
 
 		// Foursome
-		AddImage("GenericSex/foursomea.jpg");
+		if (perMayor.isMan()) {
+			if (perYou.isMaleSex()) {
+				if (isExplicit()) perMayor.showPersonRandomX("mayorangelayou-b", 2);
+				else perMayor.showPerson("mayorangelayou-b.jpg");
+			} else perMayor.showPersonRorX("mayorangelayou-g.jpg");
+		} else AddImage("GenericSex/foursome a.jpg");
 		addPlaceTitle(md, "Full Town Hall Meeting");
 		md.write(
 			'<p>You tell the Mayor to bring Angela in to join the meeting. Before Mayor Thomas can call out Angela steps into the office, she was clearlu evesdropping on the meeting.</p>' +
 			'<p>"Yes ' + myNameA + ' how can I help you?"</p>' +
 			'<p>Kristin tells her, "' + myName + ' is hot, I mean feeling ready from a little show I gave ' + perYou.getHimHer() + ', so we are going to do our best to please ' + perYou.getHimHer() + '"</p>' +
-			'<p>You can see Mayor Thoma smile as she realises what is happening as well. All three of them seductively strip each other until they are ready for you...</p>' +
+			'<p>You can see Mayor Thoma smile as ' + perMayor.getHeShe() + ' realises what is happening as well. All three of them seductively strip each other until they are ready for you...</p>' +
 			'<p>Sometime later as you are all re-dressing, you remember the Kingdom discussion and have to think "It is good to be the ' + (perYou.isBornMale() ? 'King' : 'Queen') + '!"</p>'
 		);
 
@@ -172,16 +173,19 @@ function ShowPlace100(stype)
 		addPlaceTitle(md, "Town Hall Meeting");
 		md.write(
 			'<p>You tell them, "Then again, I can spare some time for sex!".</p>' +
-			'<p>Kristin is still a little tired from before but she still eagerly starts to strip again. Mayor Thomas steps over offering to help you out of your clothing. As she does Kristin starts to help her out of her clothing.</p>' +
-			'<p>Naked they stand before you, and Mayor Thomas asks, "So who first ' + myName +'?"</p>'
+			'<p>Kristin is still a little tired from before but she still eagerly starts to strip again. Mayor Thomas steps over offering to help you out of your clothing. As ' + perMayor.getHeShe() + ' does Kristin starts to help ' + perMayor.getHimHer() + ' out of ' + perMayor.getHisHer() + ' clothing.</p>' +
+			'<p>Naked they stand before you...' + (perMayor.isMan() ? '' : ', and Mayor Thomas asks, "So who first ' + myName +'?"') + '</p>'
 		);
 
 		startQuestions();
-		if (perYou.isMaleSex()) {
-			addLinkToPlace(md, 'Mayor Thomas', Place, 'type=eventk');
-			addLinkToPlace(md, 'Kristin', Place, 'type=eventl');
+		if (perMayor.isMan()) addLinkToPlace(md, 'beckon them over to you', Place, 'type=evento');
+		else {
+			if (perYou.isMaleSex()) {
+				addLinkToPlace(md, 'Mayor Thomas', Place, 'type=eventk');
+				addLinkToPlace(md, 'Kristin', Place, 'type=eventl');
+			}
+			addLinkToPlace(md, 'Neither, both at once', Place, 'type=eventm');
 		}
-		addLinkToPlace(md, 'Neither, both at once', Place, 'type=eventm');
 		WritePlaceFooter(md);
 		return;
 
@@ -226,7 +230,7 @@ function ShowPlace100(stype)
 
 		startQuestions();
 		if (isExplicit() && perYou.isMaleSex()) addLinkToPlace(md, 'Finish!', Place, 'type=eventn');
-		addLinkToPlace(md, 'dress and exit the Town Hall', 94);
+		else addLinkToPlace(md, 'dress and exit the Town Hall', 94);
 		WritePlaceFooter(md);
 		return;
 
@@ -243,6 +247,20 @@ function ShowPlace100(stype)
 		addLinkToPlace(md, 'dress and exit the Town Hall', 94);
 		WritePlaceFooter(md);
 		return;
+
+	case "evento":
+
+		// Threesome with male Mayor
+		perKristin.showPersonRandomRorX(addBGSuffix("!kristinevent10"), isExplicit() ? 2 : 1);
+		addPlaceTitle(md, "Mayor Thomas and Kristin Together");
+		md.write(
+			'<p>You enjoy your slaves, indulging yourself equally with their bodies.</p>'
+		);
+
+		startQuestions();
+		addLinkToPlace(md, 'dress and exit the Town Hall', 94);
+		WritePlaceFooter(md);
+		return;		
 	}
 
 	// **********************************************************************************
@@ -251,7 +269,7 @@ function ShowPlace100(stype)
 	addLinkToPlace(md, 'exit the Town Hall', 94);
 
 	if (stype.substr(0, 5) == "event") {
-		AddRightColumnLarge(md);
+		AddPeopleColumnLarge(md);
 		if (stype == "eventb") perMayor.showPerson("mayorevent2.jpg", "95%", "right");
 		else perMayor.showPerson("mayorevent1.jpg", "95%", "right");
 	}

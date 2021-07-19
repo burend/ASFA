@@ -38,6 +38,18 @@ function RepliesMia(nR)
 			else addComments('"Sure, you are quite young looking aren\'t you" She says loud enough to keep up appearances as she whips up your scotch.  "Anything else, ' + myLord + '?" She whispers as she hands you the drink.  You can\'t keep down more than a sip.  Why do people <i>drink</i> these?');
 		}
 	}
+	else if (nR == 10803)
+	{
+		bChatLeft = false;
+		if (bCharm) {
+			// Charmed
+			addComments('"The courts are this way ' + myLord + '" She leads you to the access door and gives you a small keycard to access the private courts');
+			setPlaceKnown("TennisCourts");
+		} else {
+			// Normal
+			addComments('"The courts are available to paying guests of the Hotel and select other people" and that seems to not include you.');
+		}
+	}
 	return true;
 }
 
@@ -46,7 +58,7 @@ function RepliesMia(nR)
 
 function initialiseMia()
 {
-	addPerson("Mia", 0, "Mia", '', false);
+	addPerson("Mia", 0, "Mia", 'Natural', false);
 	per.Replies = RepliesMia;
 
 	per.getYourNameFor = function() { return perYou.getLord(); };
@@ -62,7 +74,35 @@ function initialiseMia()
 		return this.place;
 	};
 
-	// events for Mia
+	per.showEventPopup = function()
+	{
+		if (sType == "miatransformagenatural") {
+			CastTransform(1);
+			this.dress = "Younger";	
+			showPopupWindow("Rejunenated!",
+				this.addPersonString("mia-facec.jpg", "height:max%", "right") +
+				'Mia\'s appearance shifts but it is only subtle, and after a minute you realise she is looking younger, like you have seen in old family photos. Nothing else is changed but she looks 10 maybe 20 years younger!</p>' +
+				'<p>You ask how she is feeling and she replies she is feeling fit and energetic!',
+				'dispPlace()'
+			);
+			return true;
+		}	
+		if (sType == "miatransformageyounger") {
+			CastTransform(1);
+			this.dress = "Natural";
+			showPopupWindow("Restored!",
+				this.addPersonString("mia-facec.jpg", "height:max%", "right") +
+				'Mia\'s appearance shifts but it is only subtle, and after a minute you realise she is looking older, returning back to how she was before you cast the transform spell on her before, back to her natural age!</p>' +
+				'<p>You ask how she is feeling and she replies she is feeling fine, maybe a little tired',
+				'dispPlace()'
+			);
+			return true;
+		}
+		
+		return false;
+	};
+	
+	// Events for Mia
 	per.showEvent = function()
 	{
 		var md, days, perBambi;
@@ -74,13 +114,29 @@ function initialiseMia()
 			addPlaceTitle(md, "Swimming with Mia");
 			md.write(
 				'<p>Mia arrives dressed in a bikini that look a lot like the one you say in the picture in Bambi\'s room, "' + perYou.getPersonName() + ' like what you see?"</p>' +
-				'<p>You swim for a little with Mia and while normally you would assume she would be interested in something else, she seems uncomfortable when you make a suggestion. You drop the idea, after all Bambi is around!</p>'
+				'<p>You swim for a little with Mia'
+			);
+			if (perYou.isMaleSex() && isExplicit()) md.write(' and you suggest something else, she seems uncomfortable until you point out a private area where Bambi will not interrupt...</p>');
+			else md.write(' and while normally you would assume she would be interested in something else, she seems uncomfortable when you make a suggestion. You drop the idea, after all Bambi is around!</p>');
+			startQuestions();
+			if (perYou.isMaleSex() && isExplicit()) addLinkToPlaceC(md, 'go to the private area', Place, 'type=miapoolsex');
+			addLinkToPlaceC(md, 'say goodbye to Mia', Place);
+			WritePlaceFooter(md);
+			return true;
+		}
+		if (Place == 269 && sType == "miapoolsex") {
+			WaitHereOnly(6);
+			md = WritePlaceHeader();
+			this.showPersonX("mia-pool-sexb.jpg");
+			addPlaceTitle(md, "Private Area with Mia");
+			md.write(
+				'<p>You retreat to the private area and indulge with Mia and explore her \'private area\'!</p>'
 			);
 			startQuestions();
 			addLinkToPlaceC(md, 'say goodbye to Mia', Place);
 			WritePlaceFooter(md);
 			return true;
-		}
+		}		
 
 		if (Place == 458 && this.isHere() && sType === "") {
 			SetLeftColumnSize("large");
@@ -327,9 +383,10 @@ function initialiseMia()
 			return true;
 		}
 		if (Place == 458 && sType == "miasex") {
-			// Sex with Mia in her apartment
-			md = WritePlaceHeader(false, 'td-left-large');
-			this.showPersonArray(['miasex1.jpg','miasex2.jpg','mia8.jpg']);
+			// Sex with Mia in her apartment (Charmed)
+			md = WritePlaceHeader();
+			if (perYou.isMaleSex() && isExplicit()) this.showPersonArrayX(['miasex1.jpg','miasex2.jpg','miasex3.jpg','miasex4.jpg']);
+			else this.showPersonArray(['miasex1.jpg','miasex2.jpg']);
 			addPlaceTitle(md, "Enjoying Mia");
 
 			md.write(
@@ -339,6 +396,25 @@ function initialiseMia()
 			addLinkToPlace(md, 'talk more to Mia', 458);
 			WritePlaceFooter(md);
 			return true;
+		}
+		
+		if (sType == "endgame1mia") {
+			// End Game - Lola
+			md = WritePlaceHeader();
+			this.showPerson("pregnant.jpg");			
+			addPlaceTitle(md, "A Very Contagious Lesson for Bartenders?");
+
+			md.write(
+				'<p>One day you receive a message from Mia to meet her at a beach. She has been a lot more active since her transformation, both in and out of bed. Recently she has been travelling a bit bit keeping in touch regularly.</p>' +
+				'<p>When you meet her at the beach you see the transform spell has allowed her to learn from Miss. Logan as you see her swollen pregnant belly.</p>'
+			);
+			
+			startQuestions();	
+			// Add pregnancies/other
+			addEndGamePregnancies(md);
+					
+			WritePlaceFooter(md);
+			return true;				
 		}
 
 		// Hotel
@@ -423,7 +499,7 @@ function initialiseMia()
 		addPlaceTitle(md, "Mia's Dance");
 		md.write(
 			'<p>Mia takes the stage dressed in a sort of sports wear, but she does not keep it on for version long!</p>' +
-			'<p>Mia is definitely an experienced dancer, not as much as Bambi or the other professionals but she practised and entertaining. She seems to really enjoy performing for the audience and for you!</p>' +
+			'<p>Mia is definitely an experienced dancer, not as much as Bambi or the other professionals but she practiced and entertaining. She seems to really enjoy performing for the audience and for you!</p>' +
 			'<p>After she sits with you for a while, not bothering to redress, a naked MILF dancer!</p>'
 		);
 		startQuestions();
@@ -434,8 +510,8 @@ function initialiseMia()
 	per.addPlaceImageLeft = function(lit)
 	{
 		if (Place == 458 && this.isHere() && sType === "") {
-			if (this.isCharmedBy()) return this.showPerson("miasex3.jpg", '', '', '', '', false, "string");
-			return this.showPerson("mia8.jpg", '', '', '', '', false, "string");
+			if (this.isCharmedBy()) return this.showPerson("mia-homec.jpg", '', '', '', '', false, "string");
+			return this.showPerson("mia-homeu.jpg", '', '', '', '', false, "string");
 		}
 		return '';
 	};
@@ -488,6 +564,11 @@ function initialiseMia()
 			else md.write('<p>Mia welcomes you to her apartment, She is dressed in her nightie, though it looks more like lingerie. After all she works nights so generally sleeps in the day.</p>');
 		}
 	};
+	
+	per.checkEndGamePregnancy = function()
+	{
+		return this.isCharmedBy() && this.dress == "Younger" ? "endgame1mia" : "";
+	};
 
 	// Cast a spell on them or use an item
 	per.handleItem = function(no, cmd)
@@ -526,6 +607,24 @@ function initialiseMia()
 			// At her apartment (post time window)
 			else if (Place == 458 && this.isHere()) {
 				CastCharmSpell("Mia", 458, 1, 'type=charmmiahome1');
+				return "handled";
+			}
+		}
+		
+		// Casting the transform spell
+		else if (no == 18 && cmd == 2) {
+
+			// At home and charmed
+			if ((Place == 124 || Place == 458) && this.isHere() && sType === "") {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				//ClearComments();
+				dispPlace(Place, 'type=miatransformage' + this.dress.toLowerCase());
 				return "handled";
 			}
 		}

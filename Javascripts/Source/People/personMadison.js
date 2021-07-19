@@ -81,7 +81,7 @@ function RepliesMadison(nR)
 function Enjoy412(msg)
 {
 	Leave(true);
-	if (!msg) WriteComments("You sate youself on Madison's body and leave her satisfied but wanting more");
+	if (!msg) WriteComments("You sate yourself on Madison's body and leave her satisfied but wanting more");
 	else WriteComments(msg);
 	dispPlace(371, "");
 }
@@ -193,7 +193,7 @@ function initialiseMadison()
 
 	per.showEvent = function()
 	{
-		var md;
+		var md, splace, myName;
 		
 		if (sType == "callmadison") {
 			WaitHereOnly(6);
@@ -213,14 +213,14 @@ function initialiseMadison()
 				'<p>&quot;Yes of course ' + perYou.getMaster() + ' anytime!&quot; and with that you call Jade to arrange a dance for Madison.'
 			);			
 			addLinkToPlace(md, 'let Madison continue on her way', Place);
-			AddRightColumnMed(md);
+			AddPeopleColumnMed(md);
 			this.showPerson("madison11.jpg");
 			WritePlaceFooter(md);
 			return true;
 		}
 		if (Place == 269) {
 			if (sType == "madisonpool") {
-				md = WritePlaceHeader(false, 'td-left-large');
+				md = WritePlaceHeader();
 				this.showPerson("madison-pool.jpg");
 				addPlaceTitle(md, "Pool-Girl Madison");
 				md.write(
@@ -235,7 +235,7 @@ function initialiseMadison()
 			}
 			if (sType == "madisonpoolsex") {
 				var bStrap = !perYou.isMaleSex() && perYou.FindItem(45) > 0;
-				md = WritePlaceHeader(false, bStrap ? '' : 'td-left-large');
+				md = WritePlaceHeader();
 				if (bStrap) this.showPersonX("pool-sex-strapon.jpg");
 				else this.showPerson("madison-pool-sex" + (this.checkFlag(13) ? '-be' : '') + ".jpg");
 				addPlaceTitle(md, "More Fun with Madison");
@@ -389,8 +389,8 @@ function initialiseMadison()
 			
 			if (sType == "madisonoral") {
 				// Oral sex in her apartment
-				md = WritePlaceHeader(false, perYou.isMaleSex() && isExplicit() ? 'td-left-med' : '');
-				this.showPersonRorX(perYou.isMaleSex() ? "madisonsex7.jpg" : "madisonsex10.jpg");
+				md = WritePlaceHeader();
+				this.showPersonRandomRorX(perYou.isMaleSex() ? "madisonsex-bjb" : "madisonsex-bjg", isExplicit() && perYou.isMaleSex() ? 3 : 1);
 				addPlaceTitle(md, "Madison's Tongue");
 				if (perYou.isMaleSex()) {
 					md.write(
@@ -419,8 +419,8 @@ function initialiseMadison()
 			
 			if (sType == "madisonsex") {
 				// Sex in her apartment
-				md = WritePlaceHeader(false, 'td-left-med');
-				this.showPersonRorX(perYou.isMaleSex() ? "madisonsex8.jpg" : "madisonsex1.jpg");
+				md = WritePlaceHeader();
+				this.showPersonRandomRorX(perYou.isMaleSex() ? "madisonsex-fuckb" : "madisonsex-fuckg", isExplicit() && perYou.isMaleSex() ? 4 : 1);
 				addPlaceTitle(md, "Madison's Body");
 				if (perYou.isMaleSex()) {
 					md.write(
@@ -455,7 +455,7 @@ function initialiseMadison()
 			if (sType == "madisonstraponfuck") {
 				// Strap-on sex
 				md = WritePlaceHeader();
-				this.showPersonRorX("madisonsex2.jpg");
+				this.showPersonRorX("madisonsex-strapon.jpg");
 				addPlaceTitle(md, "Madison's Apartment");
 				md.write(
 					'<p>“You remember this one, right?” You take out your strap-on with a smirk and watch as a pleasant shiver runs through Madison\'s body.</p>' +
@@ -476,73 +476,294 @@ function initialiseMadison()
 				addLinkToPlace(md, 'you just wanted to say hello and be on your way', 456);
 				WritePlaceFooter(md);
 				return true;					
+			}			
+		}
+		
+		if (sType == "charmmadison1") {
+			// Charm Madison (Home or Office)
+			md = WritePlaceHeader();
+			
+			if (Place === 46) {
+				// At Home during delivery
+				perYou.setFlag(2);
+				this.showPerson("madison10.jpg");
+			} else {
+				// At Office
+				this.showPerson("madison20.jpg");
 			}
 			
-			if (sType == "callmadisonzoey") {
-				// Madison/Zoey threesome in the apartment - start
-				md = WritePlaceHeader(false, 'td-left-med');
-				this.showPerson("madisonzoey1.jpg");
-				addPlaceTitle(md, "Madison and Zoey");
-				md.write(
-					'<p>Zoey must have been nearby, it takes only a few minutes before she rings the doorbell and you let her in, much to Madison\'s delight. She pulls Zoey into the bedroom, throws her on the bed before the other woman had any chance to say something and quickly removes her clothes.</p>' +
-					'<p>Zoey on her end, seems taken aback by her coworkers enthusiasm. An attempt to speak is muffled by a sudden kiss, and she soon finds herself pinned naked under Madison\'s body, who makes sure to spread her legs and expectantly looks to you over her shoulder.</p>' +
-					'<p>“We are ready, ' + perYou.getMaster() + '!”</p>'
-				);
-				startQuestions();
-				addLinkToPlace(md, 'have both girls tend to you', Place, 'type=callmadisonzoeytend');
-				addLinkToPlace(md, 'let your delivery girls put on a show', Place, 'type=callmadisonzoeyshow');
-				addLinkToPlace(md, 'say goodbye to Zoey', Place, '', 'Zoey happily leaves, suggesting you can always call for another "delivery"');
-				WritePlaceFooter(md);
-				return true;					
+			addPlaceTitle(md, "Madison Under a Spell");
+
+			md.write(
+				'<p>"What did...  I... Um...  Sorry?"  She stammers, her demeanor towards you instantly changing as the spell begins to set in.</p>' +
+				'<p>"You know," she starts in after a moment to \'regain\' her senses. "You\'re kinda cute and all... ' +
+				'and I\'m seriously sorry about breaking your stereo."</p>' +
+				'<p>"I know, but I was seriously looking forward to using that stereo," you say, trying to look upset about it being broken when a much more valuable prize is right in front of you...</p>' +
+				'<p>And about to be all yours.</p>' +
+				'<p>"I know, I know..." she says, eyeing you up and down as if she\'s about to jump you right ' +
+				'here and now. "Tell you what...  you tell me what you want for not turning me in and I\'ll do it."</p>' +
+				'<p>The flash of the spell in her eyes tells you that you could literally ask for <i>anything</i> and she <i>would</i> do it...  but what\'s the point of rushing things...</p>'
+			);
+			
+			// Questions
+			startQuestions();
+			addLinkToPlaceC(md, '"Lift your shirt and show me your breasts."', Place, 'type=charmmadison2');
+			WritePlaceFooter(md);
+			return true;
+		}
+		
+		if (sType == "charmmadison2") {
+			md = WritePlaceHeader();
+			
+			if (Place === 46) {
+				// At Home during delivery
+				this.showPerson("madison11.jpg");
+			} else {
+				// At Office
+				this.showPerson("madison21.jpg");
 			}
-			if (sType == "callmadisonzoeytend") {
-				// Madison/Zoey threesome in the apartment - tend
-				md = WritePlaceHeader(false, perYou.isMaleSex() ? 'td-left-med' : '');
-				if (perYou.isMaleSex()) this.showPerson("madisonzoey2.jpg");
-				else this.showPersonRorX("madisonzoey4.jpg");
-				addPlaceTitle(md, "Madison and Zoey Tending to You");
-				if (perYou.isMaleSex()) {
-					md.write(
-						'<p>You have used the time to undress as well and, having moved to the edge of the bed, beckon the two delivery girls towards your half erect manhood.</p>' +
-						'<p>Madison is the first to reach out for it, tracing her tongue around the tip while Zoey wordlessly follows her lead and affectionately licks the base and fondles your ballsack.</p>' +
-						'<p>Your manhood hardens quickly under their combined care and you enjoy the sensation of their soft lips squeezing your shaft amidst them and their tongues tracing every sensitive vein. You gasp as your manhood reaches its full length, and as your own arousal grows, so does theirs.</p>' +
-						'<p>Soon, soft moans and the scent of sex fill the room, and you have one hand on each of the girls heads as they swap your cock between each other, taking you inside for several strokes and passing you on while the other kisses another part of your body.</p>' +
-						'<p>When your climax finally rushes through your body you make sure to spray your load onto both of them, watching in delight as Madison shares it with her spellbound coworker in a deep, sensual kiss.</p>'
-					);
-				} else {
-					md.write(
-						'<p>You crawl onto the bed and both of your girls eagerly pull you into their embrace, trading sensual kisses with you and tenderly caressing your skin, their soft lips slowly exploring every inch of your body.</p>' +
-						'<p>You allow yourself to fall back into their mutual embrace and let your spellbound slaves tend to your needs. Both of them are wonderfully experienced, but Madison is, as expected, the more active of the two, often guiding and commanding Zoey around, who dutifully and eagerly follows her lead.</p>' +
-						'<p>You on occasion have to remind the little minx that Zoey is your pet, and not hers, and she will sheepishly tone it down before getting swept away by her passion again.</p>' +
-						'<p>And it is easy to get swept away...</p>' +
-						'<p>The smell of sex intensifies as the minutes pass. Eager lips touch your neck as gentle fingers caress your folds and clit, and you find yourself trading passionate affections with both girls while your tongue tastes their folds and lips, your nose takes in their scent and your lips release lewd moans whenever the blissful rush of another climax ravages your body anew.</p>' +
-						'<p>In the end, the three of you come to rest on the bed, both girls resting next to you, bodies pressed against yours and their spellbound, eager eyes lingering on yours, hoping to go for just one more round.</p>'
-					);
-				}
-				startQuestions();
-				addLinkToPlace(md, 'talk more with Madison and Zoey', Place, 'type=callmadisonzoey');
-				WritePlaceFooter(md);
-				return true;					
-			}	
-			if (sType == "callmadisonzoeyshow") {
-				// Madison/Zoey threesome in the apartment - show
-				md = WritePlaceHeader();
-				this.showPerson("madisonzoey3.jpg");
-				addPlaceTitle(md, "Madison and Zoey Giving You a Show");
+			
+			addPlaceTitle(md, "Madison Under a Spell");
+
+			md.write(
+				'<p>She hesitates for only a moment before the heightened desire from the spell banishes all ' +
+				'modesty that may have gotten in the way.  "Anything you say," she says, flashing you a grin.</p>' +
+				'<p>Moments later she not only has her shirt and bra lifted up but has managed to hick up her ' +
+				'skirt and slightly pulled down her panties.</p>' +
+				'<p>You\'re not sure if she even realizes how far she has already fallen. "Not a bad start," you say, ' +
+				'challenging her for more.</p>' +
+				'<p>"Oh yeah," she says, rising to the bait.  "Not enough for you, huh?  Good thing you\'re so cute.  Normally ' +
+				'I wouldn\'t dare do stuff like this," she says, her voice completely missing the concern that you would ' +
+				'expect in that statement. "So, what else do I have to do to keep from getting turned in?"</p>'
+			);
+			
+			// Questions
+			startQuestions();
+			addLinkToPlaceC(md, '"Display yourself for my viewing pleasure."', Place, 'type=charmmadison3');
+			WritePlaceFooter(md);
+			return true;
+		}
+		
+		if (sType == "charmmadison3") {
+			md = WritePlaceHeader(false, splace === "" ? "td-left-large" : "");
+			myName = perYou.getMaster();
+			
+			if (Place == 46) {
+				// At Home during delivery
+				this.showPerson("madison13.jpg");
+
+				addPlaceTitle(md, "Madison Under a Spell");
+
 				md.write(
-					'<p>“' + perYou.getMaster() + ' wants us to put on a show, Maddy.” Zoey turns her attention back to her coworker, who replies with a devilish grin.</p>' +
-					'<p>“Then let\'s not keep ' + perYou.getHimHer() + ' waiting...”</p>' +
-					'<p>Madison\'s fingers intertwine with Zoey\'s as she pushes the girls arms to the bed and the two share a deep kiss, long and passionate this time, drawing out every second into a sensual dance as their tongues playfully mingle and you watch their nubile bodies pressed against each other.</p>' +
-					'<p>Madison clearly takes charge, her knee parting Zoey\'s thighs to expose her folds, and the other girls head rolls back with a soft gasp as her lips begin to wander down and place soft kisses on her neck and collarbones, sucking in her nipples and playfully rolling her tongue along the areola.</p>' +
-					'<p>The two are suspiciously familiar with each other by now, and you can feel your manhood straining against your pants/Folds dampen slowly as you watch them.</p>' +
-					'<p>Madison releases Zoey\'s hands and gives you a cheeky smile as she pulls her fingertips back over the other girls arms, and Zoey shivers visibly as she drags them along her armpits, kneads her breasts and pushes herself up to straddle her.</p>' +
-					'<p>In the next 20 minutes, the two bring each other to several mutual orgasms. Madison straddles Zoeys face and pushes the girls lips against her sex, and Zoey dutifully tends to her coworkers needs, wrapping her arms around Maddy\'s thighs and skillfully caressing her sex. Blissful moans and gasps begin to fill the room. Madison is quick to repay the favor with a own tongue, and as the minutes pass both of them seem to almost get lost in their mutual pleasures, to the point that you may finally have to step in and stop them, or maybe join yourself...</p>'
+					'<p>A devilish smile crosses her face as she completely strips of her skirt and leans against the couch seductively. ' +
+					'"Does this please you...  ' + myName + '?" she asks playfully.</p>' +
+					'<p>You smile at her word choice.  "Yes, in fact it does," you say with an evil grin.  "As a ' +
+					'matter of fact, lets keep the ' + myName + ' thing going, shall we?" you say as you inspect the nubile young form before you.</p>' +
+					'<p>"As you wish, ' + myName + '," she says, almost purring this time. ' +
+					'"Is there anything else I can do to please ' + myName + '?"</p>' +
+					'<p>"Well, there was one thing..." you say, stepping up and running your hands across her warm and inviting flesh.</p>' +
+					'<p>Her body instantly reacts to your touch, a soft moan escaping her lips as you tease her nipples ' +
+					'and your hand runs down to her moist and exposed snatch. "Do you like being my <i>slave</i>?" you whisper into her ear.</p>' +
+					'<p>"Yessss..." she whispers in return as her body shudders with orgasm from your attention.</p>'
 				);
-				startQuestions();
-				addLinkToPlace(md, 'talk more with Madison and Zoey', Place, 'type=callmadisonzoey');
-				WritePlaceFooter(md);
-				return true;					
-			}				
+					
+			} else {
+				// At Office
+				this.showPerson("madison22.jpg");
+
+				addPlaceTitle(md, "Madison Under a Spell");
+
+				md.write(
+					'<p>A devilish smile crosses her face as she completely strips of her skirt and leans against the desk seductively. ' +
+					'"Does this please you...  ' + myName + '?" she asks playfully.</p>' +
+					'<p>You smile at her word choice.  "Yes, in fact it does," you say with an evil grin.  "As a ' +
+					'matter of fact, lets keep the ' + myName + ' thing going, shall ' +
+					'we?" you say as you inspect the nubile young form before you.</p>' +
+					'<p>"As you wish, ' + myName + '," she says, almost purring this time. ' +
+					'"Is there anything else I can do to please ' + myName + '?"</p>' +
+					'<p>"Well, there was one thing..." you say, stepping up and running your hands across her warm and inviting flesh.</p>' +
+					'<p>Her body instantly reacts to your touch, a soft moan escaping her lips as you tease her nipples ' +
+					'and your hand runs down to her moist and exposed snatch. "Do you like being my <i>slave</i>?" you whisper into her ear.</p>' +
+					'<p>"Yessss..." she whispers in return as her body shudders with orgasm from your attention.</p>'
+				);
+				
+			}
+			
+			// Questions
+			startQuestions();
+			addLinkToPlace(md, "take it to the next level", Place, 'type=charmmadison4');
+			WritePlaceFooter(md);
+			return true;
+		}
+
+		if (sType == "charmmadison4") {
+			// Event: Home/Office – Kitchen [Madison's Enthrallment 04]
+			md = WritePlaceHeader();
+			myName = perYou.getMaster();
+
+			if (Place == 46) {
+				// At Home during delivery
+				this.showPerson("madison14.jpg");
+			} else {
+				// At Office
+				this.showPerson("madison23.jpg");
+			}
+
+			addPlaceTitle(md, "Madison Under a Spell");
+
+			md.write(
+				'<p>"Oh my <i>god</i>," she says as you step away from her.  "No one has <i>ever</i> ' +
+				'made me feel like that."  And you watch as she shudders from just thinking about ' +
+				'the orgasm she just experienced.  "You <i>have</i> to do that again."</p>' +
+
+				'<p>"I don\'t <i>have</i> to do anything," you say forcefully.  "You are <i>my</i> ' +
+				'slave, remember?  I can get you fired at any time."</p>' +
+
+				'<p>"But, but," she stutters, looking like a toddler that just had her favorite toy taken away.</p>' +
+
+				'<p>"But nothing, slave.  I am your ' + myName + ' now, ' +
+				'and you will do anything and everything I say just for the <i>hope</i> of pleasure ' +
+				'the likes of which I just gave you."  Fear and doubt flash across her face as you ' +
+				'continue.  "Remember, you broke <i>my</i> radio..."</p>' +
+
+				'<p>"Besides," you say, stepping up and running your hand down over her breast.  "Its ' +
+				'not as if you didn\'t <i>like</i> being my slave and that was for just a moment.  Think ' +
+				'of what it would be like to be my slave... permanently.  You\'d like that, wouldn\'t you."</p>' +
+
+				'<p>It takes her a moment, but she eventually wispers... "Yes," ever-so-quietly.</p>' +
+
+				'<p>"Yes... what?" you whisper flatly in her ear.</p>' +
+
+				'<p>"Yes ' + myName + '," she says, finally looking you in the eye ' +
+				'before you give her a deep, deep kiss.  You can feel her body shudder from yet another ' +
+				'orgasm as she finally gives in and accepts her fate.</p>' +
+
+				'<p>"What do you wish of me, ' + myName + '?" she asks finally.</p>'
+			);
+
+			// Questions
+			startQuestions();
+			addLinkToPlaceC(md, 'order her "Now you will make me cum"', Place, 'type=charmmadison5&act==oral');
+			if (!perYou.isMaleSex() && perYourBody.FindItem(45) === 0 && isExplicit(true)) addLinkToPlaceC(md, 'order her "Now I\'d like to fuck you"', Place, 'type=charmmadisongift');
+			else if (perYou.isMaleSex() || (!perYou.isMaleSex() && perYourBody.FindItem(45) > 0)) addLinkToPlaceC(md, 'order her "Now I will fuck you"', Place, 'type=charmmadison5&act=fuck');
+			if (!perYou.isMaleSex()) addLinkToPlaceC(md, 'ask her "Let us make love"', Place, 'type=charmmadison5&act=sex&place='+ splace);
+			if (wherePerson("Diane") != -1) {
+				if (splace === "") addLinkToPlaceC(md, 'order her "Go back to the station and wait for me there."', 46);
+				else addLinkToPlaceC(md, 'leave after you order her "Change clothes and always deliver me pleasure"', 371);
+			}
+			WritePlaceFooter(md);
+			return true;
+		}	
+		
+		if (sType == "charmmadisongift") {
+			md = WritePlaceHeader();
+
+			if (Place == 46) {
+				// At Home during delivery
+
+				this.showPersonX("madison16.jpg");
+
+				addPlaceTitle(md, "Madison's Gift");
+				md.write(
+					'<p>You tell Madison you would like to fuck her but you lack any toys to do this with. Madison grins at this and quickly puts on her jacket and skirt and asks if she can get you a present. A little surprised you let her. She leaves and a few minutes later returns with a package she was due to deliver to someone else and gives it to you.</p>' +
+					'<p>"Don\'t worry our insurance will cover it" she says while removing her clothing again eagerly. You see the package is from a well known internet site for adult products. It is labeled as a "Delux Strap-on" and included are several different appendages to use.</p>' +
+					'<p>"Now you can fuck me...please Mistress?"</p>'
+				);
+
+			} else {
+				// At Office
+				this.showPersonX("madison24.jpg");
+
+				addPlaceTitle(md, "Madison's Gift");
+				md.write(
+					'<p>You tell Madison you would like to fuck her but you lack any toys to do this with. Madison grins at this and quickly puts on her jacket and skirt and asks if she can get you a present. A little surprised you let her. She leaves and a few minutes later returns with a package and turns her back while opening it and doing something with it. When she turns around she is loosely wearing a strap-on, with a box on the desk labeled "Delux Strap-on" with several different appendages still in the box</p>' +
+					'<p>"Nina has bought this for her lover but never got up the courage to give it to her. They have broken up and Nina had regretted getting it. Don\'t worry if she notices I will pay her", she says.</p>' +
+					'<p>"Now I can fuck you, or please, you can fuck me Mistress?"</p>'
+				);
+			}
+
+			if (whereItem(45) === 0) PlaceI(45);		// Add it here, if it was not already delivered
+
+			// Questions
+			startQuestions();
+			addLinkToPlaceC(md, '"Yes, I will fuck you"', Place, 'type=charmmadison5&act=fuck', '', '', 'if (perYourBody.FindItem(45) === 0) perYourBody.PutItem(45, true);');
+			if (wherePerson("Diane") != -1) {
+				if (splace === "") addLinkToPlaceC(md, 'order her "Go back to the station and wait for me there."', 45);
+				else addLinkToPlaceC(md, 'leave after you order her "Change clothes and always deliver me pleasure"', 371);
+			}
+
+			WritePlaceFooter(md);
+			return true;
+		}	
+
+		if (sType == "charmmadison5") {
+			// Event: Home/Office – Kitchen [Madison's Enthrallment 05]
+			md = WritePlaceHeader();
+			var act = getQueryParam("act");
+
+			if (Place == 46) this.showPerson("madison15h.jpg");
+			else this.showPerson("madison15o.jpg");
+
+			addPlaceTitle(md, "Madison Under You");
+
+			switch(act) {
+				case "oral":
+					if (perYou.isMaleSex()) {
+						md.write('<p>She gives you a blowjob</p>');
+					} else {
+						md.write('<p>She licks you</p>');
+					}
+					break;
+
+				case "fuck":
+					if (perYou.isMaleSex()) {
+						md.write('<p>You fuck her pussy</p>');
+					} else {
+						md.write('<p>You put on the strap-on Madison gave you, and fuck her to mutual orgasms.</p>');
+					}
+					break;
+
+				case "sex":
+					md.write('<p>You make love, grinding your pussies together.</p>');
+					break;
+			}
+
+			md.write('<p>"What do you wish of me now ' + perYou.getMaster() + '?" she asks.</p>');
+
+			// Questions
+			startQuestions();
+			if (wherePerson("Diane") == -1) addLinkToPlaceC(md, 'ask about the documents', 412, 'type=askdocuments');
+			else if (Place == 46) addLinkToPlaceC(md, 'order her "Go back to the station and wait for me there."', 46);
+			else addLinkToPlaceC(md, 'leave after you order her "Change clothes and always deliver me pleasure"', 371);
+
+			AddPeopleColumnLarge();
+			switch(act) {
+				case "oral":
+					if (perYou.isMaleSex()) {
+						if (isExplicit()) AddImageRandom("GenericSex/Explicit/sex-mf blowjob", 5);
+						else AddImage("GenericSex/sex-mf blowjob-blonde hair b.jpg");
+					} else if (isExplicit()) AddImageRandom("GenericSex/Explicit/sex-ff lick", isExplicit() ? 6 : 1);
+					else AddImageRandom("GenericSex/sex-ff lick", isExplicit() ? 6 : 1);
+					break;
+
+				case "fuck":
+					if (perYou.getPersonGender() == "futa") {
+						if (isExplicit()) AddImageRandom("GenericSex/Explicit/sex-fuf pussy", 1);
+						else AddImageRandom("GenericSex/sex-fuf pussy", 1);
+					} else if (perYou.isMaleSex()) {
+						if (isExplicit()) AddImageRandom("GenericSex/Explicit/sex-mf pussy", 6);
+						else AddImageArray(["GenericSex/sex-mf pussy a.jpg", "GenericSex/sex-mf pussy b.jpg"]);
+					} else AddImageRandom("GenericSex/Explicit/sex-ff strapon", 8);
+					break;
+
+				case "sex":
+					if (isExplicit()) AddImageRandom("GenericSex/Explicit/sex-ff trib", isExplicit() ? 6 : 2);
+					else AddImageRandom("GenericSex/sex-ff trib", isExplicit() ? 6 : 2);
+					break;
+			}
+
+			WritePlaceFooter(md);
+			return true;
 		}
 
 		if (Place != 412) return false;
@@ -674,7 +895,7 @@ function initialiseMadison()
 			startQuestions();
 			addLinkToPlace(md, 'return to the station reception', 371);
 
-			AddRightColumnLarge(md);
+			AddPeopleColumnLarge(md);
 			if (bZDay) perZoey.showPerson("zoey1-noon.jpg");
 			else perZoey.showPerson("zoey1-afternoon.jpg");
 			WritePlaceFooter(md);
@@ -684,11 +905,11 @@ function initialiseMadison()
 		if (sType == "transformbreasts") {
 			// BE Transformation
 			CastTransform(1);
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			if (!this.checkFlag(13)) {
 				this.setFlag(13);
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/be c.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/be c.jpg', "50%") +
 					'<p>You cast the spell and Madison cries out, "What the hell is happening?" and pulls apart her top. You see her breasts swelling, growing larger and larger, her modest sized breasts growing to be quite large.</p>' +
 					'<p>As she groans you thought you heard some laughing but maybe it was Nina. Madison gasps as her breasts stop growing, and she remarks,<p>' +
 					'<p>"Well, if this is permanent, I am going to need a new wardrobe.", and she rips her top off and continues, "How about giving them a spin!". You happily give them that and more.</p>'
@@ -696,13 +917,13 @@ function initialiseMadison()
 			} else {
 				this.setFlag(13, false);
 				showPopupWindow("Transformation",
-					'<img src="Images/GenericSex/bs d.gif" style="width:50%;float:left;margin-right:6px;margin-top:1em;margin-bottom:2em" alt="BE">' +
+					addImageString('GenericSex/bs d.jpg', "50%") +
 					'<p>You cast the spell and Madison cries out, "What the hell is happening?" and pulls apart her top. You see her breasts diminishing, becoming smaller and smaller, her huge sized breasts growing to a modest size.</p>' +
 					"<p>As she groans you thought you heard some laughing but maybe it was Nina. Madison gasps as her breasts stop diminishing, and she remarks,<p>" + '<p>"Well, if this is permanent, I am going to need my old clothes back.", and she discards her loose top off and continues, "How about giving them a spin!". You happily give them that and more.</p>'
 				);
 			}
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -796,7 +1017,7 @@ function initialiseMadison()
 
 			// Inside your house
 			if (sType == "madisondelivery2") {
-				if (CastCharmSpell("Madison", 355, 1)) {
+				if (CastCharmSpell("Madison", 46, 1, 'type=charmmadison1')) {
 					// CHARM Madison (the delivery Girl)
 					if (!isPlaceKnown("TVStation")) setPlaceKnown("TVStation");		//Know about the Radio Station
 				}
@@ -805,7 +1026,7 @@ function initialiseMadison()
 
 			if (Place == 413) {
 				// Madison (at her office)
-				CastCharmSpell("Madison", 355, 1, "place=office");
+				CastCharmSpell("Madison", Place, 1, "type=charmmadison1&place=office");
 				return "handled";
 			}
 			
@@ -858,7 +1079,17 @@ function initialiseMadison()
 	per.addPersonPhoneCall = function() {
 		if (isShopOpen() && this.checkFlag(7) && !this.checkFlag(8)) {
 			// SMS 1, few hours after first visit at her work
-			if (makeCall(true, 70)) this.setFlag(8);
+			findPerson("Zoey");
+			if (per.dress ==="") {
+				if (makeCall(false, "Madison",
+					"<img src='Images/People/Zoey/Zoe/zoey0b.jpg' class='imgpopup' style='float:left;margin-right:5px' alt='Who' title='Blue'>" +
+					"<img src='Images/People/Zoey/Riley/zoey0b.jpg' class='imgpopup' alt='Who' title='Red'>" +
+					'<p>You know ' + perYou.getMaster() + ' I\'m not the only delivery-girl. Do you like Zoey, Nina really really does!</p>' +
+					'<p>What do you imaging she looks like?' +
+					addOptionLink("string", '&#8592; blue uniform', "findPerson('Zoey').dress='Zoe';dispPlace(" + Place + "')", "chatblock", "width:30%;margin-left:35%") +
+					addOptionLink("string", 'red uniform &#8594;', "findPerson('Zoey').dress='Riley';dispPlace(" + Place + "')", "chatblock", "width:30%;margin-left:35%"),
+				)) this.setFlag(8);
+			} else if (makeCall(true, 70)) this.setFlag(8);
 		} else if (this.checkFlag(11) && !this.checkFlag(12)) {
 			var hr = getHour();
 			if ((hr == 12 && Math.random() < 0.1) || (hr == 16 || hr == 17)) {

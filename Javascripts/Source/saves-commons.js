@@ -17,6 +17,11 @@ var DB_STORE_NAME = 'saves';
 var db;
 var SAVE_BASE = "LSD";
 
+function getSaveType()
+{
+	return bUseIndexedDB ? "indexDB" : bUseCookies ? "cookies" : "localStorage";
+}
+
 function openLocalDb()
 {
 	var DB_NAME = 'aspellforall';
@@ -108,7 +113,7 @@ function getAllSaves(s)
 		bChatLeft.push(s === '' || s === null ? '' : saveVar(bChat < 0 ? 0 : bChat) + s);
 		bChat++;
 	}
-	if (bChat <= (nMaxSaves + nMaxQuickSaves)) getSaveGame(SAVE_BASE + (bChat <= 0 ? (bChat === 0 ? "Auto" : "Auto" + Math.abs(bChat)) : bChat), getAllSaves);
+	if (bChat <= (nMaxSaves + nMaxQuickSaves)) getSaveGame((bChat <= 0 ? (bChat === 0 ? "Auto" : "Auto" + Math.abs(bChat)) : bChat), getAllSaves);
 	else writeLoadSave2(sComment);
 }
 
@@ -121,9 +126,12 @@ function writeLoadSave2(loadorsave)
 	perYou.extra[1] = 0;
 	bPopupShown = false;
 
-	gameState.nLeftBarState = 2;
-	gameState.nRightBarState = 0;
-	showLeftBar();
+	if (nFromPlace === 0) hideSidebars();
+	else {
+		gameState.nLeftBarState = 2;
+		gameState.nRightBarState = 0;
+		showLeftBar();
+	}
 	sComment = '';
 	bChat = false;
 	var md = WritePlaceHeader(
@@ -420,12 +428,20 @@ function toggleCookies()
 	saveGlobalSettings();
 }
 
-function getSaveGame(name, callback)
+function getSaveGame(slot, callback, svt)
 {
+	var bUC = bUseCookies;
+	var bIDB = bUseIndexedDB;
+	if (svt !== undefined) {
+		bUC = svt == "cookies";
+		bIDB = svt == "indexDB";
+	}
+	
 	var s;
 	var d;
-	if (!bUseCookies) {
-		if (bUseIndexedDB) {
+	var name = SAVE_BASE + slot;
+	if (!bUC) {
+		if (bIDB) {
 			var store = getObjectStore('readonly');
 			var req = store.get(name);
 			req.onsuccess = function(evt) {
@@ -439,7 +455,7 @@ function getSaveGame(name, callback)
 						else s = d;
 					}
 				}
-				callback(s);
+				callback(s, slot);
 			};
 			req.onerror = function(event) { console.error("getSaveGame:Unable to retrieve daa from database!"); };
 			return;
@@ -452,7 +468,7 @@ function getSaveGame(name, callback)
 				else s = d;
 			}
 			if (s === null || s === '' || s == 'null') s = '';
-			callback(s);
+			callback(s, slot);
 			return;
 		}
 	}
@@ -482,7 +498,7 @@ function getSaveGame(name, callback)
 			if (s !== '') {
 				d = LZString.decompressFromEncodedURIComponent(s);
 				if (d === null || d === '') d = decodeURI(s);
-				if (callback !== undefined) callback(d);
+				if (callback !== undefined) callback(d, slot);
 				return;
 			}
 		}
@@ -517,10 +533,19 @@ function deleteSaveGame(name)
 	} else if (bCanUseLocalStorage) localStorage.removeItem(name);
 }
 
-function setSaveGame(name, savedata)
+function setSaveGame(slot, savedata, svt)
 {
-	if (!bUseCookies) {
-		if (bUseIndexedDB) {
+	var bUC = bUseCookies;
+	var bIDB = bUseIndexedDB;
+	if (svt !== undefined) {
+		bUC = svt == "cookies";
+		bIDB = svt == "indexDB";
+	}
+	//console.log('bUC = ' + bUC + ' bIDB = ' + bIDB + ' bCanUseLocalStorage = ' + bCanUseLocalStorage);
+	
+	var name = SAVE_BASE + slot;
+	if (!bUC) {
+		if (bIDB) {
 			var store = getObjectStore('readwrite');
 			var request = store.put({ id: name, save: savedata });
 			request.onsuccess = function(event) {	};
@@ -544,7 +569,7 @@ function setSaveGame(name, savedata)
 
 function promptAndSave(no, exist)
 {
-	sComment = SAVE_BASE + no;
+	sComment = no;
 	if (exist == 1) getSaveGame(sComment, promptAndSaveName);
 	else promptAndSaveName('');
 }
@@ -552,7 +577,6 @@ function promptAndSaveName(s)
 {
 	var n = getSaveName(s);
 	var na = prompt('Name of the saved game?', n);
-
 	if (na !== null && na !== "")	{
 		saveGlobalSettings();
 		s = getSaveString(na.substring(0, 2096));
@@ -570,14 +594,14 @@ function promptAndSaveName(s)
 function Save(no, name)
 {
 	saveGlobalSettings();
-	setSaveGame(SAVE_BASE + no, getSaveString(name));
+	setSaveGame(no, getSaveString(name));
 }
 
 function QuickSave()
 {
 	gameState.nCurrentQS = (gameState.nCurrentQS >= nMaxQuickSaves) ? 1 : gameState.nCurrentQS + 1;
 	saveGlobalSettings();
-	setSaveGame(SAVE_BASE + (nMaxSaves + gameState.nCurrentQS), getSaveString("Quick Save " + gameState.nCurrentQS));
+	setSaveGame((nMaxSaves + gameState.nCurrentQS), getSaveString("Quick Save " + gameState.nCurrentQS));
 }
 
 function saveVar(no)
@@ -664,7 +688,7 @@ function GetSingleChar(s)
 
 function Load(no)
 {
-	getSaveGame(SAVE_BASE + no, loadGameString);
+	getSaveGame(no, loadGameString);
 }
 
 function loadString(s)
@@ -677,11 +701,16 @@ function loadString(s)
 
 function loadGlobalSettings(callback)
 {
-	sComment = callback;
+	var bOldUseCookies = bUseCookies;
+	var bOldUseIndexedDB = bUseIndexedDB;
 	bUseCookies = bCanUseCookies;
 	bUseIndexedDB = bCanUseIndexedDB && !bCanUseCookies && !bCanUseLocalStorage;
+	var svt = getSaveType();
+	bUseCookies = bOldUseCookies;
+	bUseIndexedDB = bOldUseIndexedDB;	
 
-	getSaveGame(SAVE_BASE + "Global", loadGlobalSettingsLoaded);
+	sComment = callback;
+	getSaveGame("Global", loadGlobalSettingsLoaded, svt);
 };
 
 

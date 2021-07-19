@@ -66,7 +66,7 @@ function initialiseDebraKelly()
 		if (this.getCharmedLevel() == 1) {
 			return this.addPersonString("debra11b.jpg", "height:max%", "right") +
 				'Debby really likes to be your pet, quite literally! She showed great interest in becoming your lapdog and so you fulfilled her wishes! Kind of! You can always bring her out of this puppy personality, but why should you? Both of you really enjoy this, you have your very own human pet and Debra can focus on her ' + perYou.getMaster() + '. She has a sister, Janet, who is the one who looks after the two of them. Debra said that her sister is interested in their family’s heritage and legacy. There are some hints that their family has something to do with Kurndorf. You should definitely check her out and talk about it!<br><br>' +
-				'You fondle Deb’s hazelbrown hair as she is sitting on your lap, naked. Perfectly obedient, like a dog. She knows that you need some quiet time to yourself, so she doesn’t bother you with her questions. You love these relaxing minutes, without anything to worry about. Just you and a beautiful naked girl on your lap, waiting to serve you, her ' + perYou.getMaster() + '.';
+				'You fondle Deb’s hazel-brown hair as she is sitting on your lap, naked. Perfectly obedient, like a dog. She knows that you need some quiet time to yourself, so she doesn’t bother you with her questions. You love these relaxing minutes, without anything to worry about. Just you and a beautiful naked girl on your lap, waiting to serve you, her ' + perYou.getMaster() + '.';
 		} else {
 			return this.addPersonString("debra11d-day.jpg", "height:max%", "right") +
 				"Debra is the lovely young woman you met in the Park. She is now your lovely girlfriend, happy to spend time with you in conversation or in a more intimate way.";
@@ -322,7 +322,7 @@ function initialiseDebraKelly()
 				addLinkToPlaceC(md, '"Walkies"', Place, 'type=walkies');
 				if (isCharmedBy("JanetKelly") && this.checkFlag(2)) addLinkToPlaceC(md, '"Home time"', Place, 'type=home');
 				addLinkToPlace(md, 'finish up and play with Debra some more', 87);
-				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the wild ranges', 26);		// Do you know about the Wild Ranges?
+				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the Wild Ranges', 26);		// Do you know about the Wild Ranges?
 				addLinkToPlace(md, 'walk to the main park pathway?', 63);
 				WritePlaceFooter(md);
 				return true;
@@ -346,7 +346,7 @@ function initialiseDebraKelly()
 				// Choices
 				startQuestions();
 				addLinkToPlace(md, 'finish up and play with Debra some more', 87);
-				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the wild ranges', 26);		// Do you know about the Wild Ranges?
+				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the Wild Ranges', 26);		// Do you know about the Wild Ranges?
 				addLinkToPlace(md, 'walk to the main park pathway?', 63);
 				WritePlaceFooter(md);
 				return true;
@@ -371,7 +371,7 @@ function initialiseDebraKelly()
 				// Choices
 				startQuestions();
 				addLinkToPlace(md, 'finish up and play with Debra some more', 87);
-				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the wild ranges', 26);		// Do you know about the Wild Ranges?
+				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the Wild Ranges', 26);		// Do you know about the Wild Ranges?
 				addLinkToPlace(md, 'walk to the main park pathway?', 63);
 				WritePlaceFooter(md);
 				return true;
@@ -387,7 +387,7 @@ function initialiseDebraKelly()
 				// Choices
 				startQuestions();
 				addLinkToPlace(md, 'finish up and play with Debra some more', 87);
-				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the wild ranges', 26);		// Do you know about the Wild Ranges?
+				if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the Wild Ranges', 26);		// Do you know about the Wild Ranges?
 				addLinkToPlace(md, 'walk to the main park pathway?', 63);
 				WritePlaceFooter(md);
 				return true;
@@ -520,7 +520,7 @@ function initialiseDebraKelly()
 		}
 		
 		if (Place == 44) {
-			// Kollan St
+			// Kollam St
 			clv = this.getCharmedLevel();
 			if (sType === "walkies") {
 				// Walkies
@@ -548,7 +548,7 @@ function initialiseDebraKelly()
 
 				addPlaceTitle(md, "Skateboarding with Debra");
 				md.write(
-					'<p>Debra says there is a good place not far from here for skateboarding. She quick changes into some cute gear and grabs to boards and safety gear. You walk to the place just up Kollan Stret, and she excitedly talks about her board, tricks and so on. She is clearly no poser, but a skilled skater. You on the other hand, you are no novice but nothing on the level she is talking about.<p>' +
+					'<p>Debra says there is a good place not far from here for skateboarding. She quick changes into some cute gear and grabs to boards and safety gear. You walk to the place just up Kollam Street, and she excitedly talks about her board, tricks and so on. She is clearly no poser, but a skilled skater. You on the other hand, you are no novice but nothing on the level she is talking about.<p>' +
 					'<p>When you arrive you both skate for a while, you try to bust out some tricks, but you can quickly see Debra completely out-classes you. After a while you just watch her admiringly.</p>' +
 					'<p>Debra does a complex trick, finishing in a spin that ends with her facing away from you, Debra looks back at you and says,</p>' +
 					'<p>"Like my Backside?" and she smiles. You know that she technically referred to her trick, a backside, but this was also meant as a double entendre. You are amused as she speaks a little more, referring to \'gyrating\', \'getting boned\', \'grinding\' and ending with saying there is a sick funbox nearby.</p>' +
@@ -590,7 +590,7 @@ function initialiseDebraKelly()
 
 				addPlaceTitle(md, "Playing Tennis with Debra");
 				md.write(
-					'<p>You invite Debra out to play a game of tennis as you saw some rackets earlier, and she brightly agrees says she has always enjoyed playing, but comments she is only a mediocre player. She quickly gets changed and gets the gear and you head off to the tenns courts at Glenvale High. You are a student there so there is no problem using the courts, and when you get there no one at all is paying. Tennis does not seem that popular at school.</p>' +
+					'<p>You invite Debra out to play a game of tennis as you saw some rackets earlier, and she brightly agrees says she has always enjoyed playing, but comments she is only a mediocre player. She quickly gets changed and gets the gear and you head off to the tennis courts at Glenvale High. You are a student there so there is no problem using the courts, and when you get there no one at all is paying. Tennis does not seem that popular at school.</p>' +
 					'<p>You play a game with Debra, you are definitely the better player, but not that much. Still it is enough to win the game, but Debra is quite athletic, she just lacks practise.</p>' +
 					'<p>After the game you sit with her and have a drink she brought and you do notice how beautiful she is with the fine sheen of sweat and flushed from the exercise. You are completely alone out here and you could try an make a move. Try...the spell pretty much assures success but...</p>'
 				);
@@ -710,7 +710,7 @@ function initialiseDebraKelly()
 					md.write('<p>You embrace your lover and then she exposes her breasts and takes your hard cock between then. You cannot help to compare to her sisters larger breasts but Debra\'s are amply large enough and you avoid mentioning any comparison.</p>');
 				} else {
 					// Puppy Debra
-					md.write('<p>You tell your loyal little pet that you want her you serve you with her breasts. Your goot little bitch eagerly puts your hard cock between her tits, and masturbates them with cute little whining noises. She is really getting into this puppy game so you avoid comparing to her sisters much larger breasts!</p>');
+					md.write('<p>You tell your loyal little pet that you want her you serve you with her breasts. Your good little bitch eagerly puts your hard cock between her tits, and masturbates them with cute little whining noises. She is really getting into this puppy game so you avoid comparing to her sisters much larger breasts!</p>');
 				}
 				// Choices
 				startQuestions();
@@ -812,7 +812,7 @@ function initialiseDebraKelly()
 
 			// Choices
 			startQuestions();
-			addLinkToPlace(md, 'return to the lounge roome', 112);
+			addLinkToPlace(md, 'return to the lounge room', 112);
 			WritePlaceFooter(md);
 			return true;
 		}
@@ -830,17 +830,17 @@ function initialiseDebraKelly()
 		if (this.getCharmedLevel() == 1) {
 			md.write(
 				'<p>Earlier, with Janet\'s help you dressed Debra in a costume from Debra\'s wardrobe, a sort of playboy bunny thing. It amused you to have your puppy dressed as a bunny! When Debra arrives she has already stripped herself of most of the costume leaving collar and cuffs and the stockings, nothing else. She looks happy, but you wonder about her trip here from home, naked and at night!</p>' +
-				'<p>She does an cvited and emergetic dance, not a strip-tease as she is already naked, but enteraining and she seems to really enjoy it!</p>' +
+				'<p>She does an excited and energetic dance, not a strip-tease as she is already naked, but enteraining and she seems to really enjoy it!</p>' +
 				'<p>After she looks excited and really happy, sitting with you, though you have to make her sit next to you, not at your feet.</p>'
 			);			
 		} else if (img.indexOf("poledancea") != -1) {
 			md.write(
-				'<p>Debra is dressed in a sort of playboy bunny outfit, not exactly but of that thene. She smiles at you but you can tell she is a bit nervous but she seems happy enough to dance for you here. It is clear as she dances she is danving her for lover not the audience. She does well but not quite as well as other dancers.</p>' +
+				'<p>Debra is dressed in a sort of playboy bunny outfit, not exactly but of that thene. She smiles at you but you can tell she is a bit nervous but she seems happy enough to dance for you here. It is clear as she dances she is dancing her for lover not the audience. She does well but not quite as well as other dancers.</p>' +
 				'<p>After she looks happy, but it is the happiness of a girlfriend pleasing her lover.</p>'
 			);			
 		} else {
 			md.write(
-				'<p>Debra is dressed in some lingerie, or maybe it is some very sheer club-wear, if so it is more likely something of Janet\'s but it seems to fit her very well. She smiles at you but you can tell she is a bit nervous but she seems happy enough to dance for you here. It is clear as she dances she is danving her for lover not the audience. She does well but not quite as well as other dancers.</p>' +
+				'<p>Debra is dressed in some lingerie, or maybe it is some very sheer club-wear, if so it is more likely something of Janet\'s but it seems to fit her very well. She smiles at you but you can tell she is a bit nervous but she seems happy enough to dance for you here. It is clear as she dances she is dancing her for lover not the audience. She does well but not quite as well as other dancers.</p>' +
 				'<p>After she looks happy, but it is the happiness of a girlfriend pleasing her lover.</p>'
 			);
 		}
@@ -861,7 +861,7 @@ function initialiseDebraKelly()
 			addPopupLinkC(md, 'chat with Debra', "Chatting with Debra",
 				this.addPersonString("debra1c.jpg", "height:max%", "right") +
 				'You talk to Debra for a while about little that matters, of Glenvale and about her, really just getting to know her a little better.</p> ' +
-				'<p>While you talk you notice she has a habit of tugging on the hem of her dress, enphasising how short it is and to a lesser degree her figure and cleavage. You are unsure if the is a deliberate ploy or just some old habit.</p>' +
+				'<p>While you talk you notice she has a habit of tugging on the hem of her dress, emphasising how short it is and to a lesser degree her figure and cleavage. You are unsure if the is a deliberate ploy or just some old habit.</p>' +
 				'<p>She does seem to know Glenvale quite well as she deftly and politely refuses your offer of a tour, or at least a walk around town. She does seem pleased with the offer but mentions something vague about things she has to do.</p>' +
 				'<p>She changes the topic a points out a person walking a pair of dogs and she comments "Nice puppies". A crude or is it flirtaceous...no crude...thought crosses your mind about saying how her puppies are nicer...but you refrain from saying it.',
 				true, "setPersonFlag('DebraKelly',7);WaitHere();");

@@ -455,7 +455,7 @@ function initialiseCamryn()
 				addPlaceTitle(md, "Slave Camryn");
 				md.write(
 					'<p>Camryn hesitates, her chest heaving under heavy breathing as she turns to you and allows her eyes to linger.</p>' +
-					'<p>“I... I am...” She pulls her lower lip inside, and Hannah gives her a little push ”' + capitalizeFirstLetter(perYou.getHisHer()) + ' Slave...”</p>' +
+					'<p>“I... I am...” She pulls her lower lip inside, and Hannah gives her a little push ”' + capitalize(perYou.getHisHer()) + ' Slave...”</p>' +
 					'<p>“Your slave...” She speaks the words as if tasting them, and you smile in approval.</p>' +
 					'<p>“Say it again.”</p>' +
 					'<p>“I am your slave, ' + (perYou.isBornMale() ? 'Sir' : 'Ma\'am') + '.” Camryn repeats, her voice more firm now that the idea takes hold in her mind, and her lips form a wide smile.</p>' +
@@ -580,7 +580,7 @@ function initialiseCamryn()
 				addPlaceTitle(md, "Hot Shower");
 				md.write(
 					'<p>“The bathroom is right over there.” Camryn answers quickly. “Would you like us to... help you?”</p>' +
-					'<p>“Of course ' + perYou.getHeShe() + ' would.” Hannah interjects with a chuckle. “' + capitalizeFirstLetter(perYou.getHeShe()) + ' never just wants to take a shower alone, right?”</p>' +
+					'<p>“Of course ' + perYou.getHeShe() + ' would.” Hannah interjects with a chuckle. “' + capitalize(perYou.getHeShe()) + ' never just wants to take a shower alone, right?”</p>' +
 					'<p>Hannah winks to you, and while there are moments where you prefer to shower in solitude, you admit that she was spot-on when it came to guessing your intentions.</p>' +
 					'<p>“We\'ll get everything ready, ' + (perYou.isBornMale() ? 'Sir' : 'Ma\'am') + '!” Camryn jumps to her feet in excitement, and Hannah quickly follows her. “Just leave this to us.”</p>' +
 					'<p>You hear some rustling and running water from the bathroom, and you use the time to undress until the two call you in, and you are greeted with quite a sight.</p>' +

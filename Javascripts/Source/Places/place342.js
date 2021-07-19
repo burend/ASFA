@@ -6,7 +6,7 @@ function FindIt342()
 
 function ShowPlace342()
 {
-	var md = WritePlaceHeader(false, "", "black");
+	var md = WritePlaceHeaderNI(false, "", "black");
 
 	var mySex = perYou.getSex();
 
@@ -118,5 +118,5 @@ function ShowPlace342()
 	}
 	addLinkToPlace(md, 'leave Kurndorf\'s "prison"', 161);
 
-	WritePlaceFooter(md, '', true);
+	WritePlaceFooter(md);
 }

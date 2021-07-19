@@ -8,22 +8,10 @@ function ShowPlace231()
 	var nmJ = perJohn.getPersonName(false);
 	var perTess = findPerson("Tess");
 	
-	if (sType == "johnxxx") {
-		perJohn.place = 231;
-		setQueryParams();
-	} else if (sType == "tessxxx") {
-		perTess.place = 231;
-		setQueryParams();
-	} else if (sType == "johntessxxx") {
-		perJohn.place = 231;
-		perTess.place = 231;
-		setQueryParams();
-	}
-	var bJohn = perJohn.place == 231;
-	var bTess = perTess.place == 231;
+	var bJohn = perJohn.isHere();
+	var bTess = perTess.isHere();
 	var tot = bJohn ? 1 : 0;
 	if (bTess) tot++;
-		
 	
 	if (tot == 0) {
 		// No one here
@@ -54,7 +42,7 @@ function ShowPlace231()
 	} else if (bJohn) {
 		md.write(
 			'<p>' + nmJ + ' had eagerly followed you into the bedroom when you took ' + perJohn.getHisHer() + ' hand, letting you walk over the threshold first before moving up behind you and wrapping ' + perJohn.getHisHer() + ' arms around your body.</p>' +
-			'<p>“How may I pleasure you, ' + perYou.getMaster() + '?” ' + capitalizeFirstLetter(perJohn.getHeShe()) + ' softly whispers into your ear' + (perJohn.isMan() ? ', and you can feel his bulge press against your butt' : '') + '.</p>'
+			'<p>“How may I pleasure you, ' + perYou.getMaster() + '?” ' + capitalize(perJohn.getHeShe()) + ' softly whispers into your ear' + (perJohn.isMan() ? ', and you can feel his bulge press against your butt' : '') + '.</p>'
 		);
 	} else if (bTess) {
 		md.write(
@@ -65,15 +53,15 @@ function ShowPlace231()
 	startQuestions();
 	
 	if (bJohn) {
-		addLinkToPlace(md, 'enjoy ' + nmJ + ' Adams', 231, 'type=johnsexenjoy');
-		if (perYourBody.FindItem(45) > 0 || perJohn.isMan()) addLinkToPlaceO(md, 'order ' + nmJ + ' to fuck you', 231, 'type=johnsexfuckyou');
-		if (perJohn.isMan()) addLinkToPlace(md, 'give ' + nmJ + ' a blowjob', 231, 'type=johnsexbjthem');
-		if (perYourBody.FindItem(45) > 0 || perYou.isMaleSex()) addLinkToPlace(md, 'fuck ' + nmJ, 231, 'type=johnsexfuckthem');
+		addLinkToPlace(md, 'enjoy ' + nmJ + ' Adams', 231, 'type=johnsexenjoy&who=' + sType);
+		if (perYourBody.FindItem(45) > 0 || perJohn.isMan()) addLinkToPlaceO(md, 'order ' + nmJ + ' to fuck you', 231, 'type=johnsexfuckyou&who=' + sType);
+		if (perJohn.isMan()) addLinkToPlace(md, 'give ' + nmJ + ' a blowjob', 231, 'type=johnsexbjthem&who=' + sType);
+		if (perYourBody.FindItem(45) > 0 || perYou.isMaleSex()) addLinkToPlace(md, 'fuck ' + nmJ, 231, 'type=johnsexfuckthem&who=' + sType);
 	}
 	if (bTess) {
-		addLinkToPlace(md, 'enjoy Tess Adams', 231, 'type=tesssexenjoy');
-		addLinkToPlace(md, 'enjoy Tess Adams tongue', 231, 'type=tesssexbj');
-		if (bJohn) addLinkToPlace(md, 'enjoy the couple', 231, 'type=johntesssex');
+		addLinkToPlace(md, 'enjoy Tess Adams', 231, 'type=tesssexenjoy&who=' + sType);
+		addLinkToPlace(md, 'enjoy Tess Adams tongue', 231, 'type=tesssexbj&who=' + sType);
+		if (bJohn) addLinkToPlace(md, 'enjoy the couple', 231, 'type=johntesssex&who=' + sType);
 	}
 		
 	addLinkToPlace(md, 'return to the living room', 230);

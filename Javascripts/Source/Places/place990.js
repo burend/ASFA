@@ -5,7 +5,8 @@ function ShowPlace990()
 	var md = WritePlaceHeader(false, isExplicit() && stage == "end" ? "td-left-large" : "");
 
 	var stage = getQueryParam("stage");
-	if (stage === "") perYou.showPerson("charmedbydavy-start.jpg");
+	if (perYou.folder.indexOf("Nobody") != -1) perDavy.showPerson("davy2.jpg");
+	else if (stage === "") perYou.showPerson("charmedbydavy-start.jpg");
 	else if (isExplicit() && stage == "end") {
 		if (!perYou.isBornMale()) perYou.showPersonX("charmedbydavy-enslaved.jpg");
 		else perYou.showPerson("charmedbydavy-enslaved.jpg");

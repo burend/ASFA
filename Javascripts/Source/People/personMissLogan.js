@@ -53,7 +53,7 @@ function RepliesMissLogan(nR)
 		addComments(
 			'<p>"Oh ' + myName + '. Are you here to discuss reproduction? ' +
 			(per.isNeuro() ? ' Oh, that\'s right you decided on neurology! The mind is the seat of all desire and needs!' : 'This is not a sex-ed discussion and I am not available for practical demonstrations.') + '"<p>' +
-			'<p>She leans over in a way that acceptuates her figure and breasts in particular. ' + 
+			'<p>She leans over in a way that accentuates her figure and breasts in particular. ' + 
 			(per.isNeuro() ? 'She picks up a tablet computer and refers to it often as she' : 'She then leans back crossing her legs and') +
 			' starts to discuss the assignment and then details of the subject.</p>'
 		);
@@ -75,7 +75,7 @@ function RepliesMissLogan(nR)
 function initialiseMissLogan()
 {
 	// Miss Logan
-	addPerson("Miss Logan", Math.random() < 0.5 ? 70 : 196, "MissLogan");
+	addPerson("Miss Logan", Math.random() < 0.5 ? 70 : 196, "MissLogan", "Natural");
 	per.getPossessionFace = function() { return "logan-face"; };
 	per.Replies = RepliesMissLogan;
 	
@@ -196,8 +196,8 @@ function initialiseMissLogan()
 			}
 			if (this.checkFlag(11) && clv == 1) {
 				// Have seen her tablet and can potentially charm her now in these events
-				md.write("<p>You now know the charm spell has focussed Miss. Logan on her interest in reproduction, and made it an obsession. ");
-				if (perYou.checkFlag(24)) md.write('Possibly you can try to use your knowedge of hypnosis to refocus her, on you!</p>');
+				md.write("<p>You now know the charm spell has focused Miss. Logan on her interest in reproduction, and made it an obsession. ");
+				if (perYou.checkFlag(24)) md.write('Possibly you can try to use your knowledge of hypnosis to refocus her, on you!</p>');
 				else md.write('If only you knew a different way to influence a person\'s thoughts and obsessions?</p>');
 			}
 		}
@@ -268,7 +268,7 @@ function initialiseMissLogan()
 				// General conversation
 				if (this.other == 6) {
 					addQuestionCO(md, 'cough to get Miss Logan\'s attention', "MissLogan", 6);
-					addLinkToPlaceM(md, "exit the room befre she notices you", 70);
+					addLinkToPlaceM(md, "exit the room before she notices you", 70);
 				} else if (this.other == 7) {
 					addLinkToPlaceM(md, "make an excuse and promise to work another time", 70, '', 'You make up an excuse and explain you will return another day. Miss. Logan waves goodbye as she continues to use her tablet computer');
 				} else if (this.other >= 9) {
@@ -302,6 +302,18 @@ function initialiseMissLogan()
 	per.showEventPopup = function()
 	{
 		var sState;
+		
+		if (sType == "transformage") {
+			CastTransform(1);
+			this.dress = "Younger";
+			showPopupWindow("Rejuvenated!",
+				this.addPersonString(Place == 269 ? "pool-charm1.jpg" : "class-reproduction-sex-tfa.jpg", "height:max%", "right") +
+				'Miss. Logan\'s appearance shifts but it is only subtle, and after a minute you realise she is looking younger. Nothing else is changed but she looks 10 years younger!</p>' +
+				'<p>You ask how she is feeling and she replies she is feeling fit, fertile and wonderful!',
+				'dispPlace()'
+			);
+			return true;
+		}
 		
 		// Futa reaction
 		if (sType == "loganxxx" && !this.checkFlag(7) && perYou.isFuta(true) && !perYou.isBornMale()) {
@@ -343,7 +355,7 @@ function initialiseMissLogan()
 				this.setFlag(11);
 				sState = (sType == "checktablet1a" ? 'a' : sType == "checktablet1b" ? 'b' : '');
 				showPopupWindow("Miss Logan's Tablet",
-					this.addPersonString("tablet1.jpg", "height:max%", "right") +
+					this.addPersonString("!tablet1.jpg", "height:max%", "right") +
 					(sState == 'b' ?
 						"You watch over Miss. Logan's shoulder as she browses images in her tablet, sighing every so often as she does." :
 						sState == 'a' ? 'Miss. Logan looks up as you stand, "Oh...you are finished...I have got and research some details on reproduction..." and she ushers you out into the hallway.</p>' +
@@ -358,9 +370,9 @@ function initialiseMissLogan()
 			} else if (sType == "checktablet2" || sType == "checktablet2a" || sType == "checktablet2b") {
 				sState = (sType == "checktablet2a" ? 'a' : sType == "checktablet2b" ? 'b' : '');
 				showPopupWindow("Miss Logan's Tablet",
-					this.addPersonString("tablet2.mp4", "height:max%", "right") +
+					this.addPersonString("!tablet2.jpg", "height:max%", "right") +
 					"The next is a video of a blonde woman riding a man cowgirl style and it must be Miss. Logan is fantasising this is her.</p>" +
-					"<p>You think the charm spell may of affected Miss. Logan and altered her interest in anatomy and reproduction into an obesssion and particularly of her being pregnant, of being bred! It does not seem she requires you to be involved in any way, despite the charm spell should of concentrated her attention on you, but instead she is now breeding obsessed!</p>" +
+					"<p>You think the charm spell may of affected Miss. Logan and altered her interest in anatomy and reproduction into an obsesssion and particularly of her being pregnant, of being bred! It does not seem she requires you to be involved in any way, despite the charm spell should of concentrated her attention on you, but instead she is now breeding obsessed!</p>" +
 					"<p>The more you think about it the more certain you are! " +
 					(perYou.checkFlag(24) ? "Maybe you can use your knowledge of hypnosis to adjust her obsession, so you are the focus of her obsession, but you think she will still want to be bred!" : "If only you could work out some way to refocus her obsession but the charm spell does not seem to work here, you need something else. Possibly some form of hypnosis?") + "</p><p>" +
 					(sState == 'b' ? "You return to your desk and leave Miss. Logan to her browsing." :
@@ -401,7 +413,7 @@ function initialiseMissLogan()
 				showPopupWindow("Miss Logan",
 					this.addPersonString("hallway1.jpg", "height:max%", "right") +
 					"In the hallway you see Miss. Logan your anatomy teacher, a teacher who most of her classes drool over her anatomy.</p>" +
-					"<p>She is a very casual teacher with an easy air of friendship who is happy to spend one-on-one time with her students. You have never heard any rumours about her, so strictly professional one-on-one time. She is a little firty at times, using innuendo often but not crossing the line.</p>" +
+					"<p>She is a very casual teacher with an easy air of friendship who is happy to spend one-on-one time with her students. You have never heard any rumours about her, so strictly professional one-on-one time. She is a little flirty at times, using innuendo often but not crossing the line.</p>" +
 					"<p>You have been avoiding her, there is a project you must complete, but you have been more interested in your pursuit of the Kurndorf Book. " +
 					"She told you many times that she sees something in you and thinks that you have a great talent in literature and biology and she prodded you way too many times to count to pursue this line of things. However, you never did care about the stuff she tried to ram into your head and overall, you were just too lazy to care about these boring topics. Then again, you are afraid of disappointing her and that’s why you are trying to hide from her.</p>" +
 					"<p>Miss. Logan comes to a halt as she notices you and runs towards you. This is it! You’re busted! You\'ve got to think something up about that unmade project! Or maybe she wants something else and there’s nothing to worry about? As you run through a series of options in your head Miss. Logan arrives right in front of you."
@@ -445,12 +457,12 @@ function initialiseMissLogan()
 			this.showPerson("class-neurology-charm1.jpg");
 			addPlaceTitle(md, "Miss Logan Charmed...Maybe?");
 			md.write(
-				'<p>As you cast the spell Miss Logan is staring at her tablet computer, absorbed in something she is browsing. You hear her sigh and lick her lips and see a flicker of change in her eyes, but she comtinues to look at the screen.</p>' +
+				'<p>As you cast the spell Miss Logan is staring at her tablet computer, absorbed in something she is browsing. You hear her sigh and lick her lips and see a flicker of change in her eyes, but she continues to look at the screen.</p>' +
 				'<p>You try to get her attention and guide her as the spell takes effect, but she just waves to you dismissively as if to say "not now". She then looks up at you, holding the tablet in one hand, and a pen in the other she had been using as a stylus. You get a impressive view of her cleavage and she looks at you, but you see her eyes are unchanged as she says,</p>' +
 				'<p>"Did you want me...I mean did you have any more questions for now. I have to go and take care of something..."</p>' +
 				'<p>It does seem she is under the spell but there is something odd, she is unfocused and you see she glances again at her tablet. Again you try to focus her back on you,</p>' +
 				'<p>"Yes Miss Logan, I need you to...." but you see she has stood up and gathered her papers and the tablet, and she interrupts you,</p>' +
-				'<p>"Sorry I really have to go and...I have to go. Come back ' + (getDay(true) === "Fri" ? 'Monday' : 'tomorrow') + ' and we can contine discussing your assignment.". Before you can try to say more she leaves the classroom.</p>' +
+				'<p>"Sorry I really have to go and...I have to go. Come back ' + (getDay(true) === "Fri" ? 'Monday' : 'tomorrow') + ' and we can continue discussing your assignment.". Before you can try to say more she leaves the classroom.</p>' +
 				'<p>You have a thought that she probably wants to leave and take care of her arousal in private, but she almost did not care you were there. You wonder if somehow whatever she was looking at on the tablet interfered with the spell, or at least distorted the effect. You will have to check with her another time and see how she is and try and reinforce the spell on her.</p>'
 			);
 
@@ -470,11 +482,11 @@ function initialiseMissLogan()
 			if (this.other < 13) this.showPerson("class-neurology4.jpg");
 			else this.showPerson("class-neurology5.jpg");
 			addPlaceTitle(md, "Working with Miss Logan");
-			md.write('<p>You sit down and start working on your neurology assignment again. Miss. Logan initially discusses where you are up to and goes over ideas andd discusses the field.</p>');
+			md.write('<p>You sit down and start working on your neurology assignment again. Miss. Logan initially discusses where you are up to and goes over ideas and discusses the field.</p>');
 			if (this.other == 10) {
 				// First time
 				md.write(
-					'<p>You can definitely see her attitude is different than usual, more sensual, and she difts when discussing the subject more into the psychology of seduction and physiology of arousal. While she is not <i>quite</i> flirting with you, it gets a bit borderline. You try to encourage her but she pulls back and returns to her desk, and does paperwork for a bit before returning to browsing something on her tablet computer.</p>' +
+					'<p>You can definitely see her attitude is different than usual, more sensual, and she drifts when discussing the subject more into the psychology of seduction and physiology of arousal. While she is not <i>quite</i> flirting with you, it gets a bit borderline. You try to encourage her but she pulls back and returns to her desk, and does paperwork for a bit before returning to browsing something on her tablet computer.</p>' +
 					'<p>She answers any questions you have but she gets more and more engrossed in whatever she is looking at. Unfortunately from where you are sitting you cannot make out what that is.</p>' +
 					'<p>Towards the end of the session you realise you probably only need one or two more to finish the assignment, but you could pad it out to three more, so you should try to work out what is happening here and how to complete Miss Logan\'s charm.</p>' +
 					'<p>You notice she is very engrossed and you hear a slight noise from her, was that a moan? You cannot see one of her hands, could she be touching herself, here in class? The spells arousal is definitely in her! Maybe as she was distracted?...</p>'
@@ -484,7 +496,7 @@ function initialiseMissLogan()
 			} else if (this.other == 11) {
 				// First time
 				md.write(
-					'<p>Miss. Logan is very distracted this time, and she is definitely aroused, but still it is not turned towards you. You know it is something to do with her tablet computer and whatever she is so obsessed by. Your guess is she is distracted by whatever that is and it is stopping her focussing on much else or at least that is what the spell has done to enhance what was previously an interest and blown it up into a full blown obsession. Unfortunately not an obsession with <i>you</i> but with something else!</p>' +
+					'<p>Miss. Logan is very distracted this time, and she is definitely aroused, but still it is not turned towards you. You know it is something to do with her tablet computer and whatever she is so obsessed by. Your guess is she is distracted by whatever that is and it is stopping her focusing on much else or at least that is what the spell has done to enhance what was previously an interest and blown it up into a full blown obsession. Unfortunately not an obsession with <i>you</i> but with something else!</p>' +
 					'<p>You know you cannot delay much more, probably only one or two more session at most, is there another spell you could use, or someone who could help?</p>'
 				);
 				startQuestions();
@@ -539,7 +551,7 @@ function initialiseMissLogan()
 				);	
 			} else if (getQueryParam("from") == "class") {
 				md.write(
-					'<p>You step over and touch her elbow and tell her "green aarvaark" and then call on your mana and she instantly goes into a trance.</p>' +
+					'<p>You step over and touch her elbow and tell her "green aardvaark" and then call on your mana and she instantly goes into a trance.</p>' +
 					'<p>You calmly talk to her about reproduction and mention avoiding other peoples help and you notice she starts to put her clothing back on as you do.</p>' +
 					'<p>You test that she is deeply in the trance and suggest her top is ripped and needs to adjust it. Instead she pulls it down exposing her breasts, and you hear her say something unclear, but probably "better to feed..." and you are sure she is still in a trance.</p>'
 				);	
@@ -748,7 +760,7 @@ function initialiseMissLogan()
 		if (sType == "charmlogan3") {
 			// Event: Charm Miss Logan: part 3
 			// Can be either in the Biology classroom or at the Broken Inn Hotel Pool			
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 			passTime(true);	// TODO: only once?
 			setPlaceKnown("LogansHouse");
 
@@ -840,7 +852,7 @@ function initialiseMissLogan()
 				AddRightColumn(md);
 				AddImageRandom("GenericSex/creampie", 2);
 			}
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -954,6 +966,7 @@ function initialiseMissLogan()
 		if (sType == "logantitfuck") {
 			// Tit-fuck. Female only in class or home
 			md = WritePlaceHeader();
+			if (!perYou.isMaleSex()) gameState.bExplicitNow = false;		// Force non-explicit for female cases
 			if (Place == 269) this.showPersonRandomRorX("pool-sex-tf", isExplicit() ? 2 : 1);
 			else if (Place == 440) this.showPersonRandomRorX("home-sex-tf", isExplicit() ? 2 : 1);
 			else if (this.isNeuro()) {
@@ -1018,7 +1031,7 @@ function initialiseMissLogan()
 		if (sType == "checkloganpc") {
 			// Browse her PC
 			md = WritePlaceHeader(false, 'td-left-med');
-			this.showPerson("desktop.jpg");
+			this.showPersonAnon("!desktop.jpg");
 			addPlaceTitle(md, "Miss Logan's Computer");
 
 			md.write(
@@ -1031,9 +1044,9 @@ function initialiseMissLogan()
 			addLinkToPlace(md, "browse the porn", Place, 'type=checkloganpcporn&stage=1');
 			addWatchTVLink(md, 'watch one of the videos', 'Miss Logan\'s home video',
 				'Only one of the videos will play at the moment, and it seems to be a fairly old one, Miss Logan is noticably younger</p>' +
-				'<p>You see her masturbating whie watching a video on her computer, she definitely likes her porn and seems to like recording herself!</p>' +
+				'<p>You see her masturbating while watching a video on her computer, she definitely likes her porn and seems to like recording herself!</p>' +
 				(!isExplicit() ? '<p>Unfortunately the video must be damaged and cuts out after a little while.</p>' : ''),
-				this.getImg((isExplicit() ? "Explicit/" : "") + 'video1.mp4')
+				this.getImg((isExplicit() ? "Explicit/" : "") + '!video1.jpg')
 			);
 			addLinkToPlace(md, "logoff the computer", Place);
 			WritePlaceFooter(md);
@@ -1043,7 +1056,7 @@ function initialiseMissLogan()
 			// Browse her PC porn
 			var stg = parseInt(getQueryParam("stage"), 10);
 			md = WritePlaceHeader();
-			this.showPersonAnon("pc" + stg + ".jpg");
+			this.showPersonAnon("!pc" + stg + ".jpg");
 			addPlaceTitle(md, "Miss Logan's Porn");
 			md.write(
 				'<p>Miss Logan\'s porn of pregnant women...all of them blonde like Miss. Logan...</p>'
@@ -1097,7 +1110,7 @@ function initialiseMissLogan()
 				this.showPersonRandomRorX("public-restaurant", 1);
 				addPlaceTitle(md, "Miss Logan\'s Sausage");
 				md.write(
-					'<p>As you enter the restaurant there is a bit of activity, the customers seem disturbed, louder than usual. You look around but do not clear see any reason but as you walk further inside you catch a glimpse off to one side of a couple passionately embracing. They are not exactly in plain view but are hardly hidden from view. Many customers are avoinding looking at them, but others are openly watching.</p>' +
+					'<p>As you enter the restaurant there is a bit of activity, the customers seem disturbed, louder than usual. You look around but do not clear see any reason but as you walk further inside you catch a glimpse off to one side of a couple passionately embracing. They are not exactly in plain view but are hardly hidden from view. Many customers are avoiding looking at them, but others are openly watching.</p>' +
 					'<p>You get a little clearer view and it is Miss Logan and some man you do not know, while you thought \'passionately embracing\' before, no that is not the case. They are fucking in the restaurant, probably more openly than they intended but still openly. Both have lost most of their clothing and Miss Logan is enthusiastically riding the man\'s cock, but at least she is doing so relatively quietly.</p>' +
 					'<p>It would seem your anatomy teacher has sought out someone to study reproduction with. You can just leave them \'alone\' but then again she is supposed to be <b>yours</b> so you could try to interrupt them before their study comes to a conclusion?</p>'
 				);
@@ -1259,7 +1272,7 @@ function initialiseMissLogan()
 				md.write(
 					'<p>“Jenny!”</p>' +
 					'<p>Miss Logan, half naked as she is, rushes to the door to give the waitress a hug. “I had no idea that you\'re a friend of ' + perYou.getPersonName() + '.”</p>' +
-					'<p>“' + capitalizeFirstLetter(perYou.getHeShe()) + '\'s a regular at the Bavaria Hut, just like you.” Jenny seems to be completely unphased by your teachers nudity. The two women trade kisses to the cheek like old friends and Miss Logan quickly asks the waitress to join her inside.</p>' +
+					'<p>“' + capitalize(perYou.getHeShe()) + '\'s a regular at the Bavaria Hut, just like you.” Jenny seems to be completely unphased by your teachers nudity. The two women trade kisses to the cheek like old friends and Miss Logan quickly asks the waitress to join her inside.</p>' +
 					'<p>“I heard that you decided to actually have a baby, now.”</p>' +
 					'<p>Jenny waste no time getting to the point, and Miss Logan beams as she answers.</p>' +
 					'<p>“Yes. I\'m not sure why but it feels like a good time to start a family.”</p>' +
@@ -1395,6 +1408,29 @@ function initialiseMissLogan()
 			}
 
 		}
+		
+		// Casting the transform spell
+		else if (no == 18 && cmd == 2) {
+
+			// At the general store?
+			if (this.isHere()) {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				setCommentsNoClick(
+					'<div class="conversebubble" style="cursor:default">' +
+					'<table><tr><td width="80%"><p>You decide to try the transformation spell on Miss Logan and tell her to prepare herself. As you start to recite the spell she falls into a sort of trance, and you get a clear impression that this change is <b>irreversible</b>.</p>'
+				);
+				addOptionLink("comments", 'let\'s do it', "ClearComments();dispPlace(" + Place + ",'type=transformage')");
+				addOptionLink("comments", "do not do it", "ClearComments();dispPlace()");
+				addComments('</td><td width="20%">' + this.addPersonString(Place == 269 ? "pool-talk.jpg" : "class-reproduction-charmedbreeder.jpg") + '</td></tr></table>');
+				return "handled";
+			}
+		}
 		return "";		// do nothing
 	};
 	
@@ -1434,7 +1470,7 @@ function initialiseMissLogan()
 				
 			case 45:
 				// SMS after last study session (neuro)
-				return receiveSMS('HotForTeacher', 'Hey there, like what you see, I need it hard and deep...', 'smsneuro3.mp4') + receiveSMS('MissLogan', perYou.getPersonName() + ', sorry, please delete my last message, you are not the one I need for this...');
+				return receiveSMS('HotForTeacher', 'Hey there, like what you see, I need it hard and deep...', 'smsneuro3.jpg') + receiveSMS('MissLogan', perYou.getPersonName() + ', sorry, please delete my last message, you are not the one I need for this...');
 		}
 		return '';
 	};

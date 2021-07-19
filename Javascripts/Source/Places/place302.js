@@ -2,23 +2,25 @@
 
 function ShowPlace302(stype)
 {
-	var md = WritePlaceHeader();
+	var md;
 
 	var perG = findPerson("Gina");
 	var clv = perG.getCharmedLevel();
 
 	if (stype == "locked") {
 		//Gina is NOT AT HOME and NOT POSSESSED and NOT CHARMED
+		md = WritePlaceHeaderNI();
 		showPopupWindow("Gina",
 			"<img src='Images/door3.jpg' style='width:25%;float:right;margin-left:5px' alt='Gina\'s House'>" +
 			'There is no answer at the door, there does not seem to be anyone at home. You are no burglar so there is no way in.',
 			"gotoPlace(229)"
 		);
-		WritePlaceFooter(md, '', true);  // Gina is not home and door is locked
+		WritePlaceFooter(md);  // Gina is not home and door is locked
 		return;
 
 	}
 	
+	md = WritePlaceHeader();
 	var myName = "";
 	if (perG.place == 302) // Gina is HOME
 	{

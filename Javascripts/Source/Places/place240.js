@@ -2,7 +2,7 @@
 
 function ShowPlace240()
 {
-	var md = WritePlaceHeader();
+	var md = !isDay() ? WritePlaceHeaderNI() : WritePlaceHeader();
 
 	var perMG = findPerson("MrsGranger");
 	var clv = perMG.getCharmedLevel();
@@ -22,7 +22,7 @@ function ShowPlace240()
 	// Choices
 	startQuestions();
 	addLinkToPlace(md, 'return to the main hall?', 239);
-	addLinkToPlace(md, 'explore the remainder of the museum?', 249);
+	addLinkToPlace(md, 'explore the remainder of the museum?', 242);
 
 	// People
 	if (perMG.place == 1) {
@@ -30,5 +30,5 @@ function ShowPlace240()
 		perMG.showPerson("granger-face.jpg", "100%", "", "!granger12a.jpg");
 	}
 
-	WritePlaceFooter(md, '', !isDay());
+	WritePlaceFooter(md);
 }

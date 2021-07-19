@@ -4,7 +4,8 @@ function ShowPlace973()
 {
 	var md = WritePlaceHeader();
 
-	if (perYou.isBornMale()) perYou.showPerson("charmedbydavy-start.jpg");
+	if (perYou.folder.indexOf("Nobody") != -1) perDavy.showPerson("davy2.jpg");
+	else if (perYou.isBornMale()) perYou.showPerson("charmedbydavy-start.jpg");
 	else perYou.showPerson("charmedbybeasley.jpg");
 
 	addPlaceTitle(md, perYou.getPersonName() + ' Under A Desire Spell');

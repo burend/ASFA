@@ -9,12 +9,12 @@ var arSMSImages;
 var nUnreadSMS;
 
 // An array of sms's by unique id's (they do not have to be contiguous)
-// NOTE: currently max allowed is 352, change saves.js, phone.js for arSMSImages from 11 (11 * 32 = 352)
+// NOTE: currently max allowed is 384, change saves.js, phone.js for arSMSImages from 12 (12 * 32 = 384)
 var arSMS;
 // Assigned id's
 // Ms. Titus	: 1, 2, 3, 4
 // Janet Kelly	: 10, 11, 12
-// Tracy			: 20, 21, 22, 23
+// Tracy			: 20, 21, 22, 23, 24
 // Amy+Charlie : 30, 31, 32, 33, 39(Charlie)
 // Ms.Jones		: 40, 41
 // Miss Logan	: 42, 43, 44, 45
@@ -42,13 +42,15 @@ var arSMS;
 // Abby			: 260, 261, 262
 // Miku			: 270, 271, 272
 //	Didi			: 280, 281
-// Kylie			: 290, 291, 292
+// Kylie			: 290, 291, 292, 293, 294, 295, 296
 // Robbins		: 300, 301(Mrs)
 // Kristin		: 310
-// Adamses		: 320 (Tess)
-// Emily			: 330, 331, 332
+// Adamses		: 320 (Tess) 325 (John)
+// Emily			: 330, 331, 332, (Tammy) 333, 334, 335
 // Nella			: 340, 341
-// Elian			: 346, 347, 348, 349, 350, 351		(NOTE: cannot currently exceed 351)
+// Elian+Melanie 346, 347, 348, 349, 350, 351, 352 (Elian) 355 (Melanie)
+// Sharon+Sav  : 360 (sharon), 365 (Savanna)
+// Aunt Brandi : 370
 
 // Popup to notify of an SMS
 function newSMS()
@@ -59,6 +61,9 @@ function newSMS()
 	addOptionLink("comments", 'check your SMS messages', "ClearComments();showRightBar(gameState.nRightBarState + 2,'sms')");
 	addOptionLink("comments", 'not now', "ClearComments()", "optionblock", "padding-top:0.25em;line-height:0.75em;width:200px;max-width:20%;max-width:14vw;margin-top:0.75em");
 	addComments('</td></tr></table>');
+	
+	var audio = new Audio('Sound/sms.mp3');
+	audio.play();
 }
 
 // Incoming SMS from another (entire exchange)
@@ -78,6 +83,8 @@ function replyToSMS(txt) { return '~' + txt + '~' + '|'; }
 // A popup when you receive a phone call
 function receiveCall(from, txt, nt)
 {
+	var audio = new Audio('Sound/ring.mp3');
+	audio.play();
 	bChat = false;
 	if (nt !== true) {
 		showRightBar(gameState.nRightBarState + 2);
@@ -90,9 +97,9 @@ function receiveCall(from, txt, nt)
 // from is a text string for phone calls, the person's name
 // for SMS's it is a number id
 // txt is only used for phone calls
-function makeCall(bSMS, from, txt)
+function makeCall(bSMS, from, txt, eok)
 {
-	if (sType !== "") return false;
+	if (sType !== "" && eok !== true) return false;
 	//if (bPopupShown || perYourBody.FindItem(2) === 0 || isCommentsShown()) return false;
 	if (bSMS) {
 		if (bNewSMS) return false;
@@ -250,8 +257,8 @@ function usePhone(stypein, no)
 	else if (stype == "clearphotos") {
 		// Clear all photos
 		arSMSImages = new Array();
-		// SMS Limit: 11 * 32 = 352
-		for (i = 0; i < 11; i++) arSMSImages.push(0);
+		// SMS Limit: 12 * 32 = 384
+		for (i = 0; i < 12; i++) arSMSImages.push(0);
 		sPhoneImage = '';
 		perYou.extra[7] = 0;
 		gameState.sPhoneState = "type=photos";
@@ -332,7 +339,7 @@ function getPhoneContents()
 		else img = "phonewallpaper" + String.fromCharCode(perYou.extra[7] + 49) + '.jpg';
 
 		s = '<script type="text/javascript">document.onkeypress = stopRKey</script>' +
-			'<div style="position:absolute;top:0;left:0;text-align:left;cursor:default;vertical-align:top;width:100%;height:100%;max-height:300vw;z-index:46;color:black">';
+			'<div style="position:absolute;top:0;left:0;text-align:left;cursor:default;vertical-align:top;width:100%;height:100%;max-height:300vw;z-index:56;color:black">';
 		if (img.indexOf(".mp4") != -1) s += '<video width="100%" autoplay muted loop style="position:absolute;width:95%;min-height:78%;max-height:78%;border-width:0;border-style:none;top:9%;left:5%;margin: 0px 0px 0px 0px;padding:0"><source src="Images/' + img + '" type="video/mp4"></video>';
 		//if (img.indexOf(".mp4") != -1) s += '<div style="loat:left;position:relative;width:95%;height=78%;top:0;left:0"><video width="100%" autoplay muted loop style="float:left;position:relative;vertical-align:top;max-width:95%;max-height:78%;width:auto;height:auto;border-width:0;border-style:none;top:9%;left:5%;margin: 0px 0px 0px 0px;padding:0"><source src="Images/' + img + '" type="video/mp4"></video></div>';
 		else s += '<img style="float:left;position:relative;vertical-align:top;width:95%;height:78%;object-fit:cover;object-position:9% 5%;border-width:0;border-style:none;top:9%;left:5%;margin: 0px 0px 0px 0px;padding:0" src="Images/' + img + '" alt="' + img + '" onerror="onerrorImage(this)">';
@@ -423,13 +430,17 @@ function getPhoneContents()
 						// Show the image
 						var sEx = p.isSMSImageDressVersion(id) ? '' : '!';
 						if (sr[2].indexOf("`") == -1) {
-							if (sr[2].indexOf(".mp4") != -1) s += '<video width="100%" autoplay muted loop style="width:60%;margin-left:15%"><source src="Images/' + p.getImg(sEx + sr[2]) + '" type="video/mp4"></video><span class="wp-icon" onclick="setWallpaper(\'' + p.getImg(sEx + sr[2]) + '\')"><img src="UI/wallpaperblack.png" width="24px" alt="Wall" title="Set as Wallpaper"></span>';
-							else s += '<img onerror="onerrorImage(this)" src="Images/' + p.getImg(sEx + sr[2]) + '" style="width:60%;margin-left:15%" alt="SMS"><span class="wp-icon" onclick="setWallpaper(\'' + p.getImg(sEx + sr[2]) + '\')"><img src="UI/wallpaperblack.png" width="24px" alt="Wall" title="Set as Wallpaper"></span>';
+							s += '<span>';
+							if (sr[2].indexOf(".mp4") != -1) s += '<span><video width="100%" autoplay muted loop style="width:60%;margin-left:15%"><source src="' + gameState.getImagesFolder() + p.getImg(sEx + sr[2]) + '" type="video/mp4"></video><span class="wp-icon" onclick="setWallpaper(\'' + p.getImg(sEx + sr[2]) + '\')"><img src="UI/wallpaperblack.png" width="24px" alt="Wall" title="Set as Wallpaper"></span>';
+							else s += '<img onerror="onerrorImage(this)" src="' + gameState.getImagesFolder() + p.getImg(sEx + sr[2]) + '" style="width:60%;margin-left:15%" alt="SMS"><span class="wp-icon" onclick="setWallpaper(\'' + p.getImg(sEx + sr[2]) + '\')"><img src="UI/wallpaperblack.png" width="24px" alt="Wall" title="Set as Wallpaper"></span>';
+							s += '</span>';
 						} else {
 							ir = sr[2].split("`");
 							if (ir.length > 1) {
-								if (ir[0].indexOf(".mp4") != -1) s += '<video width="100%" autoplay muted loop style="width:' + ir[1] + ';margin-left:10%"><source src="Images/' + p.getImg(sEx + ir[0]) + '" type="video/mp4"></video>';
-								else s += '<img onerror="onerrorImage(this)" src="Images/' + p.getImg(sEx + ir[0]) + '" style="width:' + ir[1] + ';margin-left:10%" alt="SMS">';
+								s += '<span>';
+								if (ir[0].indexOf(".mp4") != -1) s += '<video width="100%" autoplay muted loop style="width:' + ir[1] + ';margin-left:10%"><source src="' + gameState.getImagesFolder() + p.getImg(sEx + ir[0]) + '" type="video/mp4"></video>';
+								else s += '<img onerror="onerrorImage(this)" src="' + gameState.getImagesFolder() + p.getImg(sEx + ir[0]) + '" style="width:' + ir[1] + ';margin-left:10%" alt="SMS">';
+								s += '</span>';
 							} else s += sr[2];
 						}
 					}
@@ -460,7 +471,7 @@ function getPhoneContents()
 			var nSlaves = 0;
 			for (i = 0; i < arPeople.length - 3; i++) {
 				p = arPeople[i];
-				var ad = p.getPersonAddress();
+				var ad = p.getPersonAddress().split("Glenvale").join(gameState.sTown);
 				var sp = "";
 				if (p.isCharmedBy()) {
 					sp = '<tr title="' + p.getPersonNameShort() + '" id="' + p.uid + '"><td style="width:80%;padding-left:2px;border:1px solid grey">' + p.getPersonName(true) + '<br>';
@@ -505,15 +516,15 @@ function getPhoneContents()
 				'<td style="width:33%"><a href=\"javascript:setPersonFlag(\'Glenvale\',36,!checkPersonFlag(\'Glenvale\',36));usePhone(\'apps\')"><img style="width:95%" src="UI/smsnotification.png" alt="SMS" title="Enable SMS Notifications"/></a>' +
 				'<br><b>Alert new SMS\'s:</b><br>' + (checkPersonFlag('Glenvale',36) ? "No" : "Yes") + '</td>' +
 
-				'<td style="width:33%"><a href=\"javascript:setExplicit(!isExplicit(true));usePhone(\'apps\')"><img style="width:95%" src="UI/xrated.png" alt="Explicit" title="Explicit content filter"/></a>' +
+				'<td style="width:33%"><a href=\"javascript:setExplicit(!isExplicit(true));saveGlobalSettings();usePhone(\'apps\')"><img style="width:95%" src="UI/xrated.png" alt="Explicit" title="Explicit content filter"/></a>' +
 				'<br><b>Explicit Filter</b><br>' + (isExplicit(true) ? "disabled" : "enabled") + '</td>' +
 
 				'</tr><tr style="vertical-align:top">' +
 
-				'<td style="width:33%"><a href=\"javascript:toggleTheme();usePhone(\'apps\')"><img style="width:95%" src="UI/themes.png" alt="Theme" title="App to chamge the display theme"/></a>' +
+				'<td style="width:33%"><a href=\"javascript:toggleTheme();saveGlobalSettings();usePhone(\'apps\')"><img style="width:95%" src="UI/themes.png" alt="Theme" title="App to chamge the display theme"/></a>' +
 				'<br><b>Theme:</b><br>' + (nTheme === 0 ? "White" : nTheme == 1 ? "Black" : nTheme == 2 ? "Dark Grey" : "Theme " + nTheme) + ' Theme</td>' +
 
-				'<td style="width:33%"><a href=\"javascript:toggleIcons();usePhone(\'apps\')"><img style="width:95%" src="UI/icons.png" alt="Icon" title="App to change the item icon view"/></a>' +
+				'<td style="width:33%"><a href=\"javascript:toggleIcons();saveGlobalSettings();usePhone(\'apps\')"><img style="width:95%" src="UI/icons.png" alt="Icon" title="App to change the item icon view"/></a>' +
 				'<br><b>Inventory:</b><br>' + (gameState.bUseIcons ? "Icons" : "Text") + '</td>' +
 				
 				'<td style="width:33%"><a href=\"javascript:perYou.setFlag(40,!perYou.checkFlag(40));usePhone(\'apps\')"><img style="width:95%" src="UI/pink.png" alt="Icon" title="App to generate pink noise for a mostly dreamless sleep"/></a>' +
@@ -521,13 +532,13 @@ function getPhoneContents()
 
 				'</tr><tr style="vertical-align:top">' +
 
-				'<td style="width:33%"><a href=\"javascript:setRunes(' + (!isRunes()) + ');usePhone(\'apps\')"><img style="width:95%" src="UI/runes.png" alt="Runes" title="App to change runes to text when learning spells"/></a>' +
+				'<td style="width:33%"><a href=\"javascript:setRunes(' + (!isRunes()) + ');saveGlobalSettings();usePhone(\'apps\')"><img style="width:95%" src="UI/runes.png" alt="Runes" title="App to change runes to text when learning spells"/></a>' +
 				'<br><b>Spell Runes:</b><br>' + (isRunes() ? "Runes" : "Text Names") + '</td>' +
 
 				'<td style="width:33%"><a href=\"javascript:gameState.bAllowUndo=!gameState.bAllowUndo;usePhone(\'apps\')"><img style="width:95%" src="UI/undo.png" alt="UnDo" title="App to rnable undo in actions"/></a>' +
 				'<br><b>Undo:</b><br>' + (gameState.bAllowUndo ? "Yes" : "No") + '</td>' +
 
-				'<td style="width:33%"><a href=\"javascript:toggleBubble();usePhone(\'apps\')"><img style="width:95%" src="UI/textpos.png" alt="Bubbles" title="App to change the location of text bubbles"/></a>' +
+				'<td style="width:33%"><a href=\"javascript:toggleBubble();saveGlobalSettings();usePhone(\'apps\')"><img style="width:95%" src="UI/textpos.png" alt="Bubbles" title="App to change the location of text bubbles"/></a>' +
 				'<br><b>Bubbles:</b><br>' + (gameState.bCommentLL ? "Lower Left" : "Centered") + '</td>' +
 
 				'</tr><tr style="vertical-align:top">' +
@@ -596,6 +607,8 @@ function getPhoneContents()
 			else if (gameState.nMaxPhotos > 255) gameState.nMaxPhotos = 255;
 			if (nMaxSaves <= 0) nMaxSaves = 1;
 			else if (nMaxSaves > 255) nMaxSaves = 255;
+			saveGlobalSettings();
+			
 			var ps = '<p style="color:' + wpt + (perYou.extra[7] == 1 ? ";text-shadow:-1px 0px black, 0px 1px white, 1px 0px white, 0px -1px white;" : ";text-shadow:-1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;") + '">'
 			s += '<img style="position:absolute;width:100%;height:100%;display:inline-block;border-width:0;border-style:none;top:0;left:0;margin:0px 0px 0px 0px;padding:0" src="UI/phone3p.png" alt="phone">' +
 				'<div style="position:absolute;top:9%;left:6%;width:80%;text-align:center;">' +
@@ -622,7 +635,7 @@ function getPhoneContents()
 		} else {
 			// Main screen for the phone
 			s += '<img style="border:none;position:absolute;width:100%;height:100%;border-width:0;border-style:none;top:0;left:0;margin:0px 0px 0px 0px;padding:0" src="UI/phone3p.png" alt="phone">' +
-				'<p style="position:absolute;top:7vh;left:5%;color:' + wpt + (perYou.extra[7] == 1 ? ";text-shadow:-1px 0px black, 0px 1px white, 1px 0px white, 0px -1px white;" : ";text-shadow:-1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;") + ';font-size:large;width:89%;text-align:right"><b> ';
+				'<p style="position:absolute;top:7.2vh;left:5%;color:' + wpt + (perYou.extra[7] == 1 ? ";text-shadow:-1px 0px black, 0px 1px white, 1px 0px white, 0px -1px white;" : ";text-shadow:-1px 0px black, 0px 1px black, 1px 0px black, 0px -1px black;") + ';font-size:large;width:89%;text-align:right"><b> ';
 
 			hr = getHour();
 			hm = hr > 12 ? hr - 12 : hr;
@@ -633,7 +646,7 @@ function getPhoneContents()
 			s += ' </b></p>';
 
 			if (arSMS.length > 0) {
-				s += '<p style="position:absolute;top:8vh;left:9%;font-size:small"><a href="javascript:usePhone(\'sms\')"><img src="UI/sms' + wpt + '.png" style="float:left;height:2em;margin-right:0;margin-left:0" alt="SMS" title="View SMS"></a></p>';
+				s += '<p style="position:absolute;top:8.2vh;left:9%;font-size:small"><a href="javascript:usePhone(\'sms\')"><img src="UI/sms' + wpt + '.png" style="float:left;height:2em;margin-right:0;margin-left:0" alt="SMS" title="View SMS"></a></p>';
 				if (nUnreadSMS > 0) s += '<p onclick="usePhone(\'sms\')" style="position:absolute;top:10vh;left:12%;font-size:x-small;border:1px solid Blue;background-color:PowderBlue;cursor:pointer"><b>' + nUnreadSMS + ' new</b></p>';
 
 			}
@@ -647,12 +660,12 @@ function getPhoneContents()
 			else s += '<p style="position:absolute;top:calc(67vh + 4px);left:75%;width:80%;font-size:small"><a href="javascript:dispPlace(Place, \'type=playagame\')"><img src="UI/games.png" style="height:8vh;width:19%;margin-right:0;margin-left:0" alt="Game" title="Play a Game"></a></p>';
 
 		}
-		s += addOptionLink("string", "Off", "showRightBar(gameState.nRightBarState - 2)", "phoneblock", "top:87vh;left:9%;background-color:transparent;color:white;") + '</div>';
+		s += addOptionLink("string", "Off", "showRightBar(gameState.nRightBarState - 2)", "phoneblock", "left:0;text-align:center;top:88vh;width:99%;background-color:transparent;color:white;") + '</div>';
 
 	} else if (stype === "map") {
 		// Town Map
 		s = '<script type="text/javascript">document.onkeypress = stopRKey;initLightbox();</script>' +
-			'<div style="position:absolute;text-align:left;cursor:default;vertical-align:top;overflow-x:hidden;overflow-y:hidden;width:100%;height:100vh;min-height:100vh;z-index:46">' +
+			'<div style="position:absolute;text-align:left;cursor:default;vertical-align:top;overflow-x:hidden;overflow-y:hidden;width:100%;height:100vh;min-height:100vh;z-index:56">' +
 			"<img draggable='false' style='float:left;position:absolute;max-height:99%;vertical-align:top;padding:0;width:100%;position:absolute;max-height:100vh;height:100vh;border-left:2px;border-style:solid;border-bottom:none;border-top:none;border-right:none;left:0;top:0' src='UI/phone3l.png'>" +
 			'<div id="mapdiv" style="position:absolute;top:0px;left:0px;text-align:left;margin:' + (ha + 4) + 'px ' + (wa + 4) + 'px ' + ha + 'px ' + (la - 4) + 'px;height:85%;width:91%;overflow-y:auto;overflow-x:auto;background-image:url(UI/map/mapbg.jpg);background-size:cover">' +
 			getMapHTML("100%", "100%") +
@@ -664,7 +677,7 @@ function getPhoneContents()
 	} else if (stype == "photos") {
 		// View Photos
 		s = '<script type="text/javascript">document.onkeypress = stopRKey;initLightbox();gameState.bLBNoShow=false;</script>' +
-			'<div style="position:absolute;text-align:left;cursor:default;vertical-align:top;overflow-x:hidden;overflow-y:hidden;width:100%;height:100vh;min-height:100vh;z-index:46;border-style:none">' +
+			'<div style="position:absolute;text-align:left;cursor:default;vertical-align:top;overflow-x:hidden;overflow-y:hidden;width:100%;height:100vh;min-height:100vh;z-index:56;border-style:none">' +
 			'<div style="background-color:white;width:95%;height:92%;margin-left:2%;margin-top:2%;"></div>' +
 			"<img draggable='false' style='float:left;position:absolute;max-height:99%;vertical-align:top;padding:0;width:100%;position:absolute;max-height:100vh;height:100vh;border-left:2px;border-style:solid;border-bottom:none;border-top:none;border-right:none;left:0;top:0' src='UI/phone3l.png'>" +
 			'<div id="photosdiv" style="position:absolute;top:0px;left:0px;text-align:left;margin:' + (ha + 2) + 'px ' + wa + 'px ' + ha + 'px ' + la  + 'px;height:85%;width:92%;overflow:auto">';
@@ -700,8 +713,8 @@ function getPhoneContents()
 			iwall++;
 		}		
 
-		// SMS Limit: 11 * 32 = 352
-		for (id = 1; id < 353; id++) {
+		// SMS Limit: 12 * 32 = 384
+		for (id = 1; id < 385; id++) {
 			if (!checkBitFlag(arSMSImages[Math.floor((id - 1) / 32)], ((id - 1) % 32) + 1)) continue;
 
 			sDec = '';
@@ -759,7 +772,7 @@ function getPhoneContents()
 	} else if (stype === "gamebig") {
 		// Play a Game in large screen
 		s = '<script type="text/javascript">document.onkeypress = stopRKey;initLightbox();</script>' +
-			'<div style="position:absolute;text-align:left;cursor:default;vertical-align:top;overflow-x:hidden;overflow-y:hidden;width:100%;height:100vh;min-height:100vh;z-index:46">' +
+			'<div style="position:absolute;text-align:left;cursor:default;vertical-align:top;overflow-x:hidden;overflow-y:hidden;width:100%;height:100vh;min-height:100vh;z-index:56">' +
 			"<img draggable='false' style='float:left;position:absolute;max-height:99%;vertical-align:top;padding:0;width:100%;position:absolute;max-height:100vh;height:100vh;border-left:2px;border-style:solid;border-bottom:none;border-top:none;border-right:none;left:0;top:0' src='UI/phone3l.png'>" +
 			'<div id="game" style="position:absolute;top:0px;left:0px;text-align:left;margin:' + (ha + 4) + 'px ' + (wa + 4) + 'px ' + ha + 'px ' + (la - 4) + 'px;height:85%;width:91%;overflow-y:auto;overflow-x:auto;background-color:white">' +
 			addGame(sno) +
@@ -789,4 +802,4 @@ function initialisePhone()
 	sPhoneImage = '';
 	arSMS = [];
 	arPhotos = [];
-}
+};

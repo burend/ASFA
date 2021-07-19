@@ -177,7 +177,7 @@ function initialiseAdeleRoss()
 				// Blowjob/lick
 				if (isBritish()) {
 					// UK
-					md = WritePlaceHeader(false, perYou.isMaleSex() && isExplicit() ? '' : 'td-left-med');
+					md = WritePlaceHeader();
 					if (!isExplicit()) {
 						if (perYou.isMaleSex()) this.showPerson("adele-bedroom-sex-bjb.jpg");
 						else this.showPerson("adele-bedroom-sex-bjg.jpg");
@@ -192,9 +192,9 @@ function initialiseAdeleRoss()
 						if (perYou.isMaleSex()) this.showPerson("adele-bedroom-sex-bjb.jpg");
 						else this.showPerson("adele-bedroom-sex-bjg.jpg");
 					} else {
-						md = WritePlaceHeader(false, perYou.isMaleSex() ? '' : 'td-left-med');
-						if (perYou.isMaleSex()) this.showPerson("adele-bedroom-sex-bjg.jpg");
-						else this.showPersonRandomX("adele-bedroom-sex-bjb", 3);
+						md = WritePlaceHeader();
+						if (!perYou.isMaleSex()) this.showPerson("adele-bedroom-sex-bjg.jpg");
+						else this.showPersonRandomX("adele-bedroom-sex-bjb", 5);
 					}
 				}
 				if (perYou.isMaleSex()) {
@@ -219,18 +219,18 @@ function initialiseAdeleRoss()
 			if (sType == "adelefuck") {
 				// fuck her
 				if (!isExplicit()) {
-					md = WritePlaceHeader(false, !isBritish() && !perYou.isMaleSex() ? '' : 'td-left-med');
+					md = WritePlaceHeader();
 					if (perYou.isMaleSex()) this.showPerson("adele-bedroom-sex-fuckb.jpg");
 					else this.showPerson("adele-bedroom-sex-fuckg.jpg");
 				} else {
-					md = WritePlaceHeader(false, 'td-left-med');
+					md = WritePlaceHeader();
 					if (isBritish()) {
 						// UK
 						if (perYou.isMaleSex()) this.showPersonRandomX("adele-bedroom-sex-fuckb", 2);
 						else this.showPersonRandomX("adele-bedroom-sex-fuckg", 2);
 					} else {
 						// US
-						if (perYou.isMaleSex()) this.showPersonRandomX("adele-bedroom-sex-fuckb", 3);
+						if (perYou.isMaleSex()) this.showPersonRandomX("adele-bedroom-sex-fuckb", 6);
 						else this.showPerson("adele-bedroom-sex-fuckg.jpg");
 					}
 				}
@@ -255,9 +255,9 @@ function initialiseAdeleRoss()
 			}
 			if (sType == "adeletf") {
 				// tit-fuck her
-				md = WritePlaceHeader(false, isBritish() && isExplicit() ? 'td-left-med' : '');
+				md = WritePlaceHeader();
 				if (!isExplicit()) this.showPerson("adele-bedroom-sex-tf.jpg");
-				else this.showPersonRandomX("adele-bedroom-sex-tf", 3);
+				else this.showPersonRandomX("adele-bedroom-sex-tf", isBritish() ? 3 : 4);
 
 				addPlaceTitle(md, "Adele");
 				md.write(
@@ -407,7 +407,7 @@ function initialiseAdeleRoss()
 		if (sType == "pretrance" || (Place == 436 && this.isHere() && this.checkFlag(11) && !this.isCharmedBy())) {
 			setQueryParams("type=pretrance");
 			perCatherine = findPerson("Catherine");
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNIP();
 			perCatherine.showPerson(perCatherine.isCharmedBy() ? "catherine-watching4c.jpg" : "catherine-watching4.jpg");
 			addPlaceTitle(md, "Catherine and Adele");
 			md.write(
@@ -430,7 +430,7 @@ function initialiseAdeleRoss()
 			startQuestions();
 			if (perYou.checkFlag(25) && nMana > 10) addLinkToPlace(md, 'hypnotise Adele', 436, 'type=trance');
 			addLinkToPlace(md, 'not now', 37);
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 
@@ -438,7 +438,7 @@ function initialiseAdeleRoss()
 			setQueryParams("type=initialmeeting");
 			this.setFlag(5);
 			perYou.startQuest(8);
-			md = WritePlaceHeader();
+			md = WritePlaceHeaderNI();
 			this.showPerson("adele2.jpg");
 			addPlaceTitle(md, "Adele Protecting Her Sisters");
 
@@ -472,7 +472,7 @@ function initialiseAdeleRoss()
 			}
 			startQuestions();
 			addLinkToPlace(md, "leave the house", 37);
-			WritePlaceFooter(md, '', true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		if (sType == "charmadele1x1") {
@@ -549,7 +549,7 @@ function initialiseAdeleRoss()
 		this.showPersonRandom("poledance", 2);
 		addPlaceTitle(md, "Adele's Dance");
 		md.write(
-			'<p>Adele is wearing a soer of club outfit as she steps on stage, more the sort of thing Catherine would wear out. You wonder if Adele borrowed it from her but Adele is well endowed, but so is Catherine and when you think of it Amy too. Large breasts must run in their familiy and you are grateful for that!.</p>' +
+			'<p>Adele is wearing a sort of club outfit as she steps on stage, more the sort of thing Catherine would wear out. You wonder if Adele borrowed it from her but Adele is well endowed, but so is Catherine and when you think of it Amy too. Large breasts must run in their family and you are grateful for that!.</p>' +
 			'<p>Adele is smiling as she often does, and she strips for you and everyone else. Her figure, well large breasts, make her a popular dancer, but you get the feeling she is doing this for you as your loyal slave, not any other reason.</p>' +
 			'<p>After she sits with you for a while, attentive to you but she seem quite familiar with the place. You wonder if it is in her role as a police officer?</p>'
 		);

@@ -63,8 +63,8 @@ function ShowPlace87()
 	
 	// Choices
 	startQuestions();
-
-	if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the wild ranges', 26);		/* Do you know about the Wild Ranges? */
+	if (isPlaceKnown("Barn")) addLinkToPlace(md, 'visit the farm', 60);
+	if (isPlaceKnown("WildRanges")) addLinkToPlace(md, 'enter the Wild Ranges', 26);		/* Do you know about the Wild Ranges? */
 	addLinkToPlace(md, 'walk to the main park pathway?', 63);
 
 	WritePlaceFooter(md);

@@ -116,9 +116,9 @@ function alterComments(top, mxheight, click)
 function Reply(txt, ps, js, par, rf)
 {
 	bChatLeft = js !== undefined ? js.indexOf('bChatLeft=false') == -1 : true;
-	if (ps !== undefined) txt = '<p style="margin-top:0em;margin-bottom:0.5em;font-size:large"><b>' + GetPersonName(ps) + '</b></p>' + txt;
+	if (ps !== undefined && txt.indexOf("ClearComments(") == -1) txt = '<p style="margin-top:0em;margin-bottom:0.5em;font-size:large"><b>' + GetPersonName(ps) + '</b></p>' + txt;
 	if (txt !== undefined && txt !== "") {
-		if (txt.indexOf('conversebubble') == -1) {
+		if (txt.indexOf('conversebubble') == -1 && txt.indexOf("ClearComments(") == -1) {
 			WriteCommentsHeader();
 			addComments(txt);
 		} else setComments(txt);
@@ -159,15 +159,19 @@ function startQuestionsOnly(txt, clr, doc)
 
 	// Add the questions prompt
 	if (txt === undefined) txt = "Do you want to:";
-	if (clr !== '' && clr !== undefined) clr = clr == "clear" ? 'clear:both' : 'color:' + clr;
-	else clr = ''; //'clear:both';
+	if (clr !== '' && clr !== undefined) {
+		if (clr == "br") {
+			doc.write('<br>');
+			clr = '';
+		} else clr = clr == "clear" ? 'clear:both' : 'color:' + clr;
+	} else clr = ''; //'clear:both';
 	
 	doc.write('<p class="gblock" style="line-height:1em;padding-top:0;padding-bottom:0;margin-bottom:-6px;margin-top:-4px;font-size:medium;' + clr +'"><b>' + txt + '</b></p>');
 	bQuestionsShown = true;
 }
 function startQuestionsText(doc)
 {
-	//if (!doc) doc = mdCache;
+	if (!doc) doc = mdCache;
 
 	var bHex = isPlaceEnscribed(Place);
 	if (Place != 43 && bHex && (perDavy.checkFlag(9) || isSpellKnown("Teleport")) && sType === "") {
@@ -197,7 +201,7 @@ function startQuestionsText(doc)
 
 var bQuestionsShown;
 
-function startQuestions(txt, clr, doc)
+function startQuestions(txt, clr, doc, np)
 {
 	if (bQuestionsShown) return;
 	if (!doc) doc = mdCache;
@@ -209,8 +213,16 @@ function startQuestions(txt, clr, doc)
 	startQuestionsOnly(txt, clr, doc);
 
 	// Add any questions/actions
+	if (np !== true) showQuestionsPeople(doc);
+}
+function startQuestionsNP(txt, clr, doc) { startQuestions(txt, clr, doc, true); } 
+
+function showQuestionsPeople(doc)
+{
+	// Add any questions/actions
+	perYou.showPersonChat(true, doc);
 	var p;
-	for (var i = 0, ie = arPeople.length; i < ie; i++) {
+	for (var i = 0, ie = arPeople.length - 1; i < ie; i++) {
 		p = arPeople[i];
 		p.showPersonChat(true, doc);
 	}
@@ -306,7 +318,7 @@ function RepliesMisc(nR)
 	{
 		bChat = false;
 		setPlaceFlag("Museum", 3, false);	// Set safe as Open   SAFE CLOSED = FALSE
-		moveItem(29, 276);  // Place the Vase in that location
+		moveItem(29, 244);  // Place the Vase in that location
 		Place = 276;
 		addComments('<p><b>Museum</b></p>You open the safe.');
 	}
@@ -401,10 +413,11 @@ function RepliesMisc(nR)
 // Watch TV somewhere
 function addWatchTVLink(md, lnk, title, body, img, js)
 {
+	img = img.replace(".mp4", ".jpg");
 	js = js ? js + ';' : '';
 	var s;
 	if (img.indexOf(".mp4") != -1) s = '<video width="99%" muted autoplay loop style="display:block;position:relative;height:60vh;max-width:99%;border-width:0;border-style:none;top:0.5em;right:0;margin-left:auto;margin-right:auto;padding:0"><source src="Images/' + img + '" type="video/mp4"></video>';
-	else s = '<img style="display:block;position:relative;height:60vh;max-width:99%;border-width:0;border-style:none;top:0.5em;right:0;margin-left:auto;margin-right:auto;padding:0" src="Images/' + img + '" alt="' + img + '">';
+	else s = '<span width="99%"><img onerror="onerrorImage(this)" style="display:block;position:relative;height:60vh;max-width:99%;border-width:0;border-style:none;top:0.5em;right:0;margin-left:auto;margin-right:auto;padding:0" src="Images/' + img + '" alt="' + img + '"></span>';
 	addPopupLink(md, lnk, title,
 		'<table style="width:100%;height:80vh"><tr style="vertical-align:top"><td style="width:30%;padding-right:8px">' + body +
 		'</td><td style="width:70%">' + s + '<img style="border:none;position:absolute;width:70%;border-width:0;border-style:none;top:2em;right:0;margin:0px 0px 0px 0px;padding:0" src="UI/tv.png" alt="TV"></td></tr></table>',
@@ -416,14 +429,15 @@ function addWatchTVLink(md, lnk, title, body, img, js)
 // Watch Video on a phone somewhere
 function addWatchPhoneVideoLink(md, lnk, title, body, img, js)
 {
+	img = img.replace(".mp4", ".jpg");
 	js = js ? js + ';' : '';
 	var s;
 	if (img.indexOf(".mp4") != -1) s = '<video width="80%" muted autoplay loop style="display:block;position:relative;height:75vh;max-width:99%;border-width:0;border-style:none;top:0.5em;right:0;margin-left:auto;margin-right:auto;padding:0"><source src="Images/' + img + '" type="video/mp4"></video>';
-	else s = '<img style="display:block;position:relative;height:75vh;max-width:80%;border-width:0;border-style:none;top:0.5em;right:0;margin-left:auto;margin-right:auto;padding:0" src="Images/' + img + '" alt="' + img + '">';
+	else s = '<span width="99%"><img style="display:block;position:relative;height:75vh;max-width:80%;border-width:0;border-style:none;top:0.5em;right:0;margin-left:auto;margin-right:auto;padding:0" src="Images/' + img + '" alt="' + img + '"></span>';
 	addPopupLink(md, lnk, title,
 		'<table style="width:100%;height:80vh"><tr style="vertical-align:top">' +
 			'<td style="width:40%;padding-right:4px">' + body + '</td>' + 
-			'<td style="width:52%">' + s + '<img style="border:none;position:absolute;width:55%;max-height:83vh;border-width:0;border-style:none;top:2em;right:0;margin:0px 0px 0px 0px;padding:0" src="UI/phonevid.png" alt="Video"></td>' + 
+			'<td style="width:52%">' + s + '<img onerror="onerrorImage(this)" style="border:none;position:absolute;width:55%;max-height:83vh;border-width:0;border-style:none;top:2em;right:0;margin:0px 0px 0px 0px;padding:0" src="UI/phonevid.png" alt="Video"></td>' + 
 		'</tr></table>',
 		true,
 		js + 'WaitHere(3)'

@@ -11,11 +11,11 @@ function ShowPlace178()
 	startQuestions();
 
 	if (nFromPlace == 141) {
-		addLinkToPlace(md, "go to the wild ranges", 26);
+		addLinkToPlace(md, "go to the Wild Ranges", 26);
 		addLinkToPlace(md, "go to the sacred clearing", 141);
 	} else {
 		addLinkToPlace(md, "go to the sacred clearing", 141);		
-		addLinkToPlace(md, "go to the wild ranges", 26);
+		addLinkToPlace(md, "go to the Wild Ranges", 26);
 	}
 	WritePlaceFooter(md);
 }

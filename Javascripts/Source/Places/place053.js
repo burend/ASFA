@@ -192,7 +192,7 @@ function ShowPlace53(stype)
 	}
 	if (whereItem(48) == -53) addOptionLink(md, "remove the relic", "perYourBody.PutItem(48);gotoPlace(53)");
 	if (perLeanne.isHere()) addOptionLink(md, "say goodbye to Leanne for now", "movePerson('Leanne',450);gotoPlace(53)");
-	addLinkToPlace(md, 'exit the room?', 42);
+	addLinkToPlace(md, 'exit the room?', 52);
 
 	if (stype == "movegem" || stype == "vampabduct" || stype == "checkstatue") {
 		AddPeopleColumnMed(md);

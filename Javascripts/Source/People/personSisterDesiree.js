@@ -239,6 +239,40 @@ function initialiseSisterDesiree()
 				WritePlaceFooter(md);
 				return true;
 			} 
+			
+			if (sType == "bjdesiree") {
+				// BJ in Mother Superior's office
+				md = WritePlaceHeader();
+				if (isExplicit()) this.showPersonRandomX(addBGSuffix("cloisters-bj"), perYou.isMaleSex() ? 4 : 2);
+				else this.showPerson("cloisters-bj.jpg");
+
+				addPlaceTitle(md, "Teaching Your Disciple");
+
+				md.write(
+					'<p>You teach your disciple of your ways of passion, all while watched by Daria, her Mother Superior.</p>'
+				);
+				startQuestionsOnly();
+				addLinkToPlace(md, "talk more to them", Place);
+				WritePlaceFooter(md);
+				return true;				
+			}
+			if (sType == "fuckdesiree") {
+				// Fuck in Mother Superior's office
+				md = WritePlaceHeader();
+				if (isExplicit()) this.showPersonRandomX(addBGSuffix("cloisters-fuck"), 2);
+				else this.showPerson("cloisters-fuck.jpg");
+
+				addPlaceTitle(md, "Teaching Your Disciple");
+
+				md.write(
+					'<p>You teach your disciple of your ways of passion, all while watched by Daria, her Mther Superior.</p>'
+				);
+					
+				startQuestionsOnly();
+				addLinkToPlace(md, "talk more to them", Place);
+				WritePlaceFooter(md);
+				return true;					
+			}
 		}
 		
 		if (Place == 332) { 
@@ -249,7 +283,7 @@ function initialiseSisterDesiree()
 				perMS.moveThem(384);
 				this.moveThem(384);
 
-				md = WritePlaceHeader(false, "td-none");
+				md = WritePlaceHeader(false, "td-none", '', '', '', this.NoItems === 0);
 				addPlaceTitle(md, "Disciplining Desiree, the Disciple of Desire");
 
 				md.write('<p>');
@@ -271,7 +305,7 @@ function initialiseSisterDesiree()
 
 				startQuestions("Your vision fades");
 				addOptionLink(md, "...and the spell ends", "Dispossession()");
-				WritePlaceFooter(md, '', this.NoItems === 0);
+				WritePlaceFooter(md);
 				return true;
 			}			
 		
@@ -311,8 +345,13 @@ function initialiseSisterDesiree()
 					setPersonFlag("Daria", 4); //Set Mother Superior as "sick"
 				}
 
-				if (Math.random() < 0.5) this.showPerson("sister8.jpg");
-				else this.showPerson("sister10.jpg");
+				if (isExplicit()) {
+					if (Math.random() < 0.5) this.showPersonRandomX(addBGSuffix("courtyard-bj"), perYou.isMaleSex() ? 1 : 3);
+					else this.showPersonX(addBGSuffix("courtyard-fuck") + "a.jpg");
+				} else {
+					if (Math.random() < 0.5) this.showPerson("courtyard-bj.jpg");
+					else this.showPerson("courtyard-fuck.jpg");
+				}
 
 				addPlaceTitle(md, "Desiree, Disciple of Desire");
 
@@ -394,7 +433,7 @@ function initialiseSisterDesiree()
 				);
 				startQuestions();
 				addLinkToPlace(md, 'leave the office', 444);
-				AddRightColumnLarge(md);
+				AddPeopleColumnLarge(md);
 				this.showPersonRandom("sisterh4", 2);
 				WritePlaceFooter(md);
 				return true;
@@ -417,7 +456,7 @@ function initialiseSisterDesiree()
 				);
 				startQuestions("It is time..");
 				addLinkToPlaceC(md, '"Desiree do it!"', 443, "type=freeghost2");
-				AddRightColumnLarge(md);
+				AddPeopleColumnLarge(md);
 				findPerson("Ghost").showPerson("ghostnurse3.jpg");
 				WritePlaceFooter(md);
 				return true;
@@ -452,6 +491,24 @@ function initialiseSisterDesiree()
 				WritePlaceFooter(md);
 				return true;
 			}
+		}
+		
+				
+		if (sType == "endgame1desiree") {
+			// End Game - Sister Desiree AND Mother Superior is not charmed
+			md = WritePlaceHeader();
+			this.showPerson("pregnant.jpg");			
+			addPlaceTitle(md, "A Very Contagious Lesson for Sisters?");
+
+			md.write(
+				'<p>One day you visit your devoted acolyte Desiree at the church and meet her in the courtyard you first met her, She makes a exaggerated pose and removes most of her habit showing she has been devoted learning from Miss. Logan!</p>'
+			);
+			
+			startQuestions();	
+			// Add pregnancies/other
+			addEndGamePregnancies(md);		
+			WritePlaceFooter(md);
+			return true;				
 		}
 		
 		
@@ -592,7 +649,7 @@ function initialiseSisterDesiree()
 	per.showDancing = function()
 	{
 		var md = WritePlaceHeader();
-		this.showPersonRandom("!poledance", 2);
+		this.showPersonRandom("!poledance", 3);
 		addPlaceTitle(md, "Desiree\'s Dance");
 		md.write(
 			'<p>You see Sister Desiree...well here just Desiree...walk onto the stage with another woman, another beautiful blonde. You guess someone paired them together for the dance assuming they are a good match, and that they are!</p>' +
@@ -626,6 +683,11 @@ function initialiseSisterDesiree()
 	per.showPersonChat = function(bGeneral, md)
 	{
 		if (Place == 444 && this.isHere() && this.checkFlag(3)) addLinkToPlaceO(md, "follow Desiree", 444, 'type=desiree1');
+	};
+	
+	per.checkEndGamePregnancy = function()
+	{
+		return this.isCharmedBy() && !checkPersonFlag("Daria", 12) ? "endgame1desiree" : "";
 	};
 
 	// Items

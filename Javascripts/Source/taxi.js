@@ -50,7 +50,7 @@ function boardTaxi()
 			RideInTown(doc, InTown, 9, 'School');
 			RideInTown(doc, InTown, 2, 'Library');
 			RideInTown(doc, InTown, 44, 'Kollam Street');
-			RideInTown(doc, InTown, 194, 'Glenvale Shopping Center');
+			RideInTown(doc, InTown, 194, gameState.sTown + ' Shopping Center');
 			RideInTown(doc, InTown, 43, 'Yoolaroo Drive');
 			RideInTown(doc, InTown, 5, 'Dervish Rd');
 			RideInTown(doc, InTown, 37, "Cherise Rd");
@@ -99,7 +99,7 @@ function carRide(ps, askmsg, dropmsg)
 	RideTo(doc, 9, 'School');
 	RideTo(doc, 2, 'Library');
 	RideTo(doc, 44, 'Kollam Street');
-	RideTo(doc, 194, 'Glenvale Shopping Center');
+	RideTo(doc, 194, gameState.sTown + ' Shopping Center');
 	RideTo(doc, 43, 'Yoolaroo Drive');
 	RideTo(doc, 5, 'Dervish Road');
 	RideTo(doc, 37, "Cherise Rd");

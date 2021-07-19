@@ -15,7 +15,7 @@ function ShowPlace269(stype)
 	var plcL = perLogan.whereNow();
 	var plcDD = perDidi.whereNow();
 
-	if (plcL == 269) perLogan.showPerson(clvL > 1 ? "!poolc.jpg" : "!poolu.jpg");
+	if (plcL == 269) perLogan.showPerson(clvL > 1 ? "poolc.jpg" : "poolu.jpg");
 	else if (plcDD == 269) perDidi.showPerson(clvDD > 0 ? "poolc.jpg" : "poolu.jpg");
 	else if (isDay() && plcD == 269) perDonna.showPerson(clvD > 0 ? "donna3.jpg" : "donna1.jpg");
 	else if (perLauren.place == 269) perLauren.showPerson("lauren11b.jpg");
@@ -68,7 +68,6 @@ function ShowPlace269(stype)
 		if (!perDonna.checkFlag(1)) addQuestionR(md, 'introduce yourself to the girl', 'She ignores you.', 'Girl at the Pool', "setPersonFlag(\\'Donna\\',1);");
 		else if (clvD > 0) addLinkToPlace(md, 'spend time with Donna', Place, 'type=enjoy');
 	}
-	if (perLauren.place == 269) addLinkToPlace(md, 'speak to Lauren', 258, 'type=lauren1');
 	
 	// common questions
 	addLinkToPlace(md, "go to the Hotel Bar", 124);

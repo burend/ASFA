@@ -115,7 +115,7 @@ function initialiseNella()
 			showPopupWindow("Bondage Games",
 				this.addPersonString("!phone.jpg", "height:max%", "right") +
 				'The phone is showing an image of Nella bound with a large ball-gag in her mouth. Victoria makes a soft moan as she stirs in her bindings. She softly explains,</p>' +
-				'<p>"We often get together in the evenings to practise rigging and the various techniques of bondage, binding each other, and often both of us together in self-bondage."</p>' +
+				'<p>"We often get together in the evenings to practice rigging and the various techniques of bondage, binding each other, and often both of us together in self-bondage."</p>' +
 				'<p>She certainly seems aroused by her talk of bondage and submission. She finishes,</p>' +
 				'<p>"' + perYou.getMaster() + ' I can always arrange something with Nella, so you can play with your two bound slaves!"</p>' +
 				'<p>You forward the image from Victoria\'s phone to your own, and then turn your attention to your beautiful bound slave...'
@@ -167,7 +167,7 @@ function initialiseNella()
 				
 				md.write(
 					'<p>Kristin calls Nella and asks her you join you in her office. A little while later Nella enters the room,</p>' +
-					'<p>"Yes Ma\'am is there a problem?", and she looks at you cautiously, probably expecting to have to excort you from the building or even arrest you.</p>' +
+					'<p>"Yes Ma\'am is there a problem?", and she looks at you cautiously, probably expecting to have to escort you from the building or even arrest you.</p>' +
 					'<p>Kristin smiles, "No not at all, I just wanted you to join me here"</p>' +
 					'<p>Nella looks puzzled, "Well I have, can I return back to my duty?". Again she glances at you, clearly wondering who you are.</p>'
 				);
@@ -210,8 +210,8 @@ function initialiseNella()
 				
 				md.write(
 					'<p>You ask about her friend, and distractedly she says "Vicky" and you are sure she means Victoria at the Antiques ' + getShopStore(true) + '.</p>' +
-					'<p>By now she has stripped amost completely naked but she is still holding her batton, although somewhat suggestively. You continue to talk about her fantasy, playing up to it,</p>' +
-					'<p>"You can see now that I am completely in control of my slave Kristin" and you look at her. Kristin answers and she reaslises where you are going "Completely ' + perYou.getMaster() + ', as I am in charge of Nella, her job and her finances"<p>' +
+					'<p>By now she has stripped almost completely naked but she is still holding her baton, although somewhat suggestively. You continue to talk about her fantasy, playing up to it,</p>' +
+					'<p>"You can see now that I am completely in control of my slave Kristin" and you look at her. Kristin answers and she realises where you are going "Completely ' + perYou.getMaster() + ', as I am in charge of Nella, her job and her finances"<p>' +
 					'<p>This is just playing to Nella\'s fantasy to reinforce the charm and your control over her, Kristin had explained before she had not directly employed Nella. Nella smiles, you are unsure why, does she realise this or is it the spell? She says,</p>' +
 					'<p>"No, you cannot do that to me, force me to do all those perverted, humiliating things so I can keep my job!"</p>' +
 					'<p>No matter the reason she is fully playing to the spell and the fantasy.</p>'
@@ -232,9 +232,9 @@ function initialiseNella()
 				
 				md.write(
 					'<p>You play to her fantasy, and her new reality. You tell her "Yes I can and to prove it, Kristin-slave cum for me". Kristin smailes happy to play her part in controlling Nella for you and says "Yes ' + perYou.getMaster() + '"</p>' +
-					'<p>Kristin make a play of maturbating for you and she is clearly very aroused, she reaches her orgasm quickly and loudly. Once she does she looks at you and you tell her "Well done slave"</p>' +
+					'<p>Kristin make a play of masturbating for you and she is clearly very aroused, she reaches her orgasm quickly and loudly. Once she does she looks at you and you tell her "Well done slave"</p>' +
 					'<p>You look at Nella and she is practically standing at attention as she intently watches Kristin. You tell her that it is her turn now as your slave.</p>' +
-					'<p>She looks at you and moves her batton to start to pleasure herself, a mixture of reluctance and pleasure on her face.</p>'
+					'<p>She looks at you and moves her baton to start to pleasure herself, a mixture of reluctance and pleasure on her face.</p>'
 				);
 
 				startQuestions();
@@ -251,8 +251,8 @@ function initialiseNella()
 				addPlaceTitle(md, "Nella Under A Charm Spell");
 				
 				md.write(
-					'<p>Nella starts to almost ride her batton as if it were a long dildo, a slight look of defiance in her expression still. This is still playing to her fantasy of reluctant submission so you do not push that, but order her to masturbate.</p>' +
-					'<p>Nella is also obviously arounsed, both from the spell and from watching Kristin, and she quickly orgasms, holding in any cries or moans as part of her play at reluctance.</p>' +
+					'<p>Nella starts to almost ride her baton as if it were a long dildo, a slight look of defiance in her expression still. This is still playing to her fantasy of reluctant submission so you do not push that, but order her to masturbate.</p>' +
+					'<p>Nella is also obviously aroused, both from the spell and from watching Kristin, and she quickly orgasms, holding in any cries or moans as part of her play at reluctance.</p>' +
 					'<p>After you can see she is your slave, just with this air of defiance and reluctance, but deep down you feel there is nothing like that, she is your slave.</p>'
 				);
 
@@ -332,7 +332,7 @@ function initialiseNella()
 				'<p>She stops, "What, you are going to report me?" and you can immediately feel something though the spell, and see her arousal. You try to follow up on this,</p>' +
 				'<p>"Yes and if you do not do more you could lose your job, here <b>and at the bank</b>, I know Kristin very well", and you can see and feel she likes to play the part of the reluctant person, made to do things against her will.<p>' +
 				'<p>Before she answers you reinforce this and the spell, but lighten up a little, implying that this <i>might</i> just be a game. Nella objects but you realise she is both playing but also she has surrendered and is now yours. Maybe she is not a slave as such, but she will do as you want, just pretending to object.<p>' +
-				'<p>Here in the club is difficult to take things further with her submission, so you decide to leave it here and will have to contine this next time you meet. You will have to work out somewhere else though...</p>' +
+				'<p>Here in the club is difficult to take things further with her submission, so you decide to leave it here and will have to continue this next time you meet. You will have to work out somewhere else though...</p>' +
 				'<p>Just before you dismiss her, you mention the money you paid for her private dance. Nella immediately returns it to you...</p>'
 			);
 
@@ -500,7 +500,7 @@ function initialiseNella()
 			addPlaceTitle(md, "Nella Under A Charm Spell");
 			
 			md.write(
-				'<p>You do not know if Nella is playing the game or acually submitting, you doubt there really is a difference now. She positions herself behind Victoria and they both bow. Nella says,</p>' +
+				'<p>You do not know if Nella is playing the game or actually submitting, you doubt there really is a difference now. She positions herself behind Victoria and they both bow. Nella says,</p>' +
 				'<p>"I will never submit but your magic is too powerful, I cannot resist and have to do anything you want". You see her whisper to Victoria, "Wow this is such turn-on we have to play this more often" and you hear Victoria reply, "Always and forever"</p>'
 			);
 

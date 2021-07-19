@@ -6,6 +6,7 @@ function setConfig() {
 
 	//nMaxQuickSaves = 3;					// Quick Save Slots
 
+   //gameState.nMaxPhotos = 3;	      // Max photos in your phone, normally set via the Memory app
 	//gameState.nExplicitRatio = 0.8;	// With explicit images enabled, show explicit this ratio of the time, otherwise show the non-explicit version
 	//gameState.nMaxThemes = 2;			// Maximum number of themes - 1. If you increase you have to make a theme of your own. Please share it!
 

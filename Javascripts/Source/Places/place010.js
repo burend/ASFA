@@ -37,16 +37,24 @@ function ShowPlace10()
 		}
 	}
 
-	if (whereItem(1) == Place) md.write('<p>The topmost paper has Mr Beasley\'s name printed in bold.</p>');
 	if (!checkPlaceFlag("HistoryClassroom", 8)) {
 		setPlaceFlag("HistoryClassroom", 8);
 		md.write('<p>You return the Stears letter you found, probably stolen by Davy Robbins.</p>');
 	}
 
-	startQuestions();
+	if (whereItem(1) == Place) {
+		// Hint for Beasley's Paper
+		md.write(
+			'<p>The topmost paper, <b>at the top right</b> has Mr Beasley\'s name printed in bold and it about the events of the Kurndorf cult. This paper shoud contain valuable details for your research to find the book. You should <b>pick it up</b> and take it somewhere to study with many <b>reference books</b></p>' +
+			'<p><i>Reminder you pick up items by click on the icon or link next to the item. You use or give them to another person using the inventory on the right</i></p>'
+		);
+	}
+	
+	startQuestionsNP();
 
 	// Books you can find
 	addLinkToPlaceO(md, "examine the books in the bookcase", 27, '', '', 'passTime(true,2)');
+	showQuestionsPeople(md);		// Add custom person actions here, should normally be extra books
 	if (checkPlaceFlag("HistoryClassroom", 8)) addLinkToPlaceO(md, "re-read the letter from Mrs. Stears", 27, 'type=stears');
 	if (checkPlaceFlag("HistoryClassroom", 5)) addLinkToPlaceO(md, "re-read 'The Settlement of Glenvale'", 27, 'type=settlement');
 	if (checkPlaceFlag("Crypt", 2)) addLinkToPlaceO(md, "re-read 'The Death of Kurndorf'", 27, 'type=crypt');

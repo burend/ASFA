@@ -1,0 +1,42 @@
+In gIMP.
+
+
+1) Select eyes with the lasso tool.
+
+2) Create two layers.
+
+2) Colour entire eye in new layer 1 with:
+255 167 255 (pink)
+213   0   0 (demon red)
+143 219 109 (green, approx)
+
+3) Set layer to "soft light," ~40% opaque.
+
+4) Colour iris in the second new layer (same colour).
+
+5) Set layer to "grain merge,", ~80 opaque.
+
+6) If necessary, perform a gaussian blur (4-6 px) on your iris layer, to blend edges.
+
+
+
+
+Note: Demon eyes are only coloured in the iris.  Soft light layer is set to 'color.'
+
+
+Thrall eyes.
+
+1) Select eyes with the lasso tool.
+
+
+2) Create one layer.
+
+3) Paint eyes pure white.
+
+4) Invert selection, dye area pure black.
+
+5) Gaussian blur (5 px) until you like the look.
+
+6) Set layer, "lighten only."
+
+7) Smudge original layer until eye colour is consistent.

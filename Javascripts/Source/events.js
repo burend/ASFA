@@ -11,7 +11,7 @@ function findEventID(evt, id)
 	return undefined;
 }
 
-// Pick a vision
+// Pick an event
 function scanEvents(oBase, id, sTier)
 {
 	var bVision = sTier == "plot" || sTier == "mixed" || sTier == "light" || sTier == "hard";
@@ -58,60 +58,50 @@ function scanEvents(oBase, id, sTier)
 }
 	
 
-function GeneralEvent(oEvent, oEventExplicit)
+var oLastEvent, sLastTier;
+
+function GeneralEvent(oEvent, oEventExplicit, sTier)
 {
-	var perGlenvale = findPerson("Glenvale");
 	var idNew = 10;
 	var ids = getQueryParam("id");
 	var sChild = getQueryParam("child");
 	var id = ids === '' ? 0 : parseInt(ids, 10);
+	if (oEvent === undefined) oEvent = oLastEvent;
+	if (sTier === undefined) sTier = sLastTier;
+	else sLastTier = sTier;
 
-	// Select the Tier
-	var sTier = '';
-
-	var bExplicit = isExplicit() && sTier !== "plot";
-	var oSelected = scanVisions(bExplicit ? oVisionsExplicit : oVisions, id, sTier);
+	var bExplicit = isExplicit() && oEventExplicit !== undefined;
+	oLastEvent = bExplicit ? oEventExplicit : oEvent;
+	var oSelected = scanEvents(oLastEvent, id, sTier);
 	if (idNew != 10) {
 		// Initialise id's, only should happen once per playthrough
-		scanEvents(isExplicit() ? oVisionsExplicit : oVisions, 0, '');
-		scanEvents(isExplicit() ? oVisions : oVisionsExplicit, 0, '');
+		scanEvents(isExplicit() ? oEventExplicit : oEvent, 0, '');
+		scanEvents(isExplicit() ? oEvent : oEventExplicit, 0, '');
 	}
 	if (oSelected === undefined && bExplicit) {
 		bExplicit = false;
-		oSelected = scanEvents(oVisions, id, sTier);
+		oLastEvent = oEvent;
+		oSelected = scanEvents(oEvent, id, sTier);
 	}
-
-	// One found?
-	if (oSelected === undefined) {
-		// None left, reset flags for non-plot events and try again
-		for (var i = 75; i < (perGlenvale.flags.length * 32); i++) perGlenvale.setFlag(i, false);
-		return GeneralEvent(oEvent, oEventExplicit);
-	}
-
-	// Set details/flags
-	setQueryParams('type=hydromancy&id=' + oSelected.id);
-	perGlenvale.setFlag(oSelected.id + 64);
 	
 	// Show the found event
+	
+	// Do any updates for the event
+	if (oSelected.update !== undefined) oSelected.update();
+	
+	// Image
 	var imar = oSelected.image.split(",");
-	var md = WritePlaceHeader(false, "td-left" + (oSelected.width !== undefined && oSelected.width !== "" ? "-" + oSelected.width : ""));
-	if (oSelected.image.indexOf("Images/") == -1) {
-		for (var im = 0; im < imar.length; im++) imar[im] = "Visions/" + (bExplicit ? "Explicit/" : "") + imar[im];
-		AddImageArray(imar, "", "", '', '', undefined, md, 'none');
-	} else AddImageArray(imar, "", "", '', '', undefined, md, 'none');
+	var md = WritePlaceHeader();
+	for (var im = 0; im < imar.length; im++) imar[im] = (bExplicit ? "Explicit/" : "") + imar[im];
+	AddImageArray(imar, "", "", '', '', undefined, md, 'none');
 	addPlaceTitle(md, oSelected.title);
 
 	// Text
-	if (sChild === "" && oSelected.nostart !== true) md.write('<p>As you cast the spell a vision starts to form in the water, and it quickly expands and the vision is all you can see and hear.</p>');
 	md.write('<p>' + oSelected.text + '</p>');
-	if (oSelected.event === undefined && oSelected.noend !== true) md.write('<p>The vision starts to recede back and you can see normally and just see fragments in the pool of water that are slowly fading.</p>');
 
 	// Questions
 	startQuestions();
-	if (oSelected.event === undefined) {
-		addLinkToPlaceC(md, oSelected.button !== undefined ? oSelected.button : 'the vision ends...', Place);
-		if (nMana > 0 && oSelected.nomore !== true) addLinkToPlaceC(md, 'focus on more visions...', Place, 'type=hydromancy', '', '', 'CastClairvoyanceSpell(undefined,1)');
-	} else addLinkToPlaceC(md, oSelected.button !== undefined ? oSelected.button : 'the vision changes...', Place, oSelected.event !== undefined ? 'type=hydromancy&child=true&id=' + oSelected.event.id : '');
+	addLinkToPlaceC(md, oSelected.button !== undefined ? oSelected.button : 'you continue on', Place, oSelected.event !== undefined ? 'type=generalevent&child=true&id=' + oSelected.event.id : '');
 	WritePlaceFooter(md);
 	return true;
 }

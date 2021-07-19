@@ -8,7 +8,7 @@ function ShowPlace436()
 	
 	if (perCatherine.isHere() && !bAdeleHere && !perAdele.checkFlag(6)) return gotoPlaceDelayed(37, '', '<img src=\"UI/knock.png\" style=\"float:left;width:10%"><br>The house is securely locked, there might be someone home but there is no answer to the door or to their phones.');
 
-	var md = WritePlaceHeader();
+	var md = bAdeleHere ? WritePlaceHeaderNI() : WritePlaceHeader();
 
 	addPlaceTitle(md, "Ross Home Living Room", "livingroom5.jpg");
 	md.write('<p>Amy and Catherine live in a lovely old house. You are now in the living room, it is very clean and stylish.</p>');
@@ -27,5 +27,5 @@ function ShowPlace436()
 		perCatherine.showPerson(perCatherine.isCharmedBy() ? "catherine-watching1c.jpg" : "catherine-watching1.jpg");
 	}
 
-	WritePlaceFooter(md, '', bAdeleHere);
+	WritePlaceFooter(md);
 }

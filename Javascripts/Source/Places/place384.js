@@ -24,8 +24,14 @@ function ShowPlace384(stype)
 			);
 
 			startQuestions();
+			if (clv > 0 && perMS.checkFlag(12) && !perMS.checkFlag(14) && perMS.other < oChurch.cult.length) {
+				if (nMana >= 10) addLinkToPlace(md, 'Mother Superior has an offering for the \'Cult of Flesh\'', Place, "type=newcultmember");
+				else addLinkToPlace(md, 'Mother Superior has an offering for the \'Cult of Flesh\'', Place, '', 'Unfortunately you do not have enough mana at the moment to charm a new member of the cult');
+			}			
 			if (perYou.isMaleSex()) addLinkToPlace(md, 'fuck Daria', 384, 'type=fuck');
-			addLinkToPlace(md, perYou.isMaleSex() ? 'get a blowjob from Daria' : 'Daria will lick you', 384, 'type=bj');
+			addLinkToPlace(md, perYou.isMaleSex() ? 'get a blowjob from Daria' : 'Desiree will lick you', 384, 'type=bj');
+			if (perYou.isMaleSex()) addLinkToPlace(md, 'fuck Desiree', 384, 'type=fuckdesiree');
+			addLinkToPlace(md, perYou.isMaleSex() ? 'get a blowjob from Desiree' : 'Desiree will lick you', 384, 'type=bjdesiree');
 
 			addLinkToPlace(md, 'observe them worship each other', 384, 'type=lesbianboth');
 			if (perYou.isMaleSex()) addLinkToPlace(md, 'anoint them', 384, 'type=fuckboth');
@@ -48,6 +54,11 @@ function ShowPlace384(stype)
 				'<p>You see Sister Desiree, naked and her ass red from caning. She is lightly bound, more a token to show her submission to the Mother Superior. Despite the welts on her ass she is smiling, she seems to be enjoying her punishment. When she sees you her smile broadens.</p>' +
 				'<p>Well, you did not come here just to watch, now did you?</p>'
 			);
+			startQuestions();
+			if (clv > 0 && perMS.checkFlag(12) && !perMS.checkFlag(14) && perMS.other < oChurch.cult.length) {
+				if (nMana >= 10) addLinkToPlace(md, 'Mother Superior has an offering for the \'Cult of Flesh\'', Place, "type=newcultmember");
+				else addLinkToPlace(md, 'Mother Superior has an offering for the \'Cult of Flesh\'', Place, '', 'Unfortunately you do not have enough mana at the moment to charm a new member of the cult');
+			}
 		}
 
 	} else {
@@ -62,6 +73,10 @@ function ShowPlace384(stype)
 			);
 
 			startQuestions();
+			if (clv > 0 && perMS.checkFlag(12) && !perMS.checkFlag(14) && perMS.other < oChurch.cult.length) {
+				if (nMana >= 10) addLinkToPlace(md, 'Mother Superior has an offering for the \'Cult of Flesh\'', Place, "type=newcultmember");
+				else addLinkToPlace(md, 'Mother Superior has an offering for the \'Cult of Flesh\'', Place, '', 'Unfortunately you do not have enough mana at the moment to charm a new member of the cult');
+			}			
 			if (perYou.isMaleSex()) addLinkToPlace(md, 'fuck her', 384, 'type=fuck');
 			addLinkToPlace(md, perYou.isMaleSex() ? 'get a blowjob' : 'Daria will lick you', 384, 'type=bj');
 			
@@ -88,9 +103,7 @@ function ShowPlace384(stype)
 
 	}
 
-	// Choices
-	startQuestions();
-
+	// Common questions
 	if (clv === 0 && perMS.checkFlag(8) && perYou.checkFlag(25)) addLinkToPlace(md, 'hypnotise the Mother Superior', 384, 'trance=yes');
 
 	if (bDesireeHere && stype === "") {

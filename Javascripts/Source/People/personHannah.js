@@ -415,7 +415,7 @@ function initialiseHannah()
 					if (this.isCharmedBy()) {
 						md.write(
 							'<p>You order Hannah to completely free Jessica. It is a very quick process and less than 5 minutes later, Jessica is completely free of her bindings. While Hannah is cutting you quickly borrow from the barmaid some clothing for Jessica</p>' +
-							'<p>Hannah packs to leave as Jessica dressed and tells you "Pease return to me ' + perYou.getMaster() + '" and leaves.</p>' +
+							'<p>Hannah packs to leave as Jessica dressed and tells you "Please return to me ' + perYou.getMaster() + '" and leaves.</p>' +
 							'<p>Jessica says, "Thank you ' + myLord + ' I am grateful you freed me, those bindings completely blocked all my abilities, I was completely powerless. ' + myLord + ' I see that woman is one of your servants, so she is no danger to us. I need to find a place of safety as well, but there is something else I need to do first. I shall meet you upstairs, ' + myLord + '"</p>' +
 							'<p>You can see she wants to get out of here as soon as she can and almost runs out of the cellar.</p>'
 						);

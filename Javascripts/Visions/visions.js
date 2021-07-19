@@ -62,7 +62,7 @@ var oVisions = {
 				"<p>She moves towards an area you can't see, and the vision blurs into a new scene.</p>",
 		event : {
 			id: 6,
-			image: "Images/People/Gabby/gabby-mom2.jpg",
+			image: "Images/People/Mom/Natural/gabby-mom2.jpg",
 			title: "Mom",
 			nostart: true,
 			noend: true,

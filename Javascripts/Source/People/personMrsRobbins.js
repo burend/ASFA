@@ -183,7 +183,7 @@ function initialiseMrsRobbins()
 			if (sType == 'charmgeraldine1') {
 				md = WritePlaceHeader();
 
-				PlaceI(8, 242); // put Davy's Envelope to Mrs Beasley in Teachers Lounge
+				PlaceI(8, 72); // put Davy's Envelope to Mrs Beasley in Teachers Lounge
 
 				this.showPerson("robbins2.jpg");
 				addPlaceTitle(md, "Mrs. Robbins Under A Charm Spell");
@@ -334,7 +334,7 @@ function initialiseMrsRobbins()
 			this.addDancingLink(md, 'talk to Geraldine about dancing in the club',
 				'You ask Geraldine about the Avernus club and before finish she says,</p>' +
 				'<p>&quot;I have not been...oh dancing ' + perYou.getMaster() + ' certainly!&quot;. You ask her what she meant by \'have not been\' and she replies,</p>' +
-				'<p>"' + perYou.getMaster() + ' I used to regularly go to the club on their BDSM play nights, but not for a while now". For now you decide to leave it and you call Jade to arrange a dance for Geraldine. Jade agress but comments "Domme Geraldine dancing...".'
+				'<p>"' + perYou.getMaster() + ' I used to regularly go to the club on their BDSM play nights, but not for a while now". For now you decide to leave it and you call Jade to arrange a dance for Geraldine. Jade agrees but comments "Domme Geraldine dancing...".'
 			);
 			if (!perTina.isHere()) {
 				this.addSleepLink(md, "go to bed for the night with Geraldine", "Bedding Geraldine",
@@ -483,7 +483,7 @@ function initialiseMrsRobbins()
 		this.showPersonRandom("!poledance", 2);
 		addPlaceTitle(md, "Geraldine\'s Dance");
 		md.write(
-			'<p>Geraldine is wearing a dominatric instpired outfit and you can see she wear it with easy familiarity. Also a number of audience members call out to \'Mistress\'. You are unsure if this is playing along to the theme or actual familiarity.</p>' +
+			'<p>Geraldine is wearing a dominatrix inspired outfit and you can see she wear it with easy familiarity. Also a number of audience members call out to \'Mistress\'. You are unsure if this is playing along to the theme or actual familiarity.</p>' +
 			'<p>EGeralidine is not so much a dancer here but more like an athletic cosplayer, acting out her role. Not so much stripping as disciplining.</p>' +
 			'<p>After she joins you lookng happy and aroused. You ask her more about her previous visits here, and she promises to tell you more another time.</p>'
 		);

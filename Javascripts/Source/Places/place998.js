@@ -2,7 +2,7 @@
 
 function ShowPlace998()
 {
-	var md = WritePlaceHeader();
+	var md = WritePlaceHeaderNI();
 
 	perYou.setFlag(30);
 	
@@ -16,5 +16,5 @@ function ShowPlace998()
 	);
 
 	addRestartLink(md);
-	WritePlaceFooter(md, '', true);
+	WritePlaceFooter(md);
 }

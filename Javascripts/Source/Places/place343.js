@@ -16,7 +16,7 @@ function EndRitual()
 
 function ShowPlace343()
 {
-	var md = WritePlaceHeader(false, "", "black");
+	var md = WritePlaceHeaderNI(false, "", "black");
 
 	var mySex = perYou.getSex();
 
@@ -177,5 +177,5 @@ function ShowPlace343()
 
 	if (perKurndorf.getQuestRitual() == 195) addOptionLink(md, 'Leave everything and <b>RUN</b>!!', 'EndRitual()');
 
-	WritePlaceFooter(md, '', true);
+	WritePlaceFooter(md);
 }

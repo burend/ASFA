@@ -33,7 +33,7 @@ function FreeKate()
 function isKateTrusting()
 {
 	var perKate = findPerson("Kate");
-	if (perKate.isCharmedBy("Davy") || !perKate.checkFlag(4) || perKate.checkFlag(12)) return false;			// Under Davy's control or you pissed her off
+	if (perKate.isCharmedBy("Davy") || perKate.checkFlag(4) || perKate.checkFlag(12)) return false;			// Under Davy's control or you pissed her off
 	return (perKate.checkFlag(1) && perKate.checkFlag(2) && perKate.checkFlag(5) && perKate.checkFlag(11) && perKate.checkFlag(31));
 }
 
@@ -80,7 +80,7 @@ function LeaveKate7()
 function examineKatePhoto()
 {
 	bChat = false;
-	WriteComments('<table><tr><td style="vertical-align:top;width:40%"><img src="Images/People/Kate/holidayphoto1.jpg" style="width:95%;" alt="Photo"></td><td><p>An older image of Kate, she is a brunette in the image and as long as you have known her she has beem blonde.</p><p>You have no idea who the other woman is, probably an old friend of Kate?</p></td></tr></table>');
+	WriteComments('<table><tr><td style="vertical-align:top;width:40%"><img src="Images/People/Kate/holidayphoto1.jpg" style="width:95%;" alt="Photo"></td><td><p>An older image of Kate, she is a brunette in the image and as long as you have known her she has been blonde.</p><p>You have no idea who the other woman is, probably an old friend of Kate?</p></td></tr></table>');
 }
 
 function AlbumQuestions(md, alb, page)
@@ -91,6 +91,37 @@ function AlbumQuestions(md, alb, page)
 	if (page != 1) addLinkToPlace(md, 'previous page', Place, 'type=album' + alb + '&page=' + (page - 1), '', '', '', "hailblock' style='width:200px; margin-top:14px;");
 	addLinkToPlace(md, 'close the album', Place, '', '', '', '', "optionblock' style='width:200px;margin-left:5px;margin-right:auto;border-left-width:0;margin-top:14px;");
 	md.write('</td><td style="vertical-align:top; width:50%; padding:0; position:relative;">');
+}
+
+// Study puzzle =
+// Kate other 5 = Correct Answer
+//				  4 = Wrong
+function StudyPuzzle(doc, bTrue)
+{
+	var perKate = findPerson("Kate");
+	if (bTrue === undefined) {
+		bTrue = (perKate.checkFlag(33) && doc.Puzzle.answer.selectedIndex * 25 / 50 == 3.5) ||
+			(perKate.checkFlag(34) && doc.Puzzle.answer.value == 29) ||
+			(perKate.checkFlag(35) && doc.Puzzle.answer.value == 24);
+	}
+	if (bTrue) {
+		perKate.other = 5;
+		PlaceI(3, 7);
+		dispPlace(7, 'type=puzzleright');
+	} else {
+		perKate.other = 4;
+		dispPlace(7, 'type=puzzlewrong');
+	}
+}
+
+function ExitStudyPuzzleWrong()
+{
+	gotoPlace(3);
+	WriteComments(
+		'<p>Kate storms out of the study area and you follow behind her embarassed. As you decide what to do next the librarian at the reception desk calls out to you.</p>' +
+		'<p>"Excuse me, your friend dropped this, will you please give it to her or put it in the bin"</p>' +
+		'<p>You see it is some papers, just some notes, nothing she needs and also an envelope, nothing inside it. It was addressed to Kate at her home, you now know her address.</p>'
+	);
 }
 
 //  ******************** Kate Granger Path  *******************
@@ -248,23 +279,211 @@ function initialiseKateGranger()
 	{
 		var md, clv;
 		
-		if (Place == 7 && this.place == 3) {
-			// Study Puzzle at the Library Study Area
-			md = WritePlaceHeader();
-			this.showPerson("kate3a.jpg");
-			addPlaceTitle(md, "Study Area");
+		if (Place == 7) {
+			if (sType === "" && this.place == 3) {
+				// Study Puzzle at the Library Study Area
+				md = WritePlaceHeader();
+				this.showPerson("kate3a.jpg");
+				addPlaceTitle(md, "Study Area");
 
-			md.write(
-				'<p>"I\'m so glad that you can help," says Kate. "I have a terrible puzzle that\'s so impossible that I\'ll be here forever if I have to do it alone."</p>' +
-				'<p>You look at the desk and see the puzzle. It looks bloody difficult.</p>' +
-				'<p>Kate sees you hesitate. "You will help me, won\'t you? I... I need a friend."</p>'
-			);
+				md.write(
+					'<p>"I\'m so glad that you can help," says Kate. "I have a terrible puzzle that\'s so impossible that I\'ll be here forever if I have to do it alone."</p>' +
+					'<p>You look at the desk and see the puzzle. It looks bloody difficult.</p>' +
+					'<p>Kate sees you hesitate. "You will help me, won\'t you? I... I need a friend."</p>'
+				);
 
-			startQuestions();
-			addLinkToPlaceO(md, "try the puzzle", 12);
-			addOptionLink(md, "go to the library reception?", "LeaveKate7()");
-			WritePlaceFooter(md);
-			return true;
+				startQuestions();
+				addLinkToPlaceO(md, "try the puzzle", 7, 'type=mathpuzzle');
+				addOptionLink(md, "go to the library reception?", "LeaveKate7()");
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType == "mathpuzzle") {
+				md = WritePlaceHeader(true);
+				addPlaceTitle(md, "Mathematical Puzzle", '', 0, true);	
+				if (!this.checkFlag(33) && !this.checkFlag(34) && !this.checkFlag(35)) this.setFlag(Math.floor(Math.random() * 3) + 33);
+				md.write(
+					'<div style="text-align:left;">' +
+					'<table class="table-main"><tr>' +
+					'<td colspan="2"><p>This puzzle looks quite easy for a mathematical genius like yourself. Kate looks to you with ' +
+					  'hopeful expection. If only you could solve this problem she might like you a whole lot more but be careful. You only get one shot.</p>' +
+					'</td></tr><tr>' +
+					'<td style="width:40%">'
+				);
+				
+				if (!isPuzzles()) {
+					md.write(
+						'<img src="Images/math1.jpg" width="95%" style="float:left;margin:0px 5px" alt="Math"/>' +
+						'</td><td style="vertical-align:top">' +
+						'<p>You study Kate\'s math problem and you can see the answer to it</p>'
+					);
+					startQuestions();
+					addOptionLink(md, "answer the problem", "StudyPuzzle(document,true)");
+					addOptionLink(md, "be distracted by Kate and get the problem wrong", "StudyPuzzle(document,false)");
+
+				} else if (this.checkFlag(33)) {
+					md.write(
+						'<img src="Images/math1.jpg" width="95%" style="float:left;margin:0px 5px" alt="Math"/>' +
+						'</td><td style="vertical-align:top">' +
+						'<div style="text-align:center;">Insert the missing number: ' +
+						'<table style="background-image:url(' + getThemeFolder() + 'background.jpg);padding:0px;border-collapse:collapse;border-spacing:0;border-width:0;margin-right:auto;margin-left:auto">' +
+						'<tr><td style="text-align:center;width:30px"><p style="text-align:center;">6</p></td><td style="text-align:center;width:30px"><p style="text-align:center;">17</p></td><td style="text-align:center;width:30px"><p style="text-align:center;">37</p></td></tr>' +
+							'<tr><td style="text-align:center;width:30px"><p style="text-align:center;">10</p></td><td style="text-align:center;width:30px"><p style="text-align:center;">10</p></td><td style="text-align:center;width:30px"><p style="text-align:center;">25</p></td></tr>' +
+							'<tr><td style="text-align:center;width:30px"><p style="text-align:center;">12</p></td><td style="text-align:center;width:30px"><p style="text-align:center;">32</p></td><td style="text-align:center;width:30px"><p style="text-align:center;">?</p></td></tr>' +
+							'</table></div>' +
+						'<form method="POST" name="Puzzle">' +
+							'<p style="text-align:center;">Answer: ' +
+							'<select name="answer" size="1"> <option selected value="8">8</option><option value="12">12</option><option value="13">13</option><option value="16">16</option><option value="44">44</option><option value="52">52</option><option value="64">64</option><option value="70">70</option><option value="75">75</option><option value="90">90</option></select>'
+					);				
+				} else if (this.checkFlag(34)) {
+					AddImage("math2.jpg");
+					md.write(
+						'</td><td style="vertical-align:top">' +
+						'<div style="text-align:center;">Insert the missing number <span style="font-size:x-small">(puzzle by Stephen Froggatt)</span>: ' +
+						'<form method="POST" name="Puzzle">' +
+							'<p style="text-align:center;">Answer: ' +
+							'<select name="answer" size="1">' +
+								'<option selected value=7">7</option>' +
+								'<option value="12">12</option>' +
+								'<option value="13">13</option>' +
+								'<option value="16">16</option>' +
+								'<option value="29">29</option>' +
+								'<option value="52">52</option>' +
+								'<option value="64">64</option>' +
+								'<option value="70">70</option>' +
+								'<option value="75">75</option>' +
+								'<option value="90">90</option>' +
+							'</select>'
+					);					
+				} else {
+					AddImage("math3.jpg");
+					md.write(
+						'</td><td style="vertical-align:top">' +
+						'<div style="text-align:center;">Insert the missing number <span style="font-size:x-small">(puzzle by Stephen Froggatt)</span>: ' +
+						'<form method="POST" name="Puzzle">' +
+							'<p style="text-align:center;">Answer: ' +
+							'<select name="answer" size="1">' +
+								'<option selected value="8">8</option>' +
+								'<option value="12">12</option>' +
+								'<option value="13">13</option>' +
+								'<option value="24">24</option>' +
+								'<option value="44">44</option>' +
+								'<option value="56">56</option>' +
+								'<option value="64">64</option>' +
+								'<option value="79">79</option>' +
+								'<option value="75">75</option>' +
+								'<option value="90">90</option>' +
+							'</select>'
+					);
+				}
+			
+				if (isPuzzles()) {
+					md.write(' <input type="button" name="button" value="Answer" onClick="StudyPuzzle(document)"></p></form>');
+					startQuestions('If it is too hard then:');
+				}
+				addOptionLink(md, "go to the library reception?", "LeaveKate7()");
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType == "puzzlewrong" || this.other == 4) {
+				// Wrong!!
+				md = WritePlaceHeader(false, "td-center");
+				this.place = 1000; // Move Kate out of the Library so that you can't try again if you leave.
+				this.charmThem(4, "Davy");	// now charmed by Davy
+				this.other = 999; //Put Kate at the "end" of her path
+				setPlaceKnown("GrangerHouse"); // Sets it so that you will always know where Kate's address is
+				setPlaceKnown("Alley");  //Know the Alley
+				this.setFlag(4);		// Really pissed her off!!!
+
+				this.showPerson("kate3b.jpg");
+
+				addPlaceTitle(md, "Wrong Answer");
+
+				md.write(
+					'<p>Kate glares.</p>' +
+					'<p>"You liar!" she exclaims. "How dare you lie to me about your mathematics exam. I should have known better than to trust an imbecile like you. Ha! If ever I see your face again then it will be one too many times!"</p>' +
+					'<p>Speechless about being discovered, you try to back away. You are so embarrassed you can not answer her accusations.</p>'
+				);
+
+				startQuestions();
+				addOptionLink(md, "go to the library reception?", "ExitStudyPuzzleWrong()");
+				WritePlaceFooter(md);
+				return true;
+			} else if (sType === "puzzleright") {
+				// got the puzzle right
+				md = WritePlaceHeader(false, "td-center");
+				this.place = 1;  // Place Kate @ Home
+
+				addPlaceTitle(md, "Right Answer", '', 0, true);
+
+				md.write(
+					'<p>Kate beams a smile. "Oh!" she exclaims. "How did you ever solve it so quickly? I have been working on this problem since Tuesday. You must be a genius."</p>' +
+					'<p>You brag about your finesse in mathematics and how you could solve as many problems as anyone could dish out.</p>' +
+					'<p>Seeing Kate respond so favourably you start to wonder whether the rumours about her are really true. Maybe she is as horny as Davy Robbins has claimed.' +
+					'You feel your ' + (perYou.isMaleSex() ? 'dick' : 'nipples') +
+					' stiffen in arousal as she leans towards you, and you find it difficult to avoid staring at her cleavage. You begin to wonder what it would be like to have the school nerd for your own.</p>' +
+					'<p>"Maybe we could spend some more time together?" she suggests, handing you a slip of paper.</p><p>' +
+
+					'<p>You look at the paper. It has Kate\'s address on it. "Thanks!" you reply, almost too keenly. "I\'m actually doing some research into the old book that Mr Beasley talked about today. Can you help me by finding out what magic is around town?"</p>' +
+					'<p>"Sure, ' + perYou.getPersonName() + '. I\'ll look around the library and let you know what I find."</p>' +
+					'<p>You reply, "Much appreciated."</p>' +
+
+					'<p>Your eyes are drawn back towards Kate\'s cleavage, and you think she might have noticed, you are tempted to look more openly and be damned for doing! Then again her rear is very round and tempting...</p>'
+				);
+
+				startQuestions();
+				addLinkToPlaceO(md, 'look at her cleavage', Place, 'type=cleavage');
+				addLinkToPlaceO(md, "'accidentally' touch her ass", Place, 'type=ass');
+				addLinkToPlaceO(md, "go to the library reception?", 3);
+				AddPeopleColumnLarge(md);
+				this.showPerson("kate3c.jpg");
+				WritePlaceFooter(md);
+				return true;
+
+			} else if (sType == "cleavage") {
+				// Staring
+				md = WritePlaceHeader(false, "td-center");
+				this.setFlag(5);
+
+				addPlaceTitle(md, "Damn!", '', 0, true);
+
+				md.write(
+					'<p>You know Kate saw you looking at her breasts, so you decide you might as well be shouted at or slapped for the works. You look at her large breasts with great appreciation, making no effort to hide it, fully expecting to pay for it in pain, either verbal or physical.</p>' +
+					'<p>Kate stands up, and just says "I..I should leave now, I need to get some things back at home"</p>' +
+					'<p>You are surprised, she does not look angry! As you look she straghtens her top and accidentally does so in a way that further accentuates her breasts. It has to be an accident, doesn\'t it?</p>' +
+					'<p>As you puzzle this over, Kate leaves giving you a little wave goodbye and says \'See you soon?\'</p><p>'
+				);
+
+				startQuestions();
+				addLinkToPlaceO(md, "go to the library reception?", 3);
+
+				AddPeopleColumnLarge(md);
+				this.showPerson("kate3d.jpg");
+				WritePlaceFooter(md);
+				return true;
+				
+			} else if (sType == "ass") {
+				// Touch
+				md = WritePlaceHeader(false, "td-center");
+				this.setFlag(5);
+
+				addPlaceTitle(md, "Oops!", '', 0, true);
+
+				md.write(
+					'<p>You know Kate saw you looking at her breasts, so you look away and walk with her back towards the main area of the library. As she steps ahead, you reach out and \'accidentally\' put your hand on her rear. You immediately expect to be slapped but it was worth it!</p>' +
+					'<p>Kate looks around at you and just says "I..I should leave now, I need to get some things back at home"</p>' +
+					'<p>She looks a little annoyed but to your surprise she does not look angry! As you look she almost poses to accentuate her figure and her lovely rear-end. It has to be an accident, doesn\'t it?</p>' +
+					'<p>As you puzzle this over, Kate leaves and says \'See you soon?\'</p><p>'
+				);
+
+				startQuestions();
+				addLinkToPlaceO(md, "go to the library reception?", 3);
+
+				AddPeopleColumnLarge(md);
+				this.showPerson("kate3e.jpg");
+				WritePlaceFooter(md);
+				return true;
+			}
 		}
 		
 		if (sType == "katepool") {
@@ -389,7 +608,7 @@ function initialiseKateGranger()
 					case 12:
 						addPlaceTitle(md, "Day 3 - Hot breakfast", '', 0, true);
 						md.write(
-							'<div style="height:55%;height:55vh"><p><i>Finally talked Kate into loossening up more, she decided to go \'no panties\' today!</i>' +
+							'<div style="height:55%;height:55vh"><p><i>Finally talked Kate into loosening up more, she decided to go \'no panties\' today!</i>' +
 							'</p>');
 						AlbumQuestions(md, 1, page);
 						this.showPerson("katepicsday3-1.jpg", "height:85vh", "right");
@@ -738,7 +957,7 @@ function initialiseKateGranger()
 			addPlaceTitle(md, "Passionate Embrace");
 
 			md.write(
-				'<p>You take Kate into your arms and passionately kiss her, and you both start to strip each others clothing. You touch her large breasts and she sighs in passion, but when you touch her lower down, she shys away, and says,</p>' +
+				'<p>You take Kate into your arms and passionately kiss her, and you both start to strip each others clothing. You touch her large breasts and she sighs in passion, but when you touch her lower down, she shies away, and says,</p>' +
 				'<p>"For now just let me please you...another time for...you know.."</p>');
 			if (perYou.isMaleSex()) {
 				if (img.indexOf("kate17hba.jpg") != -1) {

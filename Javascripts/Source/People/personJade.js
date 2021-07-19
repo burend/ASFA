@@ -32,8 +32,8 @@ function RepliesJade(nR)
 	else if (nR == 668)
 	{
 		addComments(
-			'"' + myName + ', there are ways but are very difficult and require rare insight into demons and how they possess people. I am not foolish enough to do deminoc possessions, unlike you". You try to argue that it was not you who did it, but she dismisses you and continues speaking over you,.</p>' +
-			'<p>"You need someone who has had first hand experience or is an idiot who dabbles in demoonic possessions."</p>'
+			'"' + myName + ', there are ways but are very difficult and require rare insight into demons and how they possess people. I am not foolish enough to do demonic possessions, unlike you". You try to argue that it was not you who did it, but she dismisses you and continues speaking over you,.</p>' +
+			'<p>"You need someone who has had first hand experience or is an idiot who dabbles in demonic possessions."</p>'
 		);
 		this.setFlag(8);
 	}
@@ -82,7 +82,7 @@ function RepliesJade(nR)
 	{
 		addComments(
 			'You ask about binding demons, if you should know their complete, true name. She looks at you,</p>' +
-			'<p>"Really, are you going to go the path of Kurndorf and weild the power of demons. Are you willing to make the sacrifices to learn the name and then to accept their nature?"</p>' +
+			'<p>"Really, are you going to go the path of Kurndorf and wield the power of demons. Are you willing to make the sacrifices to learn the name and then to accept their nature?"</p>' +
 			'<p>You hesitate, you certainly do not want to become another Kurndorf and have his fate, and you state that. Jade shakes her head,</p>' +
 			'<p>"Demons are not human, do not expect one to become a cute "demon-girl" girlfriend, no matter how pretty and blonde they are. Their nature is torment, to punish to spread chaos"</p>' +
 			'<p>You are not sure this all applies to Elian but then again how much do you know about her. Still you want to know how to proceed and ask again. Jade answers simply,</p>' +
@@ -250,7 +250,7 @@ function initialiseJade()
 			if (perYou.isBornMale()) {
 				md.write(
 					'<p>She smiles and just states, "Strip". You are having second thoughts about this and hesitate, and she swats her whip on your jean-clad ass. She smiles and repeats, "Strip"</p>' +
-					'<p>You grit your teeth and decide you may as well go through with it, and strip, she has you lie down on your back and puts on her strap-on and lucricates it to your relief.<p>' +
+					'<p>You grit your teeth and decide you may as well go through with it, and strip, she has you lie down on your back and puts on her strap-on and lubricates it to your relief.<p>' +
 					'<p><i>scene to follow</i></p>' +
 					'<p>After she finishes, she allows you to redress and says,</p>' +
 					'<p>"Our contract is complete, ask your questions or requests"</p>'
@@ -258,9 +258,9 @@ function initialiseJade()
 			} else {
 				AddCash(10);
 				md.write(
-					'<p>She offers you a changing room but you initially refuse until she says that you are wearing too much to dance properly. You quickly strip off some clothing and head bac to her room, she stops you, and gestures toward the main area of the club. She meant for you to dance publically! Youstart to refuse but she stops you,</p>' +
+					'<p>She offers you a changing room but you initially refuse until she says that you are wearing too much to dance properly. You quickly strip off some clothing and head bac to her room, she stops you, and gestures toward the main area of the club. She meant for you to dance publicly! You start to refuse but she stops you,</p>' +
 					'<p>"You have come this far, show me your courage and your body", you suppose she is right, you might as well get this over with. You step out and Jade introduces you as "Everyone enjoy a new performer, the Witch ' + perYou.getPersonName() + '!" and there is a light applause.</p>' +
-					'<p>While this is not something you have really done <b>much</b> of before, you did once play around with Tracy and she gave you a surprisigngly good lesson but it was a while ago. You start out a bit tentatively but quickly get used to it and actually start to enjoy it.<p>' +
+					'<p>While this is not something you have really done <b>much</b> of before, you did once play around with Tracy and she gave you a surprisingly good lesson but it was a while ago. You start out a bit tentatively but quickly get used to it and actually start to enjoy it.<p>' +
 					'<p>You finish, panting to some more applause and actually a few tips! Jade escorts you back to her room and tells you,</p>' +
 					'<p>"Our contract is complete, ask your questions or requests"</p>'
 				);
@@ -281,7 +281,7 @@ function initialiseJade()
 			md.write(
 				'<p>You whisper the words of the charm spell, but Jade does not react except to smile,</p>' +
 				'<p>"Domination and control is my expertise, that of people and demons. I know of that forbidden spell you just tried to use on me, and I am quite protected by a <b>contract</b>. You are a fool, you should control people of their own free will, it is so much more satisfying."</p>' +
-				'<p>She steps over and slaps you and then prders you, "Get out"</p>' +
+				'<p>She steps over and slaps you and then orders you, "Get out"</p>' +
 				'<p>You have no choice but to leave, hopefully she will calm down later.</p>'
 			);
 			startQuestions();

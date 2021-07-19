@@ -103,7 +103,13 @@ function setPlaceEnscribed(plc, nm)
 function CastTeleportSpell(sPlace, att, params)
 {
 	showSideBars();
-	if (nMana > 0)
+	var cost = 0;
+	if (sPlace == 900) cost = 0;
+	else if (att === true) {
+		if (Math.random() > 0.33) cost = 1;
+	} else cost = 1;
+	
+	if (nMana >= cost)
 	{
 		// Reset any break-in states, possibly this should just iterate arPlaces
 		setPlaceBreakIn("Aquarium", false);
@@ -117,9 +123,7 @@ function CastTeleportSpell(sPlace, att, params)
 		checkInvisible();
 		//setPersonFlag("Kate", 16, false);
 		
-		if (att === true) {
-			if (Math.random() > 0.33) AddMana(-1);
-		} else AddMana(-1);
+		if (cost > 0) AddMana(cost * -1);
 		
 		if (Place == 192 && getQueryParam("type") == "vampboundfree") {
 			Leave();
@@ -148,11 +152,25 @@ function CastTeleportSpell(sPlace, att, params)
 			if (isCharmedBy("MrsGranger") && per.dress === "") per.dress = per.getNextDress();
 		}
 
-		if (!perYou.checkFlag(21)) {
+		if (sPlace == 900 || !perYou.checkFlag(21)) {
 			// leave people behind
+			var sLeft = '';
+			var p;
+			for (var i = 0, ie = arPeople.length - 1; i < ie; i++) {
+				p = arPeople[i];
+				if (p.place == -1) {
+					sLeft = p.uid;
+					break;
+				}
+			}
 			if (wherePerson("Vampyre") == -1) movePerson("Vampyre", Place == 325 ? 325 : 247);
 			else if (wherePerson("Diane") == -1) movePerson("Diane", 168);
 			else if (wherePerson("Tina") == -1) movePerson("Tina", 83);
+			if (sLeft !== '') {
+				if (params === undefined) params = "who=" + sLeft;
+				else params += "&who=" + sLeft;
+			}
+			if (sPlace == 900) findPerson("Elian").setTeleportFrom(Place);
 		} else if (sPlace == 319) {
 			s = EnterChurch(319, true);
 			if (s !== "") ps = per.name + " Screams";
@@ -173,7 +191,7 @@ function TeleportTo()
 	hideSidebars();
 	var plc = Place;
 	var nm = '';
-	if (gameState.plcTitle !== '') nm = gameState.plcTitle.split("Glenvale ").join("");
+	if (gameState.plcTitle !== '') nm = gameState.plcTitle.split(gameState.sTown + " ").join("");
 	else nm = getPlaceName(Place);
 
 	// Is anyone here
@@ -213,29 +231,36 @@ function TeleportTo()
 		}
 	}
 
+	// Create/Attune
 	var bHex = isPlaceEnscribed(Place);
 	if (isOutside() && perYou.checkFlag(21) && !bHex) addOptionLink(doc, "enscribe and attune hexagram", "showSideBars();enscribeHexagram(" + Place + ",'" + nm.split('\'').join('') + "')", "optionblock", "width:90%");
 	if (bHex) addOptionLink(doc, (isPlaceAttuned(Place) ? "un-attune" : "attune") + " hexagram", 'showSideBars();attuneHexagram(' + isPlaceAttuned(Place) + ')', 'optionblock', "width:90%");
 
-	if (Place == 141 && checkPersonFlag("Elian", 1) && !isDay()) {
-		if (!checkPersonFlag("Elian", 2)) {
-			Teleports(doc, 500, "<b>Elian</b>", 'type=elianteleportbad');
+	// To Elian
+	findPerson("Elian")
+	if (per.isCharmedBy() && per.place < 1000) Teleports(doc, 900, "<b>ElianIscariotAgosOmiSayla</b>", 'type=elianteleportvisit');
+	else if (Place == 141 && per.checkFlag(1) && !isDay() && per.place < 1000) {
+		if (!per.checkFlag(2)) {
+			// Initial visit 'come to me'
+			Teleports(doc, 900, "<b>Elian</b>", 'type=elianteleportbad');
 			if (checkPersonFlag("Jade", 7)) {
-				if ((perYou.checkFlag(18) && nMana > 19) || perYourBody.FindItem(44) > 0 || perYourBody.FindItem(46) > 0) Teleports(doc, 500, "or <b>nailE</b>", 'type=naileteleportok');
-				else Teleports(doc, 500, "or <b>nailE</b>", 'type=elianteleportbad&naile=true');
+				if ((perYou.checkFlag(18) && nMana > 19) || perYourBody.FindItem(44) > 0 || perYourBody.FindItem(46) > 0) Teleports(doc, 900, "or <b>nailE</b>", 'type=naileteleportok');
+				else Teleports(doc, 900, "or <b>nailE</b>", 'type=elianteleportbad&naile=true');
 			}
-		} else if (checkPersonFlag("Elian", 26)) {
+		} else if (per.checkFlag(26)) {
 			// Post knowing her true name
-			Teleports(doc, 500, "<b>ElianIscariotAgosOmiSayla</b>", 'type=elianteleporttruename');
+			Teleports(doc, 900, "<b>ElianIscariotAgosOmiSayla</b>", 'type=elianteleporttruename');
 		}
 	}
+	// Home
 	Teleports(doc, 46, "Your bedroom");
 
+	// Hexagrams
 	var arTemp = [];
 	for (i = 0, ie = arHexagrams.length; i < ie; i++) {
 		if (arHexagrams[i].place < 0) arTemp.push(new Hexagram(arHexagrams[i].name === '' ? getPlaceName(arHexagrams[i].place * -1) : arHexagrams[i].name, arHexagrams[i].place * -1));
 	}
-
+	// Improved Teleport locations
 	if (perYou.checkFlag(21)) {
 		arTemp.push(new Hexagram("Kurndorf\'s Crypt", 247));
 		arTemp.push(new Hexagram("Hotel Cellar", 161));
@@ -244,6 +269,8 @@ function TeleportTo()
 		arTemp.push(new Hexagram("Adams House", 230));
 		arTemp.push(new Hexagram("School Hallway", 70));
 	}
+	
+	// Sort and show the locations
 	arTemp.sort(function(a, b) {
 		return a.name > b.name;
 	});
@@ -276,7 +303,7 @@ function TeleportTo()
 				// School
 				s = "WriteComments(&quot;" +
 				"<div style='margin-top:1em;margin-bottom:1em;margin-left:2em;margin-right:2em;cursor:default'>" +
-				"<table><tr><td width='80%'><p style='text-align:center'>Where in Glenvale High School do you focus the spell on?</p>" +
+				"<table><tr><td width='80%'><p style='text-align:center'>Where in " + gameState.sTown + " High School do you focus the spell on?</p>" +
 				addOptionLink("ss", 'Outside', "CastTeleportSpell(9)") +
 				addOptionLink("ss", 'Hallway', "CastTeleportSpell(70)") +
 				"</td><td width='20%'><img src='Images/school1.jpg' style='width:95%' alt='School'></td></tr></table>" +
@@ -307,7 +334,7 @@ function TeleportTo()
 						'&quot;)';
 				}
 
-			} else if (id == 42 && !isPlaceAttuned(42)) s = "CastTeleportSpell(53)";
+			} else if (id == 52 && !isPlaceAttuned(52)) s = "CastTeleportSpell(53)";
 			else if (id == 9 && !isPlaceAttuned(9)) s = "CastTeleportSpell(70)";
 			else s = "CastTeleportSpell(" + id + ")";
 			return s.split('"').join('&quot;').split('<').join('&lt;').split('>').join('&gt;');

@@ -1,6 +1,11 @@
 /**********************************************
 Anita
 ***********************************************/
+function LeaveLair()
+{
+	// Anita flees town
+	movePerson("Anita", 9999);
+}
 function MoveAnitaToBedroom()
 {
 	findPerson("Anita");
@@ -17,7 +22,7 @@ function initialiseAnita()
 	// Anita
 	addPerson("Anita", 0, "Anita");
 	
-	per.getYourNameFor = function() { return perYou.isMaleSex() ? "Sir" : "Ma'am"; };
+	per.getYourNameFor = function() { return perYou.getSir(); };
 	per.getPersonName = function(full) {
 		if (full === true) return this.name;
 		return this.getCharmedLevel() == 3 ?  "Your slut" : (this.sCharmedBy == "You" ? "Slave " + this.name : this.name);
@@ -81,6 +86,7 @@ function initialiseAnita()
 				WritePlaceFooter(md);
 				return true;				
 			}
+			return false;
 		}
 		
 		if (Place == 40) {
@@ -136,183 +142,348 @@ function initialiseAnita()
 			return false;
 		}
 	
-		if (Place == 269 && sType == "anitapool") {
-			WaitHereOnly(6);
-			md = WritePlaceHeader();
-			this.showPerson("anita-pool.jpg");
-			addPlaceTitle(md, "Swimming with Anita");
-			md.write(
-				'<p>Anita arrives, oddly she is dressed partly in a wet-suit, not a swimsuit. She apologises, "Sorry ' + this.getYourNameFor() + ', I do not have anything for recreation, but I do have this for water operations." and she salutes.</p>' +
-				'<p>Odd, but that\'s Anita, and you cannot do much about that, so you order her to go swimming with you.</p>'
-			);
-			startQuestions();
-			addLinkToPlaceC(md, 'it is fairly private here, order her to do more', Place, 'type=anitapoolsex');
-			addLinkToPlaceC(md, 'say goodbye to Anita', Place);
-			WritePlaceFooter(md);
-			return true;
-		}
-		if (Place == 269 && sType == "anitapoolsex") {
-			md = WritePlaceHeader();
-			this.showPerson("anita-pool-sex.jpg");
-			addPlaceTitle(md, "Private with Anita");
-			md.write(
-				'<p>You order Anita to do a more personal operation, and she seductively removes most of her wet-suit and lies back waiting for you.</p>'
-			);
-			startQuestions();
-			addLinkToPlaceC(md, 'later...say goodbye to Anita', Place);
-			WritePlaceFooter(md);
-			return true;
-		}
-
-		if (sType == "charmanitastore1") {
-			// Anita Charmed 1
-			myName = this.getYourNameFor();
-			md = WritePlaceHeader();
-			removeTimedEvent("movePerson('Anita',1000)");
-			this.place = 9999;	// Gone (if you do not follow through)
-			this.showPerson("anita10b.jpg");
-			addPlaceTitle(md, "Shopper Under A Charm Spell");
-
-			md.write(
-				'<p>You are a little argry at the way this woman insulted you, and you recite the spell, and tell her,</p>' +
-				'<p>"The only slut I see here is you!"</p>' +
-				'<p>She looks at you angrily, "Fuck off...' + myName + '...I mean you ' + (perYou.isMaleSex() ? 'bastard' : 'bitch') + '...you are not my commander..."</p>' +
-				'<p>She hesitates as the spell takes affect, but it would seem she is a member of the military, but something there seems wrong from how she was acting before, and you suspect she is more member of some sort of para-military group or militia. She starts to reach into her handbag as you firmly tell her,</p>' +
-				'<p>"Shut up! I will call you a slut, a bitch or whatever I choose, you are mine to command and do not forget it!"</p>' +
-				'<p>She starts to take something from her handbag, you are sure it was a pistol of some sort, but she drops it and turns to face you. Her expression a mixture of anger and lust,</p>' +
-				'<p>"' + myName + '...sorry...what, I am not that, I am a <b>patriot</b> and I follow my orders, and you are not my commander!"</p>' +
-				'<p>You could hear the way she said <b>patriot</b> that is was key to her identity and was almost shouted. You think you should take it easier on trying to dominate her until the spell has influenced her more. You ask her,</p>' +
-				'<p>"Yes, you are a loyal patriot, but why then are you wearing <i>that</i> dress?"</p>' +
-				'<p>She hesitates and runs her hands over her dress, pulling at the hem of her short and tight dress. You see then why when wearing such a dress you did not see the lines of underwear, she is not wearing any. Her pussy is bare and clean shaven. She shivers, your think more a small orgasm than the cold of exposing herself. As she does the straps of her dress slip. She looks at you confused,</p>' +
-				'<p>"' + myName + '...' + (perYou.isMaleSex() ? 'bastard' : 'bitch') + '...I am in public, umm undercover, and have to wear normal clothing, and this is all I had available. I need provisions for the rest of my journey..."</p>' +
-				'<p>That is enough, you have given her enough time, but do you want go hard or soft?</p>'
-			);
-
-			// Questions
-			startQuestions();
-			addLinkToPlaceC(md, '"Look at yourself slut!"', Place, 'type=charmanitastore2&hard=true');
-			if (perYou.checkFlag(26)) addLinkToPlaceC(md, '"Well done fellow patriot"', Place, 'type=charmanitastore2&hard=false');
-			addLinkToPlace(md, 'return to the front of the ' + getShopStore(), 195);
-			WritePlaceFooter(md);
-			return true;
-
-		} 
-		
-		if (sType == "charmanitastore2") {
-			// Anita Charmed 2
-			myName = this.getYourNameFor();
-			hs = getQueryParam("hard");
-			md = WritePlaceHeader();
-			this.showPerson("anita10c.jpg");
-			if (hs == "true") {
-				this.charmThem(3);
-				addPlaceTitle(md, "Dominating a Slut");
-
+		if (Place == 269) {
+			if (sType == "anitapool") {
+				WaitHereOnly(6);
+				md = WritePlaceHeader();
+				this.showPerson("anita-pool.jpg");
+				addPlaceTitle(md, "Swimming with Anita");
 				md.write(
-					'<p>You can feel her intense arousal and forcibly tell her,</p>' +
-					'<p>"You are not wearing any underwear and you are exposing yourself to me. You are a slut who wants nothing more than sex."</p>' +
-					'<p>Despite her arousal she starts to deny your words, but makes no effort to cover herself. You ignore her words. You step towards her and with a light touch pull on the dislodged straps of her dress and it falls down to her waist.</p>' +
-					'<p>"Embrace being a slut, there is nothing wrong with it. Sex is fun and you really enjoy it, don\'t you?"</p>' +
-					'<p>She slumps to the ground and replies in confusion,</p>' +
-					'<p>"Well, of course I love fucking...but I am a..."</p>' +
-					'<p>You quickly interrupt her, it is clear she is about to say <b>patriot</b>,</p>' +
-					'<p>"slut! OF course you are, it is your only wish and desire, to be someone\'s sex-toy and plaything, with no concern other than sex!"</p>' +
-					'<p>She starts to mutter something about her mission, and you tell her,</p>' +
-					'<p>"Like any slut your mission is to have as much sex as you can."</p>' +
-					'<p>The spell has not completely controlled her, yet, and you can see some sense of her duty still trying to surface. You make a last push,</p>'
+					'<p>Anita arrives, oddly she is dressed partly in a wet-suit, not a swimsuit. She apologises, "Sorry ' + this.getYourNameFor() + ', I do not have anything for recreation, but I do have this for water operations." and she salutes.</p>' +
+					'<p>Odd, but that\'s Anita, and you cannot do much about that, so you order her to go swimming with you.</p>'
 				);
-				// Questions
 				startQuestions();
-				addLinkToPlaceC(md, '"Enough talk, let\'s fuck"', Place, 'type=charmanitastore3&hard=' + hs);
+				addLinkToPlaceC(md, 'it is fairly private here, order her to do more', Place, 'type=anitapoolsex');
+				addLinkToPlaceC(md, 'say goodbye to Anita', Place);
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType == "anitapoolsex") {
+				md = WritePlaceHeader();
+				this.showPerson("anita-pool-sex.jpg");
+				addPlaceTitle(md, "Private with Anita");
+				md.write(
+					'<p>You order Anita to do a more personal operation, and she seductively removes most of her wet-suit and lies back waiting for you.</p>'
+				);
+				startQuestions();
+				addLinkToPlaceC(md, 'later...say goodbye to Anita', Place);
+				WritePlaceFooter(md);
+				return true;
+			}
+			return false;
+		}
+		
+		if (Place == 195) {
 
-			} else {
-				addPlaceTitle(md, "A Patriot Under <i>Your</i> Command");
+			if (sType == "charmanitastore1") {
+				// Anita Charmed 1
+				myName = this.getYourNameFor();
+				md = WritePlaceHeader();
+				removeTimedEvent("movePerson('Anita',1000)");
+				this.place = 9999;	// Gone (if you do not follow through)
+				this.showPerson("anita10b.jpg");
+				addPlaceTitle(md, "Shopper Under A Charm Spell");
 
 				md.write(
-					'<p>She looks confused at your words, and you continue to reinforce,</p>' +
-					'<p>"You resisted my intimidation well patriot, I was sent here to test your resolve and loyalty"</p>' +
-					'<p>Suddenly she looks immensely relieved and she slumps to the floor,</p>' +
-					'<p>"I have done well ' + myName + ', thank you, thank you, I am...was feeling so arous...angry."</p>' +
-					'<p>She stretches her arms up in her relief and her dress starts to slip down, the straps had already fallen away from her shoulders. She does not seem to care in the mizture of her relief and the arousal coursing though her from the spell. You decide to exert your authority more,</p>' +
-					'<p>"Well patriot...what is your given name?", she looks up at you, "Anita ' + myName + ' as you know, another test?.", and you continue, "I have been been told to assign you to a new duty. Your previous task has been compromised, so you are now assigned to my command!"</p>' +
-					'<p>She sits up smiling, her dress falls almost completely down, and she asks</p>' +
-					'<p>"What will my duties be ' + myName + ', is there anything you need \'handled\' now?"</p>'
+					'<p>You are a little argry at the way this woman insulted you, and you recite the spell, and tell her,</p>' +
+					'<p>"The only slut I see here is you!"</p>' +
+					'<p>She looks at you angrily, "Fuck off...' + myName + '...I mean you ' + (perYou.isMaleSex() ? 'bastard' : 'bitch') + '...you are not my commander..."</p>' +
+					'<p>She hesitates as the spell takes affect, but it would seem she is a member of the military, but something there seems wrong from how she was acting before, and you suspect she is more member of some sort of para-military group or militia. She starts to reach into her handbag as you firmly tell her,</p>' +
+					'<p>"Shut up! I will call you a slut, a bitch or whatever I choose, you are mine to command and do not forget it!"</p>' +
+					'<p>She starts to take something from her handbag, you are sure it was a pistol of some sort, but she drops it and turns to face you. Her expression a mixture of anger and lust,</p>' +
+					'<p>"' + myName + '...sorry...what, I am not that, I am a <b>patriot</b> and I follow my orders, and you are not my commander!"</p>' +
+					'<p>You could hear the way she said <b>patriot</b> that is was key to her identity and was almost shouted. You think you should take it easier on trying to dominate her until the spell has influenced her more. You ask her,</p>' +
+					'<p>"Yes, you are a loyal patriot, but why then are you wearing <i>that</i> dress?"</p>' +
+					'<p>She hesitates and runs her hands over her dress, pulling at the hem of her short and tight dress. You see then why when wearing such a dress you did not see the lines of underwear, she is not wearing any. Her pussy is bare and clean shaven. She shivers, your think more a small orgasm than the cold of exposing herself. As she does the straps of her dress slip. She looks at you confused,</p>' +
+					'<p>"' + myName + '...' + (perYou.isMaleSex() ? 'bastard' : 'bitch') + '...I am in public, umm undercover, and have to wear normal clothing, and this is all I had available. I need provisions for the rest of my journey..."</p>' +
+					'<p>That is enough, you have given her enough time, but do you want go hard or soft?</p>'
 				);
 
 				// Questions
 				startQuestions();
-				addLinkToPlaceC(md, '"Yes, there is..."', Place, 'type=charmanitastore3&hard=' + hs);
+				addLinkToPlaceC(md, '"Look at yourself slut!"', Place, 'type=charmanitastore2&hard=true');
+				if (perYou.checkFlag(26)) addLinkToPlaceC(md, '"Well done fellow patriot"', Place, 'type=charmanitastore2&hard=false');
+				addLinkToPlace(md, 'return to the front of the ' + getShopStore(), 195, '', 'You leave her thinking to come back to her later, but a moment later you see her run past you looking very confused. You try to chase after her but she is too fast. You doubt you will ever find her again!');
+				WritePlaceFooter(md);
+				return true;
+
+			} 
+			
+			if (sType == "charmanitastore2") {
+				// Anita Charmed 2
+				myName = this.getYourNameFor();
+				hs = getQueryParam("hard");
+				md = WritePlaceHeader();
+				this.showPerson("anita10c.jpg");
+				if (hs == "true") {
+					this.charmThem(3);
+					addPlaceTitle(md, "Dominating a Slut");
+
+					md.write(
+						'<p>You can feel her intense arousal and forcibly tell her,</p>' +
+						'<p>"You are not wearing any underwear and you are exposing yourself to me. You are a slut who wants nothing more than sex."</p>' +
+						'<p>Despite her arousal she starts to deny your words, but makes no effort to cover herself. You ignore her words. You step towards her and with a light touch pull on the dislodged straps of her dress and it falls down to her waist.</p>' +
+						'<p>"Embrace being a slut, there is nothing wrong with it. Sex is fun and you really enjoy it, don\'t you?"</p>' +
+						'<p>She slumps to the ground and replies in confusion,</p>' +
+						'<p>"Well, of course I love fucking...but I am a..."</p>' +
+						'<p>You quickly interrupt her, it is clear she is about to say <b>patriot</b>,</p>' +
+						'<p>"slut! OF course you are, it is your only wish and desire, to be someone\'s sex-toy and plaything, with no concern other than sex!"</p>' +
+						'<p>She starts to mutter something about her mission, and you tell her,</p>' +
+						'<p>"Like any slut your mission is to have as much sex as you can."</p>' +
+						'<p>The spell has not completely controlled her, yet, and you can see some sense of her duty still trying to surface. You make a last push,</p>'
+					);
+					// Questions
+					startQuestions();
+					addLinkToPlaceC(md, '"Enough talk, let\'s fuck"', Place, 'type=charmanitastore3&hard=' + hs);
+
+				} else {
+					addPlaceTitle(md, "A Patriot Under <i>Your</i> Command");
+
+					md.write(
+						'<p>She looks confused at your words, and you continue to reinforce,</p>' +
+						'<p>"You resisted my intimidation well patriot, I was sent here to test your resolve and loyalty"</p>' +
+						'<p>Suddenly she looks immensely relieved and she slumps to the floor,</p>' +
+						'<p>"I have done well ' + myName + ', thank you, thank you, I am...was feeling so arous...angry."</p>' +
+						'<p>She stretches her arms up in her relief and her dress starts to slip down, the straps had already fallen away from her shoulders. She does not seem to care in the mizture of her relief and the arousal coursing though her from the spell. You decide to exert your authority more,</p>' +
+						'<p>"Well patriot...what is your given name?", she looks up at you, "Anita ' + myName + ' as you know, another test?.", and you continue, "I have been been told to assign you to a new duty. Your previous task has been compromised, so you are now assigned to my command!"</p>' +
+						'<p>She sits up smiling, her dress falls almost completely down, and she asks</p>' +
+						'<p>"What will my duties be ' + myName + ', is there anything you need \'handled\' now?"</p>'
+					);
+
+					// Questions
+					startQuestions();
+					addLinkToPlaceC(md, '"Yes, there is..."', Place, 'type=charmanitastore3&hard=' + hs);
+
+				}
+				addLinkToPlace(md, 'return to the front of the ' + getShopStore(), 195);
+				WritePlaceFooter(md);
+				return true;
 
 			}
-			addLinkToPlace(md, 'return to the front of the ' + getShopStore(), 195);
-			WritePlaceFooter(md);
-			return true;
+			
+			if (sType == "charmanitastore3") {
+				// Anita Charmed 3
+				myName = this.getYourNameFor();
+				hs = getQueryParam("hard");
+				md = WritePlaceHeader();
+				if (perYou.isMaleSex()) this.showPerson("anita10db.jpg");
+				else this.showPerson("anita10dg.jpg");
+				var subo;
+				if (hs == "true") {
+					subo = "slut";
+					addPlaceTitle(md, "A Sluts\' Mission");
+					md.write('<p>For a moment you are unsure what she is going to do, but she smiles as she drops to her knees ');
+				} else {
+					subo = "subordinate";
+					addPlaceTitle(md, "Anita\'s New Duty");
+					md.write('<p>Anita eagerly moves to do her new duty as she drops to her knees ');
+				}
 
+				if (perYou.isMaleSex()) {
+					// Blowjob/Fuck
+					md.write(
+						'and undoes your trousers and takes your stiff cock into her mouth. She proceeds to give you a skilled blowjob until you explode in her mouth. She swallows and then asks,</p>' +
+						'<p>"Would ' + myName + ' now like my ass or pussy?"</p>' +
+						'<p>You of course reply "Both!"</p>' +
+						'<p>You sate yourself on your new ' + subo + 's body, and she also experiences considerable pleasure, both from the effects of the spell and also as she seems to very, very much like sex!</p>'
+					);
+				} else {
+					// Cunnilingus
+					md.write(
+						'and undoes your pants and with a little hesitation licks your pussy. She is probably not experienced with a woman but still she makes you come quickly to a shuddering climax. She then asks,</p>' +
+						'<p>"Would ' + myName + ' now like my ass or pussy or shall I do that again?"</p>' +
+						'<p>You of course reply "All of them!"</p>' +
+						'<p>You sate yourself on your new ' + subo + 's body, and she also experiences considerable pleasure, despite, or maybe because of her lack of experience with women.</p>'
+					);
+				}
+				if (hs == "true") {
+					this.moveThem(45);
+					md.write(
+						'<p>After, you tell her,</p>' +
+						'<p>"You are a true slut. Why don\'t you go back to my home and wait for me in my bedroom, make sure to put something sexy on."</p>' +
+						'<p>You tell her your address and remind her to dress before leaving. She looks at you, and you realise the spell has fully taken control of her, she is now your personal slut.</p>'
+					);
+				} else {
+					if (whereItem(47) == 252) moveItem(47, 195);
+					else if (whereItem(47) === 0) PlaceI(47, 195);
+					setPlaceKnown("AnitasLair");
+					this.moveThem(252);
+					md.write(
+						'<p>After, you ask Anita where she is currently staying, and she mentions she has found an abandoned storeroom at the school near the French classroom and she is bunking down there now. You tell her to return there and you will meet her there later to discuss her duties.</p>' +
+						'<p>She smiles, "Like my last \'duty\'?", and you gravely nod your head, "And more".</p>' +
+						'<p>Anita quickly redresses, not that she has much to put on, and she leaves the ' + getShopStore() + ' with her groceries.</p>' +
+						'<p>As you follow her out, you notice there are some new items for sale in the ' + getShopStore() + ', a range of sporting goods, it looks like Leanne is expanding the range of items for sale.</p>'
+					);
+				}
+
+				// Questions
+				startQuestions();
+				addLinkToPlace(md, 'return to the front of the ' + getShopStore(), 195);
+				WritePlaceFooter(md);
+				return true;			
+			}
+			return false;
 		}
 		
-		if (sType == "charmanitastore3") {
-			// Anita Charmed 3
-			myName = this.getYourNameFor();
-			hs = getQueryParam("hard");
-			md = WritePlaceHeader();
-			if (perYou.isMaleSex()) this.showPerson("anita10db.jpg");
-			else this.showPerson("anita10dg.jpg");
-			var subo;
-			if (hs == "true") {
-				subo = "slut";
-				addPlaceTitle(md, "A Sluts\' Mission");
-				md.write('<p>For a moment you are unsure what she is going to do, but she smiles as she drops to her knees ');
-			} else {
-				subo = "subordinate";
-				addPlaceTitle(md, "Anita\'s New Duty");
-				md.write('<p>Anita eagerly moves to do her new duty as she drops to her knees ');
-			}
+		if (Place == 252 && this.isHere()) {
+			if (sType == "deploy") {
+				// Move her to your bedroom
+				md = WritePlaceHeaderNI();
+				this.showPerson("anita6.jpg");
+				addPlaceTitle(md, "Anita\'s Deployment");
 
-			if (perYou.isMaleSex()) {
-				// Blowjob/Fuck
-				md.write(
-					'and undoes your trousers and takes your stiff cock into her mouth. She proceeds to give you a skilled blowjob until you explode in her mouth. She swallows and then asks,</p>' +
-					'<p>"Would ' + myName + ' now like my ass or pussy?"</p>' +
-					'<p>You of course reply "Both!"</p>' +
-					'<p>You sate yourself on your new ' + subo + 's body, and she also experiences considerable pleasure, both from the effects of the spell and also as she seems to very, very much like sex!</p>'
-				);
-			} else {
-				// Cunnilingus
-				md.write(
-					'and undoes your pants and with a little hesitation licks your pussy. She is probably not experienced with a woman but still she makes you come quickly to a shuddering climax. She then asks,</p>' +
-					'<p>"Would ' + myName + ' now like my ass or pussy or shall I do that again?"</p>' +
-					'<p>You of course reply "All of them!"</p>' +
-					'<p>You sate yourself on your new ' + subo + 's body, and she also experiences considerable pleasure, despite, or maybe because of her lack of experience with women.</p>'
-				);
-			}
-			if (hs == "true") {
 				this.moveThem(45);
 				md.write(
-					'<p>After, you tell her,</p>' +
-					'<p>"You are a true slut. Why don\'t you go back to my home and wait for me in my bedroom, make sure to put something sexy on."</p>' +
-					'<p>You tell her your address and remind her to dress before leaving. She looks at you, and you realise the spell has fully taken control of her, she is now your personal slut.</p>'
+					'<p>You tell Anita that you have new orders for her, and she stands to attention. You walk around, inspecting her assets, and tell her,</p>' +
+					'<p>"Soldier, I need you to redeploy as a guard for myself. Go to my home and wait for me in my bedroom, make sure to wear something appropriate. You will be undercover as my girlfriend, so wear something sexy."</p>' +
+					'<p>You tell her your address and remind her to dress before leaving. She looks at you, and replies "Yes ' + this.getYourNameFor() + '!"</p>' +
+					'<p>She quickly gathers some gear and dresses and leaves you with a salute.</p>'
 				);
-			} else {
-				if (whereItem(47) == 252) moveItem(47, 195);
-				else if (whereItem(47) === 0) PlaceI(47, 195);
-				setPlaceKnown("AnitasLair");
-				this.moveThem(252);
-				md.write(
-					'<p>After, you ask Anita where she is currently staying, and she mentions she has found an abandoned storeroom at the school near the French classroom and she is bunking down there now. You tell her to return there and you will meet her there later to discuss her duties.</p>' +
-					'<p>She smiles, "Like my last \'duty\'?", and you gravely nod your head, "And more".</p>' +
-					'<p>Anita quickly redresses, not that she has much to put on, and she leaves the ' + getShopStore() + ' with her groceries.</p>' +
-					'<p>As you follow her out, you notice there are some new items for sale in the ' + getShopStore() + ', a range of sporting goods, it looks like Leanne is expanding the range of items for sale.</p>'
-				);
-			}
 
-			// Questions
-			startQuestions();
-			addLinkToPlace(md, 'return to the front of the ' + getShopStore(), 195);
-			WritePlaceFooter(md);
-			return true;			
+				startQuestions();
+				addLinkToPlace(md, 'return to Ms Jones\' office', 145);
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType == "freed") {
+				// Freed via Silver Ring
+				md = WritePlaceHeaderNI();
+				this.showPerson("anita4.jpg");
+				addPlaceTitle(md, "Anita\'s Lair");
+
+				md.write(
+					'<p>Anita looks puzzled, her clothes covering little of her body. She rests the shotgun on her shoulder and asks you,</p>' +
+					'<p>"Who the hell are you, why have you brought me here! Did you drug me, is that why I feel this hatred towards you, despite I have never seen you before!"</p>' +
+					'<p>You point out that <i>she</i> is the one with the weapon and put your hands up. She looks startled and seems to just then realise she is holding the shotgun, and continues talking,</p>' +
+					'<p>"Well I guess you are right, I can see some of my gear around here too. I must have really, really got drunk last night!! So did we....you know...?"</p>'
+				);
+
+				startQuestions();
+				addLinkToPlaceC(md, '"No, no I just found you here in this storeroom"', 145, '', '&quot;Well then, excuse me while I get dressed and get the hell out of here, I was only supposed to be in the town overnight, I need to get going&quot;<br>With that she kicks you out of the storeroom.', 'Anita', 'LeaveLair()');
+				addLinkToPlace(md, 'return to Ms Jones\' office', 145, '', '', '', 'LeaveLair()');
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType == "shotjump" || sType == "shotcharm") {
+				md = WritePlaceHeaderNI();
+				this.showPerson("anita1.jpg", "height:max");
+				addPlaceTitle(md, "Shot!");
+
+				if (sType == "shotjump") {
+					md.write(
+						'<p>You leap at Anita, with the idea of wrestling the gun from her in her confusion, but her expression immediately hardens at the threat. ' +
+						'Anita immediately reacts, the shotgun swings up and there is a devastating roar as the blast hits you in the chest. You collapse, your life blood pouring from the wound.</p>'
+					);
+
+				} else {
+					md.write(
+						'<p>You read a spell.... but it nothing happens, she must already be under the effects of a charm spell.</p>' +
+						'<p>Anita immediately reacts to your words, the shotgun swings up and there is a devastating roar as the blast hits you in the chest. You collapse, your life blood pouring from the wound.</p>'
+					);
+				}
+				md.write(
+					'<p>You can\'t believe that after all this play the ' +
+					'game has ended this way. Your life ebbs away and all you can ' +
+					'think of is revenge in the afterlife.</p>' +
+					'<p>Better luck next time...</p>'
+				);
+
+				addRestartLink(md);
+				WritePlaceFooter(md);
+				return true;
+			}
+			
+			// Charmed
+			if (sType === "anita5") {
+				// Anita Charmed 1
+				md = WritePlaceHeaderNI();
+				this.showPerson(sType + ".jpg");
+				addPlaceTitle(md, "Anita Under <i>Your</i> Charm Spell");
+				myName = this.getYourNameFor();
+				md.write(
+					'<p>You tell her,<br>"No we did not <i>last night</i>" and she looks at you unsure why you stressed <i>last night</i>. She looks like she is about to ask you something, and you recite the words of the charm spell.</p>' +
+					'<p>Anita looks startled, and swings the shotgun so it is ready, but she is not directly pointing it at you. She asks in an urgent manner,</p>' +
+					'<p>"Did you hear that, I am sure I heard the word of command, but you are not my commander"</p>' +
+					'<p>It would seem Anita here is a member of the military, but something there seems wrong, and you suspect she is more member of some sort of para-military group or militia, especially how she talked before. Still it does not matter at all what sort of unit or group she is with, your answer is the same,</p>' +
+					'<p>"Yes I am a soldier! How dare you forget!"</p>' +
+					'<p>She hesitates, but the power of the spell works itself through her mind, she stutters,</p>' +
+					'<p>"' + myName + '...sorry...' + myName + '"</p>' +
+					'<p>You look at her partially clothed body and smile, and order her,</p>' +
+					'<p>"Don\'t forget again, for your punishment, remove your clothing, now!"</p>' +
+					'<p>Anita hesitates, but the quickly removes her jacket and stands there before you, completely naked, holding her shotgun.</p>' +
+					'<p>"Yes ' + myName + '"</p>' +
+					'<p>You need to exert more control over her, especially as she is still armed.</p>'
+				);
+
+				// Questions
+				startQuestions();
+				addLinkToPlaceC(md, '"Put the weapon down!"', Place, 'type=anita6');
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType === "anita6") {
+				// Anita Charmed 2
+				md = WritePlaceHeaderNI();
+				this.showPerson(sType + ".jpg");
+				addPlaceTitle(md, "Anita Under <i>Your</i> Charm Spell");
+
+				md.write(
+					'<p>You order Anita to put the shotgun down and she hesitates, you order her again, and she engages the safety, then carefully puts the shotgun down.</p>' +
+					'<p>You think \'Good she is disarmed\', except you see her get something from a bag and when she stands up facing away from you, she is holding a pistol. While you appreciate the view of her from behind (and her behind) you again order her to disarm. She replies immediately,</p>' +
+					'<p>"You cannot do that! No commander of mine would order me to be defenceless!"</p>' +
+					'<p>You realise that this is an important point for her and decide not to press the matter, and tell her,</p>' +
+					'<p>"Yes of course, I was just checking your dedication. You must obey my orders in every other way, no matter what I order you to do!"</p>' +
+					'<p>Again without hesitation, she replies,</p>' +
+					'<p>"I will do absolutely <i>anything</i> you order, <i>anything</i>, just order me"</p>'
+				);
+
+				// Questions
+				startQuestions();
+				addLinkToPlaceC(md, 'Order her "Prove it!"', Place, 'type=anita7');
+				WritePlaceFooter(md);
+				return true;
+			}
+			if (sType === "anita7" || sType == "proveit") {
+				// Anita Charmed 3
+				if (sType === "anita7") md = WritePlaceHeaderNI();
+				else md = WritePlaceHeader();
+				myName = this.getYourNameFor();
+				if (sType === "proveit") this.setFlag(7);
+				if (!isExplicit()) this.showPerson(sType === "proveit" ? "lair-proveit.jpg" : "anita7b.jpg");
+				else if (perYou.isMaleSex()) this.showPersonRandomX("anita7b", 5);
+				else this.showPersonRandomX("anita7g", 2);
+				addPlaceTitle(md, "Anita\'s Proof");
+				md.write('<p>For a moment you reconsider your order, given Anita\'s shown violence, but she drops to her knees ');
+				if (perYou.isMaleSex()) {
+					// Blowjob
+					md.write(
+						'and undoes your trousers and takes your stiff cock into her mouth. She proceeds to give you a skilled blowjob until you explode in her mouth. She swallows and then asks,</p>' +
+						'<p>"Would ' + myName + ' now like my ass or pussy?"</p>' +
+						'<p>You of course reply "Both!"</p>' +
+						'<p>You sate yourself on your new subordinates body, and she also experiences considerable pleasure, both from the effects of the spell and also as she seems to very, very much like sex!</p>'
+					);
+				} else {
+					// Cunnilingus
+					md.write(
+						'and undoes your pants and with a little hesitation licks your pussy. She is probably not experienced with a woman but still she makes you come quickly to a shuddering climax. She then asks,</p>' +
+						'<p>"Would ' + myName + ' now like my ass or pussy or shall I prove myself again?"</p>' +
+						'<p>You of course reply "All of them!"</p>' +
+						'<p>You sate yourself on your new subordinates body, and she also experiences considerable pleasure, despite, or maybe because of her lack of experience with women.</p>'
+					);
+				}
+
+				// Questions
+				startQuestions();
+				if (isMurderPath() && perGates.other == 600 && !this.checkFlag(4)) addLinkToPlaceC(md, "ask her about the killing of " + perGates.getPersonNameShort(), Place, '', 'You ask her about what happened at the mansion</p><p>&quot;' + myName + '! Sorry ' + myName + ', I do not remember that well, my memory is not clear. I am sure my last commander ordered the execution of an enemy, but it was ordered by his superior. I did as ordered, as I always will, ' + myName + '&quot;</p><p>It is a little chilling her casual reply about the murder, as if it is something normal for her...</p>', 'Anita', "setPersonFlag('Anita',4)");
+				else addLinkToPlace(md, 'talk more to Anita', Place);
+				WritePlaceFooter(md);
+				return true;
+			}
+			return false;
 		}
 		
 		if ((Place != 46 && Place != 161) || !this.isHere()) return false;
+		// Bedroom/Cellar only
 		
 		var herName = this.getPersonName();
 		var bC = Math.random() < 0.5;
@@ -320,16 +491,20 @@ function initialiseAnita()
 		if (sType == "anitaprivate") {
 			// Being private with Anita in the bedroom
 			md = WritePlaceHeader();
-			this.showPerson("anita13.jpg");
+			this.showPerson("home-private.jpg");
 			addPlaceTitle(md, herName + " In Your Bedroom");
 
 			// Description
-			md.write('<p>' + capitalizeFirstLetter(herName) + ' kneels on the bed, making herself available for her ' + perYou.getMaster() + '.</p>');
+			md.write('<p>' + capitalize(herName) + ' kneels on the bed, making herself available for her ' + perYou.getMaster() + '.</p>');
 
 			// Questions
 			startQuestions();
 
-			if (perYou.isMaleSex()) addLinkToPlaceO(md, 'order her that you will fuck her', Place, 'type=anitafuck');
+			if (perYou.isMaleSex()) {
+				addLinkToPlaceO(md, 'order her that you will fuck her', Place, 'type=anitafuck');
+				addLinkToPlaceO(md, 'order her that you will fuck her ass', Place, 'type=anitafuckanal');
+				addLinkToPlaceO(md, 'order her that you will fuck her tits', Place, 'type=anitatitfuck');
+			} else if (perYourBody.FindItem(45) > 0) addLinkToPlaceO(md, 'order her that you will fuck her with your strap-on', Place, 'type=anitafuck');
 			addLinkToPlaceO(md, 'order her to ' + (perYou.isMaleSex() ? 'give you a blowjob' : 'lick you'), Place, 'type=anitabj');
 			this.addSleepLink(md, "take " + herName + " to bed for the night", "Bedding " + herName,
 				'<p style="position:absolute;left:50%;top:70%;cursor:pointer;font-size:1.1em;width:50%;color:white">As you prepare to go to bed for the night you order ' + herName + ' to join you in bed.',
@@ -341,13 +516,15 @@ function initialiseAnita()
 		
 		if (sType == "anitafuck") {
 			// Fuck her
-			md = WritePlaceHeader(false, !isExplicit() && bC ? 'td-left-large' : '');
+			md = WritePlaceHeader();
 			this.setFlag(7);
-			if (isExplicit()) this.showPersonRandomX("anita15b", 2);
-			else if (bC) this.showPerson("anita15bb.jpg");
-			else this.showPerson("anita15ba.jpg");
-
-			addPlaceTitle(md, "Fucking " + herName);
+			if (perYou.isMaleSex()) {
+				this.showPersonRandomRorX("anita15b", isExplicit() ? 4 : 2);
+				addPlaceTitle(md, "Fucking " + herName);
+			} else {
+				this.showPersonRandom("home-sex-strapon", 2);
+				addPlaceTitle(md, "Fucking " + herName + " with your strap-on");
+			}
 
 			md.write(
 				'<p>Sex with Anita is a very straightforward affair. You make room on the bed, undress each other and go at it.</p>' +
@@ -363,16 +540,58 @@ function initialiseAnita()
 			WritePlaceFooter(md);
 			return true;
 		} 
+		if (sType == "anitafuckanal") {
+			// Fuck her ass
+			md = WritePlaceHeader();
+			this.setFlag(7);
+			this.showPersonRandomRorX("home-sex-anal", isExplicit() ? 6 : 1);
+			addPlaceTitle(md, "Fucking " + herName + "\'s ass");
+
+			md.write(
+				'<p>Sex with Anita is a very straightforward affair. You make room on the bed, undress each other and go at it.</p>' +
+				'<p>Anita doesn\'t really like excessive tenderness and once called foreplay an “inefficient waste of time”, since she is always wet and ready for you to begin with, but she is slowly opening up to the idea that there is more to it than a quick way to get off.</p>' +
+				'<p>You pin Anita onto the bed and both of you sate your desires on each others bodies. Your manhood slides into her tight rear with rough, rapid motions, and you grin every time the stoic shell of your subordinate cracks a little more and she allows herself to softly moan or dig her fingers into the bed-sheet under another wave of pleasure.</p>' +
+				'<p>In the end, both of you finally collapse on top of each other after sharing a mutual climax, and you even get to see one of Anita\'s rare smiles when you confirm to her that she fulfilled her “duty” to your fullest approval.</p>'
+			);
+			
+			// Questions
+			startQuestions();
+			addLinkToPlaceO(md, 'finish talking to Anita', 46);
+
+			WritePlaceFooter(md);
+			return true;
+		} 
+		if (sType == "anitatitfuck") {
+			// Fuck her tits
+			md = WritePlaceHeader();
+			this.setFlag(7);
+			this.showPersonRandomRorX("home-sex-tf", 1);
+			addPlaceTitle(md, "Fucking " + herName + "\'s Tits");
+
+			md.write(
+				'<p>Sex with Anita is a very straightforward affair. You make room on the bed, undress each other and go at it.</p>' +
+				'<p>Anita doesn\'t really like excessive tenderness and once called foreplay an “inefficient waste of time”, since she is always wet and ready for you to begin with, but she is slowly opening up to the idea that there is more to it than a quick way to get off.</p>' +
+				'<p>You pin Anita onto the bed and both of you sate your desires on each others bodies. Your manhood slides between her modest tits with rapid motions, as she squeezes her brests together, licking and kissing where she can.</p>' +
+				'<p>In the end, you finally cum over her breasts, and you even get to see one of Anita\'s rare smiles when you confirm to her that she fulfilled her “duty” to your fullest approval.</p>'
+			);
+			
+			// Questions
+			startQuestions();
+			addLinkToPlaceO(md, 'finish talking to Anita', 46);
+
+			WritePlaceFooter(md);
+			return true;
+		} 		
 		
 		if (sType == "anitabj") {
 			// Blowjob/Lick
-			md = WritePlaceHeader(false, !isExplicit() ? 'td-left-large' : '');
+			md = WritePlaceHeader();
 			this.setFlag(7);
 			if (isExplicit()) {
-				if (perYou.isMaleSex()) this.showPersonX("anita14b.jpg");
-				else this.showPersonX("anita14g.jpg");
-			} else if (perYou.isMaleSex()) this.showPerson("anita14b.jpg");
-			else this.showPerson("anita14g.jpg");
+				if (perYou.isMaleSex()) this.showPersonRandomX("anita7b", 7);
+				else this.showPersonRandomX("anita7g", 3);
+			} else if (perYou.isMaleSex()) this.showPerson("anita7b.jpg");
+			else this.showPerson("anita7g.jpg");
 
 			addPlaceTitle(md, "Anita Serving You");
 
@@ -539,8 +758,8 @@ function initialiseAnita()
 				
 			} else if (Place == 252 && this.isHere()) {
 				// Anita's Lair
-				if (!this.isCharmedBy("You") && !this.isCharmedBy("Davy")) CastCharmSpell("Anita", 252, 4, "type=anita5");
-				else if (!this.isCharmedBy("You") && this.isCharmedBy("Davy")) gotoPlace(252,"type=shotcharm");
+				if (!this.isCharmedBy("You") && !this.isCharmedBy("Davy")) CastCharmSpell("Anita", Place, 4, "type=anita5");
+				else if (!this.isCharmedBy("You") && this.isCharmedBy("Davy")) gotoPlace(Place,"type=shotcharm");
 				else addComments('You read a spell.... but it fizzles.');
 				return "handled";
 			}

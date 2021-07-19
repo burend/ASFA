@@ -324,7 +324,7 @@ function ShowPlace168(stype)
 			if (perGates.checkFlag(6) && !isPlaceKnown("AvernusClub")) {
 				addQuestionR(md, 'ask about the gentleman\'s club',
 					'You ask her about the gentlemans\'s club you were told about. Kerry looks a little annoyed,</p>' +
-					'<p>"Yes, yes, it is such a pain. Not the club itself, it seems to be clean and well run. It is just we get compaints and petitions to close it. The compaints are unfounded, it is the \'moral\' people in town trying to get it closed! Well, it is law abiding and we have no problems with it, so it will stay open!"</p>' +
+					'<p>"Yes, yes, it is such a pain. Not the club itself, it seems to be clean and well run. It is just we get complaints and petitions to close it. The complaints are unfounded, it is the \'moral\' people in town trying to get it closed! Well, it is law abiding and we have no problems with it, so it will stay open!"</p>' +
 					'<p>She gives you directions to the club, it is located in a side street off the shopping center. The club is open late at night until the early hours and is by invitation only. She quickly makes a phone call, and tells you,</p>' +
 					'<p>"I just asked the bartender there to consider you an invited guest in the club, you can visit any time you want"',
 					"OfficerBatton",

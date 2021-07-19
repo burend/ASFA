@@ -11,11 +11,12 @@ function ShowPlace382(stype)
 	if (stype == "metleanne") td = 'td-left-med';
 	else if (stype == "take") td = 'td-left-large';
 	else if (stype == "msmast" || (nPossession == 2 && stype === '')) td = 'td-none';
-	var md = WritePlaceHeader(false, td, td == "td-none" ? "black" : "");
+	var md;
 
 	// Events
 	if (stype == "metleanne") {
 		// Initial meeting with Leanne
+		md = WritePlaceHeader(false, td, td == "td-none" ? "black" : "");
 		perLea.showPerson("leanne6b.jpg");
 		addPlaceTitle(md, "Leanne in Mother Superior\'s Bed");
 
@@ -35,6 +36,7 @@ function ShowPlace382(stype)
 		
 	} else if (stype == "take") {
 		// Take the Thrall
+		md = WritePlaceHeaderNIP(false, td, td == "td-none" ? "black" : "");
 		perLea.showPerson("leanne6c.jpg");
 		addPlaceTitle(md, "Thrall and Mother Superior");
 		if (perLea.checkFlag(5)) md.write('<p>Once again you tell yourself that this is not your friend Leanne, it is her body, but this is a thrall of the demon Legion, not Leanne.');
@@ -56,6 +58,7 @@ function ShowPlace382(stype)
 
 	} else if (stype == "take2") {
 		// Take the Thrall
+		md = WritePlaceHeader(false, td, td == "td-none" ? "black" : "");
 		perLea.setFlag(6);
 		perMS.setFlag(1);
 		perLea.showPerson("leanne6d.jpg");
@@ -75,6 +78,7 @@ function ShowPlace382(stype)
 		
 	} else if (stype == "msmast") {
 			// Masturbate scene for Mother Suerior
+			md = WritePlaceHeaderNIP(false, td, td == "td-none" ? "black" : "");
 			addPlaceTitle(md, "Remembering Leanne", '', 0, false, 'white');
 			perMS.showPersonRandomRorX('mothersuperior3', 2, "30%", "left");
 			perMS.setFlag(2);
@@ -93,11 +97,12 @@ function ShowPlace382(stype)
 			startQuestions("Your vision fades");
 			addOptionLink(md, "...and the spell ends", "Dispossession()");
 
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return;
 
 	} else if (stype == "mswander") {
 			// Masturbate scene for Mother Suerior
+			md = WritePlaceHeaderNIP(false, td, td == "td-none" ? "black" : "");
 			perMS.showPerson('mothersuperior5b.jpg');
 			addPlaceTitle(md, "Mother Superior Taking a Stroll");
 			perMS.setFlag(3);
@@ -122,9 +127,42 @@ function ShowPlace382(stype)
 
 	} else {
 		// General, no specific event
+		
+		// Popup events
+		if (!isPossess() && !perMS.checkFlag(1)) {
+			// Have never taken the thrall using Mother Superior
+			md = WritePlaceHeaderNIP(false, td, td == "td-none" ? "black" : "");
+			showPopupWindow("Mother Superior",
+				perMS.addPersonString("mothersuperior1d.jpg", "40%", "right") +
+				"Mother Superior hears your enter her room and immediately forces you back out.<br>" +
+				'"How dare you!" she cries, her voice breaking from the strain of her illness. "Get out, you perverted creature!"',
+				"dispPlace(318)"
+			);
+			WritePlaceFooter(md, '', true, true);
+			return;
+		}
+		// Have you been here before?
+		if (!isPlaceKnown("MotherSuperiorsRoom")) {
+			// No, meet en-thralled Leanne
+			md = WritePlaceHeaderNIP(false, td, td == "td-none" ? "black" : "");
+			setPlaceKnown("MotherSuperiorsRoom");		// Visited her room
+			showPopupWindow("Familiar Woman",
+				perLea.addPersonString("leanne6a.jpg", "height:max%", "right") +
+				"You become aware of standing in a room, dressed in heavy robes. You are in Mother Superior\'s body and her private room! " +
+				"You did feel a great resistance as the spell completed and you became aware. Mother Superior has a very strong will and it seems unlikely you could possibly repeat this unless she were <b>weakened</b> in some way.</p>" +
+				'<p>You hear a voice and see a familiar looking woman lying on her bed, naked except for a rosary, looking at you seductively, and she says</p>' +
+				'<p>"It is you...no need for this glamour", and her appearance shimmers...',
+				"dispPlace(382,'type=metleanne');"
+			);
+			perLea.place = 382;		// Move her here (most likely from the Graveyard)
+			WritePlaceFooter(md, '', true, true);
+			return;
+		}
+		
 		if (perMS.checkFlag(1) && !isPossess()) {
 			// Visit after the first possession, as yourself, but before the second
 			// Leanne may still be here
+			md = WritePlaceHeaderNIP(false, td, td == "td-none" ? "black" : "");
 			perMS.showPerson('mothersuperior2.jpg');
 			addPlaceTitle(md, "Mother Superior\' Penance");
 
@@ -132,6 +170,7 @@ function ShowPlace382(stype)
 			
 		} else if (nPossession == 2) {
 			// Second possession, Mother Superior on her own
+			md = WritePlaceHeaderNIP(false, td, td == "td-none" ? "black" : "");
 			addPlaceTitle(md, "Mother Superior Changing", '', 0, false, 'white');
 			perMS.showPerson('mothersuperior5a.jpg', "30%", "right");
 
@@ -154,6 +193,7 @@ function ShowPlace382(stype)
 			
 		} else {
 			// During the first possession
+			md = WritePlaceHeader(false, td, td == "td-none" ? "black" : "");
 			addPlaceTitle(md, "Mother Superior\'s Room", "nunroom1.jpg");
 
 			md.write('<p>A very simple room decorated in a way that would most generously be called "spartan".</p><p>For a moment you are amazed at how few trappings these Nuns live with.</p>');
@@ -165,35 +205,6 @@ function ShowPlace382(stype)
 			md.write('<p>How can you help Leanne? You doubt you could just walk with her out of here, and even if you did, you have no hold over her. ');
 			if (isDemonInTown()) md.write('After all the demon is still in Glenvale and would just take control over her again, so you would just be freeing her for the demon to use.');
 			else if (perYou.checkFlag(21)) md.write('You could teleport with her out of here but where to and how to free Leanne of the spell. At least here she is safe and unable to harm others. You really need to seek other peoples <b>advice</b>.</p>');
-		}
-
-		// Popup events
-		if (!isPossess() && !perMS.checkFlag(1)) {
-			// Have never taken the thrall using Mother Superior
-			showPopupWindow("Mother Superior",
-				perMS.addPersonString("mothersuperior1d.jpg", "40%", "right") +
-				"Mother Superior hears your enter her room and immediately forces you back out.<br>" +
-				'"How dare you!" she cries, her voice breaking from the strain of her illness. "Get out, you perverted creature!"',
-				"dispPlace(318)"
-			);
-			WritePlaceFooter(md, '', true, true);
-			return;
-		}
-		// Have you been here before?
-		if (!isPlaceKnown("MotherSuperiorsRoom")) {
-			// No, meet en-thralled Leanne
-			setPlaceKnown("MotherSuperiorsRoom");		// Visited her room
-			showPopupWindow("Familiar Woman",
-				perLea.addPersonString("leanne6a.jpg", "height:max%", "right") +
-				"You become aware of standing in a room, dressed in heavy robes. You are in Mother Superior\'s body and her private room! " +
-				"You did feel a great resistance as the spell completed and you became aware. Mother Superior has a very strong will and it seems unlikely you could possibly repeat this unless she were <b>weakened</b> in some way.</p>" +
-				'<p>You hear a voice and see a familiar looking woman lying on her bed, naked except for a rosary, looking at you seductively, and she says</p>' +
-				'<p>"It is you...no need for this glamour", and her appearance shimmers...',
-				"dispPlace(382,'type=metleanne');"
-			);
-			perLea.place = 382;		// Move her here (most likely from the Graveyard)
-			WritePlaceFooter(md, '', true, true);
-			return;
 		}
 	}
 

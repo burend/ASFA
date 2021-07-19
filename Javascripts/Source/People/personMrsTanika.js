@@ -63,16 +63,16 @@ function initialiseMrsTanika()
 
 	per.passTimeDay = function() {
 		if ((this.place == 46 || this.place == 45) && this.getCharmedLevel() == 2) {
-			this.place = 242;
+			this.place = 72;
 			if (Place == 46 && this.place == 46) return "<p>In the morning Mrs Tanika gives you a kiss and tells you she is off to work.</p>";
 		}
 		return '';
 	};
 	per.passTimeNight = function() {
 		// Is she at the school and is your lover
-		if (this.place == 242 && this.getCharmedLevel() == 2 && !this.checkFlag(4)) {
+		if (this.place == 72 && this.getCharmedLevel() == 2 && !this.checkFlag(4)) {
 			this.place = this.checkFlag(2) ? 46 : 45;
-			if (Place == 242) return "<p>As night falls Mrs Tanika leaves school for the day.</p>";
+			if (Place == 72) return "<p>As night falls Mrs Tanika leaves school for the day.</p>";
 		}
 		return '';
 	};
@@ -80,15 +80,38 @@ function initialiseMrsTanika()
 	per.showEventPopup = function()
 	{
 		// Initial meeting in the Garage Office
-		if (Place == 242 && this.isHere() && this.dress === "") {
+		if (Place == 72 && this.isHere() && this.dress === "") {
 			showPopupWindow("Someone is there",
 				"<img src='Images/People/MrsTanika/Diana/intro-uncharmed.jpg' class='imgpopup' style='float:left;margin-right:5px' alt='Who' title='Slim'>" +
 				"<img src='Images/People/MrsTanika/Katarina/intro-uncharmed.jpg' class='imgpopup' alt='Who' title='Large'>" +
 				'<p>As you are about to enter the room you hear a voice, it sounds like Mrs. Tanika unfortunately...your least favourite teacher.</p>' +
 				'<p>Then again you do admire her...' +
-				addOptionLink("string", '&#8592; slim figure', "findPerson('MrsTanika').dress='Diana';dispPlace(242)", "chatblock", "width:30%;margin-left:35%") +
-				addOptionLink("string", 'large breasts &#8594;', "findPerson('MrsTanika').dress='Katarina';dispPlace(242)", "chatblock", "width:30%;margin-left:35%"),
+				addOptionLink("string", '&#8592; slim figure', "findPerson('MrsTanika').dress='Diana';dispPlace(72)", "chatblock", "width:30%;margin-left:35%") +
+				addOptionLink("string", 'large breasts &#8594;', "findPerson('MrsTanika').dress='Katarina';dispPlace(72)", "chatblock", "width:30%;margin-left:35%"),
 				'', '', true, true, true
+			);
+			return true;
+		}
+		
+		if (sType == "tanikatransformbodydiana") {
+			CastTransform(1);
+			this.dress = "Katarina";	
+			showPopupWindow("Transformed",
+				this.addPersonString("transform.jpg", "height:max%", "right") +
+				'Mrs Tanika\'s body starts to subtly change, filling out and becoming rounder, and her breast growing. Her face completely changes as if a different person is standing in fromt of you.<p>' +
+				'<p>You tentatively as if she is alright and she replies and she is definitely still the same person she was before',
+				'dispPlace()'
+			);
+			return true;
+		}	
+		if (sType == "tanikatransformbodykatarina") {
+			CastTransform(1);
+			this.dress = "Diana";
+			showPopupWindow("Transformed",
+				this.addPersonString("transform.jpg", "height:max%", "right") +
+				'Mrs Tanika\'s body starts to subtly change, her breasts shrinking, and her figure slimming down. Her face changes as if a different person is standing in fromt of you.<p>' +
+				'<p>You tentatively as if she is alright and she replies and she is definitely still the same person she was before',
+				'dispPlace()'
 			);
 			return true;
 		}
@@ -180,6 +203,22 @@ function initialiseMrsTanika()
 				return true;			
 			}				
 			return false;
+			
+		} else if (Place == 46) {
+			if (sType === "haremsex1") {
+				md = WritePlaceHeader();
+				if (perYou.isMaleSex() && isExplicit()) this.showPersonX("bedroom-tess+tanika+anitaa.jpg");
+				else AddImageRandom("GenericSex/foursome", oImages.GenericSex.foursome);
+				addPlaceTitle(md, "Playing with Everyone!");
+				var sf = this.getCharmedLevel() == 4 ? 'slave' : 'fuck-toy';
+				md.write(
+					'<p>You indulge in group sex with you lovely harem,..companions...whatever you are calling these hot ladies...</p>'
+				);
+				startQuestions();
+				addLinkToPlace(md, 'relax afterwards with everyone', Place);
+				WritePlaceFooter(md);
+				return true;	
+			}
 		}
 
 		if (sType == "tanikaxxx") {
@@ -187,7 +226,7 @@ function initialiseMrsTanika()
 			clv = this.getCharmedLevel();
 			var tn = this.getPersonNameShort();
 			mtn = clv == 3 ? "your toy, Mrs. Tanika" : (clv != 4 ? tn : "your slave, Mrs. Tanika");
-			var bSchool = this.place == 242;
+			var bSchool = this.place == 72;
 
 			if (bSchool) {
 				// At school
@@ -252,8 +291,8 @@ function initialiseMrsTanika()
 			}
 			// Both Tess and Mrs Tanika
 			if (wherePerson("Tess") == 46 && !bSchool) {
-				addLinkToPlace(md, "ask " + tn + " and Tess to work together for you", 170, 'type=tesstanikathreesome');
-				addLinkToPlace(md, "ask " + tn + " and Tess to play with each other", 170, 'type=tanikatesssex');
+				addLinkToPlace(md, "ask " + tn + " and Tess to work together for you", Place, 'type=tesstanikathreesome');
+				addLinkToPlace(md, "ask " + tn + " and Tess to play with each other", Place, 'type=tanikatesssex');
 			}
 
 			if (clv == 2) {
@@ -361,7 +400,7 @@ function initialiseMrsTanika()
 			return true;
 		}
 		
-		if (sType == "tanikatesssex" && (Place == 170 || Place == 46)) {
+		if (sType == "tanikatesssex" && Place == 46) {
 			// Event: Tanika/Tess Lesbian scene
 			md = WritePlaceHeader();
 
@@ -380,7 +419,7 @@ function initialiseMrsTanika()
 			return true;
 		}
 		
-		if (sType == "tesstanikathreesome" && (Place == 170 || Place == 46)) {
+		if (sType == "tesstanikathreesome" && Place == 46) {
 			// Event: Tanika/Tess Threesome from your bedroom
 			md = WritePlaceHeader();
 
@@ -400,7 +439,7 @@ function initialiseMrsTanika()
 			return true;
 		}
 		
-		if (Place != 242) return false;
+		if (Place != 72) return false;
 		
 		if (sType == "charmmrstanika1") {
 			md = WritePlaceHeader();
@@ -599,10 +638,28 @@ function initialiseMrsTanika()
 		// Casting the charm spell
 		if (no == 14 && cmd == 2) {
 			// In the teacher lounge
-			if (Place == 242 && this.isHere()) {
+			if (Place == 72 && this.isHere()) {
 				// Mayor is charmed so Tanika is here
 				CastCharmSpell("MrsTanika", Place, 1, 'type=charmmrstanika1');
 				return "handled";
+			}
+			return "";
+		}
+		
+		// Casting the transform spell
+		if (no == 18 && cmd == 2) {
+
+			if (this.isHere()) {
+				if (!this.isCharmedBy()) {
+					addComments("The spell washes over her but nothing happens, you seem to need a magical link to her.");
+					return "handled";
+				}
+				if (!CastTransform(1, true)) return "handled";
+
+				// It can be cast
+				ClearComments();
+				dispPlace(Place, 'type=tanikatransformbody' + this.dress.toLowerCase());
+				return "nofooter";
 			}
 		}
 

@@ -25,8 +25,8 @@ function ShowPlace361()
 	// Dialogue Options
 	startQuestions();
 
-	addLinkToPlace(md, 'visit the Kelp Forest display', 369);
-	addLinkToPlace(md, 'visit the Oceans of the World display', 370);
+	addLinkToPlace(md, 'visit the Kelp Forest display', 362);
+	addLinkToPlace(md, 'visit the Oceans of the World display', 363);
 	if (isShopOpen(2, 0, true)) {
 		if (isInvisible()) addLinkToPlace(md, 'go to the information desk', 394);
 		else addLinkToPlace(md, 'ask for help from the information desk', 394);

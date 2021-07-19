@@ -166,7 +166,7 @@ function initialiseJessica()
 		//walk towards the park.
 		//Enter the Alley at Kollam street
 		if (this.place == -1) {
-			if (Place != nFromPlace && (Place == 42 || Place == 47 || Place == 323 || Place == 70)) {
+			if (Place != nFromPlace && (Place == 52 || Place == 47 || Place == 323 || Place == 70)) {
 				showPopupWindow("Jessica Halts",
 					this.addPersonString("jessicabg.png", "height:max%", "right") +
 					'“This path does not seem to lead us towards the target of my tracking spell.” Jessica gently speaks up.</p>' +
@@ -376,7 +376,7 @@ function initialiseJessica()
 				addQuestionR(md, 'ask her if she might miss living in her time-period',
 					'“' + perYou.getLord() + ', in my time many people believed a woman bleeds once a month because her innate wickedness is overflowing from her body.” She answers matter of factly.</p>' +
 					'<p>“A man would work himself to exhaustion and death on someone else\'s field to meet the tax demands of a noble who rules by decree of their supposedly superior blood and not their ability or power and the peasants were sacrificed in petty squabbles for influence and “honor”.” She shakes her head.</p>' +
-					'<p>“I do not yet know much about your time, but I know that this...” She points to a “Vote Beatrice Thomas for Mayor” election poster. “Would have been unthinkable in it.”</p>' +
+					'<p>“I do not yet know much about your time, but I know that this...” She points to a “Vote ' + findPerson("Mayor").getPersonNameShort() + ' Thomas for Mayor” election poster. “Would have been unthinkable in it.”</p>' +
 					'<p>“Is she by the way under your control, ' + perYou.getLord() + '? You will need influential people like her on your side, after all.”</p>' +
 					'<p>Jessica seems to make a mental note as you give her your answer, and you get the feeling that she is quite interested in the Mayor.',
 					"Jessica",
@@ -1406,6 +1406,15 @@ function initialiseJessica()
 			if (makeCall(true, 23)) this.setFlag(36);
 		}
 		return false;
+	};
+	
+	per.getPersonSMS = function(id) {
+		switch(id) {
+			// Technically from Sarah
+			case 92: 
+				return receiveSMS('noble ally', 'A painting $%@$ time of the cults, $@$@$ the witch Jessica', 'jessica0.jpg');
+		}
+		return '';
 	};
 
 }

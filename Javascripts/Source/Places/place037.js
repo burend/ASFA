@@ -9,6 +9,7 @@ function ShowPlace37()
 	addPlaceImage(md, "house11.jpg", "90%");
 	if (isPlaceKnown("AuntsHouse")) addPlaceImage(md, "house12.jpg", "90%");
 	if (isPlaceKnown("LogansHouse")) addPlaceImage(md, "house16.jpg", "90%");
+	if (isPlaceKnown("MelaniesHouse")) addPlaceImage(md, "house17.jpg", "90%");
 	
 	addPlaceTitle(md, "Cherise Road");
 	
@@ -20,6 +21,10 @@ function ShowPlace37()
 		'</p><p>You can see 5 Cherise Rd, the Ross\'s house where your friend Amy lives with her older sister Catherine.<br>The house is quite expensive and you have been here a few times before.</p>'
 	);
 	if (isPlaceKnown("AuntsHouse")) md.write('<p>You can see 7 Cherise Rd, the home of your Aunt Brandi and your cousin Kylie.</p>');
+	if (isPlaceKnown("MelaniesHouse")) {
+		if (checkPersonFlag("Melanie", 1)) md.write('<p>You can see 9 Cherise Rd, the modest home of Melanie.</p>');
+		else md.write('<p>You can see 9 Cherise Rd, the neighbour Kylie mentioned.</p>');
+	}
 	if (isPlaceKnown("LogansHouse")) md.write('<p>You can see 12 Cherise Rd, the modest home of your teacher Miss Logan.</p>');
 
 	startQuestions();
@@ -39,8 +44,22 @@ function ShowPlace37()
 	} else if (isPlaceKnown("CharliesHouse")) addLinkToPlace(md, "visit Charlie\'s home", 434);
 	if (checkPersonFlag("Catherine", 1)) addLinkToPlace(md, "visit the Ross house", 436);
 	else addLinkToPlace(md, "visit the Ross house", 37, '', 'You should just see Amy or Catherine at school, you have not been invited to visit');
-	if (isPlaceKnown("AuntsHouse")) addLinkToPlace(md, "visit your Aunt and Kylie", 433);
+	if (isPlaceKnown("AuntsHouse")) {
+		var perAunt = findPerson("Brandi");
+		if (perAunt.isCharmedBy() || !isAtLocation(400, perAunt.whereNow())) addLinkToPlace(md, "visit your Aunt and Kylie", 400);
+		else if (perAunt.checkFlag(25) && perAunt.isNympho()) addLinkToPlace(md, "visit your Aunt and Kylie", 37, '', 'There is no answer at the door, they must still be in bed');
+		else if (getHour() < 6) addLinkToPlace(md, "visit your Aunt and Kylie", 37, '', 'There is no answer at the door, you were told to not return until tomorrow');
+		else if (getHour() < 9 || getHour() > 21) {
+				addPopupLink(md, "visit your Aunt and Kylie", 'Not Welcome',
+					perAunt.addPersonString(getHour() < 12 ? "gohome-day.jpg" : "gohome-night.jpg", "height:max%", "right") +
+					'You knock on the door toy Aunt Brandi and Kylie\'s home. Aunt Brandi answers the door after a minute and looks at you unimpressed,<p>' +
+					'"I told your mother you may visit in the evenings. It is not the evening" and she closes the door in your face!'
+				);				
+		} else if (isDay() || perAunt.whereNow() != 400) addLinkToPlace(md, "visit your Aunt and Kylie", 37, '', 'There is no answer at the door, they must out, at work or school');
+		else addLinkToPlace(md, "visit your Aunt and Kylie", 400);
+	}
 	if (isPlaceKnown("LogansHouse")) addLinkToPlace(md, "visit Miss Logan's Home", 440);
+	if (isPlaceKnown("MelaniesHouse")) addLinkToPlace(md, checkPersonFlag("Melanie", 1) ? 'visit Melanie\'s house' : 'visit Aunt Brandi\'s neighbours house', 432);
 	
 	if (isPlaceKnown("DervishRd")) addLinkToPlace(md, 'walk to Dervish Rd', 5);
 	addLinkToPlace(md, "walk to Kollam Street", 44);

@@ -2,7 +2,7 @@
 
 function ShowPlace414(stype)
 {
-	var md = WritePlaceHeader(false, stype == "threesome" || stype == "fuck" ? 'td-left-large' : '');
+	var md = WritePlaceHeader();
 
 	var perMadison = findPerson("Madison");
 	var perZoey = findPerson("Zoey");
@@ -48,7 +48,7 @@ function ShowPlace414(stype)
 				'<p>'
 			);
 			if (isExplicit()) AddImage(perYou.isMaleSex() ? 'GenericSex/Explicit/sex-mf blowjob d.jpg' : 'GenericSex/Explicit/sex-ff lick d.jpg', perYou.isMaleSex() ? '25%' : '40%', 'left');
-			else AddImage(perYou.isMaleSex() ? 'GenericSex/sex-mf blowjob blonde hair-b.jpg' : 'GenericSex/sex-ff lick a.jpg', perYou.isMaleSex() ? '25%' : '40%', 'left');
+			else AddImage(perYou.isMaleSex() ? 'GenericSex/sex-mf blowjob-blonde hair b.jpg' : 'GenericSex/sex-ff lick a.jpg', perYou.isMaleSex() ? '25%' : '40%', 'left');
 			if (perYou.isMaleSex()) {
 				md.write(
 					'Zoey kneels down as you unzip and take out your cock. To your surprise and delight she gives you an expert blowjob and then starts to deep-throat you, she has clearly done this before.</p>' +
@@ -124,35 +124,6 @@ function ShowPlace414(stype)
 		startQuestions();
 		addLinkToPlace(md, 'return to the station reception', 371);
 
-
-	} else if (stype == "fuck") {
-		// Sex with Zoey
-		perZoey.showPerson("zoey7.jpg");
-		addPlaceTitle(md, "Fucking Zoey");
-
-		md.write(
-			'<p>Zoey quickly changes into her delivery uniform and makes a show of her short skirt and in the end she shows off her panties as she waits for your touch.</p>' +
-			'<p>You touch her, and more as you take her and yourself to the heights of ecstacy before you leave Zoey and Madison for now.</p>'
-		);
-
-		startQuestions();
-		addLinkToPlace(md, 'return to the station reception', 371);
-
-	} else if (stype == "threesome") {
-		// Threesome with Zoey and Madison
-		if (!isExplicit()) perZoey.showPerson("GenericSex/threesome1.jpg");
-		else if (perYou.isMaleSex()) AddImage("GenericSex/Explicit/sex-mff threesome e.gif");
-		else AddImage("GenericSex/Explicit/sex-fff threesome a.jpg");
-		addPlaceTitle(md, "Fucking Zoey and Madison");
-
-		md.write(
-			'<p>There is no need to just have Madison watch so you call her over to join in.</p>' +
-			'<p>The three of you take each other to the heights of ecstacy before you leave Zoey and Madison for now.</p>'
-		);
-
-		startQuestions();
-		addLinkToPlace(md, 'return to the station reception', 371);
-
 	} else if (stype == "visitzoey" || stype === "") {
 		// Visit Zoey
 		if (getHour() < 16) perZoey.showPerson(perZoey.checkFlag(1) ? "zoey6-noon.jpg" : "zoey5-noon.jpg");
@@ -164,18 +135,16 @@ function ShowPlace414(stype)
 		);
 
 		startQuestions();
-		addLinkToPlace(md, '"I\'d prefer you in your uniform"', 414, 'type=fuck');
-		addLinkToPlace(md, '"I want both you and Madison', 414, 'type=threesome');
+		addLinkToPlace(md, '"I\'d prefer you in your uniform"', 414, 'type=officefuck');
+		addLinkToPlace(md, '"I want both you and Madison', 414, 'type=zoeymadisonthreesome');
 		if (isCharmedBy("Nina") && checkPersonFlag("Nina", 4)) addLinkToPlace(md, '"let\'s visit Nina for some more practise"', 371, 'type=ninazoey2');
 		addLinkToPlace(md, 'return to the station reception', 371);
 	}
 
 
 	// Madison is always present
-	if (sType !== "threesome") {
-		AddRightColumnMed(md);
-		perMadison.showPerson(perMadison.checkFlag(13) ? "madison18be.jpg" : "madison18.jpg");
-	}
+	AddRightColumnMed(md);
+	perMadison.showPerson(perMadison.checkFlag(13) ? "madison18be.jpg" : "madison18.jpg");
 
 	WritePlaceFooter(md);
 }

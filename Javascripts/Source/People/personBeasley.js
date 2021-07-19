@@ -51,8 +51,8 @@ function RepliesBeasley(nR)
 		if (perGates.other == 9) perGates.other = 10; // Gates Alive - Apprentice Path
 		setPlaceKnown("WildRanges");
 		setPlaceKnown("Park");
-		PlaceI(5, 26); // Set stone in the wild ranges
-		addComments('"Rumour has it," he says with an overly dramatic sigh, "that mana can be found at the stones in the wild ranges, to the north of the park. Oh, and usually is stored in special stones of some kind. Now please let me get on with my work."');
+		PlaceI(5, 26); // Set stone in the Wild Ranges
+		addComments('"Rumour has it," he says with an overly dramatic sigh, "that mana can be found at the stones in the Wild Ranges, to the north of the park. Oh, and usually is stored in special stones of some kind. Now please let me get on with my work."');
 
 	}
 	else if (nR == 193)
@@ -343,7 +343,7 @@ function initialiseBeasley()
 			if (perYou.isBornMale()) addLinkToPlace(md, 'try again later', 3);
 			else addLinkToPlace(md, 'try again later', 11);
 
-			AddRightColumnLarge(md);
+			AddPeopleColumnLarge(md);
 			if (perYou.isBornMale()) findPerson("MsTitus").showPerson("titus25.jpg");
 			else if (perBeasley.isCharmedBy()) this.addPersonFace();
 			else this.showPerson("beasley6.jpg");
@@ -392,6 +392,7 @@ function initialiseBeasley()
 				if (this.getCharmedLevel() == 1) this.charmThem(2);
 				md = WritePlaceHeader();
 				this.showPerson(perYou.isMan() ? "beasley14b.gif" : "beasley14.jpg");
+				addPlaceTitle(md, "Mr. Beasley's Service");
 				md.write(
 					'<p>Mr Beasley is an aggressive lover. The moment he has your permission, he pulls you close and slips his hands under your clothes. He is obviously a man used to being in charge. His kiss is possessive and demanding, but he is good enough at it that you allow him play around for at least a moment before deciding how far he\'ll be allowed to get today.</p>'
 				);
@@ -432,7 +433,7 @@ function initialiseBeasley()
 				// Male, fun, player any sex
 				md = WritePlaceHeader();
 				if (perYou.isFuta()) this.showPerson("beasley13h.jpg");
-				else if (perYou.isMaleSex()) AddImageRandom("GenericSex/sex-mm anal ", 2);
+				else if (perYou.isMaleSex()) AddImageRandom("GenericSex/Explicit/sex-mm anal", 2);
 				else this.showPerson("beasley13f.jpg");
 
 				addPlaceTitle(md, "In Charge Of Mr. Beasley's");
@@ -621,8 +622,10 @@ function initialiseBeasley()
 		if (sType == "transformbimbo1") {
 			CastTransform(1);
 			this.setFlag(10);
+			this.setFlag(11, false);
+			this.setFlag(12, false);
 			this.dress = "Bimbo1";
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			showPopupWindow("Transformation",
 				'<img src="Images/People/Beasley/Bimbo1/beasley-transform.jpg" class="imgpopup" alt="TG">' +
 				'<p>You cast the spell and ' + this.getPersonName() + ' gasps and as you watch ' + this.getHisHer() + ' chest swells and grows into a huge pair of breasts. Hair grows from his previously bald head and ' + this.getHisHer() + ' figure changes to a curvy female form. He..no..she cries out as <i>her</i> shirt rips open as her breasts grow much too large for the male shirt. Her breasts are huge, probably larger even than Ms. Titus\'s are!</p>' +
@@ -631,14 +634,16 @@ function initialiseBeasley()
 				'<p>(further content not implemented)</p>'
 			);
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		if (sType == "transformbimbo2") {
 			CastTransform(1);
 			this.setFlag(11);
+			this.setFlag(10, false);
+			this.setFlag(12, false);
 			this.dress = "Bimbo2";
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			showPopupWindow("Transformation",
 				'<img src="Images/People/Beasley/Bimbo2/beasley-transform.jpg" class="imgpopup" alt="TG">' +
 				'<p>You cast the spell and ' + this.getPersonName() + ' gasps and as you watch ' + this.getHisHer() + ' chest swells and grows into a large pair of inflated, almost balloon-like breasts. Hair grows from ' + this.getHisHer() + ' previously bald head and ' + this.getHisHer() + ' figure changes to a curvy female form, his lips swell into an exaggerated pout. He..no..she cries out as <i>her</i> shirt rips open as her breasts grow much too large for the male shirt. Her pants rip as her ass out-grows her previously tight pants, and she tears off her pants and shirt. Somehow her underwear has also transformed, into stockings and a garter-belt. You doubt that ' + this.getHeShe() + ' was previously wearing these!</p>' +
@@ -649,24 +654,26 @@ function initialiseBeasley()
 				'<p>(further content not implemented)</p>'
 			);
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		if (sType == "transformbondage") {
 			CastTransform(1);
+			this.setFlag(10, false);
+			this.setFlag(11, false);
 			this.setFlag(12);
 			this.dress = "Bondage";
-			md = WritePlaceHeader(true, '', 'black');
+			md = WritePlaceHeaderNIP(true, '', 'black');
 			showPopupWindow("Transformation",
 				'<img src="Images/People/Beasley/Bondage/beasley-transform.jpg" class="imgpopup" alt="TG">' +
-				'<p>You cast the spell and ' + this.getPersonName() + ' gasps and as you watch ' + this.getHisHer() + ' chest swells and hair grows from ' + this.getHisHer() + ' previously bald head. ' + capitalizeFirstLetter(this.getHisHer()) + ' figure changes to a slim female form and ' + this.getHeShe() + ' unbuttons ' + this.getHisHer() + ' shirt in disbelief exposing <i>her</i> breasts. She drops her pants showing a delightful ass and you see a glimpse of a new pussy.</p>' +
+				'<p>You cast the spell and ' + this.getPersonName() + ' gasps and as you watch ' + this.getHisHer() + ' chest swells and hair grows from ' + this.getHisHer() + ' previously bald head. ' + capitalize(this.getHisHer()) + ' figure changes to a slim female form and ' + this.getHeShe() + ' unbuttons ' + this.getHisHer() + ' shirt in disbelief exposing <i>her</i> breasts. She drops her pants showing a delightful ass and you see a glimpse of a new pussy.</p>' +
 				'<p>She asks you incredulously, "You cast Al Mass on me? How did you learn it, it is lost, a spell of legend, not even Kurndorf was supposed to know it!". You tell her yes it was and she advances, intent on hitting you despite the charm spell. You call out for her to stop and instantly she stops moving, a look of disbelief on her face. She demands, "What is this, why can\'t I move?"</p>' +
 				'<p>You have no idea, and for an experiment you tell her to expose herself more. She immediately strips more and looks at you angrily. It seems she must obey your physical orders, interesting! You tell her to do what she wants, and she quick retreats behind her desk. She seems to be able to act normally now, but before despite being charmed she tried to hit you before! To be safe you tell her, "You can never hit me, harm me or work against me in any way" and she answers with her eyes glowing slightly,</p>' +
 				'<p>"Yes ' + perYou.getMaster() + '"</p>' +
 				'<p>(further content not implemented)</p>'
 			);
 			setQueryParams("");
-			WritePlaceFooter(md, '', true, true);
+			WritePlaceFooter(md);
 			return true;
 		}
 		return false;

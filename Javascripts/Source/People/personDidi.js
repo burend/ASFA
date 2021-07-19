@@ -164,7 +164,7 @@ function initialiseDidi()
 						'<p>Didi steps over and starts to pull down your pants and in short order you are licking and being licked by the busty and naked woman.</p>'
 					);
 				}
-				md.write('<p>A little before the end, you notice her tatto is slighly glowing.');
+				md.write('<p>A little before the end, you notice her tattoo is slightly glowing.');
 				if (cnt == 1) {
 					md.write(
 						' Afterwards you ask her about the tattoo and she tells you,</p>' +
@@ -196,7 +196,7 @@ function initialiseDidi()
 					addPopupLink(md, '"I want to see you in bikini\'s again"', "Changing",
 						"<img src='Images/People/Didi/pool-change.jpg' style='width:50%;float:right;margin-left:5px' alt='Didi'>" +
 						'You ask Didi to start wearing her bikini\'s again and she nods her head,<br><br>' +
-						'"Sure, but it is a pitty to cover up all this", she stands to show you what you will be missing. She blows you a kiss and walks off to the changing room. You expect her to return wearing a bikini, but a little later she calls you to say "See you". While she is under the spell, she has certainly retained some independence.',
+						'"Sure, but it is a pity to cover up all this", she stands to show you what you will be missing. She blows you a kiss and walks off to the changing room. You expect her to return wearing a bikini, but a little later she calls you to say "See you". While she is under the spell, she has certainly retained some independence.',
 						true, "movePerson('Didi',999);per.dress=''");
 				} else {
 					addPopupLink(md, '"I want to see you naked again"', "Changing",
@@ -204,7 +204,7 @@ function initialiseDidi()
 						'You ask Didi to stop wearing her bikini\'s again and she nods her head, and simply removes her bikini!',
 						true, "findPerson('Didi').dress='Naked'");
 				}
-				addLinkToPlaceC(md, 'leave Didi for now', 269, '', 'As you leave you notie Didi heads off to the changing room', '', "movePerson('Didi',999)");
+				addLinkToPlaceC(md, 'leave Didi for now', 269, '', 'As you leave you notice Didi heads off to the changing room', '', "movePerson('Didi',999)");
 				WritePlaceFooter(md);
 				return true;
 			}

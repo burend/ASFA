@@ -143,7 +143,7 @@ function ShowPlace173(stype)
 	startQuestions('If it is too hard then:');
 	addLinkToPlace(md, "go to the hotel bar", 124);
 
-	AddRightColumnMed();
+	AddPeopleColumnMed();
 	if (stype == "expose") perTess.showPerson("tess11a.jpg");
 	else perTess.showPerson("tess10.jpg");
 

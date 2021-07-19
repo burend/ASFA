@@ -28,9 +28,12 @@ function ShowPlace46()
 	var nmTs = perTanika.getPersonNameShort();
 	var perTess = findPerson("Tess");
 	var perAnita = findPerson("Anita");
+	var perElian = findPerson("Elian");
+	var clvE = perElian.getCharmedLevel();
 	var totpeople = perTess.isHere() ? 1 : 0;
 	if (perTanika.isHere()) totpeople++;
 	if (perAnita.isHere()) totpeople++;
+	if (perElian.isHere() && clvE != 4) totpeople++;
 	//var clvA = perAnita.getCharmedLevel();
 	var nmA = perAnita.getPersonName();
 	var posA = perAnita.getCharmedLevel() == 3 ? "slut" : "subordinate";
@@ -61,6 +64,7 @@ function ShowPlace46()
 		if (perTanika.isHere()) md.write('<img style="margin: 5px 5px 5px 5px;width:99%;position:absolute;float:left;top:0;left:0" src="Images/' + perTanika.getImg("bedroom-tanika" + id) + '.png">');
 		if (perAnita.isHere()) md.write('<img style="margin: 5px 5px 5px 5px;width:99%;position:absolute;float:left;top:0;left:0" src="Images/' + perAnita.getImg("bedroom-anita" + id) + '.png">');		
 		if (id != 2 && perTess.isHere()) md.write('<img style="margin: 5px 5px 5px 5px;width:99%;position:absolute;float:left;top:0;left:0" src="Images/' + perTess.getImg("bedroom-tess" + id) + '.png">');
+		if (perElian.isHere() && clvE != 4) md.write('<img style="margin: 5px 5px 5px 5px;width:99%;position:absolute;float:left;top:0;left:0" src="Images/' + perElian.getImg("bedroom-elian" + id) + '.png">');
 	} else if (perTess.isHere()) {
 		// Tess Adams is here
 		if (!isDay()) perTess.showPerson("tess20a.jpg");
@@ -148,8 +152,8 @@ function ShowPlace46()
 	// Tess Adams questions
 	if (perTess.isHere())
 	{
-		if (isDay()) addLinkToPlaceC(md, '"I like your outfit, Tess."', 170, "type=enter");
-		else addLinkToPlaceC(md, '"I like your nightie, Tess."', 170, "type=enter");
+		if (isDay()) addLinkToPlaceC(md, '"I like your outfit, Tess."', Place, "type=tessprivate");
+		else addLinkToPlaceC(md, '"I like your nightie, Tess."', Place, "type=tessprivate");
 	}
 	// Mrs.Tanika specific content
 	if (perTanika.isHere())
@@ -160,6 +164,14 @@ function ShowPlace46()
 	}
 	// Anita specific content
 	if (perAnita.isHere()) addLinkToPlaceC(md, "talk to your " + posA + " Anita", Place, 'type=anitaprivate');
+	// Elian specific content
+	if (perElian.isHere()) addLinkToPlaceC(md, "talk to Elian", Place, 'type=elianprivate');
+	else if (clvE == 4 && perElian.place < 900) addLinkToPlaceC(md, "call for Elian to join you", Place, '', 'A moment later Elian is in the room, waiting quietly for your request', '', "movePerson('Elian',46.1)");
+	
+	// Combined scenes (based on Mrs Tanika as her model varies here)
+	if (perTess.isHere() && perTanika.isHere() && perAnita.isHere()) {
+		addLinkToPlaceC(md, "ask you harem...companions to do something as a group", Place, 'type=haremsex1');
+	}
 
 	// Waiting
 	if (!perYou.checkFlag(37) && !perYou.checkFlag(15)) {
@@ -170,7 +182,8 @@ function ShowPlace46()
 			false, "perYou.setFlag(37);dispPlace();"
 		);
 	}
-	if (isDay()) addLinkToPlace(md, "wait for darkness", '', '', 'You kill time until the sun sets', '', "WaitforForDayNight()");
+	if (isDay()) addOptionLink(md, "wait for darkness", "WaitforForDayNight()");
+	//addLinkToPlace(md, "wait for darkness", '', '', 'You kill time until the sun sets', '', "WaitforForDayNight()");
 
 	// Sleeping
 	if (totpeople === 0) {
@@ -183,6 +196,11 @@ function ShowPlace46()
 	// Leaving?
 	addLinkToPlace(md, "go to the kitchen", 45);
 	addLinkToPlace(md, "leave your house", 44);
+	
+	if (clvE == 4 && perElian.isHere()) {
+		AddPeopleColumn(md);
+		perElian.showPerson("bedroom-waiting.jpg");
+	}
 
 	WritePlaceFooter(md);
 }

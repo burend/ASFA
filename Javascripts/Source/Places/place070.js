@@ -32,7 +32,7 @@ function ShowPlace70()
 	startQuestions();
 
 	addLinkToPlace(md, "go to the history classroom", 10);
-	addLinkToPlace(md, "go to the teacher\'s lounge", 242);
+	addLinkToPlace(md, "go to the teacher\'s lounge", 72);
 
 	//  Asked for help on the reproductive lesson/neurology assignment
 	if (isPlaceKnown("AnatomyClassroom")) {

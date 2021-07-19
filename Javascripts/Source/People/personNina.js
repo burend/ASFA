@@ -112,7 +112,7 @@ function initialiseNina()
 			if (sType == "ninafuck") {
 				// Sex scenes at her home
 				md = WritePlaceHeader();
-				if (perYou.isMaleSex()) this.showPersonRandom("nina-home-sexb", 2);
+				if (perYou.isMaleSex()) this.showPersonRandomRorX("nina-home-sexb", isExplicit() ? 4 : 2);
 				else this.showPerson("nina-home-sexg.jpg");
 				addPlaceTitle(md, "Nina");
 				md.write(
@@ -129,42 +129,11 @@ function initialiseNina()
 
 		if (Place != 371) return false;
 
-		if ((isDay() && nFromPlace == 359 && this.isCharmedBy() && isCharmedBy("Zoey") && !this.checkFlag(3)) || sType == "ninazoey" || sType == "ninazoey2") {
-			md = WritePlaceHeader(false, 'td-left-large');
-			if (!this.checkFlag(3)) {
-				this.setFlag(3);
-				setQueryParams('type=ninazoey');
-			}
-			this.showPerson("ninazoey1.jpg");
-			addPlaceTitle(md, "Slaves Practising");
-			if (sType == "ninazoey") {
-				md.write(
-					'<p>You see the reception area is empty, Nina is not at her desk. You assume she is on a break and go to check the small break room your Mom once took you to when visiting. Before you take a few steps you hear some voices coming from the room so you check it out. The room has some large plants and some tea and coffee machines. It also has a naked Nina and a naked Zoey! You hear them whispering and hear Nina say,</p>' +
-					'<p>"Don\'t worry, ' + perYou.getHeShe() + ' won\'t mind, it\'s like we are, you know, practising. So we are really good for ' + perYou.getHimHer() + '"</p>' +
-					'<p>Zoey notices you and smiles, but Nina is very intent on seducing her and does not see you. Interesting, you remember Madison saying something about how "Nina really likes Zoey". You would guess the arousal of the Charm spell is letting them try things they may not of before. Alright, time to take some control here, so you interrupt,</p>' +
-					'<p>"Nina! Yes you may by all means practise with Zoey, but you must ask my permission!"</p>' +
-					'<p>Nina looks startled and stammers an apology and asks if they can practise for you? You of course agree and you watch the two as they caress and play with each others bodies. Nina is clearly besotted with Zoey, but while it seems Zoey likes her, it seems Zoey is more interested in performing for your enjoyment.</p>' +
-					'<p>After a time you tell them that they have had enough practise and it is time to put their training to good use, on you!</p>'
-				);
-			} else {
-				md.write(
-					'<p>You tell Zoey that it is time for another practise session with Nina. You both step out to the reception area, leaving a disappointed Madison behind.</p>' +
-					'<p>You tell Nina "Practise makes perfect" and she immediately understands and heads for the break room, shedding her clothing.</p>' +
-					'<p>In the break room you make sure they get plenty of practise in pleasuring each other, but mainly in pleasuring yourself.</p>'
-				);
-			}
-			startQuestions();
-			addLinkToPlace(md, 'let them finish and return to the reception with Nina', Place);
-			WritePlaceFooter(md);
-			return true;
-
-		}
-
 		if (sType == "please") {
-			md = WritePlaceHeader(false, "td-left-med");
+			md = WritePlaceHeader();
 
-			if (Math.random() < 0.5) this.showPerson("nina7.jpg");
-			else this.showPerson("nina8.jpg");
+			if (perYou.isMaleSex()) this.showPersonRandomRorX("office-sexb", isExplicit() ? 4 : 2);
+			else this.showPersonRandom("office-sexg", 2);
 
 			addPlaceTitle(md, "Nina Under a Spell");
 
@@ -642,7 +611,7 @@ function initialiseNina()
 	per.getPersonSMS = function(id) {
 		if (id == 230) return receiveSMS('Nina', 'Hi there, ' + perYou.getMaster() + ', I just can\'t cook, it gets all over me..', 'ninasms1.jpg');
 		if (id == 231) return receiveSMS('Nina', 'Heeeeeyyy!!  Ms Halliway is talking about some breakthrough tonight, thought you might want to hear this.', this.isCharmedBy("You") ? 'ninasms2.jpg' : '', this.isCharmedBy("You") ? "80%" : "") + (this.isCharmedBy("You") ? receiveSMS('Nina', 'Missing u, btw. :-*') : '');
-		if (id == 232) return receiveSMS('Nina', perYou.getMaster() + '! Ms. Halliway and the Manager just left the studio with a huge suitcase. They wouldn\'t tell anyone why, but I\'ve spied on them when they ordered a Taxi to 11 Amaranth Pl!', 'ninasms3.jpg') + receiveSMS('Nina', 'I bet they are gonna F-U-C-K. :D');
+		if (id == 232) return receiveSMS('Nina', this.getYourNameFor() + '! Ms. Halliway and the Manager just left the studio with a huge suitcase. They wouldn\'t tell anyone why, but I\'ve spied on them when they ordered a Taxi to 11 Amaranth Pl!', 'ninasms3.jpg') + receiveSMS('Nina', 'I bet they are gonna F-U-C-K. :D');
 		return '';
 	};
 }

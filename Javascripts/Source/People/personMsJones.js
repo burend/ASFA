@@ -180,7 +180,7 @@ function initialiseMsJones()
 		
 		if (sType !== "") return false;
 
-		if (Place == 242 && !this.checkFlag(11) && isShopOpen(2) && this.isHere()) {
+		if (Place == 72 && !this.checkFlag(11) && isShopOpen(2) && this.isHere()) {
 			showPopupWindow("Ms Jones",
 				this.addPersonString("!jones14.jpg", "height:max%", "right") +
 				'Miss Emanuelle-Felicitas Jones, your french teacher, has been using the teachers lounge for the last few weeks while her own office is undergoing renovations. She had one of the spare desks moved into the room, so it is no surprise that you find her sorting through her students homework as you enter it.</p>' +
@@ -254,7 +254,7 @@ function initialiseMsJones()
 		}
 		if (Place == 269 && sType == "msjonespoolsex") {
 			md = WritePlaceHeader(false, 'td-left-large');
-			if (isExplicit() && perYou.isMaleSex()) this.showPersonX("!jones-pool-sex.mp4");
+			if (isExplicit() && perYou.isMaleSex()) this.showPersonX("!jones-pool-sex.jpg");
 			else this.showPerson("!jones-pool-sex.jpg");
 			addPlaceTitle(md, "Being Discrete and Private with Ms. Jones");
 			md.write(
@@ -849,7 +849,7 @@ function initialiseMsJones()
 			}
 		}
 		
-		if (Place != 242 || !this.isHere() || sType !== "") return;
+		if (Place != 72 || !this.isHere() || sType !== "") return;
 
 		if (!this.checkFlag(12)) {
 			addQuestionR(md, 'Say hello to Ms. Jones',
@@ -891,7 +891,7 @@ function initialiseMsJones()
 		// Casting the charm spell
 		if (no == 14 && cmd == 2) {
 			// In the teachers lounge
-			if (Place == 242 && this.isHere()) {
+			if (Place == 72 && this.isHere()) {
 				if (nMana < (perYou.checkFlag(17) ? 9 : 10)) {
 					addComments('You do not have enough mana to cast the spell.');
 					return "handled";

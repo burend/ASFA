@@ -70,6 +70,9 @@ function saveGlobalSettings()
 	var bOldUseIndexedDB = bUseIndexedDB;
 	bUseCookies = bCanUseCookies;
 	bUseIndexedDB = bCanUseIndexedDB && !bCanUseCookies && !bCanUseLocalStorage;
+	var svt = getSaveType();
+	bUseCookies = bOldUseCookies;
+	bUseIndexedDB = bOldUseIndexedDB;
 
 	var s = saveVarShortNo(gameState.bCommentLL ? 1 : 0);
 	s += saveVarShortNo(bOldUseCookies ? 1 : 0);
@@ -90,10 +93,7 @@ function saveGlobalSettings()
 	s += saveVar(gameState.nMaxPhotos);
 	s += saveVar(nMaxSaves);
 
-	setSaveGame(SAVE_BASE + "Global", s);
-
-	bUseCookies = bOldUseCookies;
-	bUseIndexedDB = bOldUseIndexedDB;
+	setSaveGame("Global", s, svt);
 }
 
 function getAllSaveString(ar)
@@ -123,14 +123,16 @@ function loadAllSaveGames(s)
 	var nTotal = GetNo(s);
 	for (var i = 0; i < nTotal; i++) {
 		var sv = GetStr(s);
-		setSaveGame(SAVE_BASE + (i + 1), sv);
+		setSaveGame((i + 1), sv);
 	}
 	DoLoad();
 }
 
 function getSaveString(name)
 {
-	var s = 'Q' + saveVar(name);	// 26 - 14.9.4
+	// 'J' - 19 - 14.8.4
+	// 'L' - 21 - 14.9
+	var s = 'R' + saveVar(name);	// 27 - 14.11
 
 	s += saveVarShortNo(isMurderPath() ? (isMurderPath(true) ? 2 : 1) : (isCharmedPath() ? (isGoodPath() ? 4 : 0) : 3));
 	var i, ie;
@@ -209,22 +211,27 @@ function fixImage149(s)
 	if (s.indexOf("tracy") == 0) return "People/Tracy/" + s;
 	if (s.indexOf("Explicit/tracy") == 0) return "Explicit/People/Tracy/" + s.substr(9);
 	if (s.indexOf("kate") == 0) return "People/Kate/" + s;
-	if (s.indexOf("Explicit/kate") == 0) return "Explicit/People/Kate/" + s.substr(9);
+	if (s.indexOf("Explicit/kate") == 0) return "People/Kate/Explicit/" + s.substr(9);
+	if (s.indexOf("Explicit/People/Kate") == 0) return "People/Kate/Explicit" + s.substr(20);
 	return s;
 }
 
-function loadGameString(s)
+function loadGameStringMod(s)
 {
 	var oUse = gameState.bUseIcons;
 	var oLeft = gameState.nLeftBarState;
 	var oRight = gameState.nRightBarState;
-	initialiseGame();		// reset all game variables
+	var nMaxP = gameState.nMaxPhotos;
+	var nMaxS = gameState.nMaxSaves;
+	initialiseGame(gameState.sMod);		// reset all game variables
 	gameState.nLeftBarState = oLeft;
 	gameState.nRightBarState = oRight;
 	gameState.bUseIcons = oUse;
+	gameState.nMaxPhotos = nMaxP;
+	gameState.nMaxSaves = nMaxS;
 
 	var nType = parseInt(s.charAt(0), 36);
-	console.log("save type = " + nType);
+	//console.log("save type = " + nType);
 	counter = 1;
 	GetStr(s);		// Ignore save name
 
@@ -284,7 +291,13 @@ function loadGameString(s)
 	for (i = 0; i < idx; i++) {
 		id = GetStr(s);
 		if (findPerson(id) !== null) per.loadPerson(s, nType);
-		else alert("unable to load " + id + ' at ' + i + '/' + idx + ' (last = ' + lid + ')');
+		else {
+			// Unknown person, likely from a version change, or loading from a mod
+			console.log("unable to load " + id + ' at ' + i + '/' + idx + ' (last = ' + lid + ')');
+			// Try to load them but discard the loaded data
+			var temp = new Person(id, 0);
+			temp.loadPerson(s, nType);
+		}
 		lid = id;
 	}
 	perYou.name = GetStr(s);
@@ -330,8 +343,8 @@ function loadGameString(s)
 
 	idx = GetNo(s);
 	arSMSImages = new Array();
-	// SMS Limit: 11 * 32
-	for (i = 0; i < 11; i++) {
+	// SMS Limit: 12 * 32
+	for (i = 0; i < 12; i++) {
 		if (i < idx) arSMSImages.push(GetNo(s));
 		else arSMSImages.push(0);
 	}
@@ -343,9 +356,105 @@ function loadGameString(s)
 	nUnreadSMS = GetNo(s);
 	if (nType >= 25) gameState.bLastSex = GetNoShort(s) === 1;
 	if (nType >= 26) gameState.sMod = GetStr(s);
+	else gameState.sMod = '';
 	gameState.sUnDo = s.substr(counter);		// MUST be last!!!
+	return nType;
+}
 
+function loadGameString(s, slot)
+{
+	var sOldMod = gameState.sMod + '';
+	//console.log('old mod: ' + sOldMod);
+	var nType = loadGameStringMod(s);
+	if (!gameState.sMod) console.log('loading mod: ' + gameState.sMod);
+	if (gameState.sMod !== sOldMod) {
+		/*
+		for (var m in window) {
+		try {
+			if (typeof window[m] == "function" && window.hasOwnProperty(m)) {
+				if (window[m].name.indexOf("initialiseMod") != -1) delete window[m];
+			}
+		} catch(e) {
+			// do nothing
+		}
+		}
+
+		arPeople = [];
+		perMod = undefined;
+		*/
+		DoRestartAndLoad(slot, s);
+		return;
+	}
+	
 	// Upgrades
+	if (nType < 21) {
+		// Before version 14.9
+		if (Place == 105) Place = 93;
+		else if (Place == 309) Place = 371;
+		if (isCharmedBy("Tina") && isCharmedBy("MrsRobbins")) setPlaceKnown("TinasRoom");
+		findPerson("Mom");
+		if (per.place == 154 && per.checkFlag(2) && !per.checkFlag(3) && !per.isCharmedBy()) per.setFlag(1);
+		findPerson("Kate");
+		if (per.isCharmedBy() && per.place == 139.5) per.place = 1;
+		findPerson("NurseSandra");
+		if (per.isCharmedBy() || per.other > 1) per.setFlag(2);
+		findPerson("Angela");
+		if (per.dress === '') per.dress = "Small";
+		if (per.checkFlag(6)) {
+			findPerson("Emily");
+			if (per.other == 0) per.other = nTime;
+		}
+		findPerson("Gabby");
+		if (per.checkFlag(13) && per.isCharmedBy()) per.setFlag(13, false);
+		findPerson("MrTanika");
+		if (per.place == 460 || per.place == 470) per.place = 475;
+		perDavy.dress = perDavy.isMan() ? "Male/Uncharmed" : "Female/Uncharmed";
+		findPerson("Glenvale");
+		if (per.checkFlag(33)) {
+			per.setFlag(33, false);
+			setPersonFlag("Nella", 1);
+		}
+		if (perYou.checkFlag(45)) setPersonFlag("Elian", 1);
+		if (perBeasley.checkFlag(10)) perBeasley.dress = "Bimbo1";
+		if (perBeasley.checkFlag(11)) perBeasley.dress = "Bimbo2";
+		if (perBeasley.checkFlag(12)) perBeasley.dress = "Bondage";
+		findPerson("Monique");
+		per.extra[1] = per.charmed;
+		if (per.charmed > 0) per.charmed = 16;
+		findPerson("Ellie");
+		if (per.place == 93) per.place = 81;
+		else if (per.place == 163) per.place = 83;
+		findPerson("Tina");
+		per.other = per.charmed;
+		if (per.place == 130) per.place = 82;
+		else if (per.place == 163) per.place = 83;
+		if (per.other == 1 || per.other == 2 || per.other == 3) per.setFlag(13);
+		if (per.other == 2 || per.other == 3) per.setFlag(14);
+		if (per.other == 3) per.setFlag(15);
+		if (per.other > 0) per.charmed = 1;
+		findPerson("Kristin");
+		if (per.place == 362) per.place = 224;
+		findPerson("MissLogan");
+		if (per.place === 0) per.place = 234;
+		findPerson("AdeleRoss");
+		if (per.checkFlag(12)) per.setFlag(12, false);
+		if (Place == 62) Place = 29;
+		else if (Place == 286) Place = 280;
+		findPerson("OfficerKhan");
+		if (per.charmed != 0) {
+			per.extra[1] = per.charmed;
+			per.charmed = 1;
+		}
+		findPerson("Victoria");
+		if (per.place == 348) per.place = 197;
+		findPerson("Bambi");
+		if (per.dress === "") per.dress = "Kiki";
+		if (whereItem(38) == 289) moveItem(38, 0);
+		findPerson("Jade");
+		if (per.place == 286) per.place = 280;
+		findPerson("Amy");
+		if (per.dress === '') per.dress = "Brunette";		
+	}
 	
 	if (nType == 21) {
 		findPerson("Monique");
@@ -360,7 +469,9 @@ function loadGameString(s)
 		findPerson("Jade");
 		if (per.place == 286) per.place = 280;
 		per.dress = "";
-		
+	} else if (nType == 22) {
+		findPerson("Monique");
+		if (per.extra[1] == 16 && per.place == 10) per.extra[1] = 3;
 	}
 	if (nType < 23) {
 		var n = nPhoneWallpapers;
@@ -436,7 +547,90 @@ function loadGameString(s)
 		if (per.dress === "") per.dress = "Shyla";
 		if (perJade.place == 286) perJade.place = 280;
 		perJade.dress = "";
-	} else if (nType == 26) findPerson("Sofia").name = per.getPersonNameShort();
+	} else if (nType == 26) {
+		findPerson("Sofia").name = per.getPersonNameShort();
+		findPerson("JohnAdams");
+		if (per.checkFlag(12) && !per.isCharmedBy()) per.setFlag(12, false);
+		if (per.place == 231) per.place = 230;
+		findPerson("Tess");
+		if (per.place == 231) per.place = 230;
+		findPerson("Lauren");
+		if (per.place == 258) per.place = 269;
+		findPerson("Charley");
+		if (per !== null) {
+			if (per.getCharmedLevel() == 2) {
+				per.charmThem(1);
+				per.setFlag(2);
+			}
+		}
+		findPerson("MrTanika");
+		if (per.place == 475) per.place = 477;
+		
+		if (Place == 258) Place = 269;
+		else if (Place == 42) Place = 52;
+		else if (Place == 49) Place = 54;
+		else if (Place == 369) Place = 362;
+		else if (Place == 370) Place = 363;
+		else if (Place == 39) {
+			Place = 177;
+			sType = "partypuzzle";
+		} else if (Place == 34) {
+			Place = 26;
+			sType = "mgstones";
+		}
+		findPerson("MrsGranger");
+		if (per.place == 34) per.place = 26;
+	}
+	if (nType < 27) {
+		setPlaceKnown("DuckPond");
+		findPerson("Jenny");
+		if (per.dress === "") per.dress = "Briana";
+		findPerson("Pamela");
+		if (per.dress === "") per.dress = "Piper";
+		findPerson("Mayor");
+		if (per.dress === "") per.dress = "Rachel";	
+		findPerson("Zoey");
+		if (per.dress === "") per.dress = "Zoe";	
+		findPerson("NurseMegan");
+		if (per.dress === "") per.dress = "Sandra";
+		per.setFlag(41, false);
+		findPerson("MrsTanika");
+		if (per.place == 242) per.place = 72;
+		findPerson("MsJones");
+		if (per.place == 242) per.place = 72;
+		var perG = findPerson("Glenvale");
+		findPerson("Campers");
+		if (perG.checkFlag(34)) {
+			per.place = 25;
+			perG.setFlag(34, false);
+		}
+		findPerson("Kylie");
+		per.setFlag(6, false);
+		per.setFlag(7, false);
+		findPerson("Brandi");
+		per.flags[0] = 0;		// Completely reset all flags
+		if (whereItem(8) == 242) moveItem(8, 72, 242);
+		if (whereItem(59) == 242) moveItem(59, 72, 242);
+		if (whereItem(29) == 276) moveItem(29, 244, 276);
+		if (whereItem(34) == 276) moveItem(34, 244, 276);
+		if (whereItem(42) == 304) moveItem(42, 245, 304);
+		if (Place == 242) Place = 72;
+		else if (Place == 249) Place = 242;
+		else if (Place == 285) Place = 950;
+		else if (Place == 276) Place = 244;
+		else if (Place == 304) Place = 245;
+		else if (Place == 433) Place = 400;
+		else if (Place == 12 || Place == 13) Place = 7;
+	}
+	findPerson("Mom");
+	if (per.dress === "") per.dress = "Natural";
+	findPerson("MissLogan");
+	if (per.dress === "") per.dress = "Natural";	
+	findPerson("Mia");
+	if (per.dress === "") per.dress = "Natural";		
+	findPerson("Savanna");
+	if (per.getCharmedLevel() == 1) per.charmThem(4);
+
 		
 	// General Upgrades, common to all versions
 	if (gameState.nRightBarState != 1 && gameState.nRightBarState != 2 && gameState.nRightBarState != 3 && gameState.nRightBarState != 4) gameState.nRightBarState = 2;
